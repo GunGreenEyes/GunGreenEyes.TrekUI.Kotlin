@@ -176,6 +176,10 @@ final class RedAlert {
         stream = 0;
     }
 
+    static {
+        Sfx.onRelease = RedAlert::soundReleased; // the klaxon stream only exists once this class is loaded
+    }
+
     /** Forgets the klaxon stream after Sfx released its SoundPool (the stream died with it). */
     static void soundReleased() {
         stream = 0;

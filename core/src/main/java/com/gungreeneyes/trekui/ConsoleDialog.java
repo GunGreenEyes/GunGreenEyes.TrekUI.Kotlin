@@ -67,7 +67,7 @@ final class ConsoleDialog {
 
     /** Builds the panel, title strip and scrolling body; the caller fills the body and shows it. */
     static Built base(Context c, String title) {
-        Palette p = Prefs.get(c).palette();
+        Palette p = TrekPrefs.get(c).palette();
         final Dialog d = new Dialog(c);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LinearLayout root = new LinearLayout(c);
@@ -136,7 +136,7 @@ final class ConsoleDialog {
 
     /** Shows a list of options; tapping one dismisses the dialog and reports its index. */
     static Dialog options(final Context c, String title, String[] items, final OnPick cb) {
-        Palette p = Prefs.get(c).palette();
+        Palette p = TrekPrefs.get(c).palette();
         final Built b = base(c, title);
         for (int i = 0; i < items.length; i++) {
             final int which = i;
@@ -153,7 +153,7 @@ final class ConsoleDialog {
 
     /** Shows a message with buttons (the first in the primary colour); {@code cb} may be null. */
     static Dialog message(final Context c, String title, String msg, String[] buttons, final OnPick cb) {
-        Palette p = Prefs.get(c).palette();
+        Palette p = TrekPrefs.get(c).palette();
         final Built b = base(c, title);
         TextView m = Ui.text(c, msg, 16, p.textHi);
         m.setLineSpacing(0, 1.15f);
@@ -174,7 +174,7 @@ final class ConsoleDialog {
 
     /** Asks for one line of text (upper-case keyboard); ACCEPT or the IME action reports it trimmed. */
     static Dialog prompt(final Context c, String title, String initial, String hint, final OnText cb) {
-        Palette p = Prefs.get(c).palette();
+        Palette p = TrekPrefs.get(c).palette();
         final Built b = base(c, title);
         final EditText e = new EditText(c);
         e.setText(initial);

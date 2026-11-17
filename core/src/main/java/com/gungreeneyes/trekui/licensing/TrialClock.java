@@ -42,7 +42,7 @@ public final class TrialClock {
         this.limitMillis = limitMillis;
     }
 
-    /** Changes the session length (debug override or a new BuildConfig value) without resetting. */
+    /** Changes the session length (debug override or a new configured value) without resetting. */
     void setLimitMillis(long limitMillis) {
         this.limitMillis = limitMillis;
     }

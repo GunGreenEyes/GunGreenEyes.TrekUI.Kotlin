@@ -27,8 +27,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.gungreeneyes.trekui.BuildConfig;
 import com.gungreeneyes.trekui.ScreenMetrics;
+import com.gungreeneyes.trekui.core.CoreConfig;
+import com.gungreeneyes.trekui.core.SuiteClient;
 import java.util.Locale;
 
 /**
@@ -37,14 +38,19 @@ import java.util.Locale;
  * <p>Opened in two modes:
  * <ul>
  *   <li><b>expired</b> &ndash; by {@link Licensing#onHomeResumed(Activity)} when the trial session
- *       is over. Offers BUY, RESTORE PURCHASE, NEW SESSION (enabled after a short countdown) and
- *       USE ANOTHER HOME APP, so the device is never stuck: the system home picker and Settings
- *       are always one tap away, and Recents / the notification shade keep working.</li>
+ *       is over. Offers BUY, RESTORE PURCHASE, NEW SESSION (enabled after a short countdown) and, in
+ *       the launcher ({@link CoreConfig#homeApp}), USE ANOTHER HOME APP, so the device is never stuck:
+ *       the system home picker and Settings are always one tap away, and Recents / the notification
+ *       shade keep working. Companion apps offer CLOSE instead.</li>
  *   <li><b>voluntary</b> &ndash; from {@link Licensing#openPurchaseScreen(Context)}, to buy early.</li>
  * </ul>
  * Drawn with plain views plus a small Canvas elbow header in the classic console palette and the
  * launcher's Antonio typeface, sized with {@link ScreenMetrics} so it fits phones and tablets in
  * either orientation, edge-to-edge with system-bar/cutout insets applied as padding.
+ *
+ * <p>Shared by every TrekUI app: the wording uses {@link CoreConfig#appName}, and every variant says
+ * that one purchase unlocks every TrekUI app. RESTORE PURCHASE checks this app's own Play purchase and
+ * every installed sibling app ({@link SuiteClient}).
  *
  * <p>develop flavor only: long-pressing the header simulates a purchase (and long-pressing it
  * again while simulated clears it), for tests and screenshots.
@@ -76,6 +82,7 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
     private TextView relaunchButton;
     private int countdown;
     private boolean closing;
+    private CoreConfig config;
 
     /** Opens the screen; {@code expired} selects the session-over wording and buttons. */
     static void start(Context context, boolean expired) {
@@ -88,6 +95,7 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         expired = getIntent().getBooleanExtra(EXTRA_EXPIRED, false);
+        config = CoreConfig.get(this);
         metrics = ScreenMetrics.of(this);
         loadFonts();
         // API 35+ is always edge-to-edge; on 30-34 opt in so the black panel runs under the bars.
@@ -129,7 +137,7 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         column.setOrientation(LinearLayout.VERTICAL);
         column.setPadding(margin, margin, margin, margin);
 
-        HeaderView header = new HeaderView(this, expired ? "SESSION COMPLETE" : "UNLOCK TREKUI");
+        HeaderView header = new HeaderView(this, expired ? "SESSION COMPLETE" : "UNLOCK " + config.appName);
         header.setOnLongClickListener(v -> simulatePurchase());
         column.addView(header, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(96)));
 
@@ -140,24 +148,27 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         column.addView(body, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        String session = describeSession(BuildConfig.TRIAL_SESSION_MINUTES);
+        String session = describeSession(config.trialSessionMinutes);
         String lead = expired
                 ? "YOUR " + session + " TRIAL SESSION HAS ENDED."
-                : "TREKUI IS FREE TO TRY IN SESSIONS OF " + session + ".";
+                : config.appName + " IS FREE TO TRY IN SESSIONS OF " + session + ".";
         body.addView(text(lead, 24, ORANGE, true));
         body.addView(spacer(gutter));
-        body.addView(text("TrekUI is free to download and has no ads. Every feature works during a "
-                + "trial session; a new session starts after you restart the launcher or your device. "
-                + "To use TrekUI as your permanent home screen, unlock it once with a single purchase "
-                + "of " + FALLBACK_PRICE + " (US price; Google Play shows your local price). There is "
-                + "no subscription, and the purchase covers every device signed in to your Google account.",
-                16, TEXT_HI, false));
+        body.addView(text(pitch(config.appName, config.homeApp), 16, TEXT_HI, false));
         body.addView(spacer(gutter));
-        body.addView(text(expired
-                        ? "Until then you can start a new trial session below, or switch to another home "
-                        + "app at any time. Nothing on your device has been changed."
-                        : "You can switch to another home app at any time.",
-                16, LAVENDER, false));
+        body.addView(text(SUITE_LINE, 16, GOLD, true));
+        body.addView(spacer(gutter));
+        String note;
+        if (config.homeApp) {
+            note = expired
+                    ? "Until then you can start a new trial session below, or switch to another home "
+                    + "app at any time. Nothing on your device has been changed."
+                    : "You can switch to another home app at any time.";
+        } else {
+            note = expired ? "Until then you can start a new trial session below. Nothing on your device "
+                    + "has been changed." : "";
+        }
+        if (!note.isEmpty()) body.addView(text(note, 16, LAVENDER, false));
 
         status = text("", 15, GOLD, true);
         status.setPadding(0, gutter * 2, 0, gutter);
@@ -165,7 +176,9 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
 
         buyButton = button("BUY " + FALLBACK_PRICE, ORANGE, v -> buy());
         TextView restore = button("RESTORE PURCHASE", BLUE, v -> restore());
-        TextView other = button("USE ANOTHER HOME APP", LAVENDER, v -> openHomeSettings());
+        TextView other = config.homeApp
+                ? button("USE ANOTHER HOME APP", LAVENDER, v -> openHomeSettings())
+                : (expired ? button("CLOSE", LAVENDER, v -> finishAffinity()) : null);
         if (expired) {
             relaunchButton = button("NEW SESSION", PINK, v -> relaunch());
             relaunchButton.setEnabled(false);
@@ -285,6 +298,37 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
                 getResources().getDisplayMetrics()));
     }
 
+    /** Shown on every purchase screen of every TrekUI app (owner rule: one purchase, every app). */
+    static final String SUITE_LINE = "One purchase unlocks every TrekUI app.";
+
+    /**
+     * The main explanation. The launcher keeps its home-screen wording; companions say "keep using".
+     * {@code appName} is the upper-case display name (e.g. "TREKUI MESSAGES").
+     */
+    static String pitch(String appName, boolean homeApp) {
+        String name = displayName(appName);
+        String restart = homeApp ? "the launcher" : name;
+        String goal = homeApp ? "To use " + name + " as your permanent home screen"
+                : "To keep using " + name + " without trial sessions";
+        return name + " is free to download and has no ads. Every feature works during a "
+                + "trial session; a new session starts after you restart " + restart + " or your device. "
+                + goal + ", unlock it once with a single purchase "
+                + "of " + FALLBACK_PRICE + " (US price; Google Play shows your local price). There is "
+                + "no subscription, and the purchase covers every device signed in to your Google account.";
+    }
+
+    /** "TREKUI MESSAGES" becomes "TrekUI Messages" (the brand keeps its capitals). */
+    static String displayName(String appName) {
+        if (appName == null || appName.trim().isEmpty()) return "TrekUI";
+        StringBuilder sb = new StringBuilder();
+        for (String w : appName.trim().split(" +")) {
+            if (sb.length() > 0) sb.append(' ');
+            if (w.equalsIgnoreCase("TREKUI")) sb.append("TrekUI");
+            else sb.append(w.substring(0, 1).toUpperCase(Locale.ROOT)).append(w.substring(1).toLowerCase(Locale.ROOT));
+        }
+        return sb.toString();
+    }
+
     /** "24 HOURS", "5 MINUTES", "90 MINUTES". */
     static String describeSession(long minutes) {
         if (minutes >= 60 && minutes % 60 == 0) {
@@ -304,6 +348,8 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
     private void restore() {
         status.setText("CHECKING GOOGLE PLAY FOR YOUR PURCHASE…");
         Licensing.billing().refreshPurchases();
+        // A purchase made in any other TrekUI app counts too; a grant notifies the billing listeners.
+        SuiteClient.checkSiblingsAsync(this, null);
     }
 
     /** Opens the system "Default home app" screen; falls back to Settings if a ROM lacks it. */
@@ -360,7 +406,8 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         if (closing) return;
         closing = true;
         status.setTextColor(GOLD);
-        status.setText("UNLOCKED. THANK YOU — TREKUI IS NOW YOUR PERMANENT LAUNCHER.");
+        status.setText(config.homeApp ? "UNLOCKED. THANK YOU — TREKUI IS NOW YOUR PERMANENT LAUNCHER."
+                : "UNLOCKED. THANK YOU — EVERY TREKUI APP IS NOW UNLOCKED.");
         buyButton.setEnabled(false);
         status.postDelayed(this::finish, 1800L);
     }

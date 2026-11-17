@@ -7,22 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import com.gungreeneyes.trekui.BuildConfig;
+import com.gungreeneyes.trekui.core.CoreConfig;
+import com.gungreeneyes.trekui.core.SuiteClient;
 import java.lang.ref.WeakReference;
 
 /**
- * Public entry point of the licensing package: the only class the rest of the launcher calls.
+ * Public entry point of the licensing package (in {@code :core}, shared by every TrekUI app).
  *
- * <p>Model: the launcher is free and ad-free. An unlicensed copy is fully functional, but each
- * session lasts {@code BuildConfig.TRIAL_SESSION_MINUTES} (24 h in production, 5 min in the
- * develop flavor). When a session is over, the next time the home screen comes to the front
- * {@link PurchaseActivity} explains that a one-time purchase ({@code BuildConfig.UNLOCK_PRODUCT_ID})
- * is needed to use console as a permanent launcher. From there the user can buy, restore, start a
- * new session, or switch to another home app. A reboot also starts a new session.
+ * <p>Model: every TrekUI app is free and ad-free. An unlicensed copy is fully functional, but each
+ * session lasts {@link CoreConfig#trialSessionMinutes} (24 h in production, 5 min in the develop
+ * flavor; the app supplies it through {@link CoreConfig}). When a session is over, the next time the
+ * app's main screen comes to the front {@link PurchaseActivity} explains that a one-time purchase
+ * ({@link CoreConfig#unlockProductId}, {@code trekui_unlock} in every app) is needed. From there the
+ * user can buy, restore, start a new session, or (launcher) switch to another home app. A reboot also
+ * starts a new session. One purchase unlocks every TrekUI app: a sibling's unlock is picked up through
+ * {@link SuiteClient} and cached by {@link Entitlement#grantSuite}.
  *
- * <p>The home activity calls {@link #init(Activity)} from {@code onCreate} and
- * {@link #onHomeResumed(Activity)} from {@code onResume}. The session end is only acted upon while
- * the home screen itself is in front: another app the user is using is never interrupted.
+ * <p>The main activity calls {@link #init(Activity)} from {@code onCreate} and
+ * {@link #onHomeResumed(Activity)} (alias {@link #onAppResumed(Activity)}) from {@code onResume}. The
+ * session end is only acted upon while that screen is in front: another app is never interrupted.
  *
  * <p>Test hooks (ignored in release builds): see the {@code EXTRA_DEBUG_*} constants and
  * {@link #debugSetUnlocked(Context, Boolean)} / {@link #debugSetTrialSeconds(Context, int)}.
@@ -32,7 +35,7 @@ public final class Licensing {
     public static final String EXTRA_DEBUG_UNLOCK = "trekui.debug.unlock";
     /** Debug builds: boolean extra; true removes a forced state set by {@link #EXTRA_DEBUG_UNLOCK}. */
     public static final String EXTRA_DEBUG_CLEAR_OVERRIDE = "trekui.debug.clear_override";
-    /** Debug builds: int extra; overrides the session length in seconds (0 restores BuildConfig). */
+    /** Debug builds: int extra; overrides the session length in seconds (0 restores the configured length). */
     public static final String EXTRA_DEBUG_TRIAL_SECONDS = "trekui.debug.trial_seconds";
     /** Debug builds: boolean extra; true starts a fresh session immediately. */
     public static final String EXTRA_DEBUG_RESET_TRIAL = "trekui.debug.reset_trial";
@@ -48,6 +51,7 @@ public final class Licensing {
     private static TrialClock clock;
     private static Entitlement entitlement;
     private static BillingManager billing;
+    private static CoreConfig config;
     private static boolean processStarted;
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static WeakReference<Activity> home = new WeakReference<>(null);
@@ -63,10 +67,11 @@ public final class Licensing {
     private static synchronized void ensure(Context context) {
         if (appContext != null) return;
         appContext = context.getApplicationContext();
+        config = CoreConfig.get(appContext);
         store = new PrefsKeyValueStore(appContext);
         clock = new TrialClock(store, new SystemTimeSource(appContext), configuredLimitMillis());
-        entitlement = new Entitlement(store, appContext.getPackageName(), BuildConfig.UNLOCK_PRODUCT_ID,
-                BuildConfig.DEBUG, isDevelopFlavor());
+        entitlement = new Entitlement(store, appContext.getPackageName(), config.unlockProductId,
+                config.debugBuild, isDevelopFlavor());
         billing = new BillingManager(appContext, entitlement);
     }
 
@@ -83,6 +88,7 @@ public final class Licensing {
             activity.getApplication().registerActivityLifecycleCallbacks(new HomeTracker());
         }
         billing.start();
+        checkSiblings();
     }
 
     /**
@@ -95,6 +101,12 @@ public final class Licensing {
         home = new WeakReference<>(activity);
         billing.refreshIfStale();
         checkSession(activity);
+        checkSiblings();
+    }
+
+    /** Same as {@link #onHomeResumed(Activity)}; the name companion apps use from their main screen. */
+    public static void onAppResumed(Activity activity) {
+        onHomeResumed(activity);
     }
 
     /** True if this copy is unlocked (purchase cached, or a test override in debug builds). */
@@ -107,6 +119,34 @@ public final class Licensing {
     public static long trialRemainingMillis(Context context) {
         ensure(context);
         return entitlement.isUnlocked() ? Long.MAX_VALUE : clock.remainingMillis();
+    }
+
+    /**
+     * True if this copy may tell sibling apps it is unlocked (a real or suite unlock, or a simulated one
+     * in the develop flavor; never a debug override). What the suite provider publishes.
+     */
+    public static boolean isShareableUnlock(Context context) {
+        ensure(context);
+        return entitlement.shareableUnlock();
+    }
+
+    /** Why this copy is unlocked (or NONE): what the suite provider publishes as the source. */
+    public static Entitlement.Source unlockSource(Context context) {
+        ensure(context);
+        return entitlement.source();
+    }
+
+    /**
+     * Records that the sibling app {@code fromPackage} reported itself unlocked through its
+     * signature-protected suite provider: caches the suite grant and tells open purchase screens.
+     * Called by {@link SuiteClient}; returns true if this unlocked the copy.
+     */
+    public static boolean grantFromSibling(Context context, String fromPackage) {
+        ensure(context);
+        boolean wasUnlocked = entitlement.isUnlocked();
+        boolean granted = entitlement.grantSuite(fromPackage, System.currentTimeMillis());
+        if (granted) MAIN.post(billing::notifyListeners);
+        return granted && !wasUnlocked;
     }
 
     /** Opens the purchase screen on request (e.g. an "UNLOCK" entry in Settings). */
@@ -127,7 +167,7 @@ public final class Licensing {
     /** Debug builds only: session length in seconds; 0 restores {@code TRIAL_SESSION_MINUTES}. */
     public static boolean debugSetTrialSeconds(Context context, int seconds) {
         ensure(context);
-        if (!BuildConfig.DEBUG) return false;
+        if (!config.debugBuild) return false;
         store.putLong(KEY_DEBUG_TRIAL_SECONDS, Math.max(0, seconds));
         clock.setLimitMillis(configuredLimitMillis());
         return true;
@@ -148,7 +188,17 @@ public final class Licensing {
     }
 
     static boolean isDevelopFlavor() {
-        return "develop".equals(BuildConfig.FLAVOR);
+        return config != null && config.developFlavor;
+    }
+
+    /** The app's config (valid after any public call). */
+    static CoreConfig config() {
+        return config;
+    }
+
+    /** Asks installed sibling apps (in the background) whether one of them is unlocked. */
+    private static void checkSiblings() {
+        if (!entitlement.isUnlocked()) SuiteClient.checkSiblingsAsync(appContext, null);
     }
 
     /** Explicit relaunch from the expiry screen: a fresh session begins now. */
@@ -157,13 +207,13 @@ public final class Licensing {
         clock.startNewSession();
     }
 
-    /** Session length: BuildConfig, or the debug override in debug builds. */
+    /** Session length: the app's CoreConfig, or the debug override in debug builds. */
     static long configuredLimitMillis() {
-        if (BuildConfig.DEBUG && store != null) {
+        if (config.debugBuild && store != null) {
             long seconds = store.getLong(KEY_DEBUG_TRIAL_SECONDS, 0L);
             if (seconds > 0) return seconds * 1000L;
         }
-        return BuildConfig.TRIAL_SESSION_MINUTES * 60_000L;
+        return config.trialSessionMinutes * 60_000L;
     }
 
     private static void checkSession(Activity activity) {
@@ -181,7 +231,7 @@ public final class Licensing {
 
     /** Handles the debug-only intent extras; a no-op in release builds. */
     private static void applyDebugExtras(Intent intent) {
-        if (!BuildConfig.DEBUG || intent == null || intent.getExtras() == null) return;
+        if (!config.debugBuild || intent == null || intent.getExtras() == null) return;
         if (intent.hasExtra(EXTRA_DEBUG_UNLOCK)) {
             debugSetUnlocked(appContext, intent.getBooleanExtra(EXTRA_DEBUG_UNLOCK, false));
             intent.removeExtra(EXTRA_DEBUG_UNLOCK);
@@ -200,7 +250,7 @@ public final class Licensing {
         }
         if (intent.getBooleanExtra(EXTRA_DEBUG_EXPIRE_NOW, false)) {
             clock.setLimitMillis(1L);
-            store.putLong(KEY_DEBUG_TRIAL_SECONDS, 0L); // next process start uses BuildConfig again
+            store.putLong(KEY_DEBUG_TRIAL_SECONDS, 0L); // next process start uses the configured length again
             intent.removeExtra(EXTRA_DEBUG_EXPIRE_NOW);
         }
     }

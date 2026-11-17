@@ -97,6 +97,7 @@
     </queries>
 
     <application
+        android:name=".TrekUiApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -147,6 +148,15 @@
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode|density|fontScale" />
+
+        <!-- Suite provider: tells sibling TrekUI apps (same signing key only) whether this copy is
+             unlocked and which interface / sub-theme / sound set is chosen. -->
+        <provider
+            android:name="com.gungreeneyes.trekui.core.SuiteProvider"
+            android:authorities="${applicationId}.suite"
+            android:exported="true"
+            android:readPermission="${trekuiSuitePermission}"
+            android:writePermission="${trekuiSuitePermission}" />
 
         <!-- Purchase / unlock screen (com.gungreeneyes.trekui.licensing) -->
         <activity

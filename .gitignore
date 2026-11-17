@@ -28,8 +28,8 @@ personal_sounds/
 *.ogg
 *.wav
 # Exception: the launcher's own ORIGINAL synthesized sounds (tools/sounds/synth/make_synth.py, no recordings)
-!app/src/main/assets/sounds/synth/
-!app/src/main/assets/sounds/synth/*.ogg
+!core/src/main/assets/sounds/synth/
+!core/src/main/assets/sounds/synth/*.ogg
 
 # Original import material (zips, extracted sources) kept locally only
 _sources/

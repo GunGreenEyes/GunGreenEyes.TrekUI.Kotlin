@@ -46,10 +46,10 @@ final class SoundLibrary {
     private static String slugOf(String id) { return id.startsWith(PREFIX) ? id.substring(PREFIX.length()) : id; }
 
     private static JSONArray index(Context c) {
-        try { return new JSONArray(Prefs.get(c).s("soundLib", "[]")); } catch (Exception e) { return new JSONArray(); }
+        try { return new JSONArray(TrekPrefs.get(c).s("soundLib", "[]")); } catch (Exception e) { return new JSONArray(); }
     }
 
-    private static void saveIndex(Context c, JSONArray a) { Prefs.get(c).put("soundLib", a.toString()); }
+    private static void saveIndex(Context c, JSONArray a) { TrekPrefs.get(c).put("soundLib", a.toString()); }
 
     /** Library clips that can play (downloaded or bundled, in library order), then imported ones (newest last). */
     static List<Entry> all(Context c) {

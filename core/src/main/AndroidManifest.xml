@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The suite permission guarding every TrekUI app's SuiteProvider. Signature level: only apps signed
+         with the same key hold it. Each app sets trekuiSuitePermission per flavor (SuiteContract.permission). -->
+    <permission
+        android:name="${trekuiSuitePermission}"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${trekuiSuitePermission}" />
+
+    <!-- Package visibility (API 30+): SuiteClient must see its siblings to read their providers. -->
+    <queries>
+        <package android:name="com.gungreeneyes.trekui" />
+        <package android:name="com.gungreeneyes.trekui.messages" />
+        <package android:name="com.gungreeneyes.trekui.keyboard" />
+        <package android:name="com.gungreeneyes.trekui.lockscreen" />
+        <package android:name="com.gungreeneyes.trekui.dev" />
+        <package android:name="com.gungreeneyes.trekui.messages.dev" />
+        <package android:name="com.gungreeneyes.trekui.keyboard.dev" />
+        <package android:name="com.gungreeneyes.trekui.lockscreen.dev" />
+    </queries>
+</manifest>

@@ -37,8 +37,8 @@ import android.graphics.drawable.Drawable;
  *  ERA25   (10)  25th-century glass: thin translucent blue/grey layers, cut corners, fine ticks, light Antonio.
  * </pre>
  *
- * The current faction is the static {@link #faction}, set from {@link Prefs#faction()} whenever a
- * screen is built ({@link Prefs#palette()} and {@link #load}). Palettes for Imperial/Collective are the ones
+ * The current faction is the static {@link #faction}, set from {@link TrekPrefs#faction()} whenever a
+ * screen is built ({@link TrekPrefs#palette()} and {@link #load}). Palettes for Imperial/Collective are the ones
  * measured from the faction artwork bundle (theme.json + SVGs).
  */
 final class Skin {
@@ -66,7 +66,7 @@ final class Skin {
     private Skin() {}
 
     /** Reads the current faction from preferences. */
-    static void load(Context c) { faction = Prefs.get(c).faction(); }
+    static void load(Context c) { faction = TrekPrefs.get(c).faction(); }
     /** The Command family: console proper and the two extra eras (they share every Command layout). */
     static boolean command() { return commandFamily(faction); }
     /** True for Command console and the 23rd/25th-century eras. */

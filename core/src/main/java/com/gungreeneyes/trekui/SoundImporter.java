@@ -214,7 +214,7 @@ final class SoundImporter {
         }
         if (made.isEmpty()) return 0;
         clear(c, event);
-        Prefs p = Prefs.get(c);
+        TrekPrefs p = TrekPrefs.get(c);
         for (int v = 0; v < made.size(); v++) {
             File dst = Sfx.file(c, event, v);
             //noinspection ResultOfMethodCallIgnored
@@ -231,9 +231,9 @@ final class SoundImporter {
             //noinspection ResultOfMethodCallIgnored
             Sfx.file(c, event, v).delete();
         }
-        Prefs.get(c).sp.edit().remove("snd" + event + "n").remove("snd" + event + "src")
+        TrekPrefs.get(c).sp.edit().remove("snd" + event + "n").remove("snd" + event + "src")
                 .apply();
-        android.content.SharedPreferences.Editor ed = Prefs.get(c).sp.edit();
+        android.content.SharedPreferences.Editor ed = TrekPrefs.get(c).sp.edit();
         for (int v = 0; v < Sfx.MAX_VARIANTS; v++) ed.remove("snd" + event + "name" + v);
         ed.apply();
     }

@@ -21,17 +21,23 @@ import java.util.UUID;
  * gives a <em>successful</em> answer that the product is not owned (for example after a refund);
  * network or service errors never take an unlock away.
  *
+ * <p>Suite unlock: one purchase of {@code trekui_unlock} in any TrekUI app unlocks them all. When a
+ * sibling app reports (through its signature-protected suite provider, see
+ * {@code com.gungreeneyes.trekui.core.SuiteClient}) that it is unlocked, {@link #grantSuite} caches that
+ * here, bound to this install by the same kind of digest, so uninstalling the app that was bought does
+ * not relock the others. A suite grant is never revoked by Play answers about this app's own purchase.
+ *
  * <p>Two test hooks exist and are ignored in store builds:
  * <ul>
  *   <li>a debug override (forced unlocked / locked), honoured only when constructed with
- *       {@code debugBuild = true} ({@code BuildConfig.DEBUG});</li>
+ *       {@code debugBuild = true} ({@code CoreConfig.debugBuild});</li>
  *   <li>a simulated purchase, honoured only when {@code simulationAllowed = true}
  *       (the {@code develop} flavor).</li>
  * </ul>
  */
 public final class Entitlement {
     /** Why {@link #isUnlocked()} answered as it did. */
-    public enum Source { NONE, PURCHASE, SIMULATED, DEBUG_OVERRIDE }
+    public enum Source { NONE, PURCHASE, SUITE, SIMULATED, DEBUG_OVERRIDE }
 
     /** Debug-only forced state. */
     public enum Override { NONE, UNLOCKED, LOCKED }
@@ -47,6 +53,9 @@ public final class Entitlement {
     static final String KEY_PENDING = "ent.pending";
     static final String KEY_SIMULATED = "ent.simulated";
     static final String KEY_OVERRIDE = "debug.override";
+    static final String KEY_SUITE_FROM = "ent.suite.from";
+    static final String KEY_SUITE_TIME = "ent.suite.time";
+    static final String KEY_SUITE_DIGEST = "ent.suite.digest";
 
     /** Mixed into the digest; not a secret, it just makes the stored value non-obvious to forge. */
     private static final String SALT = "TrekUI/ent/v1/7c2e9a41";
@@ -61,7 +70,7 @@ public final class Entitlement {
      * @param store             persistent cache
      * @param packageName       this app's package (bound into the digest)
      * @param productId         Play product id of the unlock
-     * @param debugBuild        honour the debug override ({@code BuildConfig.DEBUG})
+     * @param debugBuild        honour the debug override ({@code CoreConfig.debugBuild})
      * @param simulationAllowed honour a simulated purchase (develop flavor)
      */
     Entitlement(KeyValueStore store, String packageName, String productId,
@@ -91,6 +100,7 @@ public final class Entitlement {
             if (o == Override.LOCKED) return Source.NONE;
         }
         if (hasVerifiedPurchase()) return Source.PURCHASE;
+        if (hasSuiteGrant()) return Source.SUITE;
         if (simulationAllowed && store.getBoolean(KEY_SIMULATED, false)) return Source.SIMULATED;
         return Source.NONE;
     }
@@ -103,6 +113,61 @@ public final class Entitlement {
         return MessageDigest.isEqual(
                 digest.getBytes(StandardCharsets.UTF_8),
                 digest(token).getBytes(StandardCharsets.UTF_8));
+    }
+
+    /** True if a sibling app's unlock is cached and its digest matches this install. */
+    public synchronized boolean hasSuiteGrant() {
+        String from = store.getString(KEY_SUITE_FROM, null);
+        String digest = store.getString(KEY_SUITE_DIGEST, null);
+        if (from == null || from.isEmpty() || digest == null) return false;
+        long time = store.getLong(KEY_SUITE_TIME, 0L);
+        return MessageDigest.isEqual(
+                digest.getBytes(StandardCharsets.UTF_8),
+                digest(suiteMaterial(from, time)).getBytes(StandardCharsets.UTF_8));
+    }
+
+    /** Package of the sibling app whose unlock is cached (null when none). */
+    public synchronized String suiteGrantSource() {
+        return hasSuiteGrant() ? store.getString(KEY_SUITE_FROM, null) : null;
+    }
+
+    /**
+     * Caches "a sibling TrekUI app is unlocked" (integrity-hashed like a purchase). Called by the suite
+     * client after a sibling's signature-protected provider answered unlocked. Keeps an existing valid
+     * grant (and its original source) untouched.
+     *
+     * @param fromPackage the sibling's package name
+     * @param time        when the answer was received (ms)
+     * @return true if the copy was not unlocked by a suite grant before
+     */
+    public synchronized boolean grantSuite(String fromPackage, long time) {
+        if (fromPackage == null || fromPackage.isEmpty()) return false;
+        if (hasSuiteGrant()) return false;
+        store.putString(KEY_SUITE_FROM, fromPackage);
+        store.putLong(KEY_SUITE_TIME, time);
+        store.putString(KEY_SUITE_DIGEST, digest(suiteMaterial(fromPackage, time)));
+        return true;
+    }
+
+    /** The token-like string a suite grant's digest is computed over. */
+    private static String suiteMaterial(String fromPackage, long time) {
+        return "suite|" + fromPackage + '|' + time;
+    }
+
+    /**
+     * True if this copy may tell sibling apps it is unlocked: a real purchase or a cached suite grant,
+     * or (develop flavor only) a simulated purchase. Debug overrides are never shared.
+     */
+    public synchronized boolean shareableUnlock() {
+        Source s = sourceIgnoringOverride();
+        return s == Source.PURCHASE || s == Source.SUITE || s == Source.SIMULATED;
+    }
+
+    private Source sourceIgnoringOverride() {
+        if (hasVerifiedPurchase()) return Source.PURCHASE;
+        if (hasSuiteGrant()) return Source.SUITE;
+        if (simulationAllowed && store.getBoolean(KEY_SIMULATED, false)) return Source.SIMULATED;
+        return Source.NONE;
     }
 
     /** True if Play last reported a pending (not yet paid) purchase. */

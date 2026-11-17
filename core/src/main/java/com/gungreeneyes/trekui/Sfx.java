@@ -266,13 +266,13 @@ final class Sfx {
 
     /** The chosen SOUND SET ({@link #SET_LIBRARY} by default). */
     static String soundSet(Context context) {
-        String s = Prefs.get(context).s("sndSet", SET_LIBRARY);
+        String s = TrekPrefs.get(context).soundSetChoice(SET_LIBRARY);
         return SET_SYNTH.equals(s) || SET_SILENT.equals(s) ? s : SET_LIBRARY;
     }
 
     /** Stores the SOUND SET and reloads every event's samples. */
     static void setSoundSet(Context context, String set) {
-        Prefs.get(context).put("sndSet", set);
+        TrekPrefs.get(context).put(TrekPrefs.KEY_SOUND_SET, set);
         reload(context);
     }
 
@@ -335,8 +335,8 @@ final class Sfx {
 
     /** The library clip for an event: the user's choice, or the interface default. */
     static String builtinFor(Context context, int event) {
-        Skin.faction = Prefs.get(context).faction();
-        String s = Prefs.get(context).s(builtinKey(event), null);
+        Skin.faction = TrekPrefs.get(context).faction();
+        String s = TrekPrefs.get(context).s(builtinKey(event), null);
         return s != null ? s : defaultFor(event);
     }
 
@@ -361,19 +361,19 @@ final class Sfx {
     }
 
     static boolean enabled(Context context) {
-        return Prefs.get(context).b("sfx", true);
+        return TrekPrefs.get(context).b("sfx", true);
     }
 
     static int volume(Context context) {
-        return Prefs.get(context).i("sfxVol", 55);
+        return TrekPrefs.get(context).i("sfxVol", 55);
     }
 
     static boolean eventOn(Context context, int event) {
-        return Prefs.get(context).b("sndOn" + event, true);
+        return TrekPrefs.get(context).b("sndOn" + event, true);
     }
 
     static boolean followTouch(Context context) {
-        return Prefs.get(context).b("sfxTouch", false);
+        return TrekPrefs.get(context).b("sfxTouch", false);
     }
 
     /** Folder of per-event imported files. */
@@ -386,15 +386,15 @@ final class Sfx {
     }
 
     static int variantCount(Context context, int event) {
-        return Prefs.get(context).i("snd" + event + "n", 0);
+        return TrekPrefs.get(context).i("snd" + event + "n", 0);
     }
 
     static String variantName(Context context, int event, int variant) {
-        return Prefs.get(context).s("snd" + event + "name" + variant, "?");
+        return TrekPrefs.get(context).s("snd" + event + "name" + variant, "?");
     }
 
     static String source(Context context, int event) {
-        return Prefs.get(context).s("snd" + event + "src", "");
+        return TrekPrefs.get(context).s("snd" + event + "src", "");
     }
 
     static int assignedEvents(Context context) {
@@ -586,8 +586,12 @@ final class Sfx {
             loadedSet.clear();
         }
         for (int e = 0; e < EVENTS; e++) variants[e] = 0;
-        RedAlert.soundReleased(); // its looping stream died with the pool
+        Runnable r = onRelease;
+        if (r != null) r.run(); // looping streams (RED ALERT's klaxon) died with the pool
     }
+
+    /** Run after every {@link #release()}; the launcher's RED ALERT forgets its looping stream here. */
+    static volatile Runnable onRelease;
 
     /**
      * Starts an event's sound looping until {@link #stopLoop} (RED ALERT's klaxon). Same rules as
@@ -642,7 +646,8 @@ final class Sfx {
     private static float gain(Context context) {
         float v = Math.max(0.0f, Math.min(1.0f, volume(context) / 100.0f));
         float g = v * v;
-        return (Ui.cloak || Cloak.active(context)) ? g * 0.1f : g;
+        boolean cloaked = Ui.cloak || TrekPrefs.get(context).l("cloakUntil", 0L) > System.currentTimeMillis();
+        return cloaked ? g * 0.1f : g;
     }
 
     /** Next variant from the event's shuffle bag (never the same one twice in a row). */

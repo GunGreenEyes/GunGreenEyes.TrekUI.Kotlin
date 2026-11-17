@@ -31,6 +31,7 @@ android {
         buildConfigField("String", "UNLOCK_PRODUCT_ID", "\"trekui_unlock\"")
         // Play restricts READ_CALL_LOG to default phone apps; only develop builds read the call log.
         buildConfigField("boolean", "CALL_LOG_ENABLED", "false")
+        manifestPlaceholders["trekuiSuitePermission"] = "com.gungreeneyes.trekui.permission.SUITE"
     }
 
     flavorDimensions += "channel"
@@ -42,6 +43,7 @@ android {
             resValue("string", "app_name", "TrekUI Dev")
             buildConfigField("long", "TRIAL_SESSION_MINUTES", "5")
             buildConfigField("boolean", "CALL_LOG_ENABLED", "true")
+            manifestPlaceholders["trekuiSuitePermission"] = "com.gungreeneyes.trekui.dev.permission.SUITE"
         }
         create("production") {
             dimension = "channel"
@@ -105,6 +107,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.window)

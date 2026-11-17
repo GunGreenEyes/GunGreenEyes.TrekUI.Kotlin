@@ -336,7 +336,7 @@ final class Ui {
 
     /** Long-press feedback: haptic (if enabled) and the long-press chirp. */
     static void longPress(View v) {
-        if (Prefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        if (TrekPrefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         Sfx.play(v.getContext(), Sfx.LONG_PRESS);
     }
 
@@ -344,7 +344,7 @@ final class Ui {
     static View.OnClickListener feedbackSoft(final View.OnClickListener l) {
         return new View.OnClickListener() {
             @Override public void onClick(View v) {
-                if (Prefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                if (TrekPrefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 Sfx.play(v.getContext(), Sfx.TAP_SOFT);
                 l.onClick(v);
             }
@@ -363,13 +363,13 @@ final class Ui {
 
     /** Tap feedback: haptic (if enabled) and the tap chirp. */
     static void tap(View v) {
-        if (Prefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        if (TrekPrefs.get(v.getContext()).haptics()) v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         Sfx.play(v.getContext(), Sfx.TAP);
     }
 
     /** True when the user allows animations and the system animator scale is not zero. */
     static boolean animate(Context c) {
-        return Prefs.get(c).animations() && ValueAnimator.areAnimatorsEnabled();
+        return TrekPrefs.get(c).animations() && ValueAnimator.areAnimatorsEnabled();
     }
 
     // ---- colour maths (pure) ----------------------------------------------------------------------
@@ -400,6 +400,6 @@ final class Ui {
     /** A label in upper case when the "upper-case labels" option is on; null becomes "". */
     static String up(Context c, String s) {
         if (s == null) return "";
-        return Prefs.get(c).upperLabels() ? s.toUpperCase(Locale.getDefault()) : s;
+        return TrekPrefs.get(c).upperLabels() ? s.toUpperCase(Locale.getDefault()) : s;
     }
 }
