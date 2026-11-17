@@ -1,6 +1,6 @@
 ---
 codex: 1
-project: LCARS
+project: TrekUI.Java
 code: LCA
 layer: stories
 status: living
@@ -8,7 +8,7 @@ updated: 2026-11-17
 ---
 <!-- GENERATED from MindAttic.Tickets/data/Tickets.db by `tickets db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the tickets CLI. -->
 
-# LCARS — User Stories
+# TrekUI.Java — User Stories
 > ✅ done (shipped & tested) · 🟡 partial · ⬜ planned. Every ✅ cites the test.
 
 ## Priority backlog
