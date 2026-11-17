@@ -6,6 +6,7 @@ layer: stories
 status: living
 updated: 2026-11-17
 ---
+<!-- GENERATED from MindAttic.Tickets/data/Tickets.db by `tickets db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the tickets CLI. -->
 
 # LCARS — User Stories
 > ✅ done (shipped & tested) · 🟡 partial · ⬜ planned. Every ✅ cites the test.
@@ -49,7 +50,7 @@ _Nothing recorded yet._
 | LCA-T27 | 2026-11-17 | feature | open | Competitor-review requirements: cover and exceed every TREK Total Interface review theme (checklist in session scratchpad REVIEW_CHECKLIST.md) | — |
 | LCA-T28 | 2026-11-17 | feature | open | Reviews A/B/C/E/F/G: default-home watchdog + return-to-standard, smart default app mapping (no dead buttons), layout lock, instant undo, in-app help, weather units/12-24h/locale dates, notification-access status, sound volume/stream/mute/DND | — |
 | LCA-T29 | 2026-11-17 | feature | open | Reviews H/I: foldable posture, lock/home wallpaper generator + screensaver, voice commands, sensors + image panels, animation level, viewscreen launch, stardate formats, translations (de/fr/es), wallpaper library, ambient soundscape | — |
-| LCA-T30 | 2026-11-17 | feature | open | Multi-module split: extract :core library (skins, drawing, palettes, sounds, ScreenMetrics, shared unlock client) from :app so companion apps share the look | — |
+| LCA-T30 | 2026-11-17 | feature | closed | Multi-module split: extract :core library (skins, drawing, palettes, sounds, ScreenMetrics, shared unlock client) from :app so companion apps share the look | build: :core:assembleDebug + :app:assembleDevelopDebug/ProductionDebug |
 | LCA-T31 | 2026-11-17 | feature | open | TrekUI Messages: standalone default-SMS app (SMS/MMS, threads, compose, notifications, quick reply, blocking) in TrekUI styles; free, unlocked by launcher purchase | — |
 | LCA-T32 | 2026-11-17 | feature | open | TrekUI Keyboard: standalone IME in TrekUI styles with synthesized key sounds, themes, sizes, languages; free, unlocked by launcher purchase | — |
 | LCA-T33 | 2026-11-17 | feature | open | TrekUI Lock Screen: standalone show-when-locked wake screen (clock, notifications, media, quick actions) that hands off to the system keyguard; free, unlocked by launcher purchase | — |
@@ -57,3 +58,4 @@ _Nothing recorded yet._
 | LCA-T35 | 2026-11-17 | feature | open | Sub-themes for every interface family (COMMAND: CLASSIC, DEEP BLUE, SUNSET DECK, NIGHT PADD, STELLAR SILVER, MODERN GRAY; original sets for IMPERIAL and COLLECTIVE); Messages/Keyboard/Lock Screen follow the chosen interface+sub-theme; launcher SUITE controls + home-screen widget/QS tiles to switch Messages/Keyboard/Lock Screen on and off | — |
 | LCA-T36 | 2026-11-17 | feature | open | Suite licensing: every TrekUI app sells the same $0.99 trekui_unlock and works standalone; entitlement shared + cached across siblings; one purchase unlocks all | — |
 | LCA-T37 | 2026-11-17 | feature | open | One-command release: ship script + release workflow builds, signs and uploads all four apps to Play (track/rollout/approval inputs), runnable from GitHub mobile and Claude Code | — |
+| LCA-T38 | 2026-11-17 | chore | closed | Rename the GitHub repos to TrekUI.Java and TrekUI.Kotlin (the owner's names) and point every clone, Pages, issue and release link at TrekUI.Java | owner request 2026-11-17 |

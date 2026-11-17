@@ -17,7 +17,7 @@ The develop build installs as **TrekUI Dev** (`com.gungreeneyes.trekui.dev`), ne
 
 Claude Code can run as a cloud session against the GitHub repository. You start and steer it from claude.ai in a browser, or from the Claude app on your phone.
 
-1. **Connect the repository.** Connect GitHub to Claude, and grant access to `GunGreenEyes/GunGreenEyes.TrekUI.Java`.
+1. **Connect the repository.** Connect GitHub to Claude, and grant access to `GunGreenEyes/TrekUI.Java`.
 2. **Start a session** on the repository and describe the change. Mention the ticket if there is one (`LCA-T<n>`).
    - Claude reads [CLAUDE.md](../CLAUDE.md) and [AGENTS.md](../AGENTS.md) automatically. They hold the build commands, the conventions (`ScreenMetrics`, no copyrighted audio, ticket prefix) and where tests and media go.
 3. **Expect no local build.** The cloud sandbox normally has no Android SDK or emulator, so Claude cannot run `./gradlew` there. CI is the build machine. `bash scripts/setup.sh --skip-build` can install a JDK and SDK into the sandbox if its network policy allows downloads from `dl.google.com`. That makes JVM unit tests possible, but it is slow and not required.
@@ -61,7 +61,7 @@ Cowork (Claude's desktop agent for longer, multi-step work) can work against a l
 **With `gh` (from Termux or a computer):**
 
 ```sh
-gh run download --repo GunGreenEyes/GunGreenEyes.TrekUI.Java --name TrekUI-develop-debug-apk --dir ~/trekui-apk
+gh run download --repo GunGreenEyes/TrekUI.Java --name TrekUI-develop-debug-apk --dir ~/trekui-apk
 # then on Termux: termux-open ~/trekui-apk/*.apk ; on a computer: adb install -r ~/trekui-apk/*.apk
 ```
 
@@ -73,7 +73,7 @@ The original developer built the launcher on the phone itself with [Termux](http
 
 ```sh
 pkg update && pkg install git
-git clone https://github.com/GunGreenEyes/GunGreenEyes.TrekUI.Java && cd GunGreenEyes.TrekUI.Java
+git clone https://github.com/GunGreenEyes/TrekUI.Java && cd TrekUI.Java
 bash scripts/setup.sh
 ```
 
@@ -109,5 +109,5 @@ For small text changes you can edit directly on github.com: press `.` on the rep
 |---|---|
 | Build or unit-test failure | Actions run › **Build, unit tests, lint** job log; artifact `unit-test-reports` |
 | Lint warnings | artifact `lint-report` |
-| UI looks wrong | artifacts `capture-robolectric` and `capture-<device>-api<N>` (screenshots and video), or the [Pages site](https://gungreeneyes.github.io/GunGreenEyes.TrekUI.Java/) after a release |
+| UI looks wrong | artifacts `capture-robolectric` and `capture-<device>-api<N>` (screenshots and video), or the [Pages site](https://gungreeneyes.github.io/TrekUI.Java/) after a release |
 | Instrumented test failure | artifact `androidTest-report-<device>-api<N>` (includes logcat, with Given/When/Then steps under the `TREKUI-GHERKIN` tag) |
