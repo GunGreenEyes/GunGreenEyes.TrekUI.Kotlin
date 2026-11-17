@@ -1,0 +1,41 @@
+# CodeQL static analysis for the Java sources (build-mode none: no Gradle build needed).
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+    paths: ['app/src/**', '.github/workflows/codeql.yml']
+  pull_request:
+    branches: [main]
+    paths: ['app/src/**']
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: codeql-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: java-kotlin
+          build-mode: none
+          queries: security-and-quality
+
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:java-kotlin

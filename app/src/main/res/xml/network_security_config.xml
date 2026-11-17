@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Network security policy (LCA-T23).
+
+  Everything is HTTPS-only with the system's trusted CAs, exactly as before
+  (android:usesCleartextTraffic="false" is ignored once this file exists, so the base config
+  repeats it).
+
+  The single exception: a self-hosted Home Assistant on the home network may be reached over
+  plain http:// by a local-network NAME. Cleartext is permitted only for:
+    *.local      mDNS names (Home Assistant's default is homeassistant.local)
+    *.home.arpa  RFC 8375, the special-use domain for residential networks
+  Neither can resolve to anything on the public internet. Private IP addresses are NOT covered:
+  a network security config can't scope cleartext to address ranges, and listing every
+  192.168/10/172.16 address isn't possible, so an IP address must use HTTPS. The app's Http class
+  additionally refuses http:// for every request except Home Assistant's, and then only for these
+  same suffixes (Http.LOCAL_CLEARTEXT_SUFFIXES must match this list).
+  User-installed CAs are not trusted anywhere.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">local</domain>
+        <domain includeSubdomains="true">home.arpa</domain>
+    </domain-config>
+</network-security-config>

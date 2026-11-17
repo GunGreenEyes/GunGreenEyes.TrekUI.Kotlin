@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stable view IDs of the OPEN GROUP panel (LCA-T20) for UI tests; see GroupPanel. -->
+<resources>
+    <item name="group_panel" type="id" />
+</resources>

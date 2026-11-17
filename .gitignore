@@ -1,0 +1,46 @@
+# Build output
+build/
+.gradle/
+.kotlin/
+dist/
+captures/
+*.apk
+*.aab
+*.idsig
+
+# Local machine config
+local.properties
+*.iml
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets: signing keys and their passwords never go in git (CI reads them from GitHub secrets)
+signing/*
+!signing/README.md
+*.jks
+*.keystore
+play-service-account*.json
+
+# Third-party copyrighted recordings - never committed (local sideload builds only)
+personal_sounds/
+*.mp3
+*.ogg
+*.wav
+# Exception: the launcher's own ORIGINAL synthesized sounds (tools/sounds/synth/make_synth.py, no recordings)
+!app/src/main/assets/sounds/synth/
+!app/src/main/assets/sounds/synth/*.ogg
+
+# Original import material (zips, extracted sources) kept locally only
+_sources/
+*.zip
+
+# Test/screenshot run artifacts (published to GitHub Pages by CI instead)
+test-results/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Node dependencies of tools/art (npm install --prefix tools/art)
+node_modules/

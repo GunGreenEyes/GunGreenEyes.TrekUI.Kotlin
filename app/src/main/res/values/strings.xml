@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- app_name comes from the build flavor (resValue in app/build.gradle.kts). -->
+<resources>
+    <!-- Manifest / system-visible names -->
+    <string name="settings_name">TrekUI Configuration</string>
+    <string name="media_listener_name">TrekUI media &amp; notification shade</string>
+    <string name="widget_status_name">TrekUI Chronometer</string>
+    <string name="widget_quick_name">TrekUI Quick Launch</string>
+
+    <!-- Home screen: accessibility (also the stable labels UI tests look for) -->
+    <string name="cd_home">TrekUI home screen</string>
+    <string name="cd_all_apps">All apps</string>
+    <string name="cd_assign_tile">Assign tile %1$d</string>
+
+    <!-- Home screen: welcome / default-home dialog -->
+    <string name="welcome_title">TREKUI ONLINE</string>
+    <string name="welcome_message">Set TrekUI as your default Home app so the Home button and gestures return here.\n\nYou can switch back any time: Android Settings › Apps › Choose default apps › Home app.</string>
+    <string name="welcome_set_default">SET AS DEFAULT HOME</string>
+    <string name="welcome_later">LATER</string>
+
+    <!-- Home screen: toasts -->
+    <string name="toast_no_app">NO COMPATIBLE APPLICATION AVAILABLE</string>
+    <string name="toast_app_not_found">APPLICATION NOT FOUND • LONG-PRESS TO REASSIGN</string>
+    <string name="toast_unable_to_launch">UNABLE TO LAUNCH %1$s</string>
+    <string name="toast_thermostat_not_linked">THERMOSTAT NOT LINKED • CONFIG › DEVICES</string>
+    <string name="toast_link_nest_first">LINK YOUR NEST IN CONFIG › DEVICES FIRST</string>
+    <string name="toast_add_light_first">ADD YOUR LIGHT IN CONFIG › DEVICES FIRST</string>
+    <string name="toast_panel_hidden">PANEL HIDDEN • RESTORE IN CONFIG</string>
+    <string name="toast_dock_full">DOCK FULL • LONG-PRESS A DOCK ICON TO REPLACE IT</string>
+    <string name="toast_tiles_full">ALL TILES ASSIGNED • LONG-PRESS A TILE TO REPLACE IT</string>
+    <string name="toast_added_to_dock">ADDED TO DOCK</string>
+    <string name="toast_added_to_tile">ADDED TO TILE %1$s</string>
+    <string name="toast_cloak_engaged">CLOAK ENGAGED • %1$d MIN</string>
+    <string name="toast_cloak_engaged_no_dim">CLOAK ENGAGED • %1$d MIN • ALLOW MODIFY SYSTEM SETTINGS TO DIM THE WHOLE PHONE</string>
+    <string name="toast_cloak_disengaged">CLOAK DISENGAGED</string>
+    <string name="toast_permission_settings">PERMISSION DENIED • ENABLE IT IN APP INFO › PERMISSIONS</string>
+
+    <!-- Home screen: customise hint under the panels -->
+    <string name="hint_customize_console">LONG-PRESS ANY CONSOLE BLOCK, ELBOW, TITLE, TILE OR PANEL TO CUSTOMIZE</string>
+    <string name="hint_customize_pipe">LONG-PRESS ANY PLATE, STUD, CORNER, TILE OR PANEL TO CUSTOMIZE</string>
+
+    <!-- Configuration screen: common toasts -->
+    <string name="toast_not_available">NOT AVAILABLE ON THIS DEVICE</string>
+    <string name="toast_no_file_picker">NO FILE PICKER AVAILABLE</string>
+    <string name="toast_export_needs_q">EXPORT NEEDS ANDROID 10 OR NEWER</string>
+    <string name="toast_exporting">EXPORTING…</string>
+    <string name="toast_applying">APPLYING…</string>
+    <string name="toast_wallpaper_applied">WALLPAPER APPLIED</string>
+    <string name="toast_wallpaper_failed">COULD NOT APPLY WALLPAPER</string>
+    <string name="toast_copied">%1$s COPIED</string>
+    <string name="toast_bad_ip">ENTER AN ADDRESS LIKE 192.168.1.42</string>
+    <string name="widget_status_description">Time, date and battery in a TrekUI frame. Resizes from a small strip to the full width.</string>
+    <string name="widget_quick_description">Three TrekUI keys: dialer, launcher and Android settings.</string>
+
+    <!-- Hosted Android widget panels (WidgetPanel / WidgetPickActivity) -->
+    <string name="widget_add_panel">ADD WIDGET PANEL</string>
+    <string name="widget_add_panel_config">ADD ANDROID WIDGET PANEL</string>
+    <string name="widget_pick_title">CHOOSE WIDGET</string>
+    <string name="widget_size">WIDGET SIZE</string>
+    <string name="widget_rows">HEIGHT %1$d OF 5</string>
+    <string name="widget_reconfigure">RECONFIGURE WIDGET</string>
+    <string name="widget_remove_panel">REMOVE WIDGET</string>
+    <string name="widget_remove">REMOVE</string>
+    <string name="widget_cancel">CANCEL</string>
+    <string name="widget_remove_cd">Remove %1$s</string>
+    <string name="widget_remove_confirm">Remove the %1$s widget from the home screen? Its own settings are lost.</string>
+    <string name="widget_offline">OFFLINE</string>
+    <string name="widget_offline_missing">WIDGET OFFLINE • ITS APP WAS REMOVED OR THE WIDGET IS NO LONGER AVAILABLE</string>
+    <string name="widget_offline_render">WIDGET OFFLINE • UNABLE TO DISPLAY</string>
+    <string name="widget_config_note">Any widget from your other apps can sit in its own framed panel. Long-press its title for size, reconfigure and remove.</string>
+    <string name="toast_widget_added">WIDGET PANEL ADDED</string>
+    <string name="toast_widget_removed">WIDGET PANEL REMOVED</string>
+    <string name="toast_widget_failed">UNABLE TO ADD WIDGET</string>
+    <string name="toast_widget_slots_full">ALL 12 WIDGET PANELS IN USE • REMOVE ONE FIRST</string>
+    <string name="toast_no_widgets">NO WIDGETS INSTALLED</string>
+
+    <!-- RED ALERT mode and Quick Settings tiles (LCA-T17) -->
+    <string name="red_alert">RED ALERT</string>
+    <string name="red_alert_collective">THREAT DETECTED</string>
+    <string name="red_alert_mute">MUTE</string>
+    <string name="red_alert_unmute">UNMUTE</string>
+    <string name="red_alert_muted">MUTED</string>
+    <string name="red_alert_stand_down">STAND DOWN</string>
+    <string name="red_alert_settings_note">Goes to red alert: a pulsing red frame over the home screen in every interface and the RED ALERT sound looping, with MUTE and STAND DOWN on screen. It never blocks the phone (touches pass through the frame), stays silent in Silent/Vibrate, during calls and with Do Not Disturb on, and stands down by itself after the time below. Assign it to a tile or dock icon: long-press › ASSIGN TREKUI FUNCTION › RED ALERT, or use the Quick Settings tile.</string>
+    <string name="red_alert_engage_now">ENGAGE RED ALERT NOW</string>
+    <string name="red_alert_stand_down_now">STAND DOWN • %1$s LEFT</string>
+    <string name="red_alert_lasts">RED ALERT LASTS</string>
+    <string name="red_alert_sound">RED ALERT SOUND</string>
+    <string name="red_alert_sound_desc">Loop the RED ALERT event sound (SOUNDS section) while on alert</string>
+    <string name="qs_section">QUICK SETTINGS TILES</string>
+    <string name="qs_section_note">CLOAK and RED ALERT are also tiles for the Quick Settings panel, so they work from anywhere.</string>
+    <string name="qs_section_note_old">Pull down Quick Settings, tap the edit (pencil) button and drag the TREKUI CLOAK and RED ALERT tiles into the panel.</string>
+    <string name="qs_add_cloak">ADD CLOAK TILE</string>
+    <string name="qs_add_red_alert">ADD RED ALERT TILE</string>
+    <string name="qs_added">TILE ADDED TO QUICK SETTINGS</string>
+    <string name="qs_already_added">TILE IS ALREADY IN QUICK SETTINGS</string>
+    <string name="qs_not_added">TILE NOT ADDED</string>
+    <string name="qs_cloak">CLOAK</string>
+    <string name="qs_red_alert">RED ALERT</string>
+    <string name="qs_off">OFF</string>
+    <string name="qs_cloak_left">%1$d MIN LEFT</string>
+    <string name="qs_red_alert_on">ON ALERT</string>
+    <!-- LCA-T16: first-run tour (Onboarding). %1$s = drawer key, %2$s = config key, %3$s = interface name -->
+    <string name="tour_title_console">ORIENTATION</string>
+    <string name="tour_title_pipe">A GUIDED TOUR</string>
+    <string name="tour_next">NEXT</string>
+    <string name="tour_back">BACK</string>
+    <string name="tour_skip">SKIP TOUR</string>
+    <string name="tour_done">DONE</string>
+    <string name="tour_welcome_heading">WELCOME</string>
+    <string name="tour_welcome_body">You are on %3$s, one of nine interfaces. Seven short stops show you how to make it yours.\n\nSkip whenever you like. The tour is in %2$s › DEFAULT HOME › REPLAY TOUR.</string>
+    <string name="tour_assign_heading">LONG-PRESS TO ASSIGN</string>
+    <string name="tour_assign_body">Long-press any tile, dock slot, block, elbow or title (plates and studs on the pipe interfaces) to ASSIGN an app or a launcher function to it, rename it, recolor it or give it its own sound.</string>
+    <string name="tour_drawer_heading">THE APP DRAWER</string>
+    <string name="tour_drawer_body">Swipe up, or tap %1$s, to see every app. Long-press an app in the drawer for more options, such as hiding it or adding it to the home screen.</string>
+    <string name="tour_shade_heading">THE SHADE</string>
+    <string name="tour_shade_body">Swipe down from the top of home for the shade: notifications, quick toggles and media. If you prefer Android\'s own shade, turn this off in %2$s › SHADE.</string>
+    <string name="tour_config_heading">CONFIGURATION</string>
+    <string name="tour_config_body">Tap %2$s to change everything else: tiles and dock, panels, the clock, the drawer, sounds, weather and smart devices.</string>
+    <string name="tour_interfaces_heading">SWITCH INTERFACES</string>
+    <string name="tour_interfaces_body">%2$s › INTERFACE switches between the Command, Imperial and Collective consoles and the pipe lounges. Each one keeps its own layout, and a snapshot is saved before every switch.</string>
+    <string name="tour_backup_heading">YOUR LAYOUT IS SAFE</string>
+    <string name="tour_backup_body">%2$s › BACKUP exports your layout to a file for a new phone. Snapshots are saved automatically before updates, imports, resets and interface switches. UNDO LAST CHANGE puts the previous layout back.</string>
+    <string name="tour_home_heading">SET AS DEFAULT HOME</string>
+    <string name="tour_home_body">Make this launcher your default Home app so the Home button and gestures bring you here.\n\nYou can switch back any time in Android Settings › Apps › Choose default apps › Home app.</string>
+    <string name="tour_home_body_done">This launcher is already your default Home app. That completes the tour.</string>
+    <string name="config_replay_tour">REPLAY TOUR</string>
+
+    <!-- LCA-T16: CONFIG › BACKUP (LayoutBackupUi, LayoutArchive, LayoutSnapshots) -->
+    <string name="config_backup_section">LAYOUT BACKUP</string>
+    <string name="config_backup_sidebar">BACKUP</string>
+    <string name="config_backup_note">Export saves your tiles, dock, panels, element assignments, interface, colors and other appearance settings to a JSON file. Smart-device keys and tokens, and your weather location, are never included. Import shows a preview before it changes anything.</string>
+    <string name="config_export_layout">EXPORT LAYOUT</string>
+    <string name="config_import_layout">IMPORT LAYOUT</string>
+    <string name="config_undo_layout">UNDO LAST CHANGE</string>
+    <string name="config_snapshot_now">SNAPSHOT NOW</string>
+    <string name="config_snapshots_label">SNAPSHOTS (NEWEST FIRST)</string>
+    <string name="config_snapshots_note">Saved automatically before an app update, an import, a reset, a restore or an interface switch. The newest %1$d are kept.</string>
+    <string name="config_snapshots_none">NO SNAPSHOTS YET</string>
+    <string name="config_restore">RESTORE</string>
+    <string name="layout_import_title">IMPORT LAYOUT</string>
+    <string name="layout_restore_title">RESTORE • %1$s</string>
+    <string name="layout_refused_title">CANNOT LOAD LAYOUT</string>
+    <string name="layout_unreadable">THE FILE COULD NOT BE READ</string>
+    <string name="layout_nothing_to_undo">NO EARLIER LAYOUT TO GO BACK TO</string>
+    <string name="layout_apply">APPLY</string>
+    <string name="layout_cancel">CANCEL</string>
+    <string name="layout_ok">OK</string>
+    <string name="layout_preview_interface">INTERFACE: %1$s</string>
+    <string name="layout_preview_counts">%1$d SETTINGS • %2$d TILES AND DOCK SLOTS ASSIGNED</string>
+    <string name="layout_preview_saved">SAVED %1$s BY VERSION %2$s</string>
+    <string name="layout_preview_missing">%1$d APPS ARE NOT INSTALLED HERE • THEIR SLOTS WILL BE EMPTY</string>
+    <string name="layout_preview_filtered">%1$d PRIVATE OR DEVICE-ONLY ENTRIES IGNORED</string>
+    <string name="layout_preview_migrated">CONVERTED FROM AN OLDER FORMAT (SCHEMA %1$d)</string>
+    <string name="layout_preview_footer">Your current layout is saved as a snapshot first, so you can undo this.</string>
+    <string name="toast_layout_exported">LAYOUT EXPORTED</string>
+    <string name="toast_layout_export_failed">EXPORT FAILED</string>
+    <string name="toast_layout_applied">LAYOUT APPLIED</string>
+    <string name="toast_layout_snapshot">SNAPSHOT SAVED</string>
+    <!-- LCA-T22: icon packs, CHANGE ICON picker, auto pictograms -->
+    <string name="icon_change">CHANGE ICON</string>
+    <string name="icon_pick_title">ICON • %1$s</string>
+    <string name="icon_pick_pictogram">PICTOGRAMS</string>
+    <string name="icon_pick_pack">FROM ICON PACK</string>
+    <string name="icon_pick_own">APP\'S OWN ICON</string>
+    <string name="icon_pick_auto">AUTOMATIC</string>
+    <string name="icon_pack_none_installed">NO ICON PACKS INSTALLED</string>
+    <string name="icon_pack_search_hint">Search icons</string>
+    <string name="icon_pack_loading">READING ICON PACK…</string>
+    <string name="icon_pack_empty">THIS PACK LISTS NO ICONS</string>
+    <string name="icon_pack_label">ICON PACK</string>
+    <string name="icon_pack_none">NONE</string>
+    <string name="icon_pack_note">Icons from the pack replace app icons in the FRAMED and NATIVE styles, on the dock, tiles and every interface; apps the pack doesn\'t cover get its backplate when it has one. Long-press any app in the drawer › CHANGE ICON to pick a single icon.</string>
+    <string name="icon_pack_note_none">No icon packs found. Any ADW / Nova-compatible icon pack from the Play Store appears here once installed.</string>
+    <string name="icon_auto_glyphs">AUTO PICTOGRAMS</string>
+    <string name="icon_auto_glyphs_note">Give common apps (banking, shopping, streaming, travel…) a matching pictogram, not just the core apps</string>
+</resources>

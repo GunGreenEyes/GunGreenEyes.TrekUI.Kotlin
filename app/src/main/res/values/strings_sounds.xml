@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sound settings and the sound-library download dialogs (Sfx sound sets, SoundDownloadUi). -->
+<resources>
+    <!-- SOUND SET choices, in the order of Sfx.SET_KEYS (library, synth, silent). -->
+    <string-array name="sound_set_names">
+        <item>DOWNLOADED LIBRARY</item>
+        <item>SYNTHESIZED</item>
+        <item>SILENT</item>
+    </string-array>
+    <string-array name="sound_set_descriptions">
+        <item>Downloaded (or bundled) recordings; the launcher\'s own synthesized sounds wherever one is missing</item>
+        <item>Only the launcher\'s own synthesized sounds</item>
+        <item>No built-in sounds; imported files still play</item>
+    </string-array>
+    <string name="sound_set_title">SOUND SET</string>
+    <string name="sound_set_action">SOUND SET • %1$s</string>
+
+    <string name="sound_dl_none_listed">No downloadable sounds are listed in this build. Import your own files below.</string>
+    <string name="sound_dl_none_listed_short">No downloadable sounds are listed in this build.</string>
+    <string name="sound_dl_status_empty">No recordings downloaded: the synthesized sounds are playing. The app includes no recordings: it can fetch %1$d third-party sound effects from the public pages they are posted on, for your personal use on this device.</string>
+    <string name="sound_dl_status">%1$d OF %2$d SOUNDS DOWNLOADED • %3$s</string>
+    <string name="sound_dl_explain">Downloads %1$d sound effects (about %2$s) from their public web pages, checks each file\'s fingerprint, and keeps the processed clips privately on this device (about %3$s).\n\nThese recordings belong to their copyright holders. They are not part of this app; you are downloading them yourself for personal use. The source pages are listed in the app\'s sound credits.</string>
+    <string name="sound_dl_title_library">DOWNLOAD SOUND LIBRARY</string>
+    <string name="sound_dl_title_core">DOWNLOAD CORE SOUNDS</string>
+    <string name="sound_dl_title_progress">DOWNLOADING SOUNDS</string>
+    <string name="sound_dl_title_list">SOUND LIBRARY</string>
+    <string name="sound_dl_connecting">CONNECTING…</string>
+    <string name="sound_dl_stopping">STOPPING AFTER THE CURRENT FILE…</string>
+    <string name="sound_dl_stopped">DOWNLOAD STOPPED</string>
+    <string name="sound_dl_complete">DOWNLOAD COMPLETE</string>
+    <string name="sound_dl_delete_title">DELETE DOWNLOADED SOUNDS</string>
+    <string name="sound_dl_delete_message">Delete the %1$d downloaded sounds (%2$s)? Imported sounds are kept. You can download them again at any time.</string>
+    <string name="sound_dl_download">DOWNLOAD</string>
+    <string name="sound_dl_delete">DELETE</string>
+    <string name="sound_dl_cancel">CANCEL</string>
+    <string name="sound_dl_ok">OK</string>
+</resources>

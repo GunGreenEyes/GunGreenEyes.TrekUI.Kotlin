@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stable view IDs of the RED ALERT overlay (LCA-T17) for UI tests; see RedAlertOverlay. -->
+<resources>
+    <item name="red_alert_overlay" type="id" />
+    <item name="red_alert_mute" type="id" />
+    <item name="red_alert_stand_down" type="id" />
+</resources>

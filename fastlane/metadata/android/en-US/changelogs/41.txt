@@ -1,0 +1,5 @@
+• Rebuilt on a modern Android toolchain for Android 8.0 through the latest release
+• Every screen now works in portrait and landscape, on phones, tablets and foldables
+• Edge-to-edge layout that respects status bars, navigation bars and display cutouts
+• New Pipe Lounge painted-scene interfaces
+• Many fixes and performance improvements

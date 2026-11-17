@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LCA-T20: app groups (OPEN GROUP), assignable home gestures and the optional LOCK SCREEN function.
+     Kept in their own file so parallel edits to strings.xml don't collide. -->
+<resources>
+    <!-- Functions -->
+    <string name="fn_open_group">OPEN GROUP</string>
+    <string name="fn_lock_screen">LOCK SCREEN</string>
+    <string name="fn_group_entry">GROUP: %1$s</string>
+    <string name="fn_new_group">NEW GROUP…</string>
+
+    <!-- App groups -->
+    <string name="group_new_title">NEW APP GROUP</string>
+    <string name="group_name_hint">GROUP NAME</string>
+    <string name="group_rename_title">RENAME %1$s</string>
+    <string name="group_add_apps">ADD / REMOVE APPS</string>
+    <string name="group_reorder_apps">REORDER APPS</string>
+    <string name="group_rename">RENAME</string>
+    <string name="group_move_up">MOVE GROUP UP</string>
+    <string name="group_move_down">MOVE GROUP DOWN</string>
+    <string name="group_delete">DELETE GROUP</string>
+    <string name="group_delete_confirm">Delete the group %1$s? Tiles and gestures that open it will report that it is gone.</string>
+    <string name="group_delete_button">DELETE</string>
+    <string name="group_cancel">CANCEL</string>
+    <string name="group_done">DONE</string>
+    <string name="group_pick_title">APPS • %1$s (%2$d/%3$d)</string>
+    <string name="group_reorder_title">ORDER • %1$s</string>
+    <string name="group_add_to_group">ADD TO GROUP</string>
+    <string name="group_add_to_title">ADD %1$s TO</string>
+    <string name="group_count">%1$d APPS</string>
+    <string name="group_edit">EDIT</string>
+    <string name="group_edit_apps">EDIT GROUP</string>
+    <string name="group_empty_hint">NO APPS • LONG-PRESS THE TITLE TO ADD SOME</string>
+    <string name="group_close">CLOSE</string>
+    <string name="cd_group_panel">App group %1$s</string>
+    <string name="toast_group_missing">GROUP NOT FOUND • ASSIGN ANOTHER</string>
+    <string name="toast_group_full">GROUP FULL • %1$d APPS MAXIMUM</string>
+    <string name="toast_groups_full">GROUP LIMIT REACHED • %1$d MAXIMUM</string>
+    <string name="toast_added_to_group">ADDED TO %1$s</string>
+    <string name="toast_already_in_group">ALREADY IN %1$s</string>
+    <string name="toast_apps_loading">APP LIST LOADING • TRY AGAIN IN A MOMENT</string>
+
+    <!-- CONFIG sections -->
+    <string name="cfg_groups_section">APP GROUPS</string>
+    <string name="cfg_groups_sidebar">GROUPS</string>
+    <string name="cfg_groups_note">A group is a named set of up to 12 apps. Assign OPEN GROUP to a tile, dock icon, screen element or gesture and it unfolds as a cascade in your interface\'s style.</string>
+    <string name="cfg_groups_new">CREATE NEW GROUP</string>
+    <string name="cfg_gestures_section">GESTURES</string>
+    <string name="cfg_gestures_sidebar">GESTURES</string>
+    <string name="cfg_gestures_note">Swipe up (app drawer) and swipe down (shade) stay as they are. Each gesture below can run any launcher function or app; gestures with nothing assigned do nothing.</string>
+    <string name="cfg_gesture_none">NOTHING</string>
+    <string name="cfg_gesture_assign">ASSIGN</string>
+    <string name="cfg_gesture_pick_title">GESTURE • %1$s</string>
+    <string name="cfg_gesture_choose_none">NOTHING (OFF)</string>
+    <string name="cfg_gesture_choose_app">AN APP…</string>
+    <string name="cfg_gesture_choose_function">A LAUNCHER FUNCTION…</string>
+    <string name="cfg_gesture_pick_app">CHOOSE APP</string>
+    <string name="cfg_gesture_pick_function">CHOOSE FUNCTION</string>
+    <string name="cfg_lock_title">LOCK SCREEN SERVICE</string>
+    <string name="cfg_lock_on">Enabled: LOCK SCREEN locks the phone. Turn it off in Android\'s Accessibility settings.</string>
+    <string name="cfg_lock_off">Optional. Needed only for the LOCK SCREEN function; uses Android\'s accessibility service to lock the phone and nothing else.</string>
+    <string name="cfg_lock_unsupported">LOCK SCREEN needs Android 9 or newer.</string>
+    <string name="cfg_lock_setup">SET UP LOCK SCREEN</string>
+    <string name="cfg_lock_manage">ACCESSIBILITY SETTINGS</string>
+
+    <string name="gesture_double_tap">DOUBLE-TAP</string>
+    <string name="gesture_two_finger_up">TWO-FINGER SWIPE UP</string>
+    <string name="gesture_two_finger_down">TWO-FINGER SWIPE DOWN</string>
+    <string name="gesture_pinch_in">PINCH IN</string>
+    <string name="gesture_pinch_out">PINCH OUT</string>
+    <string name="gesture_swipe_left">SWIPE LEFT</string>
+    <string name="gesture_swipe_right">SWIPE RIGHT</string>
+
+    <!-- LOCK SCREEN: Google Play prominent disclosure (shown before the user is sent to Accessibility settings).
+         Keep this text in sync with docs/PLAY_STORE.md › Accessibility API disclosure. -->
+    <string name="lock_disclosure_title">LOCK SCREEN • ACCESSIBILITY</string>
+    <string name="lock_disclosure_body">TrekUI Launcher uses Android\'s Accessibility Service API for one purpose only: to lock your screen when YOU run the LOCK SCREEN function from a tile, element or gesture you set up.\n\nThe service cannot see or read what is on your screen, does not observe what you type or tap, and does not collect, store or share any data. It performs no action other than locking the screen when you ask.\n\nIf you agree, Android\'s Accessibility settings open: choose \"TrekUI Screen Lock\" and turn it on. You can turn it off there at any time; LOCK SCREEN then stops working and nothing else changes.</string>
+    <string name="lock_disclosure_accept">AGREE • OPEN SETTINGS</string>
+    <string name="lock_disclosure_decline">NO THANKS</string>
+    <string name="lock_service_label">TrekUI Screen Lock</string>
+    <string name="lock_service_description">Lets TrekUI Launcher lock the screen when you use its LOCK SCREEN function (a tile, element or gesture you assigned). It cannot read screen content, does not observe your actions, and collects no data.</string>
+    <string name="lock_service_summary">Locks the screen from a launcher tile or gesture</string>
+    <string name="toast_lock_needs_p">LOCK SCREEN NEEDS ANDROID 9 OR NEWER</string>
+    <string name="toast_lock_failed">COULD NOT LOCK • CHECK ACCESSIBILITY SETTINGS</string>
+    <string name="toast_lock_enable">TURN ON \"TREKUI SCREEN LOCK\" HERE</string>
+</resources>

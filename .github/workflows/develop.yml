@@ -1,0 +1,107 @@
+# Continuous integration for main and pull requests:
+#   build   - develop debug APK, JVM unit tests (incl. Robolectric screenshots), lint; uploads all reports
+#   emulator - instrumented tests + screenshots/video on the emulator matrix (quick set on PRs, full on main)
+name: Develop
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'site/**'
+      - 'fastlane/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: develop-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build, unit tests, lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0'
+
+      - uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Assemble, unit test, lint
+        env:
+          TREKUI_SCREENSHOTS: '1'   # RobolectricScreenshots writes assets/robolectric/
+        run: ./gradlew --console=plain assembleDevelopDebug testDevelopDebugUnitTest lintDevelopDebug
+
+      - name: Upload APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TrekUI-develop-debug-apk
+          path: app/build/outputs/apk/develop/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload unit-test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: |
+            app/build/reports/tests/
+            app/build/test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-developDebug.*
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Robolectric screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capture-robolectric
+          path: assets/robolectric/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Unit-test summary
+        if: always()
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import glob, xml.etree.ElementTree as ET
+          t = f = s = 0
+          for p in glob.glob("app/build/test-results/**/TEST-*.xml", recursive=True):
+              r = ET.parse(p).getroot()
+              t += int(r.get("tests", 0)); f += int(r.get("failures", 0)) + int(r.get("errors", 0)); s += int(r.get("skipped", 0))
+          print(f"### Unit tests\n\n| total | failed | skipped |\n|---|---|---|\n| {t} | {f} | {s} |")
+          EOF
+
+  emulator:
+    name: Emulators
+    needs: build
+    uses: ./.github/workflows/emulator.yml
+    with:
+      profile: ${{ github.event_name == 'pull_request' && 'quick' || 'full' }}
+      retention-days: 14

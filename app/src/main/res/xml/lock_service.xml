@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LCA-T20: configuration of LockService, the optional accessibility service behind LOCK SCREEN.
+     It subscribes to NO accessibility events and cannot retrieve window content: its only use is
+     performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN) when the user runs LOCK SCREEN. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault"
+    android:canRetrieveWindowContent="false"
+    android:description="@string/lock_service_description"
+    android:summary="@string/lock_service_summary"
+    android:notificationTimeout="0" />

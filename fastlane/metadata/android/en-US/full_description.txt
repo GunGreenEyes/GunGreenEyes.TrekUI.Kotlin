@@ -1,0 +1,35 @@
+TrekUI Launcher replaces your whole home screen with a starship console. Tiles, dock, app drawer, live panels and dialer are all drawn live on screen in eleven complete interfaces, and every function works the same in each one.
+
+STARSHIP INTERFACES
+• Command: curved elbows, solid colour keys and condensed lettering on black. One ACCESS key unfolds into a cascade of app keys.
+• Classic Console and Next Console: the Command layouts redrawn as chunky lamp-lit keys or thin layered glass.
+• Imperial Tactical: hollow double-lined octagons, triangle lattices and blood-red brackets, lettered in Warrior Blade, a typeface drawn for this launcher.
+• Collective: luminous nodes on circuit traces. HUB AND SPOKE arranges every app in orbits around a central hub that always fits the screen.
+
+PIPE LOUNGE INTERFACES
+Six warm, analogue interfaces in walnut, brass, leather and lacquer: The Tobacconist, Ember Lounge, Blend Journal, and three painted scenes (Ember & Briar, Tobacconist's Ledger, Midnight Ember) where the furniture is the launcher. A pipe register, blend catalogue, smoking journal and session clock are built in.
+
+LIVE PANELS
+• Chronometer with stardate, next alarm and battery
+• Power systems: charge, source, temperature, health, time to full
+• Weather and 3-day forecast (Open-Meteo, no account; city search or optional location)
+• Schedule: your next appointments (optional, read-only calendar access)
+• Audio systems: control your media apps without opening them
+• Ship systems: CPU, memory, storage and live network traffic
+
+AND MORE
+• Console communications screen: keypad with contact matching, recents and contacts. Emergency numbers always go through your phone's own dialer.
+• A swipe-down shade with torch, Wi-Fi, Bluetooth and volume keys
+• Animated start-up sequence for each interface
+• Six toy bridge-station consoles, clearly marked SIMULATION
+• Assign any sound to any key or event, import your own clips, or stay silent
+• Search, categories and work-profile apps in the drawer
+• Portrait and landscape, phone to tablet, folded or unfolded, multi-window
+
+PRIVATE BY DESIGN
+No accounts, no ads, no analytics, no tracking. Nothing is sent to the developer. The app only goes online for features you turn on: weather, optional smart-home lights and thermostats on your own network or account, and the optional sound library, which you download from public sound sites yourself. Every permission is optional and asked for only when you use the feature that needs it.
+
+FREE TO TRY, $0.99 TO KEEP
+Every feature works for free in 24-hour sessions. When a session ends, the launcher shows an unlock screen; you can start a new session, buy, or switch back to another home app at any time. A one-time $0.99 in-app purchase removes the limit for good. No ads, no subscription.
+
+TrekUI Launcher is an independent, original design. It ships no third-party recordings or artwork.

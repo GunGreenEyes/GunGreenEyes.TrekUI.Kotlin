@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TrekUI chronometer widget for other launchers (StatusWidget).
+  Default 4x2 cells; resizes from 2x1 (time and power only) up to the full width of the home screen.
+  Clock and date are TextClocks (no polling); the battery reading refreshes on Android's 30-minute
+  schedule and whenever the widget is resized. Android 12+ shows the live layout as the preview.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="90dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="40dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="2"
+    android:maxResizeWidth="1200dp"
+    android:maxResizeHeight="400dp"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:initialLayout="@layout/widget_status"
+    android:previewLayout="@layout/widget_status"
+    android:previewImage="@drawable/widget_status_preview"
+    android:description="@string/widget_status_description"
+    android:widgetCategory="home_screen" />

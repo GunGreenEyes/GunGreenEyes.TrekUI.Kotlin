@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LCA-T23: Home Assistant (HomeAssistant, HomeAssistantDialog) and notification reply / badges
+     (NotificationActions, NotificationBadges). -->
+<resources>
+    <!-- Home Assistant control panel and home tiles -->
+    <string name="ha_dialog_title">HOME SYSTEMS</string>
+    <string name="ha_contacting">CONTACTING HOME ASSISTANT…</string>
+    <string name="ha_link_failed">LINK FAILED</string>
+    <string name="ha_unavailable">ENTITY UNAVAILABLE</string>
+    <string name="ha_ready">STANDING BY</string>
+    <string name="ha_status">STATUS • %1$s</string>
+    <string name="ha_status_level">STATUS • ON • %1$d%%</string>
+    <string name="ha_on">ON</string>
+    <string name="ha_off">OFF</string>
+    <string name="ha_activate">ACTIVATE</string>
+    <string name="ha_activated">ACTIVATED</string>
+    <string name="ha_intensity">INTENSITY</string>
+    <string name="ha_spectrum">SPECTRUM</string>
+    <string name="ha_color_cd">Colour %1$s</string>
+    <string name="ha_close">CLOSE CHANNEL</string>
+    <string name="ha_transmitting">TRANSMITTING…</string>
+    <string name="ha_confirmed">CONFIRMED</string>
+    <string name="ha_unable">UNABLE TO COMPLY • %1$s</string>
+    <string name="ha_toast_state">%1$s • %2$s</string>
+    <string name="ha_toast_not_set_up">HOME ASSISTANT ENTITY NOT FOUND • CONFIG › DEVICES</string>
+    <string name="ha_pick_entry">HOME ASSISTANT…</string>
+    <string name="ha_pick_setup">HOME ASSISTANT (SET UP…)</string>
+    <string name="ha_pick_title">HOME ASSISTANT</string>
+    <string name="ha_pick_toggle">HA: %1$s</string>
+    <string name="ha_pick_controls">HA: %1$s • CONTROLS</string>
+    <string name="ha_link_first">CONNECT HOME ASSISTANT IN CONFIG › DEVICES FIRST</string>
+
+    <!-- Home Assistant in CONFIG › DEVICES -->
+    <string name="ha_section">HOME ASSISTANT</string>
+    <string name="ha_section_note">Control Home Assistant lights, switches, fans, climate, scenes and scripts from any home tile, dock icon or segment.\n1. In Home Assistant open your profile › Security › Long-lived access tokens › CREATE TOKEN, and copy it.\n2. Enter your Home Assistant ADDRESS (an https:// address such as your Nabu Casa URL, or http://homeassistant.local:8123 on your home Wi-Fi) and paste the TOKEN.\n3. Tap IMPORT ENTITIES. The address and token stay on this phone: they are not backed up or exported.</string>
+    <string name="ha_address">ADDRESS • %1$s</string>
+    <string name="ha_address_prompt">HOME ASSISTANT ADDRESS</string>
+    <string name="ha_address_hint">https://example.ui.nabu.casa</string>
+    <string name="ha_token">ACCESS TOKEN • %1$s</string>
+    <string name="ha_token_prompt">LONG-LIVED ACCESS TOKEN</string>
+    <string name="ha_token_hint">Paste the token</string>
+    <string name="ha_not_set">NOT SET</string>
+    <string name="ha_accept">ACCEPT</string>
+    <string name="ha_import">IMPORT ENTITIES</string>
+    <string name="ha_importing">CONTACTING HOME ASSISTANT…</string>
+    <string name="ha_imported">%1$d ENTITIES IMPORTED</string>
+    <string name="ha_import_failed">HOME ASSISTANT LINK FAILED</string>
+    <string name="ha_forget">FORGET HOME ASSISTANT</string>
+    <string name="ha_none">No entities imported yet.</string>
+    <string name="ha_assign_note">To assign one: long-press any segment, tile or dock icon, choose the assign-function option, then HOME ASSISTANT…. Lights, switches and fans toggle, scenes and scripts activate, climate opens the environmental control; pick “CONTROLS” for brightness and colour.</string>
+    <string name="ha_more">…and %1$d more (all are available when assigning a tile).</string>
+    <string name="ha_control">CONTROL</string>
+    <string name="ha_warn_cleartext">UNENCRYPTED LINK: http:// works only for .local and .home.arpa names on your home network. Anyone on that Wi-Fi could read the token. Prefer https:// (Nabu Casa, or your own certificate).</string>
+    <string name="ha_local_name_hint">Android 12 and older may not find .local names. If Home Assistant can\'t be reached, use its IP address with https://, or give it a .home.arpa name in your router.</string>
+    <string name="ha_url_insecure">PLAIN HTTP IS ONLY ALLOWED FOR .LOCAL OR .HOME.ARPA NAMES • USE HTTPS FOR IP ADDRESSES AND INTERNET ADDRESSES</string>
+    <string name="ha_url_invalid">THAT ISN\'T A HOME ASSISTANT ADDRESS</string>
+
+    <!-- Notification reply, actions and badges -->
+    <string name="note_reply">REPLY</string>
+    <string name="note_reply_title">SUBSPACE REPLY</string>
+    <string name="note_reply_hint">Message</string>
+    <string name="note_send">TRANSMIT</string>
+    <string name="note_cancel">CANCEL</string>
+    <string name="note_reply_sent">REPLY TRANSMITTED</string>
+    <string name="note_reply_failed">REPLY FAILED • THE APP CLOSED THAT CONVERSATION</string>
+    <string name="badge_cd">%1$s, %2$d notifications</string>
+    <string name="badge_setting">NOTIFICATION BADGES</string>
+    <string name="badge_setting_desc">Unread counts on tiles and dock icons for apps with notifications (uses notification access; counts stay in memory)</string>
+</resources>

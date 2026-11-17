@@ -1,0 +1,99 @@
+# Builds the product site in site/ (node site/build.mjs -> site/_out) and deploys it to GitHub Pages.
+#
+# Media (screenshots, videos, test results) comes from:
+#   - called from release.yml: that run's capture-* artifacts (use-run-artifacts: true)
+#   - push to main / manual run: site-media.zip attached to the latest GitHub Release
+# Repository settings > Pages > Source must be "GitHub Actions".
+name: Pages
+
+on:
+  workflow_call:
+    inputs:
+      use-run-artifacts:
+        type: boolean
+        default: false
+      release-tag:
+        type: string
+        default: ''
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'PRIVACY.md'
+      - 'fastlane/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: ffmpeg (thumbnails, video posters)
+        run: command -v ffmpeg >/dev/null || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+
+      - name: Media from this run
+        if: inputs.use-run-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: capture-*
+          path: _capture
+
+      - name: Media from the latest release
+        if: ${{ !inputs.use-run-artifacts }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _capture
+          if gh release download --repo "$GITHUB_REPOSITORY" --pattern site-media.zip --dir _release 2>/dev/null; then
+            unzip -q -o _release/site-media.zip -d assets
+          else
+            echo "No release with site-media.zip yet; building with the media in the repository."
+          fi
+
+      - name: Arrange media into assets/
+        run: |
+          mkdir -p assets
+          for d in _capture/capture-*; do
+            [ -d "$d" ] || continue
+            name="${d#_capture/capture-}"
+            mkdir -p "assets/$name"
+            cp -r "$d"/. "assets/$name/"
+          done
+          ls assets
+
+      - name: Build site
+        env:
+          SITE_RELEASE_TAG: ${{ inputs.release-tag }}
+        run: node site/build.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site/_out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

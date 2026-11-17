@@ -1,0 +1,156 @@
+# Reusable emulator matrix: runs connectedDevelopDebugAndroidTest on x86_64 emulators (KVM on
+# ubuntu-latest), records the screen and uploads screenshots + video per device as artifacts named
+# capture-<device>-api<N> (contents = assets/<device>-api<N>/). Called by develop.yml and release.yml.
+#
+# profile: quick = 3 devices (PRs), full = every API level + tablet, foldable and landscape.
+name: Emulator matrix
+
+on:
+  workflow_call:
+    inputs:
+      profile:
+        description: quick or full
+        type: string
+        default: full
+      retention-days:
+        type: number
+        default: 30
+  workflow_dispatch:
+    inputs:
+      profile:
+        type: choice
+        options: [quick, full]
+        default: full
+      retention-days:
+        type: number
+        default: 14
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - id: plan
+        env:
+          PROFILE: ${{ inputs.profile }}
+        run: |
+          # device = folder prefix on the site, profile = AVD hardware profile.
+          full='[
+            {"device":"phone","api":26,"profile":"pixel_2","orientation":"portrait"},
+            {"device":"phone","api":29,"profile":"pixel_4","orientation":"portrait"},
+            {"device":"phone","api":31,"profile":"pixel_5","orientation":"portrait"},
+            {"device":"phone","api":33,"profile":"pixel_6","orientation":"portrait"},
+            {"device":"phone","api":35,"profile":"pixel_7","orientation":"portrait"},
+            {"device":"phone","api":36,"profile":"pixel_8","orientation":"portrait"},
+            {"device":"phone-land","api":36,"profile":"pixel_8","orientation":"landscape"},
+            {"device":"tablet","api":36,"profile":"pixel_tablet","orientation":"landscape"},
+            {"device":"foldable","api":36,"profile":"pixel_fold","orientation":"portrait"}
+          ]'
+          quick='[
+            {"device":"phone","api":26,"profile":"pixel_2","orientation":"portrait"},
+            {"device":"phone","api":36,"profile":"pixel_8","orientation":"portrait"},
+            {"device":"tablet","api":36,"profile":"pixel_tablet","orientation":"landscape"}
+          ]'
+          if [ "$PROFILE" = "quick" ]; then m="$quick"; else m="$full"; fi
+          echo "matrix=$(echo "$m" | jq -c '{include: .}')" >> "$GITHUB_OUTPUT"
+
+  emulator:
+    needs: plan
+    name: ${{ matrix.device }}-api${{ matrix.api }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    env:
+      DEVICE: ${{ matrix.device }}
+      API: ${{ matrix.api }}
+      ORIENTATION: ${{ matrix.orientation }}
+      PROFILE: ${{ matrix.profile }}
+      TARGET: google_apis
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0'
+
+      - uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Build test APKs before the emulator boots
+        run: ./gradlew --console=plain assembleDevelopDebug assembleDevelopDebugAndroidTest
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api }}-${{ matrix.profile }}-google_apis-x86_64-v1
+
+      - name: Create AVD snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          disk-size: 6000M
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "AVD snapshot generated"
+
+      - name: Instrumented tests + capture
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          disk-size: 6000M
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: bash .github/scripts/emulator-run.sh
+
+      - name: Upload screenshots + video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capture-${{ matrix.device }}-api${{ matrix.api }}
+          path: assets/${{ matrix.device }}-api${{ matrix.api }}/
+          if-no-files-found: warn
+          retention-days: ${{ inputs.retention-days }}
+
+      - name: Upload test reports + logcat
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: androidTest-report-${{ matrix.device }}-api${{ matrix.api }}
+          path: |
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+            build/ci-logs/
+          if-no-files-found: ignore
+          retention-days: ${{ inputs.retention-days }}

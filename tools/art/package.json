@@ -1,0 +1,9 @@
+{
+  "name": "trekui-art-tools",
+  "private": true,
+  "description": "Node dependencies of tools/art (render.js rasterises the SVG pictograms for glyph_render.py). Install with: npm install --prefix tools/art",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2"
+  }
+}

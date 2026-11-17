@@ -1,0 +1,25 @@
+id,profile,api,tag,width,height,density,orientation,form,note
+phone_small_hdpi,small_phone,26,google_apis,720,1280,240,natural,phone,API 26 minSdk - 4.7in 16:9 hdpi
+nexus_5,Nexus 5,27,default,1080,1920,480,natural,phone,API 27 - 16:9 xxhdpi
+phone_mdpi,medium_phone,28,google_apis,480,800,160,natural,phone,API 28 - 5:3 mdpi
+pixel_3a,pixel_3a,29,google_apis,,,,natural,phone,API 29 - 18.5:9 RoleManager era
+pixel_5,pixel_5,30,google_apis,,,,natural,phone,API 30 - 19.5:9
+pixel_6,pixel_6,31,google_apis,,,,natural,phone,API 31 - 20:9
+pixel_4,pixel_4,32,google_apis,,,,natural,phone,API 32 (12L) - 19:9
+pixel_7,pixel_7,33,google_apis,,,,natural,phone,API 33 - 20:9
+tablet_7in,medium_tablet,33,google_apis,1200,1920,320,natural,tablet,7in tablet 16:10 xhdpi
+phone_tall_21x9,pixel_7,34,google_apis,1080,2520,420,natural,phone,21:9 tall phone
+tablet_4x3,medium_tablet,34,google_apis,1536,2048,320,natural,tablet,4:3 tablet xhdpi
+pixel_8,pixel_8,35,google_apis,,,,natural,phone,API 35 edge-to-edge enforced
+pixel_tablet,pixel_tablet,35,google_apis_tablet,,,,natural,tablet,16:10 tablet
+phone_xxxhdpi,pixel_7_pro,36,google_apis,1440,3120,640,natural,phone,19.5:9 xxxhdpi
+pixel_fold,pixel_fold,36,google_apis,,,,natural,foldable,foldable (inner 6:5 / outer 21:9)
+pixel_tablet,pixel_tablet,36,google_apis_tablet,,,,portrait,tablet,tablet held in portrait
+pixel_7,pixel_7,36,google_apis,,,,landscape,phone,phone landscape run
+pixel_7,pixel_7,37.0,google_apis,,,,natural,phone,latest API phone
+phone_small,small_phone,37.0,google_apis,,,,natural,phone,latest API small phone xhdpi
+phone_tall_21x9,pixel_7,37.0,google_apis,1080,2520,420,natural,phone,latest API 21:9
+pixel_fold,pixel_fold,37.0,google_apis,,,,natural,foldable,latest API foldable
+pixel_tablet,pixel_tablet,37.0,google_apis,,,,natural,tablet,latest API 16:10 tablet
+tablet_7in,medium_tablet,37.0,google_apis,1200,1920,320,natural,tablet,latest API 7in tablet
+pixel_7_ps16k,pixel_7,37.2,google_apis_ps16k,,,,natural,phone,16 KB page-size kernel

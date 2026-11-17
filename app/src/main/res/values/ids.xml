@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stable view IDs for UI tests (UiAutomator: By.res(Pattern.compile(".*:id/home_root")), Espresso: withId).
+     The home screen is built in code; MainActivity assigns these. See the TEST HOOKS block in MainActivity. -->
+<resources>
+    <item name="home_root" type="id" />
+    <item name="home_header" type="id" />
+    <item name="home_main" type="id" />
+    <item name="home_tiles" type="id" />
+    <item name="home_dock" type="id" />
+    <item name="home_clock" type="id" />
+    <item name="home_date" type="id" />
+    <item name="drawer_button" type="id" />
+    <item name="search_button" type="id" />
+    <item name="settings_button" type="id" />
+    <item name="dock_apps_button" type="id" />
+    <item name="drawer_view" type="id" />
+    <item name="shade_view" type="id" />
+    <item name="dialer_view" type="id" />
+    <item name="hub_panel_overlay" type="id" />
+    <item name="settings_root" type="id" />
+    <item name="settings_list" type="id" />
+</resources>

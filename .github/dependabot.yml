@@ -1,0 +1,27 @@
+# Weekly dependency updates: Gradle (version catalog + plugins) and GitHub Actions.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps
+    groups:
+      androidx:
+        patterns: ['androidx.*']
+      test:
+        patterns: ['junit:*', 'org.robolectric:*', 'com.google.truth:*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']

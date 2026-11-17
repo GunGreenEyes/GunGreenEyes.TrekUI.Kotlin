@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Imported sound clips stay on the device only (they may be copyrighted recordings). -->
+<full-backup-content>
+    <exclude domain="file" path="trekui_sounds/" />
+    <!-- Downloaded sound library (third-party recordings) and imported clips: never backed up. -->
+    <exclude domain="file" path="sounds/" />
+    <exclude domain="file" path="trekui_library/" />
+    <!-- Home Assistant address and long-lived access token stay on this device. -->
+    <exclude domain="sharedpref" path="trekui_ha.xml" />
+</full-backup-content>

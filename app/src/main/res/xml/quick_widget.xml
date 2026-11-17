@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Three-key TrekUI quick-launch widget for other launchers (QuickWidget): COMM (dialer),
+  TrekUI (this launcher) and SYSTEM (Android settings). Default 4x1 cells; resizes from 2x1 up to
+  the full width; the keys share the width evenly, so any size works. No periodic updates.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="60dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="40dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="1"
+    android:maxResizeWidth="1200dp"
+    android:maxResizeHeight="300dp"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/widget_quick"
+    android:description="@string/widget_quick_description"
+    android:previewLayout="@layout/widget_quick"
+    android:previewImage="@drawable/widget_quick_preview"
+    android:widgetCategory="home_screen" />

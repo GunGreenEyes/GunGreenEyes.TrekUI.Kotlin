@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget-picker preview for QuickWidget on Android 11 and older (12+ renders the live layout). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="250dp"
+    android:height="70dp"
+    android:viewportWidth="250"
+    android:viewportHeight="70">
+    <path
+        android:fillColor="#E6000000"
+        android:strokeColor="#B4A0F0"
+        android:strokeWidth="2"
+        android:pathData="M23,1 h204 a22,22 0 0 1 22,22 v24 a22,22 0 0 1 -22,22 h-204 a22,22 0 0 1 -22,-22 v-24 a22,22 0 0 1 22,-22 z" />
+    <path android:fillColor="#FF9C00" android:pathData="M29,11 h46 a18,18 0 0 1 18,18 v12 a18,18 0 0 1 -18,18 h-46 a18,18 0 0 1 -18,-18 v-12 a18,18 0 0 1 18,-18 z" />
+    <path android:fillColor="#B4A0F0" android:pathData="M107,11 h36 a18,18 0 0 1 18,18 v12 a18,18 0 0 1 -18,18 h-36 a18,18 0 0 1 -18,-18 v-12 a18,18 0 0 1 18,-18 z" />
+    <path android:fillColor="#DD88AA" android:pathData="M185,11 h36 a18,18 0 0 1 18,18 v12 a18,18 0 0 1 -18,18 h-36 a18,18 0 0 1 -18,-18 v-12 a18,18 0 0 1 18,-18 z" />
+</vector>

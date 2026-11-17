@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LCA-T23: view tag key for notification badges (NotificationBadges). -->
+<resources>
+    <item name="trekui_notification_badge" type="id" />
+</resources>

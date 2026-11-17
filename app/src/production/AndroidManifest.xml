@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Play Store build only. READ_CALL_LOG is a restricted permission Google Play allows only for the
+     default Phone/SMS/Assistant app, so the production flavor drops it; the dialer's RECENTS view hands
+     off to the system phone app instead (see DialerView / BuildConfig.CALL_LOG_ENABLED). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.READ_CALL_LOG" tools:node="remove" />
+</manifest>
