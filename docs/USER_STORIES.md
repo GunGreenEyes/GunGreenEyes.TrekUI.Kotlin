@@ -59,3 +59,4 @@ _Nothing recorded yet._
 | LCA-T36 | 2026-11-17 | feature | open | Suite licensing: every TrekUI app sells the same $0.99 trekui_unlock and works standalone; entitlement shared + cached across siblings; one purchase unlocks all | — |
 | LCA-T37 | 2026-11-17 | feature | open | One-command release: ship script + release workflow builds, signs and uploads all four apps to Play (track/rollout/approval inputs), runnable from GitHub mobile and Claude Code | — |
 | LCA-T38 | 2026-11-17 | chore | closed | Rename the GitHub repos to TrekUI.Java and TrekUI.Kotlin (the owner's names) and point every clone, Pages, issue and release link at TrekUI.Java | owner request 2026-11-17 |
+| LCA-T39 | 2026-11-17 | feature | open | Suite follow-ups from LCA-T35: Quick Settings tiles + home-screen widget to switch Keyboard/Lock Screen/Messages on and off; app-theme and Quick Panel art for the six new COMMAND sub-themes (exports reuse the nearest original art today) | LCA-T35 report |
