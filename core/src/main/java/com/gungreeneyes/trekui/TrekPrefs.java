@@ -85,19 +85,23 @@ public class TrekPrefs {
         return f < 0 || f > MAX_FACTION ? Skin.COMMAND : f;
     }
 
-    /** Pref key of the colour theme for {@code faction}: Command keeps "theme", each era its own. */
+    /**
+     * Pref key of the colour theme (sub-theme) for {@code faction}: Command keeps "theme" (unchanged
+     * since 1.0), every other interface its own "theme&lt;faction&gt;" (eras "theme9"/"theme10" as in 6.3,
+     * Imperial "theme1", Collective "theme2").
+     */
     public static String themeKeyFor(int faction) {
-        return Skin.eraFaction(faction) ? "theme" + faction : "theme";
+        return faction == Skin.COMMAND ? "theme" : "theme" + faction;
     }
 
     /** Clamps a stored Command theme index into {@link Palette#ALL}. */
     public static int themeIndex(int t) {
-        return t < 0 || t >= Palette.ALL.length ? 0 : t;
+        return SubThemes.clamp(Skin.COMMAND, t);
     }
 
-    /** Clamps a stored sub-theme index into the theme list {@code faction} offers. */
+    /** Clamps a stored sub-theme index into the theme list {@code faction} offers ({@link SubThemes#clamp}). */
     public static int clampSubTheme(int faction, int stored) {
-        return Skin.eraFaction(faction) ? Era.themeIndex(faction, stored) : themeIndex(stored);
+        return SubThemes.clamp(faction, stored);
     }
 
     /**
@@ -123,16 +127,30 @@ public class TrekPrefs {
         return o != null ? o.lettering : i(KEY_LETTERING, Skin.BLADE_MIXED);
     }
 
-    /** The active colours. Also keeps Skin.faction in step, since every screen asks for this first. */
+    /**
+     * The active colours: the chosen sub-theme of the selected interface. Also keeps Skin.faction (and,
+     * for Imperial / Collective, the sub-theme's chrome tones) in step, since every screen asks for this
+     * first.
+     */
     public Palette palette() {
         Skin.faction = faction();
         Skin.lettering = lettering();
         if (Skin.pipe()) return Skin.pipePalette(Skin.faction);
-        if (Skin.imperial()) return Skin.IMPERIAL_PALETTE;
-        if (Skin.collective()) return Skin.COLLECTIVE_PALETTE;
-        if (Skin.era()) return Palette.themesFor(Skin.faction)[eraTheme(Skin.faction)];
-        return Palette.ALL[subTheme(Skin.COMMAND)];
+        Palette p = Palette.of(Skin.faction, subTheme(Skin.faction));
+        Skin.useSubTheme(Skin.faction, p);
+        return p;
     }
+
+    // ---- suite switches (published on the suite provider) ------------------------------------
+
+    /** Pref key of the launcher's LOCK SCREEN switch for the wake-screen companion (LCA-T35). */
+    public static final String KEY_SUITE_LOCKSCREEN = "suiteLockscreen";
+
+    /** True while the wake-screen companion may show (default on); published on the suite provider. */
+    public boolean lockscreenEnabled() { return b(KEY_SUITE_LOCKSCREEN, true); }
+
+    /** Stores the LOCK SCREEN switch. */
+    public void setLockscreenEnabled(boolean on) { put(KEY_SUITE_LOCKSCREEN, on); }
 
     /** The current choice as a suite theme value (what the suite provider publishes). */
     public SuiteTheme currentTheme() {

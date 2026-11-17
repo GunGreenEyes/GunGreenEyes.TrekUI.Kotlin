@@ -25,7 +25,10 @@ import java.util.Map;
  *       {@link #COL_SOURCE} (Entitlement.Source name).</li>
  *   <li>{@code theme}: {@link #COL_VERSION}, {@link #COL_PACKAGE}, {@link #COL_FACTION},
  *       {@link #COL_SUB_THEME}, {@link #COL_LETTERING}, {@link #COL_SOUND_SET} (may be empty). Every app
- *       answers with its own current choice; companions only read the launcher's.</li>
+ *       answers with its own current choice; companions only read the launcher's. The sub-theme is
+ *       clamped into the faction's list ({@code SubThemes}) when read.</li>
+ *   <li>{@code lockscreen}: {@link #COL_VERSION}, {@link #COL_PACKAGE}, {@link #COL_ENABLED} (1/0): the
+ *       launcher's SUITE › LOCK SCREEN switch; the wake-screen companion stays off while it reads 0.</li>
  * </ul>
  * All values travel as strings; {@link #parseUnlock} and {@link #parseTheme} validate them, so a
  * malformed or newer-format row reads as "no answer" instead of crashing the caller.
@@ -60,6 +63,8 @@ public final class SuiteContract {
 
     public static final String PATH_UNLOCK = "unlock";
     public static final String PATH_THEME = "theme";
+    /** The launcher's LOCK SCREEN switch for the wake-screen companion (additive, LCA-T35). */
+    public static final String PATH_LOCKSCREEN = "lockscreen";
 
     public static final String COL_VERSION = "version";
     public static final String COL_PACKAGE = "package";
@@ -69,10 +74,12 @@ public final class SuiteContract {
     public static final String COL_SUB_THEME = "sub_theme";
     public static final String COL_LETTERING = "lettering";
     public static final String COL_SOUND_SET = "sound_set";
+    public static final String COL_ENABLED = "enabled";
 
     public static final String[] UNLOCK_COLUMNS = {COL_VERSION, COL_PACKAGE, COL_UNLOCKED, COL_SOURCE};
     public static final String[] THEME_COLUMNS = {COL_VERSION, COL_PACKAGE, COL_FACTION, COL_SUB_THEME,
             COL_LETTERING, COL_SOUND_SET};
+    public static final String[] LOCKSCREEN_COLUMNS = {COL_VERSION, COL_PACKAGE, COL_ENABLED};
 
     /** Sound set ids accepted in a theme row (Sfx.SET_LIBRARY, SET_SYNTH, SET_SILENT). */
     static final List<String> SOUND_SETS = Collections.unmodifiableList(
@@ -195,12 +202,53 @@ public final class SuiteContract {
         Integer sub = parseInt(row.get(COL_SUB_THEME));
         Integer lettering = parseInt(row.get(COL_LETTERING));
         if (faction == null || faction < 0 || faction > TrekPrefs.MAX_FACTION) return null;
-        int s = sub == null ? 0 : sub;
+        int s = TrekPrefs.clampSubTheme(faction, sub == null ? 0 : sub);
         int l = lettering == null || lettering < 0 || lettering > MAX_LETTERING ? 0 : lettering;
         String set = row.get(COL_SOUND_SET);
         if (set != null && !SOUND_SETS.contains(set)) set = null;
-        return new SuiteTheme(faction, Math.max(0, s), l, set);
+        return new SuiteTheme(faction, s, l, set);
     }
+
+    /** The {@code lockscreen} row the launcher publishes: is its LOCK SCREEN switch on? */
+    public static Map<String, String> lockscreenRow(String pkg, boolean enabled) {
+        Map<String, String> m = new LinkedHashMap<>();
+        m.put(COL_VERSION, String.valueOf(VERSION));
+        m.put(COL_PACKAGE, pkg);
+        m.put(COL_ENABLED, enabled ? "1" : "0");
+        return m;
+    }
+
+    /**
+     * Reads a {@code lockscreen} row: TRUE / FALSE, or null when the row is missing, of an unsupported
+     * version, or malformed (an older launcher without the path: the companion uses its own setting).
+     */
+    public static Boolean parseLockscreen(Map<String, String> row) {
+        if (!versionOk(row)) return null;
+        String v = row.get(COL_ENABLED);
+        if ("1".equals(v)) return Boolean.TRUE;
+        if ("0".equals(v)) return Boolean.FALSE;
+        return null;
+    }
+
+    // ---- store links -----------------------------------------------------------------------------
+
+    /** Play Store web link of suite app {@code pkg} (develop packages link to their production listing). */
+    public static String playUrl(String pkg) {
+        return "https://play.google.com/store/apps/details?id=" + basePackage(pkg);
+    }
+
+    /** {@code market://} link of suite app {@code pkg} (opens the Play Store app directly). */
+    public static String marketUri(String pkg) {
+        return "market://details?id=" + basePackage(pkg);
+    }
+
+    /**
+     * The explicit action the launcher sends to TrekUI Messages ({@code setPackage(messages)}) on
+     * Android 10+ to have it ask for the default SMS role itself (RoleManager only lets an app request
+     * a role for itself). Messages handles it in an exported activity that calls
+     * {@code RoleManager.createRequestRoleIntent(ROLE_SMS)} and finishes.
+     */
+    public static final String ACTION_REQUEST_SMS_ROLE = BASE + ".action.REQUEST_SMS_ROLE";
 
     private static boolean versionOk(Map<String, String> row) {
         if (row == null) return false;

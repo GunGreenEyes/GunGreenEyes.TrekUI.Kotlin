@@ -17,7 +17,7 @@ public class PaletteTest {
 
     @Test
     public void everyThemeHasSixAccents() {
-        assertThat(Palette.ALL).hasLength(6);
+        assertThat(Palette.ALL).hasLength(SubThemes.COMMAND.length); // 6 originals + 5 added in LCA-T35
         for (Palette p : Palette.ALL) assertThat(p.c).hasLength(6);
     }
 

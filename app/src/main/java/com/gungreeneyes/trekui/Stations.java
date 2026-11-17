@@ -479,7 +479,7 @@ final class Stations {
                 // transporter: sparkling column in the middle of the display
                 float a = Math.min(1, shimmer);
                 for (int i = 0; i < 40; i++) {
-                    fill.setColor(Ui.alpha(Skin.collective() ? 0xFF79C98B : Skin.imperial() ? 0xFFF0821E : 0xFFCFE3FF, a * rnd.nextFloat()));
+                    fill.setColor(Ui.alpha(Skin.collective() ? Skin.collectiveLit() : Skin.imperial() ? ImperialDraw.ORANGE : 0xFFCFE3FF, a * rnd.nextFloat()));
                     cv.drawCircle(w / 2f + (rnd.nextFloat() - 0.5f) * dp(40), dp(30) + rnd.nextFloat() * (h - dp(60)), dp(1.5f), fill);
                 }
             }
@@ -545,7 +545,7 @@ final class Stations {
                 float x2 = cx + s[0] / z2 * sc * 0.25f, y2 = cy + s[1] / z2 * sc * 0.25f;
                 float b = Math.min(1, (1 - s[2]) * 1.4f);
                 line.setStrokeWidth(dp(1 + (1 - s[2]) * 1.5f));
-                line.setColor(Ui.alpha(Skin.collective() ? 0xFFB1DC86 : Skin.imperial() ? 0xFFF5C830 : 0xFFE6DEFF, b));
+                line.setColor(Ui.alpha(Skin.collective() ? Skin.collectiveTheme.c[1] : Skin.imperial() ? ImperialDraw.YELLOW : 0xFFE6DEFF, b));
                 cv.drawLine(x2, y2, x, y, line);
             }
             cv.restore();
@@ -697,7 +697,7 @@ final class Stations {
                     // pulses travel from both ends toward the reaction chamber in the middle
                     float dist = Math.abs(i - (n - 1) / 2f) / ((n - 1) / 2f);
                     float glow = 0.35f + 0.65f * (0.5f + 0.5f * (float) Math.sin(phase * 6 + dist * 5)) * output;
-                    int c = Skin.collective() ? 0xFF79C98B : Skin.imperial() ? 0xFFF0821E : 0xFF6FA8FF;
+                    int c = Skin.collective() ? Skin.collectiveLit() : Skin.imperial() ? ImperialDraw.ORANGE : 0xFF6FA8FF;
                     if (Skin.collective()) {
                         CollectiveDraw.node(cv, cx, y + sh / 2, Math.min(cw / 2, sh * 0.42f), c, d, glow);
                     } else if (Skin.imperial()) {

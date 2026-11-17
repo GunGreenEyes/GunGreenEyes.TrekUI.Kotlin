@@ -174,19 +174,43 @@ final class Skin {
      * Imperial Tactical, after the Imperial screens: blood red, orange, warning yellow, deep red,
      * red-orange, amber (brighter and redder than the first artwork bundle).
      */
-    static final Palette IMPERIAL_PALETTE = new Palette("IMPERIAL TACTICAL",
-            new String[]{"#D8231E", "#F0821E", "#F5C830", "#A3161A", "#E8562A", "#F2A43A"},
-            "#F5C830", "#F0821E", "#FF3B2E", "#140606");
+    static final Palette IMPERIAL_PALETTE = Palette.IMPERIAL[0];
     /** The Collective: active green, highlight, matrix, grid, muted, conduit. */
-    static final Palette COLLECTIVE_PALETTE = new Palette("THE COLLECTIVE",
-            new String[]{"#79C98B", "#B1DC86", "#2B704A", "#325846", "#73887F", "#123B2B"},
-            "#C4D7C0", "#73887F", "#E0A45C", "#0C1714");
+    static final Palette COLLECTIVE_PALETTE = Palette.COLLECTIVE[0];
 
     /** Imperial warning yellow and Collective highlight green: the colours dark tones are lifted toward. */
     static final int IMPERIAL_GLOW = 0xFFF5C830, COLLECTIVE_GLOW = 0xFFB1DC86;
     /** Relative luminance below which {@link #glow} lifts a colour. */
     static final float GLOW_LUMINANCE = 0.42f;
-    private static final int COLLECTIVE_LINE = 0xFF2B704A, COLLECTIVE_LIT = 0xFF79C98B;
+
+    /**
+     * The active Imperial and Collective sub-themes (LCA-T35). Their chrome tones (background, surface,
+     * grid, detail, lettering, glow, line colours) drive every Imperial / Collective drawing helper.
+     * Set by {@link TrekPrefs#palette()} through {@link #useSubTheme}; the defaults are the original looks.
+     */
+    static Palette imperialTheme = IMPERIAL_PALETTE, collectiveTheme = COLLECTIVE_PALETTE;
+
+    /**
+     * Makes {@code p} the active sub-theme of {@code faction} (Imperial or Collective; any other
+     * faction or an untoned palette is ignored). Imperial also recolours {@link ImperialDraw}'s line,
+     * orange, highlight and deep colours.
+     */
+    static void useSubTheme(int faction, Palette p) {
+        if (p == null || !p.toned) return;
+        if (faction == IMPERIAL) {
+            imperialTheme = p;
+            ImperialDraw.use(p);
+        } else if (faction == COLLECTIVE) {
+            collectiveTheme = p;
+        }
+    }
+
+    /** Collective matrix line colour (dark traces of the backdrop network). */
+    static int collectiveLine() { return collectiveTheme.c[2]; }
+    /** Collective lit node colour. */
+    static int collectiveLit() { return collectiveTheme.c[0]; }
+    /** The highlight dark tones are lifted toward: Imperial yellow / Collective highlight of the active sub-theme. */
+    static int glowColor() { return imperial() ? imperialTheme.c[2] : collectiveTheme.c[1]; }
 
     /** Screen background behind everything. */
     static int bg() {
@@ -195,28 +219,28 @@ final class Skin {
             return mTob() ? 0xFF120A06 : mLounge() ? 0xFF0A0605 : 0xFF170E08;
         }
         if (era()) return era23() ? Era.ERA23_BG : Era.ERA25_BG;
-        return imperial() ? 0xFF050303 : collective() ? 0xFF030706 : Color.BLACK;
+        return imperial() ? imperialTheme.bg : collective() ? collectiveTheme.bg : Color.BLACK;
     }
 
     /** Tray / dialog / card surface. */
     static int surface() {
         if (pipe()) return mTob() ? 0xFF1E120B : mLounge() ? 0xFF140C0A : 0xFF22150C;
         if (era()) return era23() ? 0xFF17130E : 0xFF0B121A;
-        return imperial() ? 0xFF140606 : collective() ? 0xFF06100C : 0xFF0E0C16;
+        return imperial() ? imperialTheme.surface : collective() ? collectiveTheme.surface : 0xFF0E0C16;
     }
 
     /** Grid and hairline colour. */
     static int grid() {
         if (pipe()) return mTob() ? 0xFF342317 : mLounge() ? 0xFF2A1A12 : 0xFF33261A;
         if (era()) return era23() ? 0xFF2A2620 : 0xFF1E2C3A;
-        return imperial() ? 0xFF4A0E0E : collective() ? 0xFF123B2B : 0xFF1A1826;
+        return imperial() ? imperialTheme.grid : collective() ? collectiveTheme.grid : 0xFF1A1826;
     }
 
     /** Secondary detail colour (ticks, inactive marks). */
     static int detail() {
         if (pipe()) return mTob() ? 0xFF4F3420 : mLounge() ? 0xFF5E3A17 : 0xFF57381D;
         if (era()) return era23() ? 0xFF3A342A : 0xFF2A3C4E;
-        return imperial() ? 0xFF2A0808 : collective() ? 0xFF325846 : 0xFF2A2840;
+        return imperial() ? imperialTheme.detail : collective() ? collectiveTheme.detail : 0xFF2A2840;
     }
 
     /** Lettering on a control: black on Command's solid colour; light on the factions' dark plates. */
@@ -225,9 +249,12 @@ final class Skin {
             if (Ui.cloak) return mTob() ? 0xE6C9A04E : mLounge() ? 0xE6D4AF37 : 0xE6C9A063;
             return mTob() ? 0xFF2A170C : mLounge() ? 0xFFEED9A0 : 0xFF2E1A0E;
         }
-        if (Ui.cloak) return command() ? Ui.CLOAK_INK : imperial() ? 0xE6F0821E : 0xE679C98B;
+        if (Ui.cloak) {
+            if (command()) return Ui.CLOAK_INK;
+            return 0xE6000000 | ((imperial() ? imperialTheme.c[1] : collectiveTheme.c[0]) & 0x00FFFFFF);
+        }
         if (era25()) return Era.ERA25_INK;
-        return imperial() ? 0xFFF5B83A : collective() ? 0xFFC4D7C0 : Color.BLACK;
+        return imperial() ? imperialTheme.ink : collective() ? collectiveTheme.ink : Color.BLACK;
     }
 
     // ---- type ------------------------------------------------------------------------------------
@@ -380,7 +407,7 @@ final class Skin {
      */
     static int glow(int color) {
         if (command() || pipe()) return color;
-        return glowToward(color, imperial() ? IMPERIAL_GLOW : COLLECTIVE_GLOW);
+        return glowToward(color, glowColor());
     }
 
     // ---- controls ---------------------------------------------------------------------------------
@@ -641,9 +668,10 @@ final class Skin {
                 float dim = Ui.cloak ? 0.4f : 1f;
                 if (k) {
                     // dark red triangle lattice, as in the Imperial panel fills
-                    ImperialDraw.grid(cv, new RectF(b), 40 * dd, 0xFF4A0E0E, 0.6f * dim, dd);
+                    ImperialDraw.grid(cv, new RectF(b), 40 * dd, imperialTheme.grid, 0.6f * dim, dd);
                     return;
                 }
+                final int line = collectiveLine(), lit = collectiveLit();
                 // a faint, sparse trace network: nodes scattered on a loose grid, linked by curves
                 float cell = 92 * dd;
                 int cols = (int) (b.width() / cell) + 2, rows = (int) (b.height() / cell) + 2;
@@ -655,14 +683,14 @@ final class Skin {
                 }
                 for (int j = 0; j < rows; j++) for (int i = 0; i < cols; i++) {
                     int n = j * cols + i, h = (i * 7349 + j * 1931) & 0xFFFF;
-                    if (i + 1 < cols && h % 3 != 0) CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + 1], ys[n + 1], (h % 2 == 0 ? 0.12f : -0.1f), COLLECTIVE_LINE, dd, 0.16f * dim);
-                    if (j + 1 < rows && h % 4 == 1) CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + cols], ys[n + cols], 0.1f, COLLECTIVE_LINE, dd, 0.14f * dim);
+                    if (i + 1 < cols && h % 3 != 0) CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + 1], ys[n + 1], (h % 2 == 0 ? 0.12f : -0.1f), line, dd, 0.16f * dim);
+                    if (j + 1 < rows && h % 4 == 1) CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + cols], ys[n + cols], 0.1f, line, dd, 0.14f * dim);
                 }
                 for (int n = 0; n < xs.length; n++) {
                     int h = (n * 2654435) >>> 8;
-                    if (h % 5 == 0) CollectiveDraw.ringNode(cv, xs[n], ys[n], (6 + h % 7) * dd, COLLECTIVE_LINE, dd, 0.22f * dim);
-                    else if (h % 5 == 1) CollectiveDraw.node(cv, xs[n], ys[n], 3.5f * dd, COLLECTIVE_LIT, dd, 0.15f * dim);
-                    else CollectiveDraw.via(cv, xs[n], ys[n], 2.2f * dd, COLLECTIVE_LINE, dd, 0.22f * dim);
+                    if (h % 5 == 0) CollectiveDraw.ringNode(cv, xs[n], ys[n], (6 + h % 7) * dd, line, dd, 0.22f * dim);
+                    else if (h % 5 == 1) CollectiveDraw.node(cv, xs[n], ys[n], 3.5f * dd, lit, dd, 0.15f * dim);
+                    else CollectiveDraw.via(cv, xs[n], ys[n], 2.2f * dd, line, dd, 0.22f * dim);
                 }
             }
             @Override public void setAlpha(int a) { }

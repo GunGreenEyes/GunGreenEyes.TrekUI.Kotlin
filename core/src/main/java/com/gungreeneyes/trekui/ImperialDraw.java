@@ -13,11 +13,24 @@ import android.graphics.RectF;
  * alien script.) UI thread only.
  */
 final class ImperialDraw {
-    static final int RED = 0xFFD8231E, ORANGE = 0xFFF0821E, YELLOW = 0xFFF5C830, DEEP = 0xFFA3161A;
+    /**
+     * Line red, orange, highlight yellow and deep red of the active Imperial sub-theme (accent slots
+     * 0-3, see {@link SubThemes#IMPERIAL}); the initial values are the original tactical look. Set by
+     * {@link #use} (through {@code Skin.useSubTheme}), read on the UI thread only.
+     */
+    static int RED = 0xFFD8231E, ORANGE = 0xFFF0821E, YELLOW = 0xFFF5C830, DEEP = 0xFFA3161A;
     private static final Paint P = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final Path T = new Path();
 
     private ImperialDraw() {}
+
+    /** Takes the line / orange / highlight / deep colours from an Imperial sub-theme palette. */
+    static void use(Palette p) {
+        RED = p.c[0];
+        ORANGE = p.c[1];
+        YELLOW = p.c[2];
+        DEEP = p.c[3];
+    }
 
     /** Colour with alpha, dimmed further while cloaked. */
     private static int cl(int c, float a) { return Ui.alpha(c, a * (Ui.cloak ? 0.55f : 1f)); }

@@ -4,8 +4,8 @@ import java.util.Objects;
 
 /**
  * One look-and-sound choice: interface (faction id, see {@code Skin}), its sub-theme (index into
- * {@code Palette.themesFor(faction)}), the Imperial lettering and the sound set id ({@code Sfx.SET_*},
- * may be null for "not chosen").
+ * {@code Palette.themesFor(faction)}; {@code SubThemes} lists names and counts for every interface), the
+ * Imperial lettering and the sound set id ({@code Sfx.SET_*}, may be null for "not chosen").
  *
  * <p>Immutable value passed between apps through the suite provider (see {@link SuiteContract}) and
  * installed into {@code TrekPrefs.setThemeOverride} when a companion follows the launcher.

@@ -30,8 +30,9 @@ import java.util.Map;
  * ({@link SuiteContract#permission(String)}). Only apps signed with the same key hold that
  * signature-level permission, so no other app can read these rows.
  *
- * <p>Subclass to publish more paths (for example the Lock Screen's on/off flag): override
- * {@link #queryOther}. Writes are not supported.
+ * <p>Every app also answers {@code lockscreen} with its {@code TrekPrefs.lockscreenEnabled()} switch;
+ * only the launcher's (set in CONFIG › SUITE) is read by the wake-screen companion. Subclass to publish
+ * more paths: override {@link #queryOther}. Writes are not supported.
  */
 public class SuiteProvider extends ContentProvider {
     @Override
@@ -52,6 +53,9 @@ public class SuiteProvider extends ContentProvider {
             case SuiteContract.PATH_THEME:
                 return row(SuiteContract.THEME_COLUMNS,
                         SuiteContract.themeRow(c.getPackageName(), currentTheme(c)));
+            case SuiteContract.PATH_LOCKSCREEN:
+                return row(SuiteContract.LOCKSCREEN_COLUMNS,
+                        SuiteContract.lockscreenRow(c.getPackageName(), TrekPrefs.get(c).lockscreenEnabled()));
             default:
                 return queryOther(uri, path);
         }
@@ -63,6 +67,21 @@ public class SuiteProvider extends ContentProvider {
      */
     protected SuiteTheme currentTheme(Context c) {
         return TrekPrefs.get(c).currentTheme();
+    }
+
+    /**
+     * Tells observers of this app's {@code path} row that it changed (e.g. after the user picks another
+     * sub-theme or flips SUITE › LOCK SCREEN), so a running companion can re-read it at once. Siblings
+     * observe with {@code ContentResolver.registerContentObserver} on
+     * {@code SuiteContract.uriString(launcherPackage, path)}.
+     */
+    public static void notifyChanged(Context context, String path) {
+        try {
+            context.getContentResolver().notifyChange(
+                    Uri.parse(SuiteContract.uriString(context.getPackageName(), path)), null);
+        } catch (RuntimeException ignored) {
+            // no observers / resolver unavailable: nothing to tell
+        }
     }
 
     /** Hook for subclasses: answer another path, or null (unknown path). */

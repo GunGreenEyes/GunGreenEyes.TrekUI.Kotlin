@@ -66,6 +66,16 @@ public final class SuiteClient {
         return SuiteContract.parseTheme(query(context, launcher, SuiteContract.PATH_THEME));
     }
 
+    /**
+     * The launcher's SUITE › LOCK SCREEN switch: TRUE / FALSE, or null when the launcher is absent,
+     * untrusted or too old to publish it (the wake screen then follows its own setting). Blocking.
+     */
+    public static Boolean launcherLockscreenEnabled(Context context) {
+        String launcher = SuiteContract.launcherPackage(context.getPackageName());
+        if (launcher.equals(context.getPackageName())) return null;
+        return SuiteContract.parseLockscreen(query(context, launcher, SuiteContract.PATH_LOCKSCREEN));
+    }
+
     /** One row of {@code pkg}'s suite provider at {@code path}, or null when it can't be trusted or read. */
     static Map<String, String> query(Context context, String pkg, String path) {
         if (!trusted(context, pkg)) return null;
