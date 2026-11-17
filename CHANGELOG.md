@@ -20,6 +20,10 @@ This file records the notable changes to TrekUI Launcher. Versions follow `MAJOR
 
 ## 6.3.0 (Unreleased)
 
+### Sub-themes and the TrekUI suite
+- **Sub-themes for every interface (LCA-T35).** COMMAND gains DEEP BLUE, SUNSET DECK, NIGHT PADD, STELLAR SILVER and MODERN GRAY next to CLASSIC and its five earlier themes; IMPERIAL gets five (IMPERIAL TACTICAL, WAR BRONZE, DUSK RAIDER, ICE FORGE, IRON & FLAME) and COLLECTIVE five (THE COLLECTIVE, CYAN LATTICE, AMBER SIGNAL, VIOLET NODE, FROST NODE) that recolour the whole interface: plates, grids, glows, backdrop and lettering. Pick one in CONFIG › INTERFACE › COLOR THEME from a preview strip; it applies at once. The first theme of each interface is exactly the earlier look, and stored choices keep their meaning. The companion apps read the same choice through the suite provider.
+- **CONFIG › SUITE (LCA-T35).** One place for the companion apps: KEYBOARD shows the active keyboard and opens the keyboard picker or the enable screen; LOCK SCREEN switches the TrekUI wake screen on or off; MESSAGES makes TrekUI Messages the default SMS app or restores the previous one. A companion that isn't installed shows INSTALL with its Google Play listing.
+
 ### Home panels
 - **Android widget panels (LCA-T19).** Any installed app widget (Google, Gmail, clocks, notes, your work profile's widgets) can now sit in its own panel, framed by the active interface's bracket. Add one from a panel's long-press menu (**ADD WIDGET PANEL**) or from CONFIG › LAYOUT › **ADD ANDROID WIDGET PANEL**; up to 12 widget panels. They join the panel order, HIDE PANEL, CONFIG › PANELS and the reveal-hub info keys like the built-in panels. Long-press the title for **WIDGET SIZE** (five heights), **RECONFIGURE WIDGET** and **REMOVE WIDGET**. The widget is told its real size on every rotation, fold or window change, and a widget whose app was removed shows an OFFLINE notice with a REMOVE key.
 

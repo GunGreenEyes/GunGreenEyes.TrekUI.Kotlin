@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LCA-T35: sub-theme picker and the CONFIG › SUITE section (companion apps). -->
+<resources>
+    <string name="config_color_theme">COLOR THEME</string>
+
+    <string name="suite_title">SUITE</string>
+    <string name="suite_sidebar">SUITE</string>
+    <string name="suite_note">The TrekUI companion apps follow the interface and colour theme you pick here. One purchase unlocks every TrekUI app.</string>
+    <string name="suite_install">INSTALL FROM GOOGLE PLAY</string>
+    <string name="suite_unknown">UNKNOWN</string>
+
+    <string name="suite_keyboard">TREKUI KEYBOARD</string>
+    <string name="suite_keyboard_active">Active keyboard: %1$s</string>
+    <string name="suite_keyboard_in_use">TREKUI KEYBOARD IS IN USE</string>
+    <string name="suite_keyboard_choose">CHOOSE KEYBOARD</string>
+    <string name="suite_keyboard_enable">ENABLE KEYBOARDS</string>
+
+    <string name="suite_lockscreen">TREKUI LOCK SCREEN</string>
+    <string name="suite_lockscreen_switch">WAKE SCREEN</string>
+    <string name="suite_lockscreen_desc">Show the TrekUI wake screen when the phone wakes. Your PIN, pattern or fingerprint still unlocks the phone.</string>
+    <string name="suite_open_lockscreen">OPEN LOCK SCREEN SETTINGS</string>
+
+    <string name="suite_messages">TREKUI MESSAGES</string>
+    <string name="suite_messages_default">TREKUI MESSAGES IS YOUR SMS APP</string>
+    <string name="suite_messages_not_default">TREKUI MESSAGES IS NOT YOUR SMS APP</string>
+    <string name="suite_messages_set">MAKE DEFAULT SMS APP</string>
+    <string name="suite_messages_restore">RESTORE PREVIOUS SMS APP</string>
+</resources>

@@ -38,6 +38,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.gungreeneyes.trekui.core.SuiteContract;
+import com.gungreeneyes.trekui.core.SuiteProvider;
 import com.gungreeneyes.trekui.licensing.Licensing;
 
 import java.io.File;
@@ -59,7 +61,7 @@ import java.util.Set;
  * rebuilds when it resumes) and rebuilds this list in place, keeping the scroll position.
  *
  * <p>Sections, in order: default home (with UNLOCK console while unlicensed), interface (family, interface, colour theme, layout, background,
- * wallpapers), notification shade, app theming, smart devices (Govee, Nest), audio (effects, phone sounds,
+ * wallpapers), suite (companion apps), notification shade, app theming, smart devices (Govee, Nest), audio (effects, phone sounds,
  * library), chronometer, home layout, app drawer, weather, interface &amp; access (animations, cloak,
  * haptics, permissions) and about.
  *
@@ -293,6 +295,7 @@ public class SettingsActivity extends Activity {
     private void addSections() {
         homeSection();
         interfaceSection();
+        suiteSection(); // LCA-T35
         shadeSection();
         appSection();
         devicesSection();
@@ -570,8 +573,8 @@ public class SettingsActivity extends Activity {
             }
             factionRow(faction);
         }
-        if (Skin.command()) {
-            section("COLOR THEME", pal.c(1), null);
+        if (SubThemes.selectable(Skin.faction)) { // LCA-T35: every interface with more than one sub-theme
+            section(getString(R.string.config_color_theme), pal.c(1), null);
             for (int i = 0; i < Palette.themesFor(Skin.faction).length; i++) themeRow(i);
         } else {
             note(fixedColoursNote());
@@ -671,10 +674,7 @@ public class SettingsActivity extends Activity {
         Skin.faction = faction;
         Palette palette;
         if (Skin.pipeFaction(faction)) palette = Skin.pipePalette(faction);
-        else if (Skin.eraFaction(faction)) palette = Palette.themesFor(faction)[prefs.eraTheme(faction)];
-        else if (faction == 1) palette = Skin.IMPERIAL_PALETTE;
-        else if (faction == 2) palette = Skin.COLLECTIVE_PALETTE;
-        else palette = Palette.ALL[themeIndex()];
+        else palette = Palette.of(faction, prefs.subTheme(faction)); // LCA-T35: the card shows its chosen sub-theme
         boolean selected = saved == faction;
         int accent = factionAccent(faction);
 
@@ -720,16 +720,20 @@ public class SettingsActivity extends Activity {
         list.addView(card, params);
     }
 
-    /** One Command colour theme with its six swatches. */
+    /**
+     * One colour theme (sub-theme) of the current interface: its name in its own primary colour and a
+     * preview strip of its six accents on its own background; tap applies it at once (LCA-T35).
+     */
     private void themeRow(final int index) {
         final int faction = prefs.faction();
         Palette palette = Palette.themesFor(faction)[index];
-        final String themeKey = Prefs.themeKeyFor(faction);
-        boolean selected = (Skin.eraFaction(faction) ? prefs.eraTheme(faction) : prefs.i(themeKey, 0)) == index;
+        boolean selected = prefs.subTheme(faction) == index;
         LinearLayout row = new LinearLayout(this);
+        row.setTag("subtheme_" + faction + "_" + index);
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(Ui.dp(this, 12f), Ui.dp(this, 8f), Ui.dp(this, 12f), Ui.dp(this, 8f));
-        row.setBackground(Ui.touch(Ui.outline(this, selected ? Ui.alpha(palette.c(0), 0.15f) : Skin.bg(),
+        int rest = palette.toned ? palette.bg : Skin.bg();
+        row.setBackground(Ui.touch(Ui.outline(this, selected ? Ui.alpha(palette.c(0), 0.15f) : rest,
                 selected ? palette.c(0) : Ui.alpha(palette.c(1), 0.35f), 16f, selected ? 2.5f : 1f)));
         row.addView(Ui.bold(this, palette.name, 17f, palette.c(0)), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
         for (int i = 0; i < 6; i++) {
@@ -742,13 +746,91 @@ public class SettingsActivity extends Activity {
         }
         row.setContentDescription(palette.name + (selected ? ", selected" : ""));
         row.setOnClickListener(Ui.feedback(v -> {
-            prefs.put(themeKey, index);
+            prefs.setSubTheme(faction, index);
+            SuiteProvider.notifyChanged(this, SuiteContract.PATH_THEME); // companions follow at once
             Sfx.play(this, Sfx.CONFIRM);
             changed();
         }));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(this, 50f));
         params.bottomMargin = Ui.dp(this, 6f);
         list.addView(row, params);
+    }
+
+    /**
+     * SUITE (LCA-T35): the companion apps. KEYBOARD shows the active keyboard and opens the picker /
+     * enable screen; LOCK SCREEN switches the wake screen on or off (published on the suite provider);
+     * MESSAGES makes TrekUI Messages the default SMS app or restores the previous one. A companion that
+     * isn't installed shows INSTALL (its Play listing). Lookups and intents live in {@link SuiteSettings}.
+     */
+    private void suiteSection() {
+        section(getString(R.string.suite_title), pal.c(2), getString(R.string.suite_sidebar));
+        note(getString(R.string.suite_note));
+        String own = getPackageName();
+
+        String keyboard = SuiteContract.packageFor(SuiteContract.KEYBOARD, own);
+        label(getString(R.string.suite_keyboard)).setTag("suite_keyboard");
+        String imeId = SuiteSettings.activeImeId(this);
+        if (SuiteSettings.isSuiteKeyboard(imeId, keyboard)) {
+            list.addView(Ui.bold(this, getString(R.string.suite_keyboard_in_use), 15f, pal.c(2)));
+        } else {
+            String imeName = SuiteSettings.imeLabel(this, imeId);
+            note(getString(R.string.suite_keyboard_active, imeName != null ? imeName : getString(R.string.suite_unknown)));
+        }
+        if (installed(keyboard)) {
+            action(getString(R.string.suite_keyboard_choose), pal.c(0), v -> {
+                if (!SuiteSettings.showImePicker(this)) open(SuiteSettings.imeSettingsIntent());
+            }).setTag("suite_keyboard_choose");
+            action(getString(R.string.suite_keyboard_enable), pal.c(1), v -> open(SuiteSettings.imeSettingsIntent()))
+                    .setTag("suite_keyboard_enable");
+        } else {
+            suiteInstall(keyboard, "suite_keyboard_install");
+        }
+
+        String lockscreen = SuiteContract.packageFor(SuiteContract.LOCKSCREEN, own);
+        label(getString(R.string.suite_lockscreen)).setTag("suite_lockscreen");
+        if (installed(lockscreen)) {
+            toggle(getString(R.string.suite_lockscreen_switch), getString(R.string.suite_lockscreen_desc),
+                    prefs.lockscreenEnabled(), on -> {
+                        prefs.setLockscreenEnabled(on);
+                        SuiteProvider.notifyChanged(this, SuiteContract.PATH_LOCKSCREEN);
+                        rebuild();
+                    });
+            action(getString(R.string.suite_open_lockscreen), pal.c(1), v -> {
+                Intent launch = getPackageManager().getLaunchIntentForPackage(lockscreen);
+                if (launch != null) open(launch);
+            }).setTag("suite_lockscreen_open");
+        } else {
+            suiteInstall(lockscreen, "suite_lockscreen_install");
+        }
+
+        String messages = SuiteContract.packageFor(SuiteContract.MESSAGES, own);
+        label(getString(R.string.suite_messages)).setTag("suite_messages");
+        if (installed(messages)) {
+            String current = SuiteSettings.defaultSms(this);
+            boolean isDefault = messages.equals(current);
+            list.addView(Ui.bold(this, getString(isDefault ? R.string.suite_messages_default : R.string.suite_messages_not_default),
+                    15f, isDefault ? pal.c(2) : pal.alert));
+            if (!isDefault) {
+                action(getString(R.string.suite_messages_set), pal.c(0), v -> {
+                    if (current != null) prefs.put(SuiteSettings.KEY_PREV_SMS, current);
+                    if (!tryStart(SuiteSettings.requestSmsIntent(messages))) open(SuiteSettings.defaultAppsIntent());
+                }).setTag("suite_messages_set");
+            } else {
+                action(getString(R.string.suite_messages_restore), pal.c(3), v -> {
+                    String previous = SuiteSettings.restoreTarget(prefs.s(SuiteSettings.KEY_PREV_SMS, null), messages);
+                    if (!tryStart(SuiteSettings.restoreSmsIntent(previous))) open(SuiteSettings.defaultAppsIntent());
+                }).setTag("suite_messages_restore");
+            }
+        } else {
+            suiteInstall(messages, "suite_messages_install");
+        }
+    }
+
+    /** INSTALL for a companion that isn't installed: its Play listing (store app, else the web). */
+    private void suiteInstall(String pkg, String tag) {
+        action(getString(R.string.suite_install), pal.c(4), v -> {
+            if (!tryStart(SuiteSettings.marketIntent(pkg))) open(SuiteSettings.webStoreIntent(pkg));
+        }).setTag(tag);
     }
 
     /** console WALLPAPERS: three thumbnails; tap applies one to home, lock or both. */
@@ -2301,9 +2383,12 @@ public class SettingsActivity extends Activity {
                 "In QuickStar › Edit panel style, pick each element and choose the matching image from your Gallery:\n• Button box → qp_button_box\n• Buttons → qp_button_1 … 8 (wide buttons → qp_button_wide)\n• Brightness → qp_brightness\n• Volume → qp_volume\n• Media player → qp_media_player");
     }
 
-    /** Selected Command colour theme, clamped to the palette list. */
+    /**
+     * Selected Command colour theme, as the index of the bundled app-theme / Quick Panel art set that
+     * fits it (art exists for the first six themes; the 6.3 themes borrow the closest one).
+     */
     private int themeIndex() {
-        return Math.max(0, Math.min(Palette.ALL.length - 1, prefs.i("theme", 0)));
+        return SubThemes.commandArtIndex(prefs.subTheme(Skin.COMMAND));
     }
 
     private static String themeFolder(int theme) {

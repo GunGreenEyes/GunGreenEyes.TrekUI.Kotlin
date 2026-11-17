@@ -21,11 +21,11 @@ Choose the interface in **CONFIG › INTERFACE**: first the family (STARSHIP or 
 
 | Interface | Look | Home layout options |
 |---|---|---|
-| **Command** | Curved elbows, solid colour keys, Antonio type, six colour themes | Classic frame, or **CONSOLE CASCADE**: one key that deploys a spine of tiles |
+| **Command** | Curved elbows, solid colour keys, Antonio type, eleven colour themes (CLASSIC, DEEP BLUE, SUNSET DECK, NIGHT PADD, STELLAR SILVER, MODERN GRAY and more) | Classic frame, or **CONSOLE CASCADE**: one key that deploys a spine of tiles |
 | **Classic Console** (23rd-century style) | Chunky square console keys in primary colours with a bevel, rows of indicator lamps (some blinking), no elbows, Josefin Sans lettering, three colour themes | Same as Command: grid or **CONSOLE CASCADE** |
 | **Next Console** (25th-century style) | Thin translucent blue/grey glass layers, 1dp outlines with 45° cut corners, fine tick rules, light Antonio lettering, three colour themes | Same as Command: grid or **CONSOLE CASCADE** |
-| **Imperial** (Imperial Tactical) | Chamfered octagon plates, triangle lattices, blood red and amber, the project's own *Warrior Blade* lettering | Classic, or **TACTICAL DEPLOY**: tiles slide out as an arrowhead |
-| **Collective** | Glowing nodes on circuit traces, no hard edges, Share Tech type | **TRACE COLUMN**, or **HUB AND SPOKE**: nodes in orbit around a central hub |
+| **Imperial** (Imperial Tactical) | Chamfered octagon plates, triangle lattices, blood red and amber (or one of four more colour themes), the project's own *Warrior Blade* lettering | Classic, or **TACTICAL DEPLOY**: tiles slide out as an arrowhead |
+| **Collective** | Glowing nodes on circuit traces, no hard edges, Share Tech type, five colour themes (matrix green, cyan, amber, violet, frost) | **TRACE COLUMN**, or **HUB AND SPOKE**: nodes in orbit around a central hub |
 
 Each starship interface also has:
 
@@ -67,6 +67,8 @@ The painted-scene homes show a painting with live overlays (clock, weather and s
 - **App groups:** OPEN GROUP is an assignable function that unfolds a named set of up to 12 apps in your interface's style: a cascading console with keys sliding out of a spine, an Imperial tactical deploy, a Collective orbit or a Pipe Lounge card. Create, rename, reorder and delete groups from CONFIG › APP GROUPS, from ASSIGN TREKUI FUNCTION, or with ADD TO GROUP in the drawer's long-press menu.
 - **Gestures:** double-tap, two-finger swipe up and down, pinch in and out, and swipe left and right on home can each run any launcher function or app (CONFIG › GESTURES). Swipe up for the drawer and swipe down for the shade work as before.
 - **LOCK SCREEN (optional):** locks the phone from a tile, element or gesture through an accessibility service that reads nothing (Android 9+). It is off until you agree to an in-app explanation and turn it on in Android's Accessibility settings.
+- **Colour themes for every starship interface:** CONFIG › INTERFACE › COLOR THEME, with a preview strip per theme; the change applies at once and the TrekUI companion apps follow it.
+- **TrekUI suite in one place:** CONFIG › SUITE shows the active keyboard and opens the keyboard picker, switches the TrekUI wake screen on or off, and makes TrekUI Messages the default SMS app (or restores the previous one). Companions that aren't installed get an INSTALL link to Google Play.
 - **Quick Settings tiles:** CLOAK and RED ALERT tiles for the phone's Quick Settings panel (CONFIG offers to add them on Android 13+).
 - **Icons your way:** 109 original pictograms drawn in every interface's style, matched automatically to common apps (banking, shopping, streaming, travel…). Any ADW/Nova-compatible icon pack from the Play Store works too (CONFIG › APP DRAWER › ICON PACK, with a preview), and long-press › CHANGE ICON gives a single app any pictogram, any pack icon or its own icon.
 - **Smart devices:**
