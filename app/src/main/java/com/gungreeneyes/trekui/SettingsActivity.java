@@ -251,8 +251,13 @@ public class SettingsActivity extends Activity {
         scroll.addView(list);
         frame.setContent(scroll);
 
-        addSections();
-        frame.setSidebar(buildSidebar());
+        // The first screenful is built now; the rest follows one section per main-thread message, so the
+        // screen appears at once and input keeps flowing (building everything up front froze slow phones).
+        final int gen = ++buildGen;
+        final Runnable[] sections = sections();
+        // A rebuild that restores a scroll position stays synchronous, so the list never jumps.
+        int eager = scrollY > 0 ? sections.length : Math.min(EAGER_SECTIONS, sections.length);
+        for (int i = 0; i < eager; i++) sections[i].run();
         root.addView(frame, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         root.setOnApplyWindowInsetsListener((view, raw) -> {
             Insets bars = WindowInsetsCompat.toWindowInsetsCompat(raw, view)
@@ -266,7 +271,27 @@ public class SettingsActivity extends Activity {
             return raw;
         });
         setContentView(root);
-        scroll.post(() -> scroll.scrollTo(0, scrollY));
+        appendSections(gen, frame, sections, eager, scrollY);
+    }
+
+    /** Sections built before the first frame: what fills the first screen. */
+    private static final int EAGER_SECTIONS = 3;
+    /** Bumped by every build; a pending section step from an older build stops itself. */
+    private int buildGen;
+
+    /** Adds {@code sections[from..]} one per message, then the sidebar and the saved scroll position. */
+    private void appendSections(final int gen, final ConsoleFrame frame, final Runnable[] sections, final int from, final int scrollY) {
+        if (gen != buildGen || isFinishing() || isDestroyed()) return;
+        if (from >= sections.length) {
+            frame.setSidebar(buildSidebar());
+            scroll.post(() -> scroll.scrollTo(0, scrollY));
+            return;
+        }
+        list.post(() -> {
+            if (gen != buildGen || isFinishing() || isDestroyed()) return;
+            sections[from].run();
+            appendSections(gen, frame, sections, from + 1, scrollY);
+        });
     }
 
     /** The sidebar: one button per anchored section, scrolling the list to it. */
@@ -291,23 +316,13 @@ public class SettingsActivity extends Activity {
     }
 
     /** All sections in display order. */
-    private void addSections() {
-        homeSection();
-        interfaceSection();
-        suiteSection(); // LCA-T35
-        shadeSection();
-        appSection();
-        devicesSection();
-        audioSection();
-        clockSection();
-        layoutSection();
-        groupsSection(); // LCA-T20
-        gesturesSection(); // LCA-T20
-        backupSection();
-        drawerSection();
-        weatherSection();
-        accessSection();
-        aboutSection();
+    private Runnable[] sections() {
+        return new Runnable[]{
+                this::homeSection, this::interfaceSection, this::suiteSection, this::shadeSection,
+                this::appSection, this::devicesSection, this::audioSection, this::clockSection,
+                this::layoutSection, this::groupsSection, this::gesturesSection, this::backupSection,
+                this::drawerSection, this::weatherSection, this::accessSection, this::aboutSection,
+        };
     }
 
     private String version() {
