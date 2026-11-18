@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TrekUI Lock Screen: a wake screen drawn over the keyguard. A cosmetic layer only: unlocking always goes
+     through the system keyguard (requestDismissKeyguard). No AccessibilityService, no Device Admin, no
+     foreground service. The screen-on trigger lives in the notification listener. See docs/LOCKSCREEN.md. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Optional on Android 10+: "display over other apps" is the documented exemption that lets the
+         notification listener start the wake screen from the background. Nothing is drawn as an overlay. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- The flashlight (CameraManager.setTorchMode) needs no permission; the camera is optional. -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <queries>
+        <!-- App names for the notification list (apps with a launcher entry). -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <!-- CAMERA quick action. -->
+        <intent>
+            <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".LockApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/LockTheme.App"
+        android:enableOnBackInvokedCallback="true">
+
+        <!-- Setup and settings: the app's launcher entry (licensing runs here). -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:resizeableActivity="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- The wake screen: shown over the keyguard (showWhenLocked; window flags on Android 8.0), in its
+             own task so unlocking or BACK reveals exactly what was there before. -->
+        <activity
+            android:name=".WakeActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="${applicationId}.wake"
+            android:excludeFromRecents="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:resizeableActivity="true" />
+
+        <!-- Notification list, media sessions and the screen-on trigger (dynamic receiver while bound). -->
+        <service
+            android:name=".LockListener"
+            android:exported="true"
+            android:label="@string/listener_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Suite provider: tells sibling TrekUI apps (same signing key only) whether this copy is unlocked
+             and which interface / sub-theme it shows. -->
+        <provider
+            android:name="com.gungreeneyes.trekui.core.SuiteProvider"
+            android:authorities="${applicationId}.suite"
+            android:exported="true"
+            android:readPermission="${trekuiSuitePermission}"
+            android:writePermission="${trekuiSuitePermission}" />
+
+        <!-- Purchase / unlock screen from :core. -->
+        <activity
+            android:name="com.gungreeneyes.trekui.licensing.PurchaseActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+    </application>
+</manifest>

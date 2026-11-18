@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_name comes from the build flavor (resValue). -->
+    <string name="listener_label">TrekUI Lock Screen</string>
+
+    <!-- Wake screen (drawn on the Canvas; also spoken by TalkBack) -->
+    <string name="wake_description">TrekUI wake screen. Swipe up or tap Unlock to unlock with your PIN, pattern, password or biometric.</string>
+    <string name="wake_decimal_label">DECIMAL DATE</string>
+    <string name="wake_power">POWER</string>
+    <string name="wake_charging">CHARGING</string>
+    <string name="wake_alarm">ALARM</string>
+    <string name="wake_notifications_header">NOTIFICATIONS</string>
+    <string name="wake_no_notifications">No notifications</string>
+    <string name="wake_access_off">Notification access is off. Open TrekUI Lock Screen to set it up.</string>
+    <string name="wake_contents_hidden">Contents hidden</string>
+    <string name="wake_more">+%1$d MORE</string>
+    <string name="wake_media_unknown">Now playing</string>
+    <string name="wake_media_previous">Previous track</string>
+    <string name="wake_media_play">Play</string>
+    <string name="wake_media_pause">Pause</string>
+    <string name="wake_media_next">Next track</string>
+    <string name="wake_camera">CAMERA</string>
+    <string name="wake_camera_spoken">Open the camera</string>
+    <string name="wake_torch">TORCH</string>
+    <string name="wake_torch_on">TORCH ON</string>
+    <string name="wake_torch_on_spoken">Turn the flashlight on</string>
+    <string name="wake_torch_off_spoken">Turn the flashlight off</string>
+    <string name="wake_torch_busy">The flashlight is in use by another app</string>
+    <string name="wake_no_camera">No camera app found</string>
+    <string name="wake_unlock_hint">SWIPE UP TO UNLOCK</string>
+    <string name="wake_unlock_spoken">Unlock</string>
+    <string name="wake_trial_chip">UNLOCK APP</string>
+    <string name="wake_trial_spoken">Unlock the full version of TrekUI Lock Screen, after you unlock the device</string>
+
+    <!-- Settings -->
+    <string name="settings_title">LOCK SCREEN</string>
+    <string name="settings_footer">TREKUI LOCK SCREEN %1$s</string>
+    <string name="settings_preview">PREVIEW</string>
+    <string name="settings_setup">SET UP</string>
+    <string name="settings_unlock">UNLOCK</string>
+    <string name="row_wake">Wake screen</string>
+    <string name="row_access">Notification access</string>
+    <string name="row_overlay">Display over other apps</string>
+    <string name="row_sensitive">Sensitive content</string>
+    <string name="row_interface">Interface</string>
+    <string name="row_color">Color theme</string>
+    <string name="row_licence">Licence</string>
+    <string name="state_active">On. Shows when the screen turns on while the phone is locked.</string>
+    <string name="state_active_needs_overlay">On, but Android may block it from appearing until you allow Display over other apps below.</string>
+    <string name="state_off_app">Off. The normal lock screen shows.</string>
+    <string name="state_off_launcher">Off in TrekUI Launcher (CONFIG › SUITE › LOCK SCREEN). Turn it on there.</string>
+    <string name="state_needs_access">Waiting for notification access (below).</string>
+    <string name="access_on">Granted. Used to notice the screen turning on, list notifications and show media controls.</string>
+    <string name="access_off">Not granted. The wake screen needs it to appear.</string>
+    <string name="overlay_on">Allowed. The wake screen can appear when the screen turns on.</string>
+    <string name="overlay_off">Not allowed. On Android 10 and later this lets the wake screen appear when the screen turns on. Nothing is drawn over other apps.</string>
+    <string name="sensitive_on">Shown. Private notifications are listed in full on a locked phone (unless Android\'s own lock-screen setting hides them).</string>
+    <string name="sensitive_off">Hidden. Private notifications show only the app name until you unlock.</string>
+    <string name="interface_following">%1$s (following TrekUI Launcher)</string>
+    <string name="licence_unlocked">Unlocked. One purchase unlocks every TrekUI app.</string>
+    <string name="licence_trial">Free trial. One purchase unlocks every TrekUI app. The wake screen never stops you unlocking your phone.</string>
+    <string name="settings_security_note">TrekUI Lock Screen is a look, not a lock: unlocking always goes through Android\'s own PIN, pattern, password or biometric check. Nothing it reads leaves your device.</string>
+    <string name="action_turn_on">TURN ON</string>
+    <string name="action_turn_off">TURN OFF</string>
+    <string name="action_set_up">SET UP</string>
+    <string name="action_manage">MANAGE</string>
+    <string name="action_allow">ALLOW</string>
+    <string name="action_show">SHOW</string>
+    <string name="action_hide">HIDE</string>
+    <string name="action_change">CHANGE</string>
+
+    <!-- Prominent disclosure before the notification-access screen (keep identical to docs/LOCKSCREEN.md) -->
+    <string name="disclosure_title">NOTIFICATION ACCESS</string>
+    <string name="disclosure_body">TrekUI Lock Screen asks for notification access to show your wake screen. With it, the app can:\n\n• notice when the screen turns on, so the wake screen appears over the lock screen;\n• list your notifications on the wake screen (private ones only as the app name unless you choose otherwise);\n• show media controls for what is playing.\n\nNotifications are read only on this device, kept only in memory while shown, and never stored, shared or sent anywhere. You can turn access off in Android\'s settings at any time.</string>
+    <string name="disclosure_agree">AGREE • OPEN SETTINGS</string>
+    <string name="disclosure_decline">NO THANKS</string>
+</resources>
