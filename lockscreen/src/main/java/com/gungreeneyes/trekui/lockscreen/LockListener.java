@@ -9,15 +9,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
 import androidx.core.content.ContextCompat;
 
+import com.gungreeneyes.trekui.core.SuiteContract;
 import com.gungreeneyes.trekui.lockscreen.logic.Redaction;
 import com.gungreeneyes.trekui.lockscreen.logic.WakeTrigger;
 
@@ -52,6 +57,7 @@ public final class LockListener extends NotificationListenerService {
 
     private final Map<String, String> labels = new HashMap<>();
     private BroadcastReceiver screenReceiver;
+    private ContentObserver launcherObserver;
 
     /** True while the system has the listener bound (notification access granted and active). */
     public static boolean isConnected() {
@@ -74,6 +80,7 @@ public final class LockListener extends NotificationListenerService {
         super.onListenerConnected();
         connected = this;
         registerScreenReceiver();
+        observeLauncherSwitch();
         LockSettings.refreshLauncherFlag(this, null);
         rebuild();
     }
@@ -81,6 +88,7 @@ public final class LockListener extends NotificationListenerService {
     @Override
     public void onListenerDisconnected() {
         unregisterScreenReceiver();
+        stopObservingLauncherSwitch();
         if (connected == this) connected = null;
         LockHub.publish(new ArrayList<>());
         super.onListenerDisconnected();
@@ -89,6 +97,7 @@ public final class LockListener extends NotificationListenerService {
     @Override
     public void onDestroy() {
         unregisterScreenReceiver();
+        stopObservingLauncherSwitch();
         if (connected == this) connected = null;
         super.onDestroy();
     }
@@ -142,6 +151,37 @@ public final class LockListener extends NotificationListenerService {
             // already gone
         }
         screenReceiver = null;
+    }
+
+    /**
+     * Re-reads the launcher's SUITE › LOCK SCREEN switch as soon as the launcher announces a change
+     * ({@code SuiteProvider.notifyChanged}); the screen-off refresh covers launchers that don't announce.
+     */
+    private void observeLauncherSwitch() {
+        if (launcherObserver != null) return;
+        launcherObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
+            @Override
+            public void onChange(boolean selfChange) {
+                LockSettings.refreshLauncherFlag(LockListener.this, null);
+            }
+        };
+        String launcher = SuiteContract.launcherPackage(getPackageName());
+        try {
+            getContentResolver().registerContentObserver(
+                    Uri.parse(SuiteContract.uriString(launcher, SuiteContract.PATH_LOCKSCREEN)), false, launcherObserver);
+        } catch (RuntimeException e) {
+            launcherObserver = null; // launcher not installed or not ours: nothing to observe
+        }
+    }
+
+    private void stopObservingLauncherSwitch() {
+        if (launcherObserver == null) return;
+        try {
+            getContentResolver().unregisterContentObserver(launcherObserver);
+        } catch (RuntimeException ignored) {
+            // already gone
+        }
+        launcherObserver = null;
     }
 
     private void onScreenOn() {

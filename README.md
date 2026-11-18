@@ -49,6 +49,7 @@ The painted-scene homes show a painting with live overlays (clock, weather and s
 
 - **TrekUI Messages (companion app):** a full default SMS/MMS app in the same interfaces: conversations, picture messages, search, drafts, blocking, dual SIM, notifications with inline reply. Follows the launcher's interface and sub-theme, works on its own too. See [docs/MESSAGES.md](docs/MESSAGES.md).
 - **TrekUI Keyboard (companion app):** an on-screen keyboard in the same interfaces: English, German (QWERTZ), French (AZERTY) and Spanish layouts, symbols, number and dial pads, long-press accents, space-bar cursor, swipe-to-delete words, word completions that never learn in password or incognito fields, and no internet permission at all. See [docs/KEYBOARD.md](docs/KEYBOARD.md).
+- **TrekUI Lock Screen (companion app):** a wake screen over Android's lock screen in the same interfaces: big clock, date, an original decimal date, next alarm, battery, media controls, the notification list (private ones hidden unless you choose otherwise), CAMERA and TORCH. Swipe up to unlock with your usual PIN, pattern or biometric: it is a look, not a lock. Switch it on or off in the launcher's CONFIG › SUITE or in the app itself. See [docs/LOCKSCREEN.md](docs/LOCKSCREEN.md).
 - **Launcher basics:** the full app list via Android's `LauncherApps` API (work profile and Secure Folder included), search, categories, hidden apps, uninstall, app shortcuts, and clip-reveal launch animations.
 - **Assignable everything:** long-press any tile, dock slot, elbow, bar segment, code block, title, clock or date. You can assign an app or a launcher function, rename it, recolour it, or give it its own sound.
 - **Live panels:** these refresh only while home is visible.
@@ -178,6 +179,7 @@ app/src/main/java/com/gungreeneyes/trekui/   the launcher (pure Java, Canvas-dra
   licensing/                            trial sessions + Play Billing unlock
 messages/                               TrekUI Messages: default SMS/MMS app on :core (docs/MESSAGES.md)
 keyboard/                               TrekUI Keyboard: input method on :core (docs/KEYBOARD.md)
+lockscreen/                             TrekUI Lock Screen: wake screen over the keyguard on :core (docs/LOCKSCREEN.md)
 app/src/main/assets/                    fonts, pictograms, faction badges, pipe art and scenes, sound manifest
 app/src/test/                           JVM + Robolectric unit/screenshot tests
 app/src/androidTest/                    instrumented Given/When/Then scenarios with screen capture
