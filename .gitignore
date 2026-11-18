@@ -32,6 +32,11 @@ personal_sounds/
 # Exception: the launcher's own ORIGINAL synthesized sounds (tools/sounds/synth/make_synth.py, no recordings)
 !core/src/main/assets/sounds/synth/
 !core/src/main/assets/sounds/synth/*.ogg
+# Exception: owned audio (self-made or properly licensed only; tools/sounds/owned/README.md), published by
+# tools/sounds/publish-sfx.py to the sound update channel
+!tools/sounds/owned/*.ogg
+!tools/sounds/owned/*.wav
+!tools/sounds/owned/*.mp3
 
 # Original import material (zips, extracted sources) kept locally only
 _sources/
