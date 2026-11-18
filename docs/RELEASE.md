@@ -45,6 +45,8 @@ The four apps must be signed with the **same** key: the suite permission is sign
 
 ### One-time setup
 
+**Shortcut:** `.\scripts\release\setup-owner.ps1` handles steps 1–3 below, plus GitHub Pages and the weekly upgrade queue, and is safe to re-run. It finishes by printing the Play Console checklist. Run it again with `-ServiceAccountJson <file>` once the Play service account exists. The steps below are the manual equivalent.
+
 1. **Upload key and secrets.**
    - Run the key helper in `scripts/release/` (`create-upload-key.*`). It creates an upload keystore outside the repo and prints the `gh secret set` commands.
    - Set these as **repository** secrets (Settings › Secrets and variables › Actions › Repository secrets), not environment secrets, so every job and both Play environments can read them:
