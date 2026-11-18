@@ -294,7 +294,7 @@ object Sfx {
     /** The chosen SOUND SET ([SET_LIBRARY] by default). */
     @JvmStatic
     fun soundSet(context: Context): String {
-        val s = TrekPrefs.get(context).soundSetChoice(SET_LIBRARY)
+        val s = TrekPrefs.get(context).soundSetChoice(SET_LIBRARY) ?: SET_LIBRARY
         return if (SET_SYNTH == s || SET_SILENT == s) s else SET_LIBRARY
     }
 
