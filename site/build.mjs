@@ -379,6 +379,22 @@ const NAV = [
   ["privacy.html", "Privacy", "k1"],
 ];
 
+// The app's COMMAND sub-themes; the colours themselves live in site/src/style.css ([data-theme]).
+const THEMES = [
+  ["classic", "Classic", ["#ea9c72", "#fcc19f", "#baa4e5", "#8899ff"]],
+  ["deep-blue", "Deep Blue", ["#2266ff", "#6699ff", "#88bbff", "#adcaff"]],
+  ["sunset-deck", "Sunset Deck", ["#ff7700", "#ff4400", "#ffaa44", "#ffcc99"]],
+  ["night-padd", "Night PADD", ["#5588ee", "#7799dd", "#88eeff", "#99ccff"]],
+  ["stellar-silver", "Stellar Silver", ["#828cad", "#70b5ff", "#ffbb33", "#ffe1ca"]],
+  ["modern-gray", "Modern Gray", ["#9ea5ba", "#41c4f7", "#37a6d1", "#d2d5df"]],
+];
+
+function themePicker() {
+  const buttons = THEMES.map(([id, label, sw]) =>
+    `<button type="button" data-theme-pick="${id}" aria-pressed="${id === "classic"}"><span class="sw" aria-hidden="true">${sw.map((c) => `<i style="background:${c}"></i>`).join("")}</span>${esc(label)}</button>`).join("");
+  return `<div class="themes" role="group" aria-label="Colour theme"><span class="label">Theme</span>${buttons}</div>`;
+}
+
 function page({ file, title, description, body, version }) {
   const nav = NAV.map(([href, label, k]) => {
     const current = href === file ? ' aria-current="page"' : "";
@@ -400,6 +416,7 @@ function page({ file, title, description, body, version }) {
 <link rel="icon" href="${favicon}">
 <link rel="preload" href="fonts/Antonio.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem("trekui-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -425,6 +442,7 @@ ${body}
     <div class="elbow" aria-hidden="true"></div>
     <div class="run">
       <div class="title-row">
+        ${themePicker()}
         <p class="disclaimer">TrekUI Launcher is an independent, original interface for Android.
         The Play build ships no third-party recordings or artwork.
         <a href="${REPO_URL}">Source on GitHub</a> · <a href="privacy.html">Privacy policy</a></p>

@@ -36,6 +36,34 @@
   --font: "Antonio", "Arial Narrow", "Roboto Condensed", sans-serif;
 }
 
+/* Colour themes: the app's COMMAND sub-themes (docs: _handoff PALETTE.md roles). Keys carry black text, so
+   each primary/button/sidebar slot uses a colour light enough for it. Chosen in the footer, saved per visitor. */
+:root[data-theme="deep-blue"] {
+  --orange: #2266ff; --cascade: #88bbff; --gold: #adcaff; --peach: #6699ff; --almond: #2266ff;
+  --lavender: #6699ff; --pink: #ebf0ff; --blue: #88bbff; --red: #da2537; --sienna: #adcaff;
+  --alert: #da2537; --muted: #88bbff;
+}
+:root[data-theme="sunset-deck"] {
+  --orange: #ff7700; --cascade: #ff7700; --gold: #ffcc99; --peach: #ffaa44; --almond: #cc5500;
+  --lavender: #ff9911; --pink: #ffeecc; --blue: #ffaa44; --red: #ff4400; --sienna: #ffcc99;
+  --alert: #ff4400; --muted: #ff9911;
+}
+:root[data-theme="night-padd"] {
+  --orange: #5588ee; --cascade: #88eeff; --gold: #99ccff; --peach: #7799dd; --almond: #455580;
+  --lavender: #7799dd; --pink: #f3f3fc; --blue: #88eeff; --red: #ff3300; --sienna: #99ccff;
+  --alert: #ff3300; --muted: #99ccff;
+}
+:root[data-theme="stellar-silver"] {
+  --orange: #828cad; --cascade: #ffbb33; --gold: #ffe1ca; --peach: #bec2cf; --almond: #74788b;
+  --lavender: #70b5ff; --pink: #e98181; --blue: #99ccff; --red: #ff3300; --sienna: #ffe1ca;
+  --alert: #ff3300; --muted: #99ccff;
+}
+:root[data-theme="modern-gray"] {
+  --orange: #9ea5ba; --cascade: #41c4f7; --gold: #d2d5df; --peach: #d2d5df; --almond: #6d748c;
+  --lavender: #41c4f7; --pink: #ff6753; --blue: #37a6d1; --red: #e7442a; --sienna: #d2d5df;
+  --alert: #e7442a; --muted: #9ea5ba; --text: #f3f4f7;
+}
+
 * { box-sizing: border-box; }
 html { background: var(--black); scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
@@ -229,6 +257,19 @@ details.cases summary { cursor: pointer; color: var(--gold); letter-spacing: 0.0
 .release pre { white-space: pre-wrap; font-family: var(--font); font-size: 1.08rem; background: none; padding: 0; margin: 8px 0 0; color: var(--text); }
 
 .disclaimer { color: var(--muted); font-size: 0.92rem; max-width: 90ch; }
+
+/* ---------- theme picker ---------- */
+.themes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 8px; }
+.themes .label { color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; margin-right: 4px; }
+.themes button {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 2px 12px 2px 4px;
+  border-radius: var(--radius); border: 2px solid #2c2c3d; background: #0b0b12; color: var(--text);
+  font-family: var(--font); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+}
+.themes button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+.themes .sw { display: inline-flex; height: 24px; border-radius: var(--radius); overflow: hidden; }
+.themes .sw i { width: 10px; height: 100%; }
+.themes .sw i:first-child { width: 14px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {

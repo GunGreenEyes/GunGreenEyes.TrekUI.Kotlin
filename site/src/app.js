@@ -3,6 +3,20 @@
 (function () {
   "use strict";
 
+  // ---------- colour theme (the app's COMMAND sub-themes) ----------
+  const root = document.documentElement;
+  const picks = Array.from(document.querySelectorAll("[data-theme-pick]"));
+  function markTheme(id) {
+    picks.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.themePick === id)));
+  }
+  markTheme(root.dataset.theme || "classic");
+  picks.forEach((b) => b.addEventListener("click", () => {
+    const id = b.dataset.themePick;
+    if (id === "classic") delete root.dataset.theme; else root.dataset.theme = id;
+    markTheme(id);
+    try { localStorage.setItem("trekui-theme", id); } catch (e) { /* private mode: theme lasts this page only */ }
+  }));
+
   // ---------- filters ----------
   const groups = Array.from(document.querySelectorAll(".group[data-device]"));
   const state = { device: "all", orient: "all", api: "all" };
