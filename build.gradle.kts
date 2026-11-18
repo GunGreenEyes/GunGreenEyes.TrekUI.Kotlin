@@ -8,9 +8,9 @@ plugins {
 }
 
 // ./gradlew dist: builds every app (develop debug APK, production release APK + AAB) and copies them into
-// dist/ (gitignored) as <Prefix>-<versionName>-<flavor>-<buildType>.<ext>, e.g. dist/TrekUI-42-production-release.apk,
-// dist/TrekUI-Messages-42-develop-debug.apk, dist/TrekUI-Keyboard-42-production-release.aab. The per-app prefix
-// keeps the four apps' files apart.
+// dist/<versionName>/ as <Prefix>-<versionName>-<flavor>-<buildType>.<ext>, e.g. dist/45/TrekUI-45-production-release.apk,
+// dist/45/TrekUI-Messages-45-develop-debug.apk, dist/45/TrekUI-Keyboard-45-production-release.aab. The per-app prefix
+// keeps the four apps' files apart. dist/ is committed: one folder per released version, so earlier APKs stay available.
 val distApps = linkedMapOf(
     ":app" to "TrekUI",
     ":messages" to "TrekUI-Messages",
@@ -19,7 +19,7 @@ val distApps = linkedMapOf(
 )
 tasks.register<Copy>("dist") {
     group = "distribution"
-    description = "Builds every app's develop debug APK and production release APK + AAB and copies them into dist/."
+    description = "Builds every app's develop debug APK and production release APK + AAB and copies them into dist/<versionName>/."
     val versionName = java.util.Properties()
         .apply { file("version.properties").inputStream().use { load(it) } }
         .getProperty("versionName")
@@ -34,6 +34,6 @@ tasks.register<Copy>("dist") {
             }
         }
     }
-    into(layout.projectDirectory.dir("dist"))
+    into(layout.projectDirectory.dir("dist/$versionName"))
     includeEmptyDirs = false
 }

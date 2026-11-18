@@ -2,7 +2,6 @@
 build/
 .gradle/
 .kotlin/
-dist/
 captures/
 *.apk
 *.aab
