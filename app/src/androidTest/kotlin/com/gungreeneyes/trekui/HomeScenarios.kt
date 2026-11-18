@@ -150,6 +150,18 @@ class HomeScenarios : AppScenario() {
     private fun answerHomeDialog(): Boolean {
         val label = context.applicationInfo.loadLabel(context.packageManager).toString()
         var clicked = false
+        // Android 6.0-9 open Settings > Home: the title sits in its own clickable block that does not select
+        // the row, so press the row's radio button.
+        val row = device.wait(
+            Until.findObject(By.res("com.android.settings", "home_app_pref").hasDescendant(By.text(label))),
+            4000,
+        )
+        val radio = row?.findObject(By.res("com.android.settings", "home_radio"))
+        if (radio != null) {
+            radio.click()
+            SystemClock.sleep(1000)
+            return true
+        }
         if (clickWhenFound(By.text(label), 4000)) {
             clicked = true
             SystemClock.sleep(600)

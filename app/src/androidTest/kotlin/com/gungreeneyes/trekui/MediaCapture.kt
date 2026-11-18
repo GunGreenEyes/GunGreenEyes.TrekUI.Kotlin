@@ -62,7 +62,11 @@ class MediaCapture(private val instrumentation: Instrumentation, private val sce
     /** Starts `screenrecord` in the background; [stopVideo] finalises the mp4. */
     fun startVideo() {
         if (recording != null) return
-        if ("false" == InstrumentationRegistry.getArguments().getString("trekuiVideo")) return
+        // Before Android 8.0 a shell command that cannot start (the API 25 image denies screenrecord to the
+        // UiAutomation shell) crashes the whole instrumentation instead of throwing here; screenshots only.
+        val videoOff = "false" == InstrumentationRegistry.getArguments().getString("trekuiVideo") ||
+            android.os.Build.VERSION.SDK_INT < 26
+        if (videoOff) return
         val file = DEVICE_DIR + "/" + baseName(null) + ".mp4"
         videoFile = file
         val m = realMetrics(instrumentation.targetContext)
