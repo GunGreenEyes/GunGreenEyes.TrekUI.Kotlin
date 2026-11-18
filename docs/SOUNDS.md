@@ -75,6 +75,72 @@ ringtone. Start-up (BootSequence / Stations `boot_start`) falls back to the inte
 Runs that fail partway can be resumed: clips already in the cache are skipped. **DELETE DOWNLOADED
 SOUNDS** removes the whole cache. Imported files (IMPORT FILES / ZIP) are separate and unaffected.
 
+## Sound update channel (mindattic.com)
+
+The project's **own** sounds can be fixed or added without an app update (TUK-T21). The launcher checks
+**`https://mindattic.com/gungreeneyes/trekui/sfx/manifest.json`** first. The base address is written in
+one place, `CoreConfig.SFX_BASE_URL`; the app and the publish script both read it from there. It uses
+the bare host because `https://www.mindattic.com/...` answers **HTTP 301** to the same path on
+`https://mindattic.com/...`, so the app goes straight to the final address. Should a redirect still
+come, the app follows it only to **https** on **mindattic.com or a subdomain**, at most 3 hops
+(`SoundRedirect`); a redirect to plain http or any other host fails the download like being offline.
+
+**Allowlist: only owned audio goes on the server.** That means the synthesized set in
+`core/src/main/assets/sounds/synth/` and anything in `tools/sounds/owned/`, which may hold only
+self-made or properly licensed audio (see its README). The show recordings in the bundled manifest
+(trekcore, MediaCollege, the GitHub mirror and the rest) are **never** uploaded. They stay
+user-downloaded from their original public pages. `publish-sfx.py` enforces this. It collects files only
+from those two folders and refuses a symlink, an unexpected file type, an invalid id, an id that is a
+show-sound id, or a file whose SHA-256 equals any third-party original in the bundled manifest.
+
+**Publish (one command):**
+
+```
+python -I tools/sounds/publish-sfx.py --dry-run   # shows the files, hashes and version; changes nothing
+python -I tools/sounds/publish-sfx.py             # uploads, then verifies over HTTPS
+```
+
+The script writes `manifest.json` (same schema as the bundled one, plus an integer `version` = the
+UTC time as `YYYYMMDDHHMM`, or the live version + 1 if that is higher). Each entry's `source.url` is
+`<base>/<file>` with its `sha256` and `bytes`, and its recipe is the identity (no cut, gain or fades).
+It uploads over FTPS (explicit TLS, `PROT P`) with the credentials in
+`%APPDATA%\MindAttic\Ftp\ftp.json`. The password is never printed or stored in the repo. The sounds go
+first, then `manifest.json` (written under a temp name and renamed). Finally the script GETs the public
+manifest and one sound and checks their SHA-256. On HTTP 403 it adds a minimal `.htaccess` (read
+access, `AddType audio/ogg .ogg`, `application/json .json`). The site's Apache serves the folder as it
+is, so none has been needed so far.
+
+Both editions (TrekUI.Kotlin and TrekUI.Java) read the same channel and bundle the same synthesized set, so one
+publish from either repo serves both; the script is identical in each.
+
+**Hot-fix a sound:** regenerate or replace the file (for a synthesized sound, edit `make_synth.py` and
+rerun it; for a new owned sound, add `tools/sounds/owned/<id>.ogg`), then run the publish command.
+Phones pick the change up on their next check.
+
+**What the app does** (`SoundUpdate` in :core, started by `SoundUpdateCheck` in the launcher):
+
+- **When:** at most once every 24 h from the home screen, and every time the settings open. It runs on a
+  background thread, never the main thread. The throttle tolerates a clock moved backwards.
+- **Fetch:** HTTPS only, through the launcher's `Http` helper (timeouts; redirects only as above). The manifest
+  may be at most 2 MB and each sound at most 5 MB. Requests are plain GETs: no identifier, no analytics.
+- **Accept:** the JSON must be an object with a positive integer `version` and a `sounds` array, in a
+  format the app understands. It is used only when its `version` is higher than the bundled manifest's,
+  and it is then saved in `filesDir/sfx_update/manifest.json`. `SoundCatalog.load` lays it over the
+  bundled manifest: entries replace the bundled ones with the same id and new ids are added.
+- **Sources:** for every sound, https sources on mindattic.com are tried **first**, then the others in
+  manifest order. The SHA-256 check applies to every download.
+- **Owned sounds:** an entry whose every source is on the channel is an owned sound. It needs no opt-in.
+  When its SHA-256 differs from the bundled synthesized asset, the file is downloaded, verified and
+  rendered into the cache (`filesDir/sounds/<id>.wav`), where it overrides the bundled asset (cache →
+  res/raw → synthesized asset → silence). `filesDir/sfx_update/applied.properties` records the hash in
+  use. When the channel matches the bundled asset again, or drops the entry, the override is deleted.
+  Owned sounds are left out of DOWNLOAD SOUND LIBRARY.
+- **Fallbacks:** offline, an HTTP error, a wrong checksum, malformed or oversized JSON: nothing changes
+  and nothing is shown. The bundled and cached sounds keep playing. DELETE DOWNLOADED SOUNDS also
+  removes the overrides; the next check fetches them again.
+- **Keyboard and companions:** the keyboard has no INTERNET permission and never goes online. It, the
+  lock screen and Messages play their bundled and cached sounds only. The channel updates the launcher.
+
 ## Manifest format (`assets/sounds/manifest.json`)
 
 ```json

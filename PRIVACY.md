@@ -1,12 +1,13 @@
 # Privacy Policy: TrekUI Launcher
 
-*Effective: 17 November 2026. Applies to TrekUI Launcher for Android (`com.gungreeneyes.trekui`) and its test build TrekUI Dev (`com.gungreeneyes.trekui.dev`).*
+*Effective: 18 November 2026. Applies to TrekUI Launcher for Android (`com.gungreeneyes.trekui`) and its test build TrekUI Dev (`com.gungreeneyes.trekui.dev`).*
 
 TrekUI Launcher is a home-screen app. It was built to keep your data on your phone.
 
-- **We do not collect, store or sell personal data.** There is no developer server, no user account, no analytics, no advertising, no crash-reporting SDK and no tracking identifier.
+- **We do not collect, store or sell personal data.** There is no developer server that receives data from the app, no user account, no analytics, no advertising, no crash-reporting SDK and no tracking identifier. The one developer address the app reads from is a static folder of the app's own sounds (below).
 - **Your settings stay on your device.** Your layout, settings and sounds live in the app's private storage on your device.
-- **Every network request is one you turned on, and is listed below.** All of them use encrypted HTTPS, except commands to Govee lights on your own Wi-Fi and, if you choose an `http://…local` address, your own Home Assistant on your home network.
+- **Every network request is listed below, and all but one are ones you turned on.** The exception is a check, at most once a day, for updated versions of the app's own sounds. All of them use encrypted HTTPS, except commands to Govee lights on your own Wi-Fi and, if you choose an `http://…local` address, your own Home Assistant on your home network.
+- **Sounds.** The app downloads its own sound files from mindattic.com and, only if you opt in (DOWNLOAD SOUND LIBRARY), recordings from the public sources listed in the app. No personal data is sent: each download is a plain HTTPS GET, so the server sees your IP address as with any web request.
 
 ## What the app reads on your device, and why
 
@@ -33,6 +34,7 @@ Placing calls: if you allow "make phone calls", the console dialer places calls 
 | You set up and use Govee lights | Your Govee lights on your **local Wi-Fi** (UDP multicast, LAN API) and, if you entered a Govee API key, **Govee's cloud API** (`openapi.api.govee.com`) | On/off commands and device IDs; your Govee API key, sent to Govee only | Turn your lights on and off |
 | You set up and use Home Assistant | **Your own Home Assistant** at the address you enter (HTTPS, or plain HTTP only to a `.local` / `.home.arpa` name on your home network) | Your long-lived access token; entity lists, states and commands | Control your lights, switches, climate, scenes and scripts |
 | You link and use a Nest thermostat | **Google** (`www.googleapis.com` OAuth, `smartdevicemanagement.googleapis.com`) | The OAuth authorisation code and tokens from your own Google Device Access project; thermostat readings and commands | Read and set your thermostat |
+| Automatically, at most once a day while the home screen is used, and when you open settings | **mindattic.com** (`mindattic.com/gungreeneyes/trekui/sfx/`), a static file folder run by the developer | A plain HTTPS GET for `manifest.json` and any changed sound file: no identifier, no account, no analytics. Like any web server, it sees your IP address in its access log. | Fix or add the app's own (synthesized) sounds without an app update |
 | You tap DOWNLOAD SOUND LIBRARY | The public web pages listed in the app's sound catalogue and GitHub | Ordinary HTTPS downloads; no personal data | Fetch sound clips, which are then processed and kept on your device |
 | You buy or restore the unlock | **Google Play** (Play Billing) | Handled by Google Play under [Google's privacy policy](https://policies.google.com/privacy). The app receives only whether you own the unlock. | One-time $0.99 unlock |
 | You tap a web search or a link | Your browser | Whatever you search for, handled by your browser | Web search hand-off |

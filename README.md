@@ -219,6 +219,8 @@ Choose the interface in **CONFIG › INTERFACE** (family, then interface), and i
 
 No recordings ship with any app. The launcher plays its own synthesized sounds; recordings can be added with **CONFIG › AUDIO SYSTEMS › DOWNLOAD SOUND LIBRARY** (fetched from public sources, checksum-verified, processed on the phone) or by importing your own files. See [docs/SOUNDS.md](docs/SOUNDS.md).
 
+The launcher's own sounds can be fixed or added without an app update: it checks the sound update channel at `https://mindattic.com/gungreeneyes/trekui/sfx/` (checksum-verified, falls back to the built-in sounds; publish with `python -I tools/sounds/publish-sfx.py`). See [docs/SOUNDS.md](docs/SOUNDS.md#sound-update-channel-mindatticcom).
+
 ## Free to try, $0.99 to keep
 
 - Every app is free, has **no ads and no subscriptions**, and every feature works from the first launch.
@@ -229,11 +231,11 @@ Design and Play policy notes: [docs/MONETIZATION.md](docs/MONETIZATION.md).
 
 ## Permissions and privacy
 
-None of the apps has analytics, ads, accounts or a developer server. Data stays on the device.
+None of the apps has analytics, ads or accounts, and no app sends data to a developer server. Data stays on the device.
 
 | App | Network use | Notable permissions |
 |---|---|---|
-| Launcher | Only what you turn on: weather (Open-Meteo), your Govee / Nest / Home Assistant devices, sound downloads, Google Play for the purchase | optional contacts, call log, calendar and approximate location; notification access (shade, media, badges) if you grant it; call phone |
+| Launcher | What you turn on: weather (Open-Meteo), your Govee / Nest / Home Assistant devices, sound downloads, Google Play for the purchase; plus a daily check of mindattic.com for updated app sounds (a plain GET, no identifier) | optional contacts, call log, calendar and approximate location; notification access (shade, media, badges) if you grant it; call phone |
 | Messages | Google Play Billing only; message content stays in the system SMS/MMS store | SMS and MMS (default SMS handler), contacts (names), phone state (SIM list), notifications |
 | Keyboard | **None**: `INTERNET` is removed from the manifest | the input-method binding and billing |
 | Lock Screen | Google Play Billing only; notifications are held in memory while shown | notification access, optional "display over other apps" |
