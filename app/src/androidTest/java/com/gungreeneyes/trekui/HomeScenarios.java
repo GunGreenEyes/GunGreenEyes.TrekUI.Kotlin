@@ -70,6 +70,8 @@ public class HomeScenarios extends AppScenario {
             }
             scenario.then("it holds the home role");
             assertTrue(scenario.lastStep() + ": still not default home, current " + currentHomePackage(), awaitDefaultHome(5000));
+            // The role flag flips before Android re-routes the Home key; on a loaded device that takes many seconds.
+            awaitHomeResolvesHere(30000);
             scenario.and("pressing Home shows the TrekUI home screen");
             device.pressHome();
             boolean shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 10000);
@@ -111,6 +113,16 @@ public class HomeScenarios extends AppScenario {
             RoleManager rm = context.getSystemService(RoleManager.class);
             if (rm != null && rm.isRoleAvailable(RoleManager.ROLE_HOME)) return rm.isRoleHeld(RoleManager.ROLE_HOME);
         }
+        return false;
+    }
+
+    /** Waits until the HOME intent itself resolves to this app (not just the role flag); false on timeout. */
+    private boolean awaitHomeResolvesHere(long timeoutMs) {
+        long deadline = SystemClock.uptimeMillis() + timeoutMs;
+        do {
+            if (context.getPackageName().equals(currentHomePackage())) return true;
+            SystemClock.sleep(500);
+        } while (SystemClock.uptimeMillis() < deadline);
         return false;
     }
 
