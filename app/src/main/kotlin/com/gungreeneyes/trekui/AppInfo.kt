@@ -99,12 +99,11 @@ internal class AppInfo(
         fun categorize(pkg: String, label: String?, ai: ApplicationInfo?): Int {
             val p = pkg.lowercase(Locale.US)
             val l = label?.lowercase(Locale.getDefault()) ?: ""
+            // declared categories are API 26; Android 6.0-7.1 apps never declare one
+            val declared = declaredCategory(ai)
             if (ai != null) {
                 val flagged = (ai.flags and ApplicationInfo.FLAG_IS_GAME) != 0
-                // declared categories are API 26; Android 6.0-7.1 apps never declare one
-                val declared =
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ai.category == ApplicationInfo.CATEGORY_GAME
-                if (flagged || declared) return CAT_GAMES
+                if (flagged || declared == ApplicationInfo.CATEGORY_GAME) return CAT_GAMES
             }
             if (any(
                     p, "dialer", "messag", ".mms", "contacts", ".email", "android.gm", "whatsapp", "telegram", "thoughtcrime",
@@ -116,8 +115,8 @@ internal class AppInfo(
                 return CAT_COMM
             }
             if (any(p, "maps", "waze", "uber", "lyft", "transit", "navigation", "gps", "airbnb", "expedia", "tripadvisor")) return CAT_NAV
-            if (ai != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                when (ai.category) {
+            if (declared != ApplicationInfo.CATEGORY_UNDEFINED) {
+                when (declared) {
                     ApplicationInfo.CATEGORY_SOCIAL -> return CAT_COMM
                     ApplicationInfo.CATEGORY_AUDIO, ApplicationInfo.CATEGORY_VIDEO, ApplicationInfo.CATEGORY_IMAGE -> return CAT_MEDIA
                     ApplicationInfo.CATEGORY_MAPS -> return CAT_NAV
@@ -150,5 +149,25 @@ internal class AppInfo(
             }
             return CAT_OTHER
         }
+
+        /** The app's declared category, or CATEGORY_UNDEFINED before Android 8.0 or when unknown. */
+        @JvmStatic
+        fun declaredCategory(ai: ApplicationInfo?): Int =
+            if (ai != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Api26.category(ai)
+            } else {
+                ApplicationInfo.CATEGORY_UNDEFINED
+            }
+    }
+
+    /**
+     * The API 26 field read lives in its own class: ART on Android 6.0 crashes (SIGSEGV) in compiled
+     * code that reads a field missing from the platform, even behind an SDK_INT check, while a call
+     * into a class that is only loaded on 8.0+ is safe (TUK-T16).
+     */
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.O)
+    private object Api26 {
+        @JvmStatic
+        fun category(ai: ApplicationInfo): Int = ai.category
     }
 }
