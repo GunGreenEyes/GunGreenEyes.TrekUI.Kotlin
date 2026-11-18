@@ -186,6 +186,12 @@ class HomeScenarios : AppScenario() {
 
     /** Makes `pkg` the home app from the shell (API 29+: role, then on every level the preferred activity). */
     private fun setHomeByShell(pkg: String, component: ComponentName?) {
+        // Android 6.0 has no `cmd` binary, and executing a missing binary through UiAutomation kills the
+        // whole instrumentation ("Error running shell command"); there the chooser's ALWAYS is the only way.
+        if (Build.VERSION.SDK_INT < 24) {
+            Log.i(TAG, "no shell fallback for the home app before Android 7.0")
+            return
+        }
         val c = component?.flattenToString() ?: homeComponentOf(pkg)
         if (Build.VERSION.SDK_INT >= 29) {
             Log.i(TAG, media.shell("cmd role add-role-holder android.app.role.HOME $pkg 0"))
