@@ -21,7 +21,7 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1     # Windows (winget
 bash scripts/setup.sh                                         # macOS (brew), Linux (apt/dnf), Termux (pkg)
 ```
 
-Both scripts are idempotent and finish with a smoke build. Options:
+Both scripts are idempotent and finish with a check build. Options:
 
 | Windows | macOS/Linux/Termux | Effect |
 |---|---|---|
@@ -121,7 +121,7 @@ Generated art is committed under `app/src/main/assets/`, so a build needs no Pyt
 
 | Tool | Output |
 |---|---|
-| `tools/art/*.py`, `render.js`, `build.sh` | Pipe Lounge textures, badges, pictograms and scene hotspot maps |
+| `tools/art/glyph_render.py`, `glyphs_extra.py`, `render.js` | The extended pictogram set (bold stroke glyphs) |
 | `tools/legacy/*.py` | Console glyphs, Warrior Blade font, Quick Panel art, app-theme wallpapers, NavStar device art |
 | `tools/art/retitle_wallpapers.py` | Re-letters the three bundled Command wallpapers |
 | `tools/sounds/*.py` | the sound catalogue `assets/sounds/manifest.json` (see [SOUNDS.md](SOUNDS.md)) |

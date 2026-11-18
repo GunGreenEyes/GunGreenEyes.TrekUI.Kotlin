@@ -1,13 +1,10 @@
-TrekUI Launcher replaces your whole home screen with a starship console. Tiles, dock, app drawer, live panels and dialer are all drawn live on screen in eleven complete interfaces, and every function works the same in each one.
+TrekUI Launcher replaces your whole home screen with a starship console. Tiles, dock, app drawer, live panels and dialer are all drawn live on screen in five complete interfaces, and every function works the same in each one.
 
 STARSHIP INTERFACES
 • Command: curved elbows, solid colour keys and condensed lettering on black. One ACCESS key unfolds into a cascade of app keys.
 • Classic Console and Next Console: the Command layouts redrawn as chunky lamp-lit keys or thin layered glass.
 • Imperial Tactical: hollow double-lined octagons, triangle lattices and blood-red brackets, lettered in Warrior Blade, a typeface drawn for this launcher.
 • Collective: luminous nodes on circuit traces. HUB AND SPOKE arranges every app in orbits around a central hub that always fits the screen.
-
-PIPE LOUNGE INTERFACES
-Six warm, analogue interfaces in walnut, brass, leather and lacquer: The Tobacconist, Ember Lounge, Blend Journal, and three painted scenes (Ember & Briar, Tobacconist's Ledger, Midnight Ember) where the furniture is the launcher. A pipe register, blend catalogue, smoking journal and session clock are built in.
 
 LIVE PANELS
 • Chronometer with stardate, next alarm and battery

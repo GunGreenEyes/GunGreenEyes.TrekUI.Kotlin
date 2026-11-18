@@ -218,7 +218,7 @@ def feature_graphic(ss=2):
     d.text((x0, 148 * s), "TREKUI", font=title_font, fill=ORANGE)
     mid_font = sub_font.font_variant(size=76 * s) if hasattr(sub_font, "font_variant") else sub_font
     d.text((x0, 260 * s), "LAUNCHER", font=mid_font, fill=PEACH)
-    d.text((x0 + 4 * s, 356 * s), "ELEVEN INTERFACES  ·  ONE HOME SCREEN", font=sub_font, fill=LAVENDER)
+    d.text((x0 + 4 * s, 356 * s), "FIVE INTERFACES  ·  ONE HOME SCREEN", font=sub_font, fill=LAVENDER)
     return img.resize((1024, 500), Image.LANCZOS)
 
 

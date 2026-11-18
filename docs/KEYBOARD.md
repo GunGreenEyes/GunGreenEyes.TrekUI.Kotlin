@@ -8,8 +8,8 @@ without the launcher installed.
 ## Features
 
 - **Every interface:** keys are painted with the active interface's own cell drawables (`Ui.shape` /
-  `Skin.cell`), so they look like the launcher's controls in Command, Imperial, Collective, Classic and Next
-  Console and the Pipe Lounge styles, in the chosen sub-theme. With the launcher installed the keyboard
+  `Skin.cell`), so they look like the launcher's controls in Command, Imperial, Collective, Classic Console
+  and Next Console, in the chosen sub-theme. With the launcher installed the keyboard
   follows its interface and sub-theme (`SuiteClient.launcherTheme`, re-read at most every 15 s while typing
   and on every resume of the settings screen); without it, settings › INTERFACE has its own picker.
 - **Pages:** letters, two symbol pages (`?123`, `=\<`), a number pad (number and date/time fields) and a dial

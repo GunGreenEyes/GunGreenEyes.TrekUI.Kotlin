@@ -1,6 +1,6 @@
 # TrekUI
 
-A suite of four Android apps (a home-screen launcher, an SMS/MMS app, a keyboard and a lock-screen wake screen), written in pure Java and drawn entirely in code on a Canvas, in the same set of console and Pipe Lounge interfaces.
+A suite of four Android apps (a home-screen launcher, an SMS/MMS app, a keyboard and a lock-screen wake screen), written in pure Java and drawn entirely in code on a Canvas, in the same set of starship-console interfaces.
 
 **Version 43** · [Project site](https://gungreeneyes.github.io/TrekUI.Java/) · [Privacy policy](https://gungreeneyes.github.io/TrekUI.Java/privacy.html) ([PRIVACY.md](PRIVACY.md)) · [Releases](https://github.com/GunGreenEyes/TrekUI.Java/releases) · [Changelog](CHANGELOG.md)
 
@@ -27,15 +27,12 @@ All four share one `:core` library (look, fonts, sounds, licensing, the suite co
 
 | App | Module | Package (develop build) | What it is |
 |---|---|---|---|
-| **TrekUI Launcher** | `:app` | `com.gungreeneyes.trekui` (`…trekui.dev`) | A full home-screen launcher: home, app drawer, search, pull-down shade, dialer, live panels, widgets and start-up sequences, in eleven interfaces with sub-themes. |
+| **TrekUI Launcher** | `:app` | `com.gungreeneyes.trekui` (`…trekui.dev`) | A full home-screen launcher: home, app drawer, search, pull-down shade, dialer, live panels, widgets and start-up sequences, in five interfaces with sub-themes. |
 | **TrekUI Messages** | `:messages` | `com.gungreeneyes.trekui.messages` (`….messages.dev`) | A complete default SMS/MMS app: conversations, picture messages, search, drafts, blocking, dual SIM, notifications with inline reply. |
 | **TrekUI Keyboard** | `:keyboard` | `com.gungreeneyes.trekui.keyboard` (`….keyboard.dev`) | An on-screen keyboard (input method) in four layouts, with no internet permission at all. |
 | **TrekUI Lock Screen** | `:lockscreen` | `com.gungreeneyes.trekui.lockscreen` (`….lockscreen.dev`) | A wake screen shown over Android's lock screen. Unlocking always goes through Android's own PIN, pattern or biometric: it is a look, not a lock. |
 
-The interfaces:
-
-- **Starship:** COMMAND (11 colour themes), CLASSIC CONSOLE and NEXT CONSOLE (3 each), IMPERIAL (5) and COLLECTIVE (5).
-- **Pipe Lounge:** The Tobacconist, Ember Lounge and Blend Journal (drawn), and Ember & Briar, Tobacconist's Ledger and Midnight Ember (painted scenes).
+The five interfaces, all starship consoles: COMMAND (11 colour themes), IMPERIAL (5), COLLECTIVE (5), CLASSIC CONSOLE and NEXT CONSOLE (3 each).
 
 ## Supported devices
 
@@ -169,9 +166,9 @@ adb uninstall com.gungreeneyes.trekui.lockscreen
 
 ### TrekUI Launcher
 
-Choose the interface in **CONFIG › INTERFACE** (family, then interface), and its colour theme from a preview strip. Every function works the same in all eleven interfaces; only geometry, lettering, colours and materials change.
+Choose the interface in **CONFIG › INTERFACE** (family, then interface), and its colour theme from a preview strip. Every function works the same in all five interfaces; only geometry, lettering and colours change.
 
-- **Home layouts:** a classic console frame, or press-to-deploy homes (COMMAND / CLASSIC / NEXT CONSOLE CASCADE, IMPERIAL TACTICAL DEPLOY, COLLECTIVE TRACE COLUMN or HUB AND SPOKE). Painted-scene Pipe homes map launcher slots onto the painting, with live overlays and the collection pages (pipe register, blend catalogue, journal, ritual and session clock, reference shelves, export/import), stored only on the device.
+- **Home layouts:** a classic console frame, or press-to-deploy homes (COMMAND / CLASSIC / NEXT CONSOLE CASCADE, IMPERIAL TACTICAL DEPLOY, COLLECTIVE TRACE COLUMN or HUB AND SPOKE).
 - **Launcher basics:** the full app list via `LauncherApps` (work profile and Secure Folder included), search, categories, hidden apps, uninstall, app shortcuts, clip-reveal launch animations.
 - **Assignable everything:** long-press any tile, dock slot, elbow, bar segment, code block, title, clock or date to assign an app or launcher function, rename, recolour or give it a sound.
 - **Live panels** (refreshing only while home is visible): chronometer with optional stardate, power, weather (Open-Meteo), calendar, media, ship systems, and up to 12 Android widget panels.
@@ -283,7 +280,8 @@ core/                shared library: look, fonts, sounds, licensing, suite contr
 messages/            TrekUI Messages: default SMS/MMS app
 keyboard/            TrekUI Keyboard: input method
 lockscreen/          TrekUI Lock Screen: wake screen over the keyguard
-app/src/main/assets/ fonts, pictograms, faction badges, pipe art and scenes, sound manifest
+app/src/main/assets/ faction badges, quick-panel and app-theme art, wallpapers
+core/src/main/assets/ fonts, pictograms, synthesized sounds
 app/src/test/        JVM + Robolectric unit and screenshot tests
 app/src/androidTest/ instrumented Given/When/Then scenarios with screen capture
 dist/                ./gradlew dist output (gitignored)
@@ -315,12 +313,11 @@ Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md); agents read [CLAUDE.md](CL
 
 ## Credits and licences
 
-- **Fonts** (licence texts in `app/src/main/assets/fonts/`):
-  - SIL Open Font License 1.1: Antonio (Vernon Adams), Oxanium (Severin Meyer), Share Tech (Carrois Apostrophe), Cinzel, Cormorant Garamond, Federo, IM Fell English, Josefin Sans, Limelight and Rye.
-  - Apache License 2.0: Special Elite.
+- **Fonts** (licence texts in `core/src/main/assets/fonts/`):
+  - SIL Open Font License 1.1: Antonio (Vernon Adams), Oxanium (Severin Meyer), Share Tech (Carrois Apostrophe) and Josefin Sans.
   - *Warrior Blade* is original to this project. It is generated by `tools/legacy/make_blade_font.py`.
 - **Weather:** [Open-Meteo.com](https://open-meteo.com/), with data under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Location search uses the Open-Meteo Geocoding API.
-- **Pipe Lounge art:** the painted scenes, art and data model come from the project owner's PIPE_COLLECTION v3 artwork and prototype; the textures, badges and pictograms are generated by `tools/art/`.
+- **Pictograms:** the extended pictogram set is generated by `tools/art/`.
 - **Imperial and Collective:** the badges, palettes and audio profiles come from the owner-supplied faction artwork bundle. No third-party emblem or script is reproduced; the look comes from original geometry.
 - **Third-party sounds:** not included. They are downloaded on the user's request from the public sources listed in the sound manifest, and remain the property of their owners.
 - **Original work:** the interfaces, lettering and sounds are this project's own designs.

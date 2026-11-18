@@ -467,22 +467,13 @@ ${inner}
 // ------------------------------------------------------------------------------------------ index
 const FAMILIES = [
   {
-    name: "Starship interfaces", blurb: "Three complete interfaces with their own geometry, lettering and colour, plus the Classic and Next consoles. Every function works in all of them.",
+    name: "Starship interfaces", blurb: "Five complete starship consoles, each with its own geometry, lettering and colour. Every function works in all of them.",
     items: [
       ["command", "Command", "Command", "Curved elbows, solid colour keys and the Antonio typeface on black. The ACCESS key unfolds into the CONSOLE CASCADE: a segmented spine with tile keys extending left and right."],
       ["imperial", "Imperial", "Imperial tactical", "Hollow double-lined octagons, triangle lattices and blood-red brackets, lettered in Warrior Blade, a font drawn for the launcher. DEPLOY slides the tiles out as an arrowhead."],
       ["collective", "Collective", "Collective", "No hard edges: luminous nodes on circuit traces. HUB AND SPOKE packs every app into orbits around a central hub that always fits the screen without scrolling."],
-    ],
-  },
-  {
-    name: "Pipe Lounge interfaces", blurb: "Six warm, analogue interfaces in walnut, brass, leather and lacquer, with a pipe register, blend catalogue and smoking journal built in.",
-    items: [
-      ["pipe", "The Tobacconist", "Pipe Lounge", "A shop counter of brass labels and briar wood, with the apps on drawer fronts."],
-      ["pipe2", "Ember Lounge", "Pipe Lounge", "Low light and ember glow: a lounge chair view of your apps and panels."],
-      ["pipe3", "Blend Journal", "Pipe Lounge", "Kraft paper and fountain-pen ink; tasting notes sit beside the home tiles."],
-      ["pipe", "Ember & Briar", "Painted scene", "A painted lounge where the furniture is the launcher: tap the pipe rack, the lamp, the ledger."],
-      ["pipe2", "Tobacconist's Ledger", "Painted scene", "Leather, kraft and ruled columns. The register, catalogue and session clock live here."],
-      ["pipe3", "Midnight Ember", "Painted scene", "Black lacquer and gilt for night use, with live overlays on the painting."],
+      ["classic", "Classic Console", "23rd-century style", "The Command layouts redrawn as chunky, lamp-lit keys with blinking indicator lamps, lettered in Josefin Sans."],
+      ["next", "Next Console", "25th-century style", "The Command layouts redrawn as thin, layered glass panels."],
     ],
   },
 ];
@@ -629,10 +620,10 @@ ${f.items.map(([cls, name, tag, text]) => `    <li class="card ${cls}"><span cla
 <section class="hero" id="overview" aria-labelledby="hero-h">
   <div>
     <h2 id="hero-h">Your phone, <em>re-skinned</em> as a starship console</h2>
-    <p>TrekUI Launcher replaces the whole home screen: tiles, dock, app drawer, panels and dialer, drawn live in eleven
-    interfaces from a starship command console to a briar-and-brass pipe lounge.</p>
+    <p>TrekUI Launcher replaces the whole home screen: tiles, dock, app drawer, panels and dialer, drawn live in five
+    starship-console interfaces, from the Command cascade to the Imperial and Collective decks.</p>
     <ul class="chips" aria-label="At a glance">
-      <li>9 interfaces</li><li>Android 8.0+</li><li>Phone · tablet · foldable</li><li>No ads · no tracking</li>
+      <li>5 interfaces</li><li>Android 8.0+</li><li>Phone · tablet · foldable</li><li>No ads · no tracking</li>
     </ul>
     <div class="pills">
       <a class="pill" href="#download">Download</a>
@@ -643,7 +634,7 @@ ${f.items.map(([cls, name, tag, text]) => `    <li class="card ${cls}"><span cla
   <div class="hero-art">${art}</div>
 </section>
 
-${section("interfaces", "Interfaces", "orange", "01-09", `<p class="lede">Pick an interface family in CONFIG › INTERFACE. Only geometry, lettering and colour change, so each one stays recognisable even in greyscale.</p>
+${section("interfaces", "Interfaces", "orange", "01-05", `<p class="lede">Pick an interface family in CONFIG › INTERFACE. Only geometry, lettering and colour change, so each one stays recognisable even in greyscale.</p>
 <div class="families">
 ${families}
 </div>`)}
@@ -669,7 +660,7 @@ ${section("download", "Download", "gold", `v${version.versionName || ""}`, `<p c
   <a class="pill pink" href="changelog.html">What's new</a>
 </div>`)}
 `;
-  return page({ file: "index.html", title: "TrekUI Launcher", description: "An Android home-screen launcher in Command, Imperial, Collective, console-era and Pipe Lounge interfaces.", body, version });
+  return page({ file: "index.html", title: "TrekUI Launcher", description: "An Android home-screen launcher in Command, Imperial, Collective, Classic Console and Next Console interfaces.", body, version });
 }
 
 function privacyPage(ctx) {

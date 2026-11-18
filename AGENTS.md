@@ -7,10 +7,8 @@ This guide is for Claude Code (terminal, web or phone app), Cowork, Codex and an
 TrekUI Launcher is an Android **home-screen launcher**, package `com.gungreeneyes.trekui`.
 
 - **Code style:** pure Java (Java 17 language level). All views are custom and drawn on a Canvas. There are **no XML layouts**.
-- **Eleven interfaces** chosen by `Skin.faction`:
-  - 0–2 and 9–10: starship consoles (Command, Imperial, Collective; Classic Console 9, Next Console 10);
-  - 3–5: drawn Pipe Lounge (Tobacconist, Ember Lounge, Blend Journal);
-  - 6–8: painted Pipe Lounge scenes (Ember & Briar, Tobacconist's Ledger, Midnight Ember).
+- **Five interfaces**, all starship consoles, chosen by `Skin.faction`: Command 0, Imperial 1, Collective 2, Classic Console 9 and Next Console 10.
+  - Ids 3–8 are retired; a saved choice of one reads as Command (sub-theme 0).
 - **Entry points:** `MainActivity` (the HOME activity) builds everything. `SettingsActivity` is CONFIG.
 - **Architecture:** see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
@@ -70,7 +68,7 @@ scripts/release/ship.sh --track internal          # Windows: .\scripts\release\s
    - Use named constants, such as `TypedValue.COMPLEX_UNIT_SP` instead of `2`.
    - Avoid deprecated APIs; guard newer ones with `Build.VERSION`.
    - Don't keep Activity contexts in static fields.
-6. **Every interface.** A feature must work in all eleven interfaces. Follow how `Skin`, `PipeDraw`, `ImperialDraw` and `CollectiveDraw` branch.
+6. **Every interface.** A feature must work in all five interfaces. Follow how `Skin`, `ImperialDraw` and `CollectiveDraw` branch.
 7. **Keep behaviour** unless you are fixing a bug. Say which bugs you fixed in the commit message.
 
 ## Tickets and commits
@@ -85,7 +83,7 @@ scripts/release/ship.sh --track internal          # Windows: .\scripts\release\s
 | What | Where |
 |---|---|
 | App code | `app/src/main/java/com/gungreeneyes/trekui/`; licensing in `…/licensing/` |
-| Bundled app assets (fonts, glyphs, pipe art, sound manifest) | `app/src/main/assets/` |
+| Bundled app assets (fonts, glyphs, sound manifest) | `app/src/main/assets/` |
 | Unit tests (`<Class>Test.java`, same package) | `app/src/test/java/com/gungreeneyes/trekui/` |
 | Instrumented scenarios | `app/src/androidTest/java/…` (`*Scenarios`); Gherkin text in `app/src/androidTest/assets/features/*.feature` |
 | Generated screenshots, videos and test media | **root `assets/`** (`assets/robolectric/`, `assets/<device>-api<N>/`). Gitignored, published to GitHub Pages by CI |

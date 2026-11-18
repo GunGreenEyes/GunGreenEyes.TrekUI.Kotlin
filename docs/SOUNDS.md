@@ -45,14 +45,13 @@ Every interface has a sound for every event out of the box, each from its own sy
 | Console (Command and the two extra eras) | `synth_*` | clean sine/FM beeps, chirps, chimes, klaxon |
 | Imperial | `synth_kl_*` | harsh and low: FM metal-plate clangs, tanh-driven square tones, alternating 350/260 Hz alarm |
 | Collective | `synth_bg_*` | cold and digital: quantised pure-sine clicks, data bursts, 55 Hz drone, modem-like FSK, gated drone alarm |
-| Lounge (the six pipe interfaces) | `synth_pp_*` | warm and analogue: soft wood knock and brass click taps, page rustle (band-limited noise), match strike (crackle and hiss) for launch, gentle chime (confirm), low thud (error), mellow bell (comms), two-bell alarm, warm pad swell at start-up |
 
 Each family has 4 tap beeps (the console set has 6) plus nav, launch, confirm, error, comms, diag,
 a seamless 1.0 s `red_alert` loop, and `boot`. Imperial and Collective keep the library clips the 5.x
 bundle chose for some events (for example `ui_denied` or the Collective computer); with the library
 missing, those events fall back to the family's synthesized clip. The user can still set any event
 to SILENT. The synthesized clips are listed in the sound library under SYNTHESIZED, SYNTHESIZED
-IMPERIAL, SYNTHESIZED COLLECTIVE and SYNTHESIZED LOUNGE, so they can be assigned anywhere or exported as a
+IMPERIAL and SYNTHESIZED COLLECTIVE, so they can be assigned anywhere or exported as a
 ringtone. Start-up (BootSequence / Stations `boot_start`) falls back to the interface's synthesized
 `boot` sound.
 

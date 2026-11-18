@@ -53,7 +53,7 @@ powershell -File scripts/capture/build-index.ps1     # refresh index.json
 ```
 
 `--rerun` matters: the env var is not a Gradle input, so without it an up-to-date test task
-is skipped and nothing is rendered. Renders all 14 interfaces at 11 screen configurations (5:3 mdpi to 21:9 xxhdpi, foldable 6:5, 7"
+is skipped and nothing is rendered. Renders all 8 interface variants (the five interfaces plus the Command, Imperial and Collective deploying layouts) at 11 screen configurations (5:3 mdpi to 21:9 xxhdpi, foldable 6:5, 7"
 and 4:3 tablets, landscape) with Robolectric native graphics into `assets/robolectric/`.
 
 ## Scenario ids and test arguments

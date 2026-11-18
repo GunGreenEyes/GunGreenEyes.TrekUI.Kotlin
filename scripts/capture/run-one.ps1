@@ -188,7 +188,6 @@ try {
             $slices += ,@('-e', 'class', "com.gungreeneyes.trekui.$cls")
         }
         foreach ($iface in @('COMMAND', 'COMMAND_REVEAL', 'IMPERIAL', 'IMPERIAL_REVEAL', 'COLLECTIVE', 'COLLECTIVE_HUB',
-                             'PIPE_TOBACCONIST', 'PIPE_LOUNGE', 'PIPE_JOURNAL', 'PIPE_BRIAR', 'PIPE_LEDGER', 'PIPE_MIDNIGHT',
                              'CLASSIC_CONSOLE', 'NEXT_CONSOLE')) {
             # Single quotes: adb hands the line to the device shell, which would expand * and [ ].
             $slices += ,@('-e', 'tests_regex', "'.*InterfaceScenarios.*\[$iface\].*'")

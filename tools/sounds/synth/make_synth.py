@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Generate the launcher's ORIGINAL synthesized sound sets: the default console set (synth_*),
-Imperial-style harsh/metallic (synth_kl_*), Collective-style cold digital/drone (synth_bg_*) and the warm
-analogue lounge set for the six pipe interfaces (synth_pp_*: wood knock, brass click, page rustle,
-match strike, chime, thud, bell).
+Imperial-style harsh/metallic (synth_kl_*) and Collective-style cold digital/drone (synth_bg_*).
 
 Every sample is computed here from sine / FM oscillators, simple waveshaping and seeded filtered
 noise. No recording, sample or third-party audio is used, so the output may be committed and
@@ -356,97 +354,6 @@ def bg_boot():
     return mix(x * 0.7, cat(silence(0.7), bg_burst(2005, 10)))
 
 
-# ---------------------------------------------------------------- Lounge family: warm, analogue, acoustic-like
-
-def wood_knock(f, seed):
-    """Damped low resonance + a short low-passed noise click: a soft knock on wood."""
-    body = beep(f, 0.09, decay=0.022, harm=(1.0, 0.25))
-    click = noise(0.09, seed, 2500) * env_ad(int(0.09 * SR), attack=0.0005, decay=0.004)
-    return body + 0.6 * click
-
-
-def brass_click(f, seed):
-    """Short inharmonic partials: a small brass latch."""
-    n = int(0.06 * SR)
-    x = np.zeros(n)
-    for k, r in enumerate((1.0, 1.62, 2.38)):
-        x += (0.7 ** k) * np.sin(2 * np.pi * f * r * np.arange(n) / SR) * env_ad(n, attack=0.0005, decay=0.012 / (1 + k))
-    return x + 0.3 * noise(0.06, seed, 6000) * env_ad(n, attack=0.0005, decay=0.002)
-
-
-def pp_tap(i):
-    return [lambda: wood_knock(240.0, 31), lambda: brass_click(2100.0, 32),
-            lambda: wood_knock(300.0, 33), lambda: brass_click(2450.0, 34)][i]()
-
-
-def band_noise(sec, seed, lo, hi):
-    """Crude band-pass: difference of two one-pole low-passes."""
-    n = noise(sec, seed, 20000)
-    return lowpass(n, hi) - lowpass(n, lo)
-
-
-def pp_nav():
-    """Page turn: band-limited noise with a jagged, rising-then-falling envelope."""
-    sec = 0.26
-    t = t_axis(sec)
-    rng = np.random.default_rng(35)
-    jag = np.repeat(rng.uniform(0.5, 1.0, int(sec * 100) + 1), SR // 100)[:len(t)]
-    env = np.sin(np.pi * t / sec) ** 1.5 * jag
-    return band_noise(sec, 36, 700, 4500) * env
-
-
-def pp_launch():
-    """Match strike: a crackling burst, then a soft decaying hiss."""
-    burst = band_noise(0.07, 37, 1500, 9000) * env_ad(int(0.07 * SR), attack=0.001, decay=0.025)
-    rng = np.random.default_rng(38)
-    crackle = np.zeros(int(0.07 * SR))
-    crackle[rng.integers(0, len(crackle), 25)] = rng.uniform(-1, 1, 25)
-    hiss = band_noise(0.45, 39, 300, 3000) * env_ad(int(0.45 * SR), attack=0.02, decay=0.15) * 0.5
-    return cat(burst + 0.2 * crackle, hiss)
-
-
-def soft_bell(f, sec, decay, ratio=3.5, index=0.6):
-    x = tone(f, sec, harm=(1.0, 0.08), fm_ratio=ratio, fm_index=index)
-    return x * env_ad(len(x), attack=0.006, decay=decay)
-
-
-def pp_confirm():
-    return mix(soft_bell(1046.5, 0.6, 0.18, ratio=2.0, index=0.3), cat(silence(0.1), soft_bell(1568.0, 0.55, 0.16, ratio=2.0, index=0.3)))
-
-
-def pp_error():
-    """Low thud: a falling-pitch sine body with a little muffled noise."""
-    sec = 0.18
-    t = t_axis(sec)
-    f = 95 * np.exp(-t / 0.08) + 55
-    body = tone(f, sec, harm=(1.0, 0.2)) * env_ad(len(t), attack=0.001, decay=0.05)
-    return body + 0.3 * noise(sec, 40, 600) * env_ad(len(t), attack=0.001, decay=0.015)
-
-
-def pp_comms():
-    return mix(soft_bell(659.3, 0.9, 0.3), cat(silence(0.22), soft_bell(830.6, 0.8, 0.28)))
-
-
-def pp_diag():
-    return cat(wood_knock(260.0, 41), silence(0.08), wood_knock(260.0, 42), silence(0.08), wood_knock(330.0, 43))
-
-
-def pp_red_alert():
-    """Seamless 1.0 s loop: two mellow bell strikes that die away before the loop point."""
-    a = soft_bell(587.3, 0.5, 0.09, ratio=2.0, index=0.4)
-    b = soft_bell(440.0, 0.5, 0.09, ratio=2.0, index=0.4)
-    return cat(a, b)
-
-
-def pp_boot():
-    """Warm pad swell (C3 / G3 / E4, soft harmonics) under a little room noise."""
-    sec = 1.3
-    t = t_axis(sec)
-    pad = sum(tone(f, sec, harm=(1.0, 0.3, 0.1)) for f in (130.8, 196.0, 329.6))
-    env = np.clip(t / 0.6, 0, 1) * np.clip((sec - t) / 0.35, 0, 1)
-    return lowpass(pad * env, 2500) + 0.08 * noise(sec, 44, 1200) * env
-
-
 SOUNDS = {
     'synth_tap_1': lambda: snd_tap(0), 'synth_tap_2': lambda: snd_tap(1), 'synth_tap_3': lambda: snd_tap(2),
     'synth_tap_4': lambda: snd_tap(3), 'synth_tap_5': lambda: snd_tap(4), 'synth_tap_6': lambda: snd_tap(5),
@@ -455,14 +362,13 @@ SOUNDS = {
 }
 for _fam, _tap, _fns in (
         ('kl', kl_tap, (kl_nav, kl_launch, kl_confirm, kl_error, kl_comms, kl_diag, kl_red_alert, kl_boot)),
-        ('bg', bg_tap, (bg_nav, bg_launch, bg_confirm, bg_error, bg_comms, bg_diag, bg_red_alert, bg_boot)),
-        ('pp', pp_tap, (pp_nav, pp_launch, pp_confirm, pp_error, pp_comms, pp_diag, pp_red_alert, pp_boot))):
+        ('bg', bg_tap, (bg_nav, bg_launch, bg_confirm, bg_error, bg_comms, bg_diag, bg_red_alert, bg_boot))):
     for _i in range(4):
         SOUNDS['synth_%s_tap_%d' % (_fam, _i + 1)] = (lambda f, i: (lambda: f(i)))(_tap, _i)
     for _part, _fn in zip(('nav', 'launch', 'confirm', 'error', 'comms', 'diag', 'red_alert', 'boot'), _fns):
         SOUNDS['synth_%s_%s' % (_fam, _part)] = _fn
 # no fades/trim beyond what the generator does: these must loop seamlessly
-LOOPS = {'synth_red_alert', 'synth_kl_red_alert', 'synth_bg_red_alert', 'synth_pp_red_alert'}
+LOOPS = {'synth_red_alert', 'synth_kl_red_alert', 'synth_bg_red_alert'}
 
 
 # ---------------------------------------------------------------- processing / encoding
