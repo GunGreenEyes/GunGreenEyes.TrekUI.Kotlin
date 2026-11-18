@@ -1,39 +1,60 @@
-# Release pipeline (tag v* or manual):
-#   build     - checks the tag matches version.properties, runs all unit tests, builds the production
-#               release AAB + APK signed with the Play upload key, verifies the signature
-#   emulator  - full emulator matrix with screenshots + video
-#   github    - GitHub Release with APK, AAB, mapping.txt, changelog and site-media.zip
-#   play      - uploads the AAB (+ mapping, release notes) to Google Play (default track: internal);
-#               promotion to production is done by hand in Play Console
+# Release pipeline for the whole TrekUI suite (manual: scripts/release/ship.*, or Actions › Release ›
+# Run workflow, also from the GitHub mobile app). One run builds, signs and uploads all four apps with one
+# shared versionCode/versionName from version.properties:
+#   launcher (:app)  com.gungreeneyes.trekui              TrekUI-<ver>.apk / .aab
+#   messages         com.gungreeneyes.trekui.messages     TrekUI-Messages-<ver>.apk / .aab
+#   keyboard         com.gungreeneyes.trekui.keyboard     TrekUI-Keyboard-<ver>.apk / .aab
+#   lockscreen       com.gungreeneyes.trekui.lockscreen   TrekUI-LockScreen-<ver>.apk / .aab
+#
+#   prepare   - optional version bump on the runner (input `bump`), for phone-only releases
+#   build     - checks a tag ref matches version.properties, runs all unit tests, builds every app's
+#               production release AAB + APK signed with the Play upload key, verifies every signature
+#               is the same non-debug key
+#   emulator  - full emulator matrix with screenshots + video (launcher)
+#   github    - one GitHub Release with every APK, AAB and mapping file, changelog and site-media.zip
+#   play      - uploads each app's AAB (+ mapping, release notes) to Google Play, one matrix leg per app.
+#               Production uploads run in the `google-play` environment (required reviewers = the
+#               approval gate); testing tracks run in `google-play-testing` (no reviewers needed)
+#   listing   - optional: pushes each app's store listing (fastlane/metadata/<app>/android)
 #   pages     - rebuilds + deploys the GitHub Pages site with this release's media
 #
+# The run is started by workflow_dispatch only: scripts/release/ship.* pushes the tag and then dispatches
+# this workflow on that tag with the chosen track, so a tag push alone never uploads anything.
+#
 # Secrets: TREKUI_KEYSTORE_BASE64, TREKUI_STORE_PASSWORD, TREKUI_KEY_ALIAS, TREKUI_KEY_PASSWORD,
-#          PLAY_SERVICE_ACCOUNT_JSON   (scripts/release/create-upload-key.* prints the gh commands)
+#          PLAY_SERVICE_ACCOUNT_JSON   (repository secrets; see docs/RELEASE.md)
 name: Release
 
 on:
-  push:
-    tags: ['v*']
   workflow_dispatch:
     inputs:
       track:
-        description: Google Play track
+        description: Google Play track (production waits for approval in the google-play environment)
         type: choice
-        options: [internal, alpha, beta]
+        options: [internal, alpha, beta, production]
         default: internal
+      rollout:
+        description: Production rollout fraction, 0 < x <= 1 (e.g. 0.1 = 10%; ignored for testing tracks)
+        type: string
+        default: '0.1'
       status:
-        description: Play release status (use draft until the app's first release is published in Play Console)
+        description: Play release status (draft until an app's first release is published in Play Console)
         type: choice
         options: [completed, draft]
         default: completed
       upload-to-play:
-        description: Upload the AAB to Google Play
+        description: Upload the AABs to Google Play
         type: boolean
         default: true
       update-listing:
-        description: Also push the store listing text + screenshots (fastlane supply)
+        description: Also push each app's store listing text + images (fastlane supply)
         type: boolean
         default: false
+      bump:
+        description: Bump the version first (phone-only release; ship.* already bumps, so leave none there)
+        type: choice
+        options: [none, patch, minor, major]
+        default: none
 
 concurrency:
   group: release-${{ github.ref }}
@@ -42,20 +63,54 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  PACKAGE_NAME: com.gungreeneyes.trekui
-
 jobs:
-  build:
-    name: Signed production build
+  prepare:
+    name: Version
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.out.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v5
+        if: ${{ inputs.bump != 'none' }}
+        with:
+          fetch-depth: 0
+
+      - name: Bump, changelog, commit, tag, push (no second dispatch)
+        if: ${{ inputs.bump != 'none' }}
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          if [ "$GITHUB_REF_TYPE" != "branch" ] || [ "$GITHUB_REF_NAME" != "main" ]; then
+            echo "::error::bump needs the workflow run on main (it was run on $GITHUB_REF_NAME)"; exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          bash scripts/release/ship.sh "$BUMP" --no-dispatch
+
+      - name: Commit to build
+        id: out
+        run: |
+          if [ -d .git ]; then sha=$(git rev-parse HEAD); else sha="$GITHUB_SHA"; fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Building $sha"
+
+  build:
+    name: Signed production builds
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
     outputs:
       version-name: ${{ steps.version.outputs.name }}
       version-code: ${{ steps.version.outputs.code }}
       tag: ${{ steps.version.outputs.tag }}
+      sha: ${{ needs.prepare.outputs.sha }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
 
       - name: Read version.properties
         id: version
@@ -95,7 +150,8 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload.jks"
           echo "TREKUI_STORE_FILE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
 
-      - name: Unit tests + signed AAB/APK
+      # No module prefix: every app module (:app, :messages, :keyboard, :lockscreen) builds its variants.
+      - name: Unit tests + signed AABs/APKs (all apps)
         env:
           TREKUI_SCREENSHOTS: '1'
           TREKUI_STORE_PASSWORD: ${{ secrets.TREKUI_STORE_PASSWORD }}
@@ -106,26 +162,43 @@ jobs:
           testDevelopDebugUnitTest testProductionDebugUnitTest
           bundleProductionRelease assembleProductionRelease assembleDevelopDebug
 
-      - name: Verify signature (must not be the debug key)
-        run: |
-          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n1)apksigner"
-          apk=$(ls app/build/outputs/apk/production/release/*.apk | head -n1)
-          "$apksigner" verify --print-certs "$apk" | tee "$RUNNER_TEMP/certs.txt"
-          if grep -qi 'CN=Android Debug' "$RUNNER_TEMP/certs.txt"; then
-            echo "::error::Release APK is signed with the debug key"; exit 1
-          fi
-
-      - name: Collect release files
+      - name: Verify signatures + collect release files
         env:
           NAME: ${{ steps.version.outputs.name }}
           CODE: ${{ steps.version.outputs.code }}
         run: |
-          mkdir -p dist
-          cp app/build/outputs/apk/production/release/*.apk "dist/TrekUI-$NAME.apk"
-          cp app/build/outputs/bundle/productionRelease/*.aab "dist/TrekUI-$NAME.aab"
-          cp app/build/outputs/mapping/productionRelease/mapping.txt "dist/TrekUI-$NAME-mapping.txt"
-          notes="fastlane/metadata/android/en-US/changelogs/$CODE.txt"
-          if [ -f "$notes" ]; then cp "$notes" dist/CHANGELOG.txt; else echo "TrekUI $NAME" > dist/CHANGELOG.txt; fi
+          set -euo pipefail
+          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -n1)apksigner"
+          mkdir -p dist/whatsnew
+          : > dist/CHANGELOG.txt
+          first_cert=""
+          # module:file-prefix:metadata-dir:display-name
+          for entry in "app:TrekUI:launcher:TrekUI Launcher" \
+                       "messages:TrekUI-Messages:messages:TrekUI Messages" \
+                       "keyboard:TrekUI-Keyboard:keyboard:TrekUI Keyboard" \
+                       "lockscreen:TrekUI-LockScreen:lockscreen:TrekUI Lock Screen"; do
+            IFS=: read -r module prefix meta title <<<"$entry"
+            apk=$(ls "$module"/build/outputs/apk/production/release/*.apk | head -n1)
+            aab=$(ls "$module"/build/outputs/bundle/productionRelease/*.aab | head -n1)
+            "$apksigner" verify --print-certs "$apk" | tee "$RUNNER_TEMP/certs-$module.txt"
+            if grep -qi 'CN=Android Debug' "$RUNNER_TEMP/certs-$module.txt"; then
+              echo "::error::$module release APK is signed with the debug key"; exit 1
+            fi
+            cert=$(grep -m1 'SHA-256 digest' "$RUNNER_TEMP/certs-$module.txt" | awk '{print $NF}')
+            if [ -z "$first_cert" ]; then first_cert="$cert"
+            elif [ "$cert" != "$first_cert" ]; then
+              echo "::error::$module is signed with a different key than the launcher (the suite permission is signature-level)"; exit 1
+            fi
+            cp "$apk" "dist/$prefix-$NAME.apk"
+            cp "$aab" "dist/$prefix-$NAME.aab"
+            cp "$module/build/outputs/mapping/productionRelease/mapping.txt" "dist/$prefix-$NAME-mapping.txt"
+            notes="fastlane/metadata/$meta/android/en-US/changelogs/$CODE.txt"
+            [ -f "$notes" ] || notes="fastlane/metadata/launcher/android/en-US/changelogs/$CODE.txt"
+            mkdir -p "dist/whatsnew/$meta"
+            if [ -f "$notes" ]; then head -c 500 "$notes" > "dist/whatsnew/$meta/whatsnew-en-US"
+            else echo "$title $NAME" > "dist/whatsnew/$meta/whatsnew-en-US"; fi
+            { echo "### $title"; echo; cat "dist/whatsnew/$meta/whatsnew-en-US"; echo; echo; } >> dist/CHANGELOG.txt
+          done
           (cd dist && sha256sum TrekUI-* > SHA256SUMS.txt)
           ls -la dist
 
@@ -141,8 +214,8 @@ jobs:
         with:
           name: unit-test-reports
           path: |
-            app/build/reports/tests/
-            app/build/test-results/
+            */build/reports/tests/
+            */build/test-results/
           if-no-files-found: ignore
           retention-days: 90
 
@@ -170,6 +243,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.build.outputs.sha }}
 
       - uses: actions/download-artifact@v4
         with:
@@ -201,11 +276,12 @@ jobs:
             echo "## TrekUI $NAME (build $CODE)"
             echo
             cat dist/CHANGELOG.txt
-            echo
             echo "### Downloads"
-            echo "- \`TrekUI-$NAME.apk\`: sideload on any Android 8.0+ phone or tablet"
-            echo "- \`TrekUI-$NAME.aab\`: the bundle uploaded to Google Play"
-            echo "- \`TrekUI-$NAME-mapping.txt\`: R8 mapping for crash deobfuscation"
+            echo "Sideload an APK on any Android 8.0+ phone or tablet; the AABs are the bundles uploaded to Google Play."
+            echo
+            for p in TrekUI TrekUI-Messages TrekUI-Keyboard TrekUI-LockScreen; do
+              echo "- \`$p-$NAME.apk\` / \`$p-$NAME.aab\` / \`$p-$NAME-mapping.txt\` (R8 mapping)"
+            done
             echo
             echo "Screenshots, videos and test results: https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}/"
           } > release-notes.md
@@ -215,7 +291,7 @@ jobs:
           tag_name: ${{ needs.build.outputs.tag }}
           name: TrekUI ${{ needs.build.outputs.version-name }}
           body_path: release-notes.md
-          target_commitish: ${{ github.sha }}
+          target_commitish: ${{ needs.build.outputs.sha }}
           files: |
             dist/TrekUI-*.apk
             dist/TrekUI-*.aab
@@ -225,14 +301,21 @@ jobs:
             dist/site-media.zip
 
   play:
-    name: Google Play upload
+    name: Google Play (${{ matrix.app }})
     needs: [build, emulator]
-    if: ${{ github.event_name == 'push' || inputs.upload-to-play }}
+    if: ${{ inputs.upload-to-play }}
     runs-on: ubuntu-latest
-    environment: google-play
+    # Production waits for the required reviewers of the google-play environment (the approval gate).
+    environment: ${{ inputs.track == 'production' && 'google-play' || 'google-play-testing' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { app: launcher, prefix: TrekUI, package: com.gungreeneyes.trekui }
+          - { app: messages, prefix: TrekUI-Messages, package: com.gungreeneyes.trekui.messages }
+          - { app: keyboard, prefix: TrekUI-Keyboard, package: com.gungreeneyes.trekui.keyboard }
+          - { app: lockscreen, prefix: TrekUI-LockScreen, package: com.gungreeneyes.trekui.lockscreen }
     steps:
-      - uses: actions/checkout@v5
-
       - uses: actions/download-artifact@v4
         with:
           name: release-binaries
@@ -246,47 +329,75 @@ jobs:
             echo "::error::Secret PLAY_SERVICE_ACCOUNT_JSON is missing (Play Console service account key)."; exit 1
           fi
 
-      - name: What's new
+      - name: Release status + rollout
+        id: rollout
         env:
-          CODE: ${{ needs.build.outputs.version-code }}
+          TRACK: ${{ inputs.track }}
+          STATUS: ${{ inputs.status }}
+          ROLLOUT: ${{ inputs.rollout }}
         run: |
-          mkdir -p whatsnew
-          head -c 500 dist/CHANGELOG.txt > whatsnew/whatsnew-en-US
+          fraction=""
+          status="$STATUS"
+          if [ "$STATUS" != "draft" ] && [ "$TRACK" = "production" ]; then
+            if ! awk -v f="$ROLLOUT" 'BEGIN { exit !(f > 0 && f <= 1) }'; then
+              echo "::error::rollout must be a fraction in (0, 1], got '$ROLLOUT'"; exit 1
+            fi
+            if awk -v f="$ROLLOUT" 'BEGIN { exit !(f < 1) }'; then
+              status=inProgress; fraction="$ROLLOUT"
+            fi
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "fraction=$fraction" >> "$GITHUB_OUTPUT"
+          echo "Track $TRACK, status $status${fraction:+, rollout $fraction}"
 
       - uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: ${{ env.PACKAGE_NAME }}
-          releaseFiles: dist/TrekUI-*.aab
-          mappingFile: dist/TrekUI-${{ needs.build.outputs.version-name }}-mapping.txt
-          track: ${{ inputs.track || 'internal' }}
-          status: ${{ inputs.status || 'completed' }}
+          packageName: ${{ matrix.package }}
+          releaseFiles: dist/${{ matrix.prefix }}-${{ needs.build.outputs.version-name }}.aab
+          mappingFile: dist/${{ matrix.prefix }}-${{ needs.build.outputs.version-name }}-mapping.txt
+          track: ${{ inputs.track }}
+          status: ${{ steps.rollout.outputs.status }}
+          userFraction: ${{ steps.rollout.outputs.fraction }}
           releaseName: ${{ needs.build.outputs.version-name }} (${{ needs.build.outputs.version-code }})
-          whatsNewDirectory: whatsnew
+          whatsNewDirectory: dist/whatsnew/${{ matrix.app }}
 
   listing:
-    name: Play store listing
+    name: Play store listing (${{ matrix.app }})
     needs: [build, emulator, play]
     if: ${{ inputs.update-listing }}
     runs-on: ubuntu-latest
     environment: google-play
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { app: launcher, package: com.gungreeneyes.trekui }
+          - { app: messages, package: com.gungreeneyes.trekui.messages }
+          - { app: keyboard, package: com.gungreeneyes.trekui.keyboard }
+          - { app: lockscreen, package: com.gungreeneyes.trekui.lockscreen }
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.build.outputs.sha }}
 
       - uses: actions/download-artifact@v4
+        if: ${{ matrix.app == 'launcher' }}
         with:
           pattern: capture-*
           path: _capture
 
+      # The emulator matrix captures the launcher only; the companion apps keep their committed images.
       - name: Fill listing screenshots from captures
+        if: ${{ matrix.app == 'launcher' }}
         run: |
           python3 -m pip install --quiet pillow
-          python3 scripts/release/fill-play-screenshots.py --captures _capture --metadata fastlane/metadata/android/en-US
+          python3 scripts/release/fill-play-screenshots.py --captures _capture --metadata fastlane/metadata/launcher/android/en-US
 
       - uses: actions/upload-artifact@v4
         with:
-          name: play-listing
-          path: fastlane/metadata/android/
+          name: play-listing-${{ matrix.app }}
+          path: fastlane/metadata/${{ matrix.app }}/android/
           retention-days: 90
 
       - uses: ruby/setup-ruby@v1
@@ -296,11 +407,13 @@ jobs:
       - name: fastlane supply (listing text + images only)
         env:
           PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          PACKAGE_NAME: ${{ matrix.package }}
+          METADATA: fastlane/metadata/${{ matrix.app }}/android
         run: |
           gem install fastlane --no-document --quiet
           printf '%s' "$PLAY_JSON" > "$RUNNER_TEMP/play.json"
           fastlane supply --package_name "$PACKAGE_NAME" --json_key "$RUNNER_TEMP/play.json" \
-            --metadata_path fastlane/metadata/android \
+            --metadata_path "$METADATA" \
             --skip_upload_apk true --skip_upload_aab true --skip_upload_changelogs true \
             --sync_image_upload true
           rm -f "$RUNNER_TEMP/play.json"

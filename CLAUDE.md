@@ -14,6 +14,7 @@ The project guide for agents is [AGENTS.md](AGENTS.md), imported here so Claude 
 - **Sizing.** Size everything with `ScreenMetrics`. Every screen must work in portrait and landscape, from phones to tablets and foldables.
 - **Never commit:** copyrighted audio (`*.mp3`, `*.ogg`, `*.wav`), keystores, secrets or `_sources/`.
 - **Tickets.** Use the `LCA-T<n>` prefix (log in `docs/USER_STORIES.md`); commit messages start with the ticket ID.
+- **Release / "ship it".** Run `scripts/release/ship.sh --track internal` (Windows: `.\scripts\release\ship.ps1 -Track internal`): it bumps, writes the changelogs, commits, tags, pushes and starts the release of all four apps, then prints the run URL. Use `--track production` only when the owner explicitly says production ([docs/RELEASE.md](docs/RELEASE.md)).
 - **Tests and media.** Unit tests go in `app/src/test/java/com/gungreeneyes/trekui/<Class>Test.java`. Generated screenshots and videos go to the root `assets/` folder, which is gitignored.
 
 ## Working from Claude Code on the web, the phone app, or Cowork

@@ -37,7 +37,20 @@ On Windows, use `gradlew.bat` and set `JAVA_HOME` to the JDK 21. If Gradle waits
 
 Build types are `debug` and `release` (R8, upload-key signing). The version lives in `version.properties`.
 
-**CI:** every push to `main` builds a develop APK, available as the artifact `TrekUI-develop-debug-apk`. A tag `v<versionName>` runs the release pipeline. Details are in [docs/RELEASE.md](docs/RELEASE.md).
+**CI:** every push to `main` builds a develop APK, available as the artifact `TrekUI-develop-debug-apk`. The release pipeline builds, signs and uploads all four apps; start it with the ship script (below). Details are in [docs/RELEASE.md](docs/RELEASE.md).
+
+## Releasing ("release", "ship it")
+
+When the owner says **"release"** or **"ship it"**, run the ship script with the **internal** track:
+
+```sh
+scripts/release/ship.sh --track internal          # Windows: .\scripts\release\ship.ps1 -Track internal
+```
+
+- It bumps the patch version (say `minor` / `major` only if the owner asks), writes `CHANGELOG.md` and each app's Play notes, commits and tags `v<versionName>`, pushes, starts `release.yml` and prints the Actions run URL. Report that URL.
+- Use `--track production` (with `--rollout`, default `0.1`) **only when the owner explicitly says production**. Production then waits for the owner's approval in the `google-play` environment.
+- Run `--dry-run` first when unsure; it changes nothing.
+- One run ships all four apps (launcher, messages, keyboard, lockscreen) with one shared version.
 
 ## Rules
 
@@ -77,8 +90,8 @@ Build types are `debug` and `release` (R8, upload-key signing). The version live
 | Instrumented scenarios | `app/src/androidTest/java/…` (`*Scenarios`); Gherkin text in `app/src/androidTest/assets/features/*.feature` |
 | Generated screenshots, videos and test media | **root `assets/`** (`assets/robolectric/`, `assets/<device>-api<N>/`). Gitignored, published to GitHub Pages by CI |
 | Emulator matrix | `scripts/avd/matrix.csv`, `scripts/avd/*.ps1`, `scripts/capture/` |
-| Play listing text and images | `fastlane/metadata/android/en-US/` |
-| Release notes per build | `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` |
+| Play listing text and images | `fastlane/metadata/<app>/android/en-US/` (`launcher`, `messages`, `keyboard`, `lockscreen`) |
+| Release notes per build | `fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt` (written by `scripts/release/ship.*`) |
 | Docs | `docs/` |
 | Asset generators | `tools/` (Python/Node; output is committed) |
 
