@@ -3,7 +3,8 @@
 
     python scripts/release/make-store-art.py
 
-Writes into fastlane/metadata/launcher/android/en-US/images/:
+Writes into fastlane/metadata/<app>/android/en-US/images/ for each of the four apps (launcher, messages,
+keyboard, lockscreen), from that app's own adaptive-icon foreground:
   icon.png            512x512, 32-bit PNG: the adaptive-icon foreground (res/drawable/ic_launcher_fg.xml)
                       on the icon background colour, full bleed (Play applies its own mask)
   featureGraphic.png  1024x500, 24-bit PNG (no alpha): console frame, the icon and the title in Antonio
@@ -23,9 +24,22 @@ except ImportError:
     sys.exit("Pillow is required: python -m pip install pillow")
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-VECTOR = os.path.join(ROOT, "app", "src", "main", "res", "drawable", "ic_launcher_fg.xml")
-FONT = os.path.join(ROOT, "app", "src", "main", "assets", "fonts", "Antonio.ttf")
-OUT = os.path.join(ROOT, "fastlane", "metadata", "launcher", "android", "en-US", "images")
+FONT = os.path.join(ROOT, "core", "src", "main", "assets", "fonts", "Antonio.ttf")
+# listing folder -> (module, icon foreground drawable, title line 2, tagline)
+APPS = {
+    "launcher": ("app", "ic_launcher_fg", "LAUNCHER", "FIVE INTERFACES  ·  ONE HOME SCREEN"),
+    "messages": ("messages", "ic_messages_fg", "MESSAGES", "SMS + MMS  ·  CONSOLE STYLE"),
+    "keyboard": ("keyboard", "ic_keyboard_fg", "KEYBOARD", "TYPE ON THE CONSOLE"),
+    "lockscreen": ("lockscreen", "ic_lock_fg", "LOCK SCREEN", "SECURE  ·  YOUR PIN STILL GUARDS IT"),
+}
+
+
+def vector_path(module, drawable):
+    return os.path.join(ROOT, module, "src", "main", "res", "drawable", drawable + ".xml")
+
+
+def out_dir(app):
+    return os.path.join(ROOT, "fastlane", "metadata", app, "android", "en-US", "images")
 ANDROID = "{http://schemas.android.com/apk/res/android}"
 
 ORANGE, GOLD, PEACH = (255, 156, 0), (255, 204, 102), (255, 204, 153)
@@ -134,8 +148,8 @@ def path_polygons(d):
     return polys
 
 
-def load_vector():
-    root = ET.parse(VECTOR).getroot()
+def load_vector(vector):
+    root = ET.parse(vector).getroot()
     vw = float(root.get(ANDROID + "viewportWidth"))
     vh = float(root.get(ANDROID + "viewportHeight"))
     shapes = [(hex_rgb(p.get(ANDROID + "fillColor")), path_polygons(p.get(ANDROID + "pathData")))
@@ -151,8 +165,8 @@ def draw_vector(img, shapes, scale, ox, oy):
                 d.polygon([(ox + px * scale, oy + py * scale) for px, py in poly], fill=color)
 
 
-def icon(size=512, ss=4):
-    vw, vh, shapes = load_vector()
+def icon(vector, size=512, ss=4):
+    vw, vh, shapes = load_vector(vector)
     big = size * ss
     img = Image.new("RGBA", (big, big), (0, 0, 0, 255))
     # Content spans roughly 26..89 of the 108 viewport; zoom so it fills ~74% of the square, centred.
@@ -166,7 +180,7 @@ def icon(size=512, ss=4):
     return img.resize((size, size), Image.LANCZOS)
 
 
-def feature_graphic(ss=2):
+def feature_graphic(vector, word, tagline, ss=2):
     W, H = 1024 * ss, 500 * ss
     img = Image.new("RGB", (W, H), (0, 0, 0))
     d = ImageDraw.Draw(img)
@@ -205,7 +219,7 @@ def feature_graphic(ss=2):
     d.rectangle([W - 64 * s, H - 52 * s, W - 44 * s, H - 24 * s], fill=PEACH)
 
     # icon art, right side
-    ic = icon(300 * s, ss=2).convert("RGB")
+    ic = icon(vector, 300 * s, ss=2).convert("RGB")
     img.paste(ic, (W - 340 * s, (H - 300 * s) // 2))
 
     # title
@@ -217,17 +231,19 @@ def feature_graphic(ss=2):
     x0 = 24 * s + rail + 56 * s
     d.text((x0, 148 * s), "TREKUI", font=title_font, fill=ORANGE)
     mid_font = sub_font.font_variant(size=76 * s) if hasattr(sub_font, "font_variant") else sub_font
-    d.text((x0, 260 * s), "LAUNCHER", font=mid_font, fill=PEACH)
-    d.text((x0 + 4 * s, 356 * s), "FIVE INTERFACES  ·  ONE HOME SCREEN", font=sub_font, fill=LAVENDER)
+    d.text((x0, 260 * s), word, font=mid_font, fill=PEACH)
+    d.text((x0 + 4 * s, 356 * s), tagline, font=sub_font, fill=LAVENDER)
     return img.resize((1024, 500), Image.LANCZOS)
 
 
 def main():
-    os.makedirs(OUT, exist_ok=True)
-    icon().save(os.path.join(OUT, "icon.png"), optimize=True)
-    feature_graphic().save(os.path.join(OUT, "featureGraphic.png"), optimize=True)
-    print("wrote", os.path.join(OUT, "icon.png"))
-    print("wrote", os.path.join(OUT, "featureGraphic.png"))
+    for app, (module, drawable, word, tagline) in APPS.items():
+        vector = vector_path(module, drawable)
+        out = out_dir(app)
+        os.makedirs(out, exist_ok=True)
+        icon(vector).save(os.path.join(out, "icon.png"), optimize=True)
+        feature_graphic(vector, word, tagline).save(os.path.join(out, "featureGraphic.png"), optimize=True)
+        print("wrote", os.path.join(out, "icon.png"), "and featureGraphic.png")
 
 
 if __name__ == "__main__":
