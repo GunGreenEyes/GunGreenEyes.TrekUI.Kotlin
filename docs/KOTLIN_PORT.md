@@ -1,9 +1,9 @@
 # TrekUI Kotlin edition: port plan
 
 TrekUI.Kotlin rebuilds the TrekUI suite (Launcher, Messages, Keyboard, Lock Screen and the shared `:core`)
-in modern Kotlin and Jetpack Compose, starting from the final TrekUI.Java release (44: the five starship
-interfaces only, the Pipe Lounge interfaces removed). When it reaches parity it
-replaces the Java edition on Google Play as an ordinary update: **same application IDs, same signing key,
+in modern Kotlin and Jetpack Compose, starting from TrekUI.Java (the five starship interfaces only; the retired painted-scene
+interfaces removed in 44). From release 45 it is the maintained edition and
+replaces the Java edition on Google Play as an ordinary update; TrekUI.Java's final release is 45, after which it is archived: **same application IDs, same signing key,
 same `trekui_unlock` product**, so users keep their settings and purchase.
 
 ## Status
@@ -15,16 +15,16 @@ matrices are unchanged from the Java edition.
 | Phase | State | Tickets |
 |---|---|---|
 | 0. Seed | done (TrekUI.Java 43 copied, links and CI/Pages pointed here, the final TrekUI.Java `main` merged in) | TUK-T2 |
-| 1. Build foundation (`build-logic` convention plugins, ktlint, detekt in CI) | done: outputs identical (application IDs, version 44, signing certificate, merged manifests); the Compose plugin moves to phase 5 | TUK-T3 |
+| 1. Build foundation (`build-logic` convention plugins, ktlint, detekt in CI) | done: outputs identical (application IDs, version, signing certificate, merged manifests); the Compose plugin moves to phase 5 | TUK-T3 |
 | 2. `:core` to Kotlin | done | TUK-T4 |
 | 3. Companions to Kotlin (`:messages`, `:keyboard`, `:lockscreen`) | done | TUK-T5, TUK-T6, TUK-T7 |
 | 4. `:app` to Kotlin, unit tests and instrumented scenarios included | done | TUK-T8 |
 | 5. Compose | not started | TUK-T9 |
 | 6. Settings on DataStore, with the upgrade test | not started | TUK-T10 |
-| 7. Parity and release | in progress: version 44 merged from Java; 614 unit tests and CI 9/9 pass; `v44` test pre-release with APKs; the local 24-device matrix is running | TUK-T11 |
+| 7. Parity and release | in progress: release 45 is the first maintained Kotlin release; `minSdk` lowered to 23 (every phone from 2016 on, TUK-T14, done) with 629 unit tests; device verification on Android 6.0–7.1 and the rest of the 27-device local matrix and 11-device CI matrix is in progress for 45 | TUK-T11, TUK-T14 |
 
 Next: phase 5 (Compose, which adds the Compose compiler plugin to the conventions), phase 6 (DataStore) and phase 7 (parity and
-release, shipped as the next whole-number version, 44 or later, over the Java edition).
+release, starting with 45, which ships over the Java edition).
 
 ## The bar (definition of done)
 
@@ -58,7 +58,7 @@ Each phase is one or more tickets (code `TUK`). CI stays green after every commi
 Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a module while it converts.
 
 0. **Seed** (TUK-T2): copy of TrekUI.Java 43, links point here, CI and Pages on, this plan. **Before phase 1,
-   merge the final TrekUI.Java `main` into this repo** (it adds the Pipe Lounge removal, LCA-T58, and the test
+   merge the final TrekUI.Java `main` into this repo** (it adds the retired-interface removal, LCA-T58, and the test
    fixes from the device matrix), resolving only the link and ticket-view files this repo changed.
 1. **Build foundation** (done): `build-logic` convention plugins (`trekui.android.application`, `trekui.android.library`,
    `trekui.quality`), ktlint and detekt with per-module baselines, both in the CI build job ([BUILD.md](BUILD.md)).

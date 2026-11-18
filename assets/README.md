@@ -14,4 +14,4 @@ CI publishes it to GitHub Pages instead.
 File names: `<Class>_<scenario>[-<step>]__<device>__api<N>__<portrait|landscape>.png|mp4`.
 
 Rerun: `pwsh scripts/avd/create-avds.ps1` once, then `pwsh scripts/capture/run-matrix.ps1`
-(`-Only 'api36'` to filter, `-Parallel 3` max concurrent emulators). See scripts/capture/README.md.
+(`-Only 'api36'` to filter, `-Parallel 3` max concurrent emulators, `-Parallel 1` when RAM is short). See scripts/capture/README.md.

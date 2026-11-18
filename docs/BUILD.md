@@ -93,7 +93,7 @@ Variants: `developDebug`, `developRelease`, `productionDebug`, `productionReleas
 ./gradlew installDevelopDebug                  # install on the connected device/emulator
 ./gradlew assembleProductionRelease            # APK: app/build/outputs/apk/production/release/
 ./gradlew bundleProductionRelease              # AAB: app/build/outputs/bundle/productionRelease/
-./gradlew dist                                 # all of the above for all four apps, copied to dist/
+./gradlew dist                                 # all of the above for all four apps, copied to dist/<version>/
 ./gradlew testDevelopDebugUnitTest             # JVM + Robolectric tests (see TESTING.md)
 ./gradlew lintDevelopDebug                     # lint report: app/build/reports/
 ./gradlew ktlintCheck detekt                   # style checks (see "Style checks")
@@ -103,22 +103,22 @@ On Windows use `gradlew.bat` (or `./gradlew.bat` from Git Bash).
 
 ### `dist`
 
-The root project's `dist` task builds `assembleDevelopDebug`, `assembleProductionRelease` and `bundleProductionRelease` for every app (`:app`, `:messages`, `:keyboard`, `:lockscreen`), then copies the APKs and AABs into `dist/` at the repository root, each named `<App>-<versionName>-<flavor>-<buildType>` so the four apps never collide:
+The root project's `dist` task builds `assembleDevelopDebug`, `assembleProductionRelease` and `bundleProductionRelease` for every app (`:app`, `:messages`, `:keyboard`, `:lockscreen`), then copies the APKs and AABs into `dist/<versionName>/` at the repository root, each named `<App>-<versionName>-<flavor>-<buildType>` so the four apps never collide:
 
 ```
-dist/TrekUI-43-develop-debug.apk               dist/TrekUI-Messages-43-develop-debug.apk
-dist/TrekUI-43-production-release.apk          dist/TrekUI-Messages-43-production-release.apk
-dist/TrekUI-43-production-release.aab          dist/TrekUI-Messages-43-production-release.aab
-dist/TrekUI-Keyboard-43-…                      dist/TrekUI-LockScreen-43-…   (same three each)
+dist/45/TrekUI-45-develop-debug.apk               dist/45/TrekUI-Messages-45-develop-debug.apk
+dist/45/TrekUI-45-production-release.apk          dist/45/TrekUI-Messages-45-production-release.apk
+dist/45/TrekUI-45-production-release.aab          dist/45/TrekUI-Messages-45-production-release.aab
+dist/45/TrekUI-Keyboard-45-…                      dist/45/TrekUI-LockScreen-45-…   (same three each)
 ```
 
-`dist/` is gitignored.
+`dist/` is committed: each release gets its own `dist/<version>/` folder and earlier versions are kept (for example `dist/44/`), so the prebuilt APKs of every version stay in the repository. They are also attached to each GitHub release.
 
 ## Versioning: `version.properties`
 
 ```properties
-versionCode=43
-versionName=43
+versionCode=45
+versionName=45
 ```
 
 Both values are read by the `trekui.android.application` convention for every app. This file is the single source of the version.

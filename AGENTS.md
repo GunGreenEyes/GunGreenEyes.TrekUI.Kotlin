@@ -21,7 +21,7 @@ You need JDK 21 and an Android SDK with platform 37 and build-tools 37. On a fre
 ./gradlew testDevelopDebugUnitTest             # JVM + Robolectric tests
 ./gradlew lintDevelopDebug
 ./gradlew connectedDevelopDebugAndroidTest     # instrumented scenarios (needs emulator/device)
-./gradlew dist                                 # all APKs/AABs -> dist/
+./gradlew dist                                 # all APKs/AABs -> dist/<version>/ (committed)
 ```
 
 On Windows, use `gradlew.bat` and set `JAVA_HOME` to the JDK 21. If Gradle waits on a lock, another build is running in the same checkout, so wait for it.

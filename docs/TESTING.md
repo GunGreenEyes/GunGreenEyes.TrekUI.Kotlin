@@ -59,6 +59,8 @@ The supporting classes are:
 
 Cucumber is not used on purpose. Plain JUnit 4 keeps the toolchain small and runs on every API level from 23 up.
 
+**Android 6.0–7.1.** The harness adapts to the old platforms: `HomeScenarios` makes TrekUI the home app by pressing its radio button in Settings › Home (on the old versions its title block swallows the tap), it has no shell home-app fallback below 7.0 (API 23 has no `cmd` binary), and `MediaCapture` skips `screenrecord` below 8.0 (a recording that cannot start kills the whole instrumentation there), so those devices produce screenshots only.
+
 To add a scenario, write it in the right `.feature` file, then add a method with the scenario's name to the matching `*Scenarios` class in `app/src/androidTest/kotlin/com/gungreeneyes/trekui/` and call `Gherkin` for each step. The scenarios reach into the launcher through `AppHooks`, which uses reflection; keep the members it names (`MainActivity.openConfig`, `requestDefaultHome`, `Skin.faction`, `AppRepo.get`, …) static and un-renamed, or update `AppHooks` with them.
 
 ```sh
@@ -83,6 +85,7 @@ Instrumentation arguments: `trekuiOrientation` (natural | portrait | landscape) 
 scripts\setup.ps1 -Emulators -SkipBuild        # install the system images the matrix needs
 scripts\avd\create-avds.ps1                    # create AVDs named trekui_<id>_api<api>
 scripts\capture\run-matrix.ps1                 # boot each, run the scenarios, pull media (see its header)
+scripts\capture\run-matrix.ps1 -Parallel 1     # one emulator at a time, for a machine short of RAM
 ```
 
 `bash scripts/setup.sh --emulators` installs the same images on macOS and Linux. It installs arm64 images on Apple silicon.
@@ -95,12 +98,16 @@ Emulators need hardware acceleration:
 
 The setup scripts check for it and say how to turn it on.
 
+The local runner boots each emulator with `-gpu auto` (the host GPU when there is one; SwiftShader froze API 35/36 guests on the heaviest screens) and turns Wi-Fi and mobile data off once it has booted, so Play-services downloads cannot stall it. Each emulator gets 2 GB of RAM (`-MemoryMb`); three run at once by default.
+
 ### In CI
 
 `.github/workflows/emulator.yml` runs a matrix on GitHub's Ubuntu runners with KVM. It has two profiles:
 
-- **quick** (PRs): three devices.
-- **full** (`main` and releases): phones across API 23 to 36, plus a landscape phone, a tablet and a foldable.
+- **quick** (PRs): three devices (phone API 26, phone API 36, tablet API 36).
+- **full** (`main` and releases): 11 devices, phones on API 23, 24, 26, 29, 31, 33, 35 and 36, plus a landscape phone, a tablet and a foldable on API 36.
+
+The Android 6.0 and 7.0 phones (API 23, 24) run on the 32-bit x86 images with 2 GB of RAM, because the x86_64 images of that age never finish booting on hosted runners. The snapshot-creation step is limited to 20 minutes, and the guests run offline (no scenario needs the network). The foldable renders through ANGLE (`-gpu swangle_indirect`), because its large unfolded screen took the emulator down under SwiftShader; every other device uses `swiftshader_indirect`.
 
 For each device, `.github/scripts/emulator-run.sh` records the screen, runs `connectedDevelopDebugAndroidTest`, pulls the screenshots, stitches the video and writes `meta.json` with the JUnit results. Each device's media is uploaded as the artifact `capture-<device>-api<N>`.
 

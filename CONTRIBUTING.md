@@ -58,7 +58,7 @@ More detail is in [docs/TESTING.md](docs/TESTING.md).
 
 - **Copyrighted audio** (`*.mp3`, `*.ogg`, `*.wav`), or anything from the shows. Sounds are downloaded by the user at runtime, from the catalogue in `core/src/main/assets/sounds/manifest.json`. See [docs/SOUNDS.md](docs/SOUNDS.md).
 - **Signing material:** keystores, `signing/release.properties`, Play service-account JSON or passwords.
-- **Import material and build output:** `_sources/`, zips, `build/` and `dist/`.
+- **Import material and build output:** `_sources/`, zips and `build/`. (`dist/` is the exception: `./gradlew dist` output for a released version is committed under `dist/<version>/`.)
 
 `.gitignore` blocks all of these. Do not weaken it.
 

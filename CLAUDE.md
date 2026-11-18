@@ -8,7 +8,7 @@ The project guide for agents is [AGENTS.md](AGENTS.md), imported here so Claude 
 
 - **Project.** The Kotlin edition of TrekUI: an Android home launcher (`com.gungreeneyes.trekui`) plus Messages, Keyboard and Lock Screen on a shared `:core`. Idiomatic Kotlin (AGP 9's built-in Kotlin, JVM target 17), no Java sources, Canvas-drawn views, no XML layouts, five interfaces (`Skin.faction` 0–2, 9 and 10). ktlint/detekt and Compose are planned, not present ([docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md)).
 - **Build.**
-  - `./gradlew assembleDevelopDebug` builds the apps, `testDevelopDebugUnitTest` runs the tests, and `dist` copies every APK and AAB to `dist/`.
+  - `./gradlew assembleDevelopDebug` builds the apps, `testDevelopDebugUnitTest` runs the tests, and `dist` copies every APK and AAB to `dist/<version>/` (committed).
   - It needs JDK 21 and SDK 37. Set them up with `scripts/setup.ps1` or `scripts/setup.sh`.
 - **Flavors.** `develop` (`.dev`, 5-minute trial) for all dev work; `production` for Play.
 - **Sizing.** Size everything with `ScreenMetrics`. Every screen must work in portrait and landscape, from phones to tablets and foldables.
