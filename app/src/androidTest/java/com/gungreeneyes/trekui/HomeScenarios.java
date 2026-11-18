@@ -142,11 +142,8 @@ public class HomeScenarios extends AppScenario {
 
     /** Makes {@code pkg} the home app from the shell (API 29+: role; older: preferred activity). */
     private void setHomeByShell(String pkg, ComponentName component) {
-        if (Build.VERSION.SDK_INT >= 30) {
+        if (Build.VERSION.SDK_INT >= 29) {
             Log.i(TAG, media.shell("cmd role add-role-holder android.app.role.HOME " + pkg + " 0"));
-        } else if (Build.VERSION.SDK_INT == 29) {
-            // Android 10's role shell command has no FLAGS argument; passing one makes it fail.
-            Log.i(TAG, media.shell("cmd role add-role-holder android.app.role.HOME " + pkg));
         } else {
             String c = component != null ? component.flattenToString() : homeComponentOf(pkg);
             if (c != null) Log.i(TAG, media.shell("cmd package set-home-activity " + c));
