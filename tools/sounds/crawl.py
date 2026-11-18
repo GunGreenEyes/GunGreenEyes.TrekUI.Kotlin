@@ -33,11 +33,8 @@ AUDIO_RE = re.compile(r'\.(mp3|wav|ogg)$', re.I)
 
 SITES = {
     'trekcore': 'https://www.trekcore.com/audio/',
-    'mediacollege': 'https://www.mediacollege.com/downloads/sound-effects/star-trek/tos/',
     'willbswift': 'https://willbswift.github.io/treksounds/',
-    'slspencer': 'https://www.slspencer.com/Sounds/Star%20Trek%20Sounds/LCARS%20Audio/',
-    # Known origin of the 38-file GitHub sound pack; listed through the GitHub contents API.
-    'github_sound_pack': 'https://api.github.com/repos/wofsonofmoag/lcars-sounds/contents/',
+    # Sources whose addresses carry the franchise or console-trademark names are not used (owner rule, 2026-11-18).
 }
 
 
@@ -112,7 +109,7 @@ def list_site(site, page):
     if site.startswith('github_'):
         items = json.loads(raw.decode('utf-8'))
         return [{'url': it['download_url'], 'label': it['name'], 'section': 'repository root',
-                 'page': 'https://github.com/wofsonofmoag/lcars-sounds'}
+                 'page': page}
                 for it in items if it.get('type') == 'file' and AUDIO_RE.search(it['name'])]
     p = LinkParser(page)
     p.feed(raw.decode('utf-8', errors='replace'))

@@ -54,7 +54,8 @@ HIGH, MEDIUM = 0.90, 0.75
 CONFIRMED = 0.95  # a named / hashed file at least this close ends the search
 
 # Preferred download source when the same audio is hosted in several places (first = preferred).
-SITE_RANK = ['trekcore', 'github_sound_pack', 'mediacollege', 'willbswift', 'slspencer']
+SITE_RANK = ['trekcore', 'willbswift']
+EXCLUDED_SITES = {'github_sound_pack', 'mediacollege', 'slspencer'}  # dropped sources
 
 
 # ---------------------------------------------------------------- decoding / features
@@ -179,6 +180,7 @@ def load_candidates(crawl_dir):
             files.setdefault(e['sha256'], []).append(e)
     cands = []
     for sha, hosts in files.items():
+        hosts[:] = [h for h in hosts if h['site'] not in EXCLUDED_SITES]
         hosts.sort(key=lambda h: (SITE_RANK.index(h['site']) if h['site'] in SITE_RANK else 99,
                                   0 if h['url'].lower().endswith('.mp3') else 1))
         cands.append({'sha256': sha, 'hosts': hosts, 'path': hosts[0]['path']})

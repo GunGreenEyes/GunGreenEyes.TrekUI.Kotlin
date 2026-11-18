@@ -24,16 +24,7 @@
     "bytes": 16929,
     "title": "Alarm 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/alarm03.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "76550b213d60ceffcd2daf31a3f60d518f2c64c22cad7687432acf1cf676b2f6",
-     "bytes": 16929,
-     "title": "alarm03.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.019979,
    "end": 0.524979,
    "gain_db": -4.84,
@@ -61,16 +52,7 @@
     "bytes": 40353,
     "title": "TNG Red Alert 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_red_alert3.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "61a535db70bb68738df7929c29b11a3bcb11ca23bf5eb7793a0b84f3e699e0fb",
-     "bytes": 40353,
-     "title": "tng_red_alert3.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.020292,
    "end": 1.005292,
    "gain_db": -7.24,
@@ -98,16 +80,7 @@
     "bytes": 49185,
     "title": "Alert 4"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/alert04.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "3f88239d4a7d744224d78904e2889d70380c1deeea918268fb5701f2e91d2f37",
-     "bytes": 49185,
-     "title": "alert04.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.068812,
    "end": 1.535813,
    "gain_db": -3.64,
@@ -135,16 +108,7 @@
     "bytes": 16000,
     "title": "Collective Computer Beep"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/borg_computer_beep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "141500cc37f94c5ee4c38579a5b5c492b564b0714d44beb37484a97691763f2e",
-     "bytes": 16000,
-     "title": "(source file)"
-    }
-   ],
+   "alternates": [],
    "start": 0.12,
    "end": 1.32,
    "gain_db": 1.52,
@@ -171,16 +135,7 @@
     "bytes": 277888,
     "title": "Empire Transporter"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/klingon_transporter_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "4ce17bbbe784c6d24c03a37897bea600c6c333b162221526e6c78f14a78aec32",
-     "bytes": 277888,
-     "title": "(source file)"
-    }
-   ],
+   "alternates": [],
    "start": 0.44,
    "end": 12.4,
    "gain_db": 3.66,
@@ -207,16 +162,7 @@
     "bytes": 24609,
     "title": "Forcefield Touch"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/forcefield_touch.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "ee743e71ca98ece455ecc9a1feaab3a571b23c9bc5b2ea022e93445e33443894",
-     "bytes": 24609,
-     "title": "forcefield_touch.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.14,
    "end": 1.057,
    "gain_db": 1.37,
@@ -241,16 +187,7 @@
     "bytes": 10017,
     "title": "Hail Beep 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/hailbeep_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "7edbc92acd6b2eef545952c95e38974a230f2d1dc7470d7ce0b9f260a2f7bb3c",
-     "bytes": 10017,
-     "title": "hailbeep_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.020021,
    "end": 0.309021,
    "gain_db": -11.93,
@@ -303,16 +240,7 @@
     "bytes": 70689,
     "title": "Incoming Transmission"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/incomingtransmission_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "19581bc46627f2a4e39a06f172f63455accf5179adf6c6a64e2aad344f8097d0",
-     "bytes": 70689,
-     "title": "incomingtransmission_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.208,
    "gain_db": -3.07,
@@ -339,16 +267,7 @@
     "bytes": 73761,
     "title": "Transfer Complete"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/transfercomplete_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "4b0de6fa2271ac234f262103aea74533447d717060c79e77f19546c6026d208a",
-     "bytes": 73761,
-     "title": "transfercomplete_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 2.28,
    "gain_db": -3.34,
@@ -375,16 +294,7 @@
     "bytes": 11553,
     "title": "Screen Show"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/scrshow.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8cb31ee1e693671738fa6241db9189f26ec6d54176fa27e396059f7462a198f3",
-     "bytes": 11553,
-     "title": "scrshow.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.024667,
    "end": 0.109667,
    "gain_db": 6.4,
@@ -411,16 +321,7 @@
     "bytes": 11553,
     "title": "Screen Show"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/scrshow.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8cb31ee1e693671738fa6241db9189f26ec6d54176fa27e396059f7462a198f3",
-     "bytes": 11553,
-     "title": "scrshow.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.238667,
    "end": 0.307667,
    "gain_db": -3.56,
@@ -447,16 +348,7 @@
     "bytes": 15393,
     "title": "TNG Viewscreen On"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_on.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "d438a02dbd81afce603e7361330fe536bc4440804a56e039b013322f9446aeae",
-     "bytes": 15393,
-     "title": "tng_viewscreen_on.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.014667,
    "end": 0.105667,
    "gain_db": 8.96,
@@ -483,16 +375,7 @@
     "bytes": 15393,
     "title": "TNG Viewscreen On"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_on.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "d438a02dbd81afce603e7361330fe536bc4440804a56e039b013322f9446aeae",
-     "bytes": 15393,
-     "title": "tng_viewscreen_on.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.190667,
    "end": 0.275667,
    "gain_db": 8.91,
@@ -519,16 +402,7 @@
     "bytes": 22113,
     "title": "TNG Viewscreen Off"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_off.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8602a6579627f4515615b09384948d1178c7b4581ba688af2a7c735944f5422a",
-     "bytes": 22113,
-     "title": "tng_viewscreen_off.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.108667,
    "end": 0.199667,
    "gain_db": 8.83,
@@ -555,16 +429,7 @@
     "bytes": 22113,
     "title": "TNG Viewscreen Off"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_off.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8602a6579627f4515615b09384948d1178c7b4581ba688af2a7c735944f5422a",
-     "bytes": 22113,
-     "title": "tng_viewscreen_off.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.344667,
    "end": 0.460667,
    "gain_db": 8.35,
@@ -666,16 +531,7 @@
     "bytes": 40353,
     "title": "TNG Red Alert 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_red_alert3.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "61a535db70bb68738df7929c29b11a3bcb11ca23bf5eb7793a0b84f3e699e0fb",
-     "bytes": 40353,
-     "title": "tng_red_alert3.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.977,
    "gain_db": -7.06,
@@ -1261,16 +1117,7 @@
     "bytes": 16929,
     "title": "Alarm 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/alarm03.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "76550b213d60ceffcd2daf31a3f60d518f2c64c22cad7687432acf1cf676b2f6",
-     "bytes": 16929,
-     "title": "alarm03.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.525,
    "gain_db": -4.75,
@@ -1781,16 +1628,7 @@
     "bytes": 49185,
     "title": "Alert 4"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/alert04.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "3f88239d4a7d744224d78904e2889d70380c1deeea918268fb5701f2e91d2f37",
-     "bytes": 49185,
-     "title": "alert04.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.06,
    "end": 1.536,
    "gain_db": -1.88,
@@ -2271,16 +2109,7 @@
     "bytes": 10017,
     "title": "Hail Beep 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/hailbeep_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "7edbc92acd6b2eef545952c95e38974a230f2d1dc7470d7ce0b9f260a2f7bb3c",
-     "bytes": 10017,
-     "title": "hailbeep_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.297,
    "gain_db": -11.95,
@@ -2634,16 +2463,7 @@
     "bytes": 70689,
     "title": "Incoming Transmission"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/incomingtransmission_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "19581bc46627f2a4e39a06f172f63455accf5179adf6c6a64e2aad344f8097d0",
-     "bytes": 70689,
-     "title": "incomingtransmission_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.208,
    "gain_db": -3.07,
@@ -2670,16 +2490,7 @@
     "bytes": 14625,
     "title": "TNG Chirp 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_chirp_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8af14ed5cdd3efb89f889c0303082dd46472574beb2bd05ab5d734290bd80df7",
-     "bytes": 14625,
-     "title": "tng_chirp_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.357,
    "gain_db": -3.09,
@@ -5036,16 +4847,7 @@
     "bytes": 16929,
     "title": "Deny Beep 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/denybeep3.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "bf2d7ab4ab8d6b80313d59459ff841a2d06549f7bbcb2b4632a98f0fac4b2f57",
-     "bytes": 16929,
-     "title": "denybeep3.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.525,
    "gain_db": 4.61,
@@ -5547,16 +5349,7 @@
     "bytes": 70689,
     "title": "Accessing Library Computer Data"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/accessinglibrarycomputerdata_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "c819187a9c2372dafb048253d7f4d80da120149b7146e37cbc4f099a95b84ec6",
-     "bytes": 70689,
-     "title": "accessinglibrarycomputerdata_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.04,
    "end": 2.2,
    "gain_db": -4.85,
@@ -5581,16 +5374,7 @@
     "bytes": 34593,
     "title": "Affirmative 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/affirmative1_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "03229724af6ea65419d607e95de9ace1a17aeeb0c6d55ec3a3a67f4c1333034f",
-     "bytes": 34593,
-     "title": "affirmative1_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 1.057,
    "gain_db": -4.16,
@@ -6215,16 +5999,7 @@
     "bytes": 74529,
     "title": "Auto Defense"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/autodefense_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "2ee6b701464dd0add354ca90f27c67adf0a2af5d783fa8d2486fdf0fc9737ea8",
-     "bytes": 74529,
-     "title": "autodefense_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 2.3,
    "gain_db": -4.0,
@@ -6376,16 +6151,7 @@
     "bytes": 71457,
     "title": "Command Codes Verified"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/commandcodesverified_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "fda1f0df302200ee50dac666805e89267c1acd3b83a8229a468c15b5d10b67d1",
-     "bytes": 71457,
-     "title": "commandcodesverified_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.232,
    "gain_db": -8.24,
@@ -6410,16 +6176,7 @@
     "bytes": 76833,
     "title": "Command Functions Offline"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/commandfunctionsoffline_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "5ff0ad5329f737666398de74bb51c6f59ad763e68d2467654de71c8f7eb6e4a3",
-     "bytes": 76833,
-     "title": "commandfunctionsoffline_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.4,
    "gain_db": -4.12,
@@ -7070,16 +6827,7 @@
     "bytes": 152097,
     "title": "Initiating Decoupling Sequence"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/initiatingdecouplingsequence_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "fb8735f085226e7b53a201ff130e861cadc5986a9653e2572ad1e73b041b482d",
-     "bytes": 152097,
-     "title": "initiatingdecouplingsequence_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 4.752,
    "gain_db": -9.27,
@@ -7479,16 +7227,7 @@
     "bytes": 73856,
     "title": "Priority One Message from the Federation..."
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/priorityonemessagefromstarfleet_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
-     "bytes": 73856,
-     "title": "(source file)"
-    }
-   ],
+   "alternates": [],
    "start": 0.12,
    "end": 4.5,
    "gain_db": -6.45,
@@ -7790,16 +7529,7 @@
     "bytes": 11553,
     "title": "Screen Show"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/scrshow.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8cb31ee1e693671738fa6241db9189f26ec6d54176fa27e396059f7462a198f3",
-     "bytes": 11553,
-     "title": "scrshow.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.337,
    "gain_db": -0.67,
@@ -8189,16 +7919,7 @@
     "bytes": 73761,
     "title": "Transfer Complete"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/transfercomplete_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "4b0de6fa2271ac234f262103aea74533447d717060c79e77f19546c6026d208a",
-     "bytes": 73761,
-     "title": "transfercomplete_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 2.28,
    "gain_db": -3.34,
@@ -8332,16 +8053,7 @@
     "bytes": 145185,
     "title": "Unable to Comply, Internal.."
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/unabletocomply1_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "281f4765c40c2b164c7ef1dab2606182fc4740284fd77b7801596c4adddd077a",
-     "bytes": 145185,
-     "title": "unabletocomply1_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.06,
    "end": 4.52,
    "gain_db": -8.8,
@@ -9546,16 +9258,7 @@
     "bytes": 147873,
     "title": "TNG Transporter 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_transporter1.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "a516c467282783293f431c90a7238cbacac13bdc67d6c866a3e2f7b156264171",
-     "bytes": 147873,
-     "title": "tng_transporter1.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 3.68,
    "gain_db": -2.03,
@@ -9859,16 +9562,7 @@
     "bytes": 22113,
     "title": "TNG Viewscreen Off"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_off.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8602a6579627f4515615b09384948d1178c7b4581ba688af2a7c735944f5422a",
-     "bytes": 22113,
-     "title": "tng_viewscreen_off.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.537,
    "gain_db": 5.95,
@@ -9893,16 +9587,7 @@
     "bytes": 15393,
     "title": "TNG Viewscreen On"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_on.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "d438a02dbd81afce603e7361330fe536bc4440804a56e039b013322f9446aeae",
-     "bytes": 15393,
-     "title": "tng_viewscreen_on.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 0.357,
    "gain_db": 5.94,
@@ -11004,16 +10689,7 @@
     "bytes": 147873,
     "title": "TNG Transporter 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_transporter1.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "a516c467282783293f431c90a7238cbacac13bdc67d6c866a3e2f7b156264171",
-     "bytes": 147873,
-     "title": "tng_transporter1.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 3.68,
    "gain_db": -2.03,
@@ -11041,16 +10717,7 @@
     "bytes": 14625,
     "title": "TNG Chirp 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_chirp_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8af14ed5cdd3efb89f889c0303082dd46472574beb2bd05ab5d734290bd80df7",
-     "bytes": 14625,
-     "title": "tng_chirp_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.024271,
    "end": 0.409271,
    "gain_db": -3.06,
@@ -11079,16 +10746,7 @@
     "bytes": 16929,
     "title": "Deny Beep 3"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/denybeep3.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "bf2d7ab4ab8d6b80313d59459ff841a2d06549f7bbcb2b4632a98f0fac4b2f57",
-     "bytes": 16929,
-     "title": "denybeep3.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.020021,
    "end": 0.525021,
    "gain_db": 4.61,
@@ -11116,16 +10774,7 @@
     "bytes": 11553,
     "title": "Screen Show"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/scrshow.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8cb31ee1e693671738fa6241db9189f26ec6d54176fa27e396059f7462a198f3",
-     "bytes": 11553,
-     "title": "scrshow.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.029667,
    "end": 0.357667,
    "gain_db": -1.0,
@@ -11155,16 +10804,7 @@
     "bytes": 22113,
     "title": "TNG Viewscreen Off"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_off.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "8602a6579627f4515615b09384948d1178c7b4581ba688af2a7c735944f5422a",
-     "bytes": 22113,
-     "title": "tng_viewscreen_off.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.020583,
    "end": 0.549583,
    "gain_db": 5.96,
@@ -11193,16 +10833,7 @@
     "bytes": 15393,
     "title": "TNG Viewscreen On"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/tng_viewscreen_on.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "d438a02dbd81afce603e7361330fe536bc4440804a56e039b013322f9446aeae",
-     "bytes": 15393,
-     "title": "tng_viewscreen_on.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.020125,
    "end": 0.384,
    "gain_db": 5.96,
@@ -11229,16 +10860,7 @@
     "bytes": 70689,
     "title": "Accessing Library Computer Data"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/accessinglibrarycomputerdata_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "c819187a9c2372dafb048253d7f4d80da120149b7146e37cbc4f099a95b84ec6",
-     "bytes": 70689,
-     "title": "accessinglibrarycomputerdata_clean.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.04,
    "end": 2.2,
    "gain_db": -4.85,
@@ -11263,16 +10885,7 @@
     "bytes": 34593,
     "title": "Affirmative 1"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/affirmative1_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "03229724af6ea65419d607e95de9ace1a17aeeb0c6d55ec3a3a67f4c1333034f",
-     "bytes": 34593,
-     "title": "affirmative1_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 1.057,
    "gain_db": -4.16,
@@ -11297,16 +10910,7 @@
     "bytes": 74529,
     "title": "Auto Defense"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/autodefense_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "2ee6b701464dd0add354ca90f27c67adf0a2af5d783fa8d2486fdf0fc9737ea8",
-     "bytes": 74529,
-     "title": "autodefense_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.08,
    "end": 2.3,
    "gain_db": -4.0,
@@ -11333,16 +10937,7 @@
     "bytes": 71457,
     "title": "Command Codes Verified"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/commandcodesverified_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "fda1f0df302200ee50dac666805e89267c1acd3b83a8229a468c15b5d10b67d1",
-     "bytes": 71457,
-     "title": "commandcodesverified_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.232,
    "gain_db": -8.24,
@@ -11367,16 +10962,7 @@
     "bytes": 76833,
     "title": "Command Functions Offline"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/commandfunctionsoffline_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "5ff0ad5329f737666398de74bb51c6f59ad763e68d2467654de71c8f7eb6e4a3",
-     "bytes": 76833,
-     "title": "commandfunctionsoffline_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 2.4,
    "gain_db": -4.12,
@@ -11403,16 +10989,7 @@
     "bytes": 152097,
     "title": "Initiating Decoupling Sequence"
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/initiatingdecouplingsequence_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "fb8735f085226e7b53a201ff130e861cadc5986a9653e2572ad1e73b041b482d",
-     "bytes": 152097,
-     "title": "initiatingdecouplingsequence_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.02,
    "end": 4.752,
    "gain_db": -9.27,
@@ -11437,16 +11014,7 @@
     "bytes": 73856,
     "title": "Priority One Message from the Federation..."
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/priorityonemessagefromstarfleet_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
-     "bytes": 73856,
-     "title": "(source file)"
-    }
-   ],
+   "alternates": [],
    "start": 0.12,
    "end": 4.5,
    "gain_db": -6.45,
@@ -11471,16 +11039,7 @@
     "bytes": 145185,
     "title": "Unable to Comply, Internal.."
    },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/unabletocomply1_ep.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "281f4765c40c2b164c7ef1dab2606182fc4740284fd77b7801596c4adddd077a",
-     "bytes": 145185,
-     "title": "unabletocomply1_ep.mp3"
-    }
-   ],
+   "alternates": [],
    "start": 0.06,
    "end": 4.52,
    "gain_db": -8.8,

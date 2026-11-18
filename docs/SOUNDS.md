@@ -88,7 +88,7 @@ come, the app follows it only to **https** on **mindattic.com or a subdomain**, 
 **Allowlist: only owned audio goes on the server.** That means the synthesized set in
 `core/src/main/assets/sounds/synth/` and anything in `tools/sounds/owned/`, which may hold only
 self-made or properly licensed audio (see its README). The show recordings in the bundled manifest
-(trekcore, MediaCollege, the GitHub mirror and the rest) are **never** uploaded. They stay
+(trekcore and the other public sources) are **never** uploaded. They stay
 user-downloaded from their original public pages. `publish-sfx.py` enforces this. It collects files only
 from those two folders and refuses a symlink, an unexpected file type, an invalid id, an id that is a
 show-sound id, or a file whose SHA-256 equals any third-party original in the bundled manifest.
@@ -172,10 +172,7 @@ can import their own file for it.
 | Site | Page | Used for |
 |---|---|---|
 | trekcore.com | https://www.trekcore.com/audio/ | almost everything (computer, console, alerts, weapons, warp, transporter, ambient, ...) |
-| GitHub sound pack | https://github.com/wofsonofmoag/lcars-sounds | the 38-file pack earlier private builds started from (identical copies as alternates) |
-| MediaCollege | https://www.mediacollege.com/downloads/sound-effects/star-trek/tos/ | older-series effects (candidates / alternates) |
 | willbswift | https://willbswift.github.io/treksounds/ | candidates / alternates |
-| S. L. Spencer sound archive | https://www.slspencer.com/Sounds/Star%20Trek%20Sounds/LCARS%20Audio/ | candidates / alternates |
 
 Attribution: the recordings belong to their copyright holders. The sites above
 host them. The app does not redistribute them, and the user downloads them for personal use on their

@@ -33,12 +33,12 @@ HIGH, MEDIUM = 0.90, 0.75
 PREFER_NAMED_WITHIN = 0.03
 SITE_PAGE = {
     'trekcore': 'https://www.trekcore.com/audio/',
-    'github_sound_pack': 'https://github.com/wofsonofmoag/lcars-sounds',
-    'mediacollege': 'https://www.mediacollege.com/downloads/sound-effects/star-trek/tos/',
     'willbswift': 'https://willbswift.github.io/treksounds/',
-    'slspencer': 'https://www.slspencer.com/Sounds/Star%20Trek%20Sounds/LCARS%20Audio/',
+    # Sources whose addresses carry the franchise or console-trademark names are not used (owner rule, 2026-11-18).
 }
-SITE_RANK = ['trekcore', 'github_sound_pack', 'mediacollege', 'willbswift', 'slspencer']
+SITE_RANK = ['trekcore', 'willbswift']
+# Dropped sources (their addresses carry names the owner bans from the source; old crawl data may still list them).
+EXCLUDED_SITES = {'github_sound_pack', 'mediacollege', 'slspencer'}
 EVENT_KEYS = ['button', 'navigation', 'launch', 'confirm', 'error', 'comms', 'diagnostics', 'red_alert']
 NOTICE = ('The app ships no recordings. These are third-party sound effects that belong to their '
           'copyright holders, downloaded by the user from the public pages listed here, for personal '
@@ -109,7 +109,7 @@ def build(report_path, src_dirs):
              'core': bool(events), 'available': level != 'none', 'confidence': round(conf, 3), 'match': level}
         if pick and level != 'none':
             c = cands[pick['cand']]
-            hosts = sorted(c['hosts'], key=lambda h: (SITE_RANK.index(h['site']) if h['site'] in SITE_RANK else 99,
+            hosts = sorted([h for h in c['hosts'] if h['site'] not in EXCLUDED_SITES], key=lambda h: (SITE_RANK.index(h['site']) if h['site'] in SITE_RANK else 99,
                                                       0 if h['url'].lower().endswith('.mp3') else 1))
             hosts = [h for h in hosts if h['url'].startswith('https://')]
             if not hosts:
