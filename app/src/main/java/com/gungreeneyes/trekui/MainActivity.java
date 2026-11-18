@@ -876,7 +876,15 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         bindSlot(footer, "foot", null);
         mainFrame.setFooter(footer);
 
-        LinearLayout sidebar = new LinearLayout(this);
+        LinearLayout sidebar = new LinearLayout(this) {
+            @Override
+            protected void onMeasure(int widthSpec, int heightSpec) {
+                if (MeasureSpec.getMode(heightSpec) != MeasureSpec.UNSPECIFIED) {
+                    fitNavButtons(this, MeasureSpec.getSize(heightSpec) - getPaddingTop() - getPaddingBottom());
+                }
+                super.onMeasure(widthSpec, heightSpec);
+            }
+        };
         sidebar.setOrientation(LinearLayout.VERTICAL);
         addNav(sidebar, "nav0", "APPS", pal.c(0), () -> openDrawer(null, false));
         addNav(sidebar, "nav1", "SEARCH", pal.c(2), () -> openDrawer(null, true));
@@ -975,9 +983,32 @@ public class MainActivity extends Activity implements AppRepo.Listener {
             button.setPadding(Ui.dp(this, 4f), 0, Ui.dp(this, 8f), Ui.dp(this, 4f));
         }
         bindSlot(button, slot, action);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(this, 62f));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(this, NAV_BUTTON_DP));
         if (sidebar.getChildCount() > 0) params.topMargin = Ui.dp(this, 6f);
         sidebar.addView(button, params);
+    }
+
+    private static final float NAV_BUTTON_DP = 62f;
+    private static final float NAV_BUTTON_MIN_DP = 32f;
+    private static final int NAV_BUTTONS = 3;
+
+    /**
+     * Shrinks the APPS / SEARCH / CONFIG buttons evenly when the sidebar is shorter than their natural
+     * height (large "display size" settings, short landscape frames), so CONFIG never falls off-screen;
+     * restores the natural height whenever there is room.
+     */
+    private void fitNavButtons(LinearLayout sidebar, int available) {
+        if (available <= 0 || sidebar.getChildCount() < NAV_BUTTONS) return;
+        int natural = Ui.dp(this, NAV_BUTTON_DP);
+        int margins = 0;
+        for (int i = 0; i < sidebar.getChildCount(); i++) {
+            margins += ((LinearLayout.LayoutParams) sidebar.getChildAt(i).getLayoutParams()).topMargin;
+        }
+        int height = Math.min(natural, Math.max(Ui.dp(this, NAV_BUTTON_MIN_DP), (available - margins) / NAV_BUTTONS));
+        for (int i = 0; i < NAV_BUTTONS; i++) {
+            ViewGroup.LayoutParams lp = sidebar.getChildAt(i).getLayoutParams();
+            if (lp.height != height) lp.height = height;
+        }
     }
 
     /**
