@@ -15,7 +15,7 @@ matrices are unchanged from the Java edition.
 | Phase | State | Tickets |
 |---|---|---|
 | 0. Seed | done (TrekUI.Java 43 copied, links and CI/Pages pointed here, the final TrekUI.Java `main` merged in) | TUK-T2 |
-| 1. Build foundation (`build-logic`, ktlint, detekt, Compose plugin) | **not started; next** | TUK-T3 |
+| 1. Build foundation (`build-logic` convention plugins, ktlint, detekt in CI) | done: outputs identical (application IDs, version 44, signing certificate, merged manifests); the Compose plugin moves to phase 5 | TUK-T3 |
 | 2. `:core` to Kotlin | done | TUK-T4 |
 | 3. Companions to Kotlin (`:messages`, `:keyboard`, `:lockscreen`) | done | TUK-T5, TUK-T6, TUK-T7 |
 | 4. `:app` to Kotlin, unit tests and instrumented scenarios included | done | TUK-T8 |
@@ -23,7 +23,7 @@ matrices are unchanged from the Java edition.
 | 6. Settings on DataStore, with the upgrade test | not started | TUK-T10 |
 | 7. Parity and release | in progress: version 44 merged from Java; 614 unit tests and CI 9/9 pass; `v44` test pre-release with APKs; the local 24-device matrix is running | TUK-T11 |
 
-Next: phase 1 (the build foundation), then phase 5 (Compose), phase 6 (DataStore) and phase 7 (parity and
+Next: phase 5 (Compose, which adds the Compose compiler plugin to the conventions), phase 6 (DataStore) and phase 7 (parity and
 release, shipped as the next whole-number version, 44 or later, over the Java edition).
 
 ## The bar (definition of done)
@@ -60,7 +60,9 @@ Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a mo
 0. **Seed** (TUK-T2): copy of TrekUI.Java 43, links point here, CI and Pages on, this plan. **Before phase 1,
    merge the final TrekUI.Java `main` into this repo** (it adds the Pipe Lounge removal, LCA-T58, and the test
    fixes from the device matrix), resolving only the link and ticket-view files this repo changed.
-1. **Build foundation**: Kotlin and Compose plugins, `build-logic` convention plugins, ktlint/detekt, CI updated.
+1. **Build foundation** (done): `build-logic` convention plugins (`trekui.android.application`, `trekui.android.library`,
+   `trekui.quality`), ktlint and detekt with per-module baselines, both in the CI build job ([BUILD.md](BUILD.md)).
+   Kotlin needs no plugin (AGP's built-in support); the Compose compiler plugin comes with phase 5.
 2. **`:core` to Kotlin**: palettes, skins, drawing helpers, sounds, licensing and the suite contract; tests ported.
 3. **Companions to Kotlin** (in parallel): `:messages`, `:keyboard`, `:lockscreen`, with their tests.
 4. **`:app` to Kotlin**: the launcher (about 28,000 lines), converted package by package.
@@ -83,6 +85,11 @@ Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a mo
   visibility and `internal` is per module, so converted declarations that other modules or their tests use
   are `public`. Tighten them to `internal` only once every user is in the same module.
 - Constants in an interface become `companion object` `const val`s; Java callers keep `TimeSource.UNKNOWN_BOOT`.
+- Phase 1 (TUK-T3): ktlint runs through the official CLI (`com.pinterest.ktlint:ktlint-cli`) from a `JavaExec`
+  task in the `trekui.quality` convention rather than the jlleitschuh plugin, so it does not depend on a Kotlin
+  Gradle plugin being applied. detekt is 1.23.8 (`io.gitlab.arturbosch.detekt`); it runs its own Kotlin 2.0.21
+  compiler, pinned in the convention, and parses the code without type resolution. No JVM toolchain is set: only
+  JDK 21 is installed here and in CI, and the bytecode target stays 17 through `compileOptions`.
 
 ## Rules
 

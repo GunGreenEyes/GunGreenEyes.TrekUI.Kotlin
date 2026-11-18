@@ -6,18 +6,43 @@
 |---|---|---|
 | JDK (to run Gradle) | 21 | your machine (`JAVA_HOME`); CI uses Temurin 21 |
 | Language | Kotlin 2 (K2), through AGP 9's built-in Kotlin support | no `org.jetbrains.kotlin.android` plugin is applied (it would conflict with AGP's) |
-| JVM target (bytecode level) | 17 | each module's `build.gradle.kts` `compileOptions` |
+| JVM target (bytecode level) | 17 | `build-logic` (`TrekUiSdk.JAVA`, `compileOptions`; AGP's built-in Kotlin follows `targetCompatibility`) |
 | Gradle | wrapper (9.x) | `gradle/wrapper/gradle-wrapper.properties` |
 | Android Gradle Plugin | see catalog | `gradle/libs.versions.toml` (`agp`) |
-| compileSdk / targetSdk | 37 | `app/build.gradle.kts` |
-| minSdk | 26 (Android 8.0) | `app/build.gradle.kts` |
+| compileSdk / targetSdk | 37 | `build-logic` (`TrekUiSdk`) |
+| minSdk | 26 (Android 8.0) | `build-logic` (`TrekUiSdk`) |
+| ktlint / detekt | see catalog | `gradle/libs.versions.toml` (`ktlint`, `detekt`) |
 | SDK packages | `platforms;android-37.0`, `build-tools;37.0.0`, `platform-tools` | installed by `scripts/setup.*` |
 
 All dependency versions live in the version catalog `gradle/libs.versions.toml`. Bump them there only; Dependabot opens PRs for updates.
 
 ### Source layout
 
-Every module (`:core`, `:app`, `:messages`, `:keyboard`, `:lockscreen`) keeps its Kotlin in `src/main/kotlin/`, its unit tests in `src/test/kotlin/`, and the launcher's instrumented scenarios in `app/src/androidTest/kotlin/`. There are no Java sources. Each module still has its own `build.gradle.kts`; the shared `build-logic/` convention plugins, ktlint and detekt are planned for phase 1 of [KOTLIN_PORT.md](KOTLIN_PORT.md) and are not in the build yet.
+Every module (`:core`, `:app`, `:messages`, `:keyboard`, `:lockscreen`) keeps its Kotlin in `src/main/kotlin/`, its unit tests in `src/test/kotlin/`, and the launcher's instrumented scenarios in `app/src/androidTest/kotlin/`. There are no Java sources.
+
+### Build logic: convention plugins
+
+What the five modules share lives once, in the included build `build-logic/` (`settings.gradle.kts`: `pluginManagement { includeBuild("build-logic") }`). It is compiled with the build and reads the same version catalog. AGP and detekt are declared `apply false` in the root `build.gradle.kts` and are `compileOnly` in `build-logic`, so every module runs the catalog's versions.
+
+| File in `build-logic/convention/src/main/kotlin/` | Plugin id | What it sets |
+|---|---|---|
+| `TrekUiAndroid.kt` | (shared code) | compileSdk/minSdk/targetSdk 37/26/37, Java/Kotlin target 17, the instrumentation runner, `unitTests.isReturnDefaultValues`, lint (`abortOnError = false`, `checkReleaseBuilds`, XML + HTML reports) |
+| `AndroidApplicationConventionPlugin.kt` | `trekui.android.application` | the above plus the version from `version.properties`, the `TRIAL_SESSION_MINUTES` and `UNLOCK_PRODUCT_ID` fields, the `develop`/`production` flavors (`.dev` id suffix, `-dev` name suffix, 5-minute trial, the per-flavor `trekuiSuitePermission` placeholder), release signing (below), R8 + resource shrinking with `proguard-rules.pro`, `buildConfig`/`resValues`, the META-INF packaging exclude |
+| `AndroidLibraryConventionPlugin.kt` | `trekui.android.library` | the shared part, for `:core` |
+| `QualityConventionPlugin.kt` | `trekui.quality` | ktlint and detekt (below); applied by both Android plugins |
+
+A module's own `build.gradle.kts` keeps only its plugin alias (`libs.plugins.trekui.android.application` or `.library`), its namespace and applicationId, the flavor `app_name` strings, its dependencies and what is really its own: `:app`'s `CALL_LOG_ENABLED` field (true only in `develop`), Robolectric's `isIncludeAndroidResources` and `animationsDisabled`; `:core`'s `consumer-rules.pro` and `isIncludeAndroidResources`. The keyboard's missing network permissions come from its manifest, not the build. To change something every app shares, change the convention, not a module. The root `build.gradle.kts` keeps the `dist` task.
+
+### Style checks: ktlint and detekt
+
+```sh
+./gradlew ktlintCheck            # ktlint (official CLI, catalog version) on each module's src/**/*.kt and build.gradle.kts
+./gradlew ktlintFormat           # rewrite those files to the rules
+./gradlew detekt                 # detekt, default rules (buildUponDefaultConfig)
+./gradlew detektBaseline         # rewrite each module's detekt-baseline.xml
+```
+
+Both are part of `check` and run in the CI build job. The ktlint rules are in the root `.editorconfig`: Android Studio code style, 120 columns, with the wrapping and trailing-comma rules that fight the compact house style turned off. What the code already broke when the checks arrived (TUK-T3) is listed per module in `<module>/ktlint-baseline.xml` and `<module>/detekt-baseline.xml`, so only new findings fail. When you clean up a file, remove its entries: regenerate the detekt baseline with `detektBaseline`, and the ktlint one by deleting `<module>/ktlint-baseline.xml` and running `./gradlew :<module>:ktlintCheck` once (ktlint writes the file and fails that run; the next run passes). ktlint baselines record line numbers, so editing an old file can surface its old findings; fix them in the lines you touch. detekt 1.23 runs its own Kotlin compiler (catalog `detekt-kotlin`, pinned by the convention), independent of the Kotlin the build compiles with.
 
 ### Fresh machine
 
@@ -71,6 +96,7 @@ Variants: `developDebug`, `developRelease`, `productionDebug`, `productionReleas
 ./gradlew dist                                 # all of the above for all four apps, copied to dist/
 ./gradlew testDevelopDebugUnitTest             # JVM + Robolectric tests (see TESTING.md)
 ./gradlew lintDevelopDebug                     # lint report: app/build/reports/
+./gradlew ktlintCheck detekt                   # style checks (see "Style checks")
 ```
 
 On Windows use `gradlew.bat` (or `./gradlew.bat` from Git Bash).
@@ -95,7 +121,7 @@ versionCode=43
 versionName=43
 ```
 
-Both values are read by every app module's `build.gradle.kts`. This file is the single source of the version.
+Both values are read by the `trekui.android.application` convention for every app. This file is the single source of the version.
 
 - **`versionCode`:** an integer that must go up for every build uploaded to Google Play. Never reuse one.
 - **`versionName`:** a whole number (42, 43, 44, ...), one higher each release, and always equal to `versionCode`; no minor or patch part. The release workflow refuses a tag `v<N>` that does not match it.

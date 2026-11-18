@@ -29,7 +29,8 @@ GitHub issues are welcome too. The maintainer turns them into tickets.
 - **Idiomatic Kotlin**, JVM target 17, with `minSdk 26`. Sources go in `<module>/src/main/kotlin/`; no Java sources and no XML layouts. Views are built in code and draw on a `Canvas`; follow the existing classes. Compose arrives in phase 5 of [docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md); until then, don't add it.
   - Prefer `val`, null-safety and `object`s for stateless helpers; make declarations used only inside one module `internal`.
   - Keep `@JvmStatic` / `@JvmField` on members the instrumented tests reach by reflection (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#kotlin-conventions-in-this-codebase)).
-  - **Formatting and linting:** ktlint and detekt are planned for phase 1 and are not in the build yet. Until then, match the surrounding code (4-space indent, the existing naming and comment style) and keep release lint at zero errors.
+  - **Style checks:** `./gradlew ktlintCheck detekt` must pass; CI runs both. The ktlint rules are in `.editorconfig` (Android Studio style, 120 columns); detekt uses its default rules. Findings the code already had are in each module's `ktlint-baseline.xml` and `detekt-baseline.xml`; never add new code to a baseline, fix it instead (`./gradlew ktlintFormat` fixes most ktlint findings). See [docs/BUILD.md](docs/BUILD.md#style-checks-ktlint-and-detekt). Keep release lint at zero errors.
+  - **Build changes** that every app shares go in the convention plugins in `build-logic/`, not in a module's `build.gradle.kts` ([docs/BUILD.md](docs/BUILD.md#build-logic-convention-plugins)).
 - **Size through `ScreenMetrics`.** Use `ScreenMetrics.of(context)` for margins, gutters, scale and column counts. Never hard-code screen sizes, column counts or orientation.
   - Every screen must work in portrait and landscape, on phones through tablets, on foldables and in multi-window.
   - Handle window insets (system bars, display cutout) so layouts stay edge-to-edge.
@@ -48,7 +49,7 @@ GitHub issues are welcome too. The maintainer turns them into tickets.
 - **Before you open a PR**, run:
 
   ```sh
-  ./gradlew assembleDevelopDebug testDevelopDebugUnitTest lintDevelopDebug
+  ./gradlew assembleDevelopDebug testDevelopDebugUnitTest lintDevelopDebug ktlintCheck detekt
   ```
 
 More detail is in [docs/TESTING.md](docs/TESTING.md).
@@ -65,7 +66,7 @@ More detail is in [docs/TESTING.md](docs/TESTING.md).
 
 1. Branch from `main` (outside contributors fork first), keep the change focused, and reference the ticket.
 2. CI must be green:
-   - **Develop:** build, unit tests and lint, plus the quick emulator matrix.
+   - **Develop:** build, unit tests, lint, ktlint and detekt, plus the quick emulator matrix.
    - **CodeQL.**
 3. For visual changes, attach before and after screenshots. The CI `capture-*` artifacts are fine.
 4. Update the docs when behaviour changes: README, ARCHITECTURE, and CHANGELOG under the next version.
