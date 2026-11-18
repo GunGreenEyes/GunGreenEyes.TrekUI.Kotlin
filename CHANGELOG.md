@@ -2,6 +2,44 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
+## 43 (versionCode 43, 2026-11-17)
+
+- Log release 43 (LCA-T52)
+- Full README for TrekUI 42: the four apps, supported devices (every phone 2022+, every resolution/aspect ratio) and how it's tested, test-device install from dist/, build, release (LCA-T51)
+- Bring release lint to zero errors: Messages gets Fragment 1.3+ for its activity-result calls, and the launcher's deliberate pre-Android-13 back handler and hidden status-bar call are marked as intended (LCA-T50)
+- Use one version number for everything: this release is 42 (versionName and versionCode alike), and every release after it goes up by one (LCA-T49)
+- Record LCA-T48 as closed in the user-story log (LCA-T48)
+- Switch to whole-number versions: this release is TrekUI 6, versionCode 42 (LCA-T48)
+- Record the finished foundation and suite-licensing tickets as closed so the open list shows only the work moving to Kotlin (LCA-T11)
+- Mark the call-log removal as done in the Play checklist so the owner doesn't chase a finished item (LCA-T40)
+- Retry the CI device tests once when the hosted emulator drops off adb as they start, so runner flakiness stops failing builds that would pass (LCA-T47)
+- Keep CONFIG on screen at large display sizes: shrink the sidebar's APPS/SEARCH/CONFIG buttons evenly when the frame is too short for their natural height (LCA-T46)
+- Stop CI emulator jobs hanging to the 60-minute limit: give the emulators enough RAM so heavy devices stay online, and time-limit the post-test adb calls so a dead emulator can't stall the job (LCA-T45)
+- Make the emulator matrix's clean-commit export work when TEMP is on another drive: Git's GNU tar read "R:\..." as a remote host, so use Windows' own tar (LCA-T44)
+- Give the owner one setup command for publishing: upload key, release secrets, production approval gate, Pages and the upgrade task, then the Play Console steps only they can do (LCA-T43)
+- Fix the screenshot ship-blockers: clipped labels, see-through drawer, trial screen, Samsung-only text (LCA-T40)
+- Record LCA-T37 as closed in the ticket view, so the log shows the one-command release is done (LCA-T37)
+- Fix the six failing unit tests: core asset paths, -0f in placeAxis, a mixed-case keyword (LCA-T40)
+- Ship all four TrekUI apps to Google Play with one command: scripts/release/ship.* bumps, writes the changelogs, commits, tags, pushes and starts release.yml, which builds, signs and uploads the launcher, Messages, Keyboard and Lock Screen together (LCA-T37)
+- Give each TrekUI app its own Play metadata folder (fastlane/metadata/<app>/android) with listing stubs for Messages, Keyboard and Lock Screen, so one release can push four listings and per-app release notes (LCA-T37)
+- Document the Lock Screen's security model and Play disclosure, and react to the launcher's switch at once (LCA-T33)
+- Add the TrekUI Lock Screen app: a wake screen over the keyguard that never weakens it (LCA-T33)
+- Document TrekUI Keyboard: features, the never-block-typing licensing rule, privacy (no network, local-only learned words, incognito fields) and Play data-safety answers, so store review and users can check what it does with keystrokes (LCA-T32)
+- Add TrekUI Keyboard (:keyboard), an input method drawn in every TrekUI interface that follows the launcher's theme, types in en/de/fr/es, suggests from the personal dictionary and typed words but never learns in password or incognito fields, has no network access, and never blocks typing when the trial ends (a slim UNLOCK chip instead) (LCA-T32)
+- Add the keyboard's pure layout and typing rules (layout tables for en/de/fr/es, shift and caps-lock machine, long-press alternates, input-type page choice, incognito rule, suggestion ranking) with JVM tests, so the IME's behaviour is pinned down independently of Android (LCA-T32)
+- Queue every new Android API level, Gradle release and Dependabot update as a ticket automatically, so the suite keeps working on new phones without anyone having to remember to check (LCA-T41)
+- Document TrekUI Messages and its Play SMS-permissions declaration, and record LCA-T31 as closed (LCA-T31)
+- Unit-test the Messages logic: number matching, thread grouping, drafts, block rules and the MMS PDU round trip (LCA-T31)
+- Add TrekUI Messages, a full default SMS/MMS app on :core, so the suite has its own messaging app drawn in the same interfaces (LCA-T31)
+- Log the ship-blocker bug batch from the emulator screenshots as its own ticket before the Play closed test (LCA-T40)
+- Log the suite follow-ups (QS tiles, widget, art for the new COMMAND sub-themes) so they aren't lost (LCA-T39)
+- Let users pick sub-themes in CONFIG and manage the companion apps from a SUITE section (LCA-T35)
+- Give every interface family sub-themes in :core so the launcher and its companions share one choice (LCA-T35)
+- Regenerate the ticket view under the repo's new name, TrekUI.Java (LCA-T38)
+- Point clone, Pages, issue and release links at the renamed TrekUI.Java repo so none of them break after the rename (LCA-T38)
+- Split the shared look, sound, licensing and suite contract into a :core library so the Messages, Keyboard and Lock Screen apps can reuse them; sibling unlocks are signature-checked, and Sfx no longer depends on launcher-only classes (LCA-T30)
+- TrekUI Launcher 6.2.0: pre-release baseline
+
 ## 42
 
 ### Sub-themes and the TrekUI suite
