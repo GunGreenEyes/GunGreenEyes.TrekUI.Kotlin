@@ -24,7 +24,7 @@ _Nothing recorded yet._
 | TUK-T1 | 2026-11-18 | docs | closed | Start the permanent ticket log in the ticket database | — |
 | TUK-T2 | 2026-11-18 | chore | open | Kotlin edition, phase 0: seed from TrekUI.Java 43, point repo/site/release links at TrekUI.Kotlin, re-enable CI and Pages, write the port plan (docs/KOTLIN_PORT.md) | owner goal 2026-11-18 |
 | TUK-T3 | 2026-11-18 | chore | open | Phase 1 build foundation: Kotlin 2 + Compose plugins, build-logic convention plugins for all five modules, ktlint + detekt in CI; Java code still builds and every test passes | docs/KOTLIN_PORT.md |
-| TUK-T4 | 2026-11-18 | feature | open | Phase 2: convert :core to Kotlin (palettes, sub-themes, skins, drawing helpers, ScreenMetrics, sounds, licensing, suite contract) with its tests ported; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T4 | 2026-11-18 | feature | closed | Phase 2: convert :core to Kotlin (palettes, sub-themes, skins, drawing helpers, ScreenMetrics, sounds, licensing, suite contract) with its tests ported; no behaviour change | :core 100% Kotlin; :app unit suite green |
 | TUK-T5 | 2026-11-18 | feature | open | Phase 3a: convert :messages to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
 | TUK-T6 | 2026-11-18 | feature | open | Phase 3b: convert :keyboard to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
 | TUK-T7 | 2026-11-18 | feature | open | Phase 3c: convert :lockscreen to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
