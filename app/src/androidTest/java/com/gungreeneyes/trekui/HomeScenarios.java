@@ -71,7 +71,7 @@ public class HomeScenarios extends AppScenario {
                 setHomeByShell(context.getPackageName(), new ComponentName(context, MainActivity.class));
             }
             scenario.then("it holds the home role");
-            assertTrue(scenario.lastStep() + ": still not default home, current " + currentHomePackage(), awaitDefaultHome(5000));
+            assertTrue(scenario.lastStep() + ": still not default home, current " + currentHomePackage(), awaitDefaultHome(20000));
             // The role flag flips before Android re-routes the Home key; on a loaded device that takes many seconds.
             awaitHomeResolvesHere(30000);
             scenario.and("pressing Home shows the TrekUI home screen");
@@ -145,7 +145,13 @@ public class HomeScenarios extends AppScenario {
         BySelector confirm = By.text(Pattern.compile("(?i)(set as default|always|ok|allow|yes)"));
         if (device.wait(Until.hasObject(confirm), 3000)) {
             media.screenshot("role-confirm");
-            clicked |= clickWhenFound(confirm, 3000);
+            // Android 10's role dialog can ignore a tap on the label text: press the real positive button
+            // when it exists, and tap again if the dialog is still there.
+            BySelector positive = By.res("android", "button1");
+            for (int attempt = 0; attempt < 2 && device.hasObject(confirm); attempt++) {
+                clicked |= device.hasObject(positive) ? clickWhenFound(positive, 1000) : clickWhenFound(confirm, 3000);
+                device.wait(Until.gone(confirm), 3000);
+            }
         }
         return clicked;
     }
