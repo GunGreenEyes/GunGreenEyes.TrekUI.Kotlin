@@ -1,4 +1,4 @@
-• Fix the screenshot ship-blockers: clipped labels, see-through drawer, trial screen, Samsung-only text
-• Add the TrekUI Lock Screen app: a wake screen over the keyguard that never weakens it
-• Give every interface family sub-themes in :core so the launcher and its companions share one choice
-• Split the shared look, sound, licensing and suite contract into a :core library so the Messages, Keyboard and...
+• First release of TrekUI Lock Screen: a wake screen with clock, notifications, media and quick actions
+• Always hands off to your real PIN, pattern or fingerprint; security is never weakened
+• Private notification text stays hidden
+• One purchase unlocks every TrekUI app

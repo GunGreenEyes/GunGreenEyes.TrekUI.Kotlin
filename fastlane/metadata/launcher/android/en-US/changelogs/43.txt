@@ -1,5 +1,5 @@
-• Bring release lint to zero errors: Messages gets Fragment 1.3+ for its activity-result calls, and the...
-• Switch to whole-number versions: this release is TrekUI 6, versionCode 42
-• Keep CONFIG on screen at large display sizes: shrink the sidebar's APPS/SEARCH/CONFIG buttons evenly when the...
-• Fix the screenshot ship-blockers: clipped labels, see-through drawer, trial screen, Samsung-only text
-• Fix the six failing unit tests: core asset paths, -0f in placeAxis, a mixed-case keyword
+• New: sub-themes for every interface (11 COMMAND colour sets, 5 each for IMPERIAL and COLLECTIVE), picked in CONFIG with previews
+• New: SUITE section to manage TrekUI Messages, Keyboard and Lock Screen
+• One purchase now unlocks every TrekUI app
+• Fixes: CONFIG stays on screen at large display sizes, clipped labels, see-through drawer, trial screen text
+• Works on every phone from 2022 on: any size, shape or foldable

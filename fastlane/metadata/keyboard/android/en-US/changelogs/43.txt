@@ -1,4 +1,4 @@
-• Fix the screenshot ship-blockers: clipped labels, see-through drawer, trial screen, Samsung-only text
-• Add TrekUI Keyboard (:keyboard), an input method drawn in every TrekUI interface that follows the launcher's...
-• Add the keyboard's pure layout and typing rules (layout tables for en/de/fr/es, shift and caps-lock machine...
-• Give every interface family sub-themes in :core so the launcher and its companions share one choice
+• First release of TrekUI Keyboard, drawn in your TrekUI interface
+• English, German, French and Spanish layouts, symbols, number and phone pads
+• Suggestions from your own dictionary; never learns in password or private fields; no internet access
+• Typing is never blocked: one purchase unlocks every TrekUI app
