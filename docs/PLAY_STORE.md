@@ -197,7 +197,7 @@ Google Play allows the Call Log permissions only for apps that are the user's **
 
 **Recommendation: A.** `CALL_PHONE` can stay. If you keep it, describe it honestly in the listing ("the console dialer can place calls directly if you allow it").
 
-> The manifest belongs to the core UI code. Option A means adding a `production` manifest overlay and a small UI change in `DialerView`. These are tracked as follow-up work, not done in the docs.
+> **Done (option A).** `app/src/production/AndroidManifest.xml` removes `READ_CALL_LOG` from the production build, and `DialerView`'s RECENTS tab hands off to the system phone app there (`BuildConfig.CALL_LOG_ENABLED` is false). The develop/sideload build keeps full RECENTS.
 
 ## 5. Store listing (Grow › Store presence › Main store listing)
 
@@ -248,7 +248,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 
 - [ ] The privacy policy URL works and matches the Data safety answers
 - [ ] Data safety is complete, matching section 3
-- [ ] There is no `READ_CALL_LOG` in the production AAB, or a decision was made under section 4
+- [x] There is no `READ_CALL_LOG` in the production AAB (section 4, option A)
 - [ ] The Accessibility API declaration for `LockService` (LOCK SCREEN) is submitted with its video, and the in-app disclosure matches section 4
 - [ ] Content rating is done (tobacco references declared) and target audience is 18+
 - [ ] Ads: No. App access: all functionality available.
