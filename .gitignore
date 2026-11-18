@@ -5,6 +5,9 @@ build/
 captures/
 *.apk
 *.aab
+# release builds are kept on purpose: dist/<version>/ holds every released APK and AAB
+!dist/**/*.apk
+!dist/**/*.aab
 *.idsig
 
 # Local machine config
