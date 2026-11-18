@@ -72,7 +72,14 @@ public class HomeScenarios extends AppScenario {
             assertTrue(scenario.lastStep() + ": still not default home, current " + currentHomePackage(), awaitDefaultHome(5000));
             scenario.and("pressing Home shows the TrekUI home screen");
             device.pressHome();
-            assertTrue(scenario.lastStep(), device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 10000));
+            boolean shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 10000);
+            if (!shown) {
+                // Android 12L applies a new HOME role holder late: the first press can still reach the old one.
+                SystemClock.sleep(1500);
+                device.pressHome();
+                shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 15000);
+            }
+            assertTrue(scenario.lastStep(), shown);
             waitForResumed(MainActivity.class, LAUNCH_TIMEOUT_MS);
             settle();
             media.screenshot("home-button");
