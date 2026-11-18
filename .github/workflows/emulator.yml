@@ -41,6 +41,8 @@ jobs:
           # device = folder prefix on the site, profile = AVD hardware profile.
           # API 23 and 24 run the 32-bit x86 images with 2 GB: the x86_64 google_apis images of that age never
           # finished booting on the hosted runners (sys.boot_completed stayed empty until the job limit).
+          # The foldable's big unfolded screen on the heavy COLLECTIVE screens took the SwiftShader emulator down
+          # (adb offline mid-run, both editions); it renders through ANGLE (swangle_indirect) instead.
           full='[
             {"device":"phone","api":23,"profile":"Nexus 5X","orientation":"portrait","arch":"x86","ram":"2048M"},
             {"device":"phone","api":24,"profile":"pixel_xl","orientation":"portrait","arch":"x86","ram":"2048M"},
@@ -52,7 +54,7 @@ jobs:
             {"device":"phone","api":36,"profile":"pixel_8","orientation":"portrait"},
             {"device":"phone-land","api":36,"profile":"pixel_8","orientation":"landscape"},
             {"device":"tablet","api":36,"profile":"pixel_tablet","orientation":"landscape"},
-            {"device":"foldable","api":36,"profile":"pixel_fold","orientation":"portrait"}
+            {"device":"foldable","api":36,"profile":"pixel_fold","orientation":"portrait","gpu":"swangle_indirect"}
           ]'
           quick='[
             {"device":"phone","api":26,"profile":"pixel_2","orientation":"portrait"},
@@ -127,7 +129,7 @@ jobs:
           heap-size: 576M
           cores: 4
           force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu ${{ matrix.gpu || 'swiftshader_indirect' }} -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "AVD snapshot generated"
 
@@ -146,7 +148,7 @@ jobs:
           heap-size: 576M
           cores: 4
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-snapshot-save -no-window -gpu ${{ matrix.gpu || 'swiftshader_indirect' }} -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: bash .github/scripts/emulator-run.sh
 
@@ -165,7 +167,7 @@ jobs:
           heap-size: 576M
           cores: 4
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-snapshot-save -no-window -gpu ${{ matrix.gpu || 'swiftshader_indirect' }} -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: bash .github/scripts/emulator-run.sh
 
