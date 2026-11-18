@@ -1,0 +1,76 @@
+# Weekly watch for platform releases Dependabot can't see: a new stable Android API level (compileSdk /
+# targetSdk) and a new Gradle release. Each finding becomes one GitHub issue labelled platform-upgrade
+# (never duplicated); scripts/maintenance/queue-upgrades.ps1 turns it into a ticket. See docs/PLATFORM_UPDATES.md.
+name: Platform watch
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+
+      - name: Ensure label
+        run: gh label create platform-upgrade --color 5319e7 --description "New Android, Gradle or library release to adopt" --force
+
+      - name: Newest stable Android API level
+        run: |
+          current=$(grep -rhoE 'compileSdk *= *[0-9]+' --include=build.gradle.kts . | grep -oE '[0-9]+' | sort -n | tail -1)
+          latest=$(sdkmanager --list 2>/dev/null | grep -oE 'platforms;android-[0-9]+(\.[0-9]+)?' \
+                   | grep -oE '[0-9]+' | head -n 1000 | sort -n | tail -1)
+          echo "compileSdk in repo: $current, newest stable platform: $latest"
+          if [ -z "$latest" ] || [ -z "$current" ] || [ "$latest" -le "$current" ]; then exit 0; fi
+          title="Upgrade to Android API $latest (compileSdk/targetSdk)"
+          if gh issue list --state all --label platform-upgrade --search "\"$title\" in:title" --json title -q '.[].title' | grep -qxF "$title"; then
+            echo "Issue already exists: $title"; exit 0
+          fi
+          gh issue create --label platform-upgrade --title "$title" --body "$(cat <<EOF
+          Google has released Android API $latest; the repo builds against $current.
+
+          - [ ] Read the API $latest behaviour changes (apps targeting $latest and all apps) and fix what applies
+          - [ ] Bump compileSdk and targetSdk to $latest in every module's build.gradle.kts (minSdk stays 26: every phone from 2022 on)
+          - [ ] Update \`platforms;android-$latest\` / build-tools in .github/workflows/*.yml and scripts/avd
+          - [ ] Add the API $latest system image to the emulator matrix and run it
+          - [ ] Note it in CHANGELOG.md; ship through the normal release
+
+          Google Play requires new apps and updates to target an API level within one year of the latest release, so do this before the next August deadline.
+          EOF
+          )"
+
+      - name: Newest Gradle release
+        run: |
+          current=$(grep -oE 'gradle-[0-9.]+-(bin|all)\.zip' gradle/wrapper/gradle-wrapper.properties | grep -oE '[0-9]+(\.[0-9]+)+')
+          latest=$(curl -fsS https://services.gradle.org/versions/current | jq -r .version)
+          echo "Gradle in repo: $current, newest release: $latest"
+          if [ -z "$latest" ] || [ "$latest" = "$current" ]; then exit 0; fi
+          if [ "$(printf '%s\n%s\n' "$current" "$latest" | sort -V | tail -1)" != "$latest" ]; then exit 0; fi
+          title="Upgrade Gradle wrapper to $latest"
+          if gh issue list --state all --label platform-upgrade --search "\"$title\" in:title" --json title -q '.[].title' | grep -qxF "$title"; then
+            echo "Issue already exists: $title"; exit 0
+          fi
+          gh issue create --label platform-upgrade --title "$title" --body "Gradle $latest is out; the wrapper is on $current.
+
+          - [ ] \`./gradlew wrapper --gradle-version $latest\` (twice, so the wrapper jar updates too)
+          - [ ] Check AGP compatibility (Dependabot raises AGP separately) and fix deprecations
+          - [ ] Build every module; CI green"

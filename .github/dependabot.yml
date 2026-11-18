@@ -1,4 +1,7 @@
-# Weekly dependency updates: Gradle (version catalog + plugins) and GitHub Actions.
+# Keeps every dependency current without anyone remembering to check (LCA-T41, docs/PLATFORM_UPDATES.md).
+# Each update arrives as a pull request; CI (Develop) builds and tests it, and the local upgrade queue
+# (scripts/maintenance/queue-upgrades.ps1) turns it into a ticket. New Android API levels and Gradle releases
+# are watched separately by .github/workflows/platform-watch.yml.
 version: 2
 updates:
   - package-ecosystem: gradle
@@ -9,11 +12,17 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: deps
+    labels: [dependencies, platform-upgrade]
     groups:
+      # First matching group wins, so the narrow groups come before the broad ones.
+      play-billing:
+        patterns: ["com.android.billingclient*"]
+      test-libraries:
+        patterns: ["junit*", "org.robolectric*", "com.google.truth*", "androidx.test*"]
+      android-gradle-plugin:
+        patterns: ["com.android.*"]
       androidx:
-        patterns: ['androidx.*']
-      test:
-        patterns: ['junit:*', 'org.robolectric:*', 'com.google.truth:*']
+        patterns: ["androidx.*"]
 
   - package-ecosystem: github-actions
     directory: /
@@ -22,6 +31,7 @@ updates:
       day: monday
     commit-message:
       prefix: ci
+    labels: [dependencies, github_actions]
     groups:
       actions:
-        patterns: ['*']
+        patterns: ["*"]
