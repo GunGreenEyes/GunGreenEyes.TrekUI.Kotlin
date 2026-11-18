@@ -3,7 +3,9 @@
 
     python scripts/release/make-store-art.py
 
-Writes into fastlane/metadata/<app>/android/en-US/images/ for each of the four apps (launcher, messages,
+If tools/art/store/icon.png and featured.png exist (the owner's art), they are fitted to Play's sizes
+(512x512 icon; 1024x500 feature graphic, scaled and centre-cropped) and used for every listing instead.
+Otherwise writes generated placeholders into fastlane/metadata/<app>/android/en-US/images/ for each of the four apps (launcher, messages,
 keyboard, lockscreen), from that app's own adaptive-icon foreground:
   icon.png            512x512, 32-bit PNG: the adaptive-icon foreground (res/drawable/ic_launcher_fg.xml)
                       on the icon background colour, full bleed (Play applies its own mask)
@@ -236,7 +238,36 @@ def feature_graphic(vector, word, tagline, ss=2):
     return img.resize((1024, 500), Image.LANCZOS)
 
 
+OWNER_ICON = os.path.join(ROOT, "tools", "art", "store", "icon.png")
+OWNER_FEATURE = os.path.join(ROOT, "tools", "art", "store", "featured.png")
+
+
+def owner_art():
+    """The owner's own store art (tools/art/store/icon.png and featured.png), fitted to Play's sizes, or None."""
+    if not (os.path.exists(OWNER_ICON) and os.path.exists(OWNER_FEATURE)):
+        return None
+    ic = Image.open(OWNER_ICON).convert("RGBA").resize((512, 512), Image.LANCZOS)
+    f = Image.open(OWNER_FEATURE).convert("RGB")
+    f = f.resize((1024, round(f.height * 1024 / f.width)), Image.LANCZOS)
+    if f.height < 500:  # wider than 1024:500: fit the height instead, crop the sides
+        f = Image.open(OWNER_FEATURE).convert("RGB")
+        f = f.resize((round(f.width * 500 / f.height), 500), Image.LANCZOS)
+        left = (f.width - 1024) // 2
+        return ic, f.crop((left, 0, left + 1024, 500))
+    top = (f.height - 500) // 2
+    return ic, f.crop((0, top, 1024, top + 500))
+
+
 def main():
+    owned = owner_art()
+    if owned:  # the owner's art wins over the generated placeholders, for every listing
+        for app in APPS:
+            out = out_dir(app)
+            os.makedirs(out, exist_ok=True)
+            owned[0].save(os.path.join(out, "icon.png"), optimize=True)
+            owned[1].save(os.path.join(out, "featureGraphic.png"), optimize=True)
+            print("wrote owner art to", out)
+        return
     for app, (module, drawable, word, tagline) in APPS.items():
         vector = vector_path(module, drawable)
         out = out_dir(app)
