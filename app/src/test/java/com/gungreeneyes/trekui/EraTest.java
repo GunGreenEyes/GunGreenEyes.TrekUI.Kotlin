@@ -188,15 +188,13 @@ public class EraTest {
     }
 
     @Test
-    public void skinPredicates_erasAreCommandFamilyNotPipe() {
+    public void skinPredicates_erasAreCommandFamily() {
         int saved = Skin.faction;
         try {
             for (int f : new int[]{Skin.ERA23, Skin.ERA25}) {
                 Skin.faction = f;
                 assertThat(Skin.command()).isTrue();
                 assertThat(Skin.era()).isTrue();
-                assertThat(Skin.pipe()).isFalse();
-                assertThat(Skin.scene()).isFalse();
                 assertThat(Skin.imperial() || Skin.collective()).isFalse();
                 assertThat(Skin.title()).isNotEmpty();
                 assertThat(Skin.ship("COMMAND DEFAULT")).isNotEqualTo("COMMAND DEFAULT");
@@ -219,9 +217,7 @@ public class EraTest {
         assertThat(Prefs.themeKeyFor(Skin.ERA25)).isEqualTo("theme10");
         assertThat(Prefs.layoutKeyFor(Skin.ERA23)).isEqualTo(Prefs.layoutKeyFor(Skin.COMMAND));
         assertThat(SettingsLogic.isStarshipFaction(Skin.ERA25)).isTrue();
-        assertThat(SettingsLogic.isStarshipFaction(Skin.BRIAR)).isFalse();
-        assertThat(SettingsLogic.familyTarget(false, 3, Skin.ERA23)).isEqualTo(Skin.ERA23);
-        assertThat(SettingsLogic.familyTarget(true, 3, Skin.ERA23)).isEqualTo(3);
+        assertThat(SettingsLogic.isStarshipFaction(6)).isFalse();
         assertThat(Sfx.FACTION_DEFAULT).hasLength(Skin.NAMES.length);
     }
 

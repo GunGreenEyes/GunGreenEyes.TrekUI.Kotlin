@@ -90,7 +90,7 @@ Step 'Play Console (only you can do these; answers are in docs/PLAY_STORE.md)'
            Download each AAB from the GitHub Release it creates and upload it by hand under
            Testing > Internal testing; accept Play App Signing. Later releases upload automatically.
         c. Monetize > In-app products: trekui_unlock, one-time, US$0.99, Active.
-        d. App content: privacy policy URL, ads = No, content rating (declare tobacco references), audience 18+,
+        d. App content: privacy policy URL, ads = No, content rating (no controlled substances), audience 18+,
            data safety, plus Accessibility API (launcher) / SMS permissions (Messages) declarations.
         e. Store listing: icon, feature graphic, screenshots, descriptions (fastlane/metadata/<app>).
    5. Setup > License testing: add tester accounts. Closed test: 12+ testers for 14 days (new personal accounts).

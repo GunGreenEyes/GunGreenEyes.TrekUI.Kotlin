@@ -241,7 +241,7 @@ public final class WakeView extends View {
             path.lineTo(elbowRight, top + bar);
             path.lineTo(left + side, top + bar);
         } else {
-            float r = geometry == LockLook.GEOMETRY_PAPER ? dp(10) : outer;
+            float r = outer;
             path.lineTo(left, top + r);
             path.arcTo(new RectF(left, top, left + 2 * r, top + 2 * r), 180f, 90f, false);
             path.lineTo(elbowRight, top);
@@ -271,19 +271,13 @@ public final class WakeView extends View {
         c.restore();
     }
 
-    /** Fills (rails, plates), strokes (lattice) or cards (paper) a frame shape in the interface's manner. */
+    /** Fills (rails, plates) or strokes (lattice) a frame shape in the interface's manner. */
     private void paintShape(Canvas c, Path p, int color) {
         if (geometry == LockLook.GEOMETRY_SQUARE) {
             fill.setColor(LockLook.alpha(color, 0.18f));
             c.drawPath(p, fill);
             stroke.setColor(color);
             stroke.setStrokeWidth(dp(1.5f));
-            c.drawPath(p, stroke);
-        } else if (geometry == LockLook.GEOMETRY_PAPER) {
-            fill.setColor(LockLook.surface());
-            c.drawPath(p, fill);
-            stroke.setColor(color);
-            stroke.setStrokeWidth(dp(2));
             c.drawPath(p, stroke);
         } else {
             fill.setColor(color);
@@ -309,7 +303,7 @@ public final class WakeView extends View {
         text.setTypeface(heavy);
         text.setLetterSpacing(LockLook.letterSpacing());
         text.setTextSize(clockSize);
-        text.setColor(geometry == LockLook.GEOMETRY_PAPER ? LockLook.textHi() : LockLook.accent(0));
+        text.setColor(LockLook.accent(0));
         Paint.FontMetrics fm = text.getFontMetrics();
         float baseline = r.top - fm.ascent * 0.92f;
         c.drawText(model.time, r.left, baseline, text);
@@ -431,7 +425,7 @@ public final class WakeView extends View {
     }
 
     private void drawItem(Canvas c, RectF row, LockItem item, int index) {
-        int accent = item.color != 0 && geometry != LockLook.GEOMETRY_PAPER
+        int accent = item.color != 0
                 ? (0xFF000000 | item.color) : LockLook.accent(index + 1);
         tmp.set(row.left, row.top, row.left + dp(10), row.bottom);
         cell(c, tmp, accent, accent, false);
@@ -477,7 +471,7 @@ public final class WakeView extends View {
         cell(c, r, color, color, wide);
         text.setTypeface(heavy);
         text.setTextSize(sp(15));
-        text.setColor(geometry == LockLook.GEOMETRY_PAPER ? LockLook.textHi() : LockLook.ink());
+        text.setColor(LockLook.ink());
         text.setTextAlign(Paint.Align.CENTER);
         CharSequence fit = TextUtils.ellipsize(LockLook.up(getContext(), label), text, r.width() - dp(12), TextUtils.TruncateAt.END);
         Paint.FontMetrics fm = text.getFontMetrics();
@@ -528,13 +522,6 @@ public final class WakeView extends View {
                 stroke.setColor(edge);
                 stroke.setStrokeWidth(dp(1.5f));
                 c.drawRect(r, stroke);
-                return;
-            case LockLook.GEOMETRY_PAPER:
-                fill.setColor(LockLook.surface());
-                c.drawRoundRect(r, dp(8), dp(8), fill);
-                stroke.setColor(edge);
-                stroke.setStrokeWidth(dp(2));
-                c.drawRoundRect(r, dp(8), dp(8), stroke);
                 return;
             default: {
                 float rad = pill ? r.height() / 2f : Math.min(dp(6), r.height() / 2f);

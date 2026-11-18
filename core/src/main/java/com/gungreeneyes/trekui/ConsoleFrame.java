@@ -24,9 +24,7 @@ import java.util.List;
  *
  * <p>Each faction draws the same structure in its own geometry: Command elbows, Imperial angular
  * brackets with triangle blocks, Collective conduit traces with nodes, the 23rd-century console's square
- * blocks with blinking lamps and the 25th century's thin glass elbow ({@link EraDraw}), and the pipe interfaces' material
- * corners ({@link PipeDraw#frameCorner}). Pipe home screens can switch to {@link #plaque} mode: a
- * framed panel with the title and footer on plates centred on its top and bottom edges.
+ * blocks with blinking lamps and the 25th century's thin glass elbow ({@link EraDraw}).
  *
  * <p>The drawn parts are touch targets: a {@link PartListener} receives taps and long-presses on
  * "elbowT", "elbowB", "blockT0".., "blockB0".. so the home screen can customise them.
@@ -38,10 +36,10 @@ class ConsoleFrame extends ViewGroup {
     /** Design sizes in dp (before zoom). */
     static final float SIDEBAR_DP = 64, BAR_DP = 18, OUTER_RADIUS_DP = 42, INNER_RADIUS_DP = 18,
             ELBOW_EXTENSION_DP = 22, BLOCK_DP = 26;
-    /** Room kept free next to the title/footer label in normal mode, and around it in plaque mode. */
-    private static final float LABEL_CLEARANCE_DP = 48, PLAQUE_LABEL_CLEARANCE_DP = 60;
+    /** Room kept free next to the title/footer label. */
+    private static final float LABEL_CLEARANCE_DP = 48;
     /** Touch slop around drawn parts. */
-    private static final float PART_PAD_DP = 10, PLAQUE_SLOP_DP = 6;
+    private static final float PART_PAD_DP = 10;
     /** How much a pressed part brightens (per RGB channel). */
     static final int PRESS_BRIGHTEN = 70;
     private static final long REVEAL_MS = 420;
@@ -55,13 +53,6 @@ class ConsoleFrame extends ViewGroup {
     /** Width of one bar block. */
     int blockW;
 
-    /** Pipe home screens: a framed panel with the title and footer on plates centred on its edges. */
-    boolean plaque;
-    /** Plaque mode: draw the header variant of the plaque (passed through to {@link PipeDraw#plaque}). */
-    boolean plaqueHeader;
-    /** Plaque mode: border thickness in px. */
-    int plaqueBorder;
-
     private View sidebar, content, title, footer;
     /** Reveal animation progress, 0 (bars retracted) .. 1. */
     private float progress = 1f;
@@ -71,9 +62,6 @@ class ConsoleFrame extends ViewGroup {
 
     private PartListener partListener;
     private final List<RectF> topRects = new ArrayList<>(), botRects = new ArrayList<>();
-    private final List<RectF> plaqueRects = new ArrayList<>();
-    private final List<String> plaqueNames = new ArrayList<>();
-    private final RectF titleRect = new RectF(), footRect = new RectF();
     private float topBarEnd, botBarEnd;
     private String pressed;
     private boolean longFired;
@@ -148,50 +136,8 @@ class ConsoleFrame extends ViewGroup {
     private int sideTop() { return topH > 0 ? elbowSpan(topH) + gap : 0; }
     private int sideBottom(int h) { return botH > 0 ? h - elbowSpan(botH) - gap : h; }
 
-    /** Plaque mode: content inset from the top (border or title plate, whichever is taller). */
-    private int plaqueTop() { return Math.max(plaqueBorder, title != null ? title.getMeasuredHeight() : 0) + gap; }
-    /** Plaque mode: content inset from the bottom. */
-    private int plaqueBottom() { return Math.max(plaqueBorder, footer != null ? footer.getMeasuredHeight() : 0) + gap; }
-    /** Plaque mode: content inset left and right. */
-    private int plaqueSide() { return plaqueBorder + gap + Ui.dp(getContext(), 2); }
-
-    /** Plaque-mode measure: no sidebar; title/footer centred; content fills the framed panel. */
-    private void measurePlaque(int wSpec, int hSpec) {
-        int w = MeasureSpec.getSize(wSpec);
-        int hMode = MeasureSpec.getMode(hSpec), hSize = MeasureSpec.getSize(hSpec);
-        int unspec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-        int labelMax = MeasureSpec.makeMeasureSpec(Math.max(0, w - plaqueBorder * 2 - Ui.dp(getContext(), PLAQUE_LABEL_CLEARANCE_DP)), MeasureSpec.AT_MOST);
-        if (title != null) title.measure(labelMax, unspec);
-        if (footer != null) footer.measure(labelMax, unspec);
-        int zero = MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
-        if (sidebar != null) sidebar.measure(zero, zero);
-        int cw = Math.max(0, w - plaqueSide() * 2);
-        int vert = plaqueTop() + plaqueBottom();
-        int h;
-        if (hMode == MeasureSpec.EXACTLY) {
-            if (content != null) content.measure(MeasureSpec.makeMeasureSpec(cw, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(Math.max(0, hSize - vert), MeasureSpec.EXACTLY));
-            h = hSize;
-        } else {
-            int ch = 0;
-            if (content != null) {
-                int spec = hMode == MeasureSpec.AT_MOST
-                        ? MeasureSpec.makeMeasureSpec(Math.max(0, hSize - vert), MeasureSpec.AT_MOST) : unspec;
-                content.measure(MeasureSpec.makeMeasureSpec(cw, MeasureSpec.EXACTLY), spec);
-                ch = content.getMeasuredHeight();
-            }
-            h = ch + vert;
-            if (hMode == MeasureSpec.AT_MOST) h = Math.min(h, hSize);
-        }
-        setMeasuredDimension(w, h);
-    }
-
     @Override
     protected void onMeasure(int wSpec, int hSpec) {
-        if (plaque) {
-            measurePlaque(wSpec, hSpec);
-            return;
-        }
         int w = MeasureSpec.getSize(wSpec);
         int hMode = MeasureSpec.getMode(hSpec), hSize = MeasureSpec.getSize(hSpec);
         int unspec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
@@ -229,21 +175,6 @@ class ConsoleFrame extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int w = r - l, h = b - t;
-        if (plaque) {
-            if (title != null) {
-                int tw = title.getMeasuredWidth();
-                title.layout((w - tw) / 2, 0, (w + tw) / 2, title.getMeasuredHeight());
-            }
-            if (footer != null) {
-                int fw = footer.getMeasuredWidth();
-                footer.layout((w - fw) / 2, h - footer.getMeasuredHeight(), (w + fw) / 2, h);
-            }
-            if (sidebar != null) sidebar.layout(0, 0, 0, 0);
-            if (content != null) {
-                content.layout(plaqueSide(), plaqueTop(), plaqueSide() + content.getMeasuredWidth(), plaqueTop() + content.getMeasuredHeight());
-            }
-            return;
-        }
         if (title != null) title.layout(w - title.getMeasuredWidth(), 0, w, title.getMeasuredHeight());
         if (footer != null) footer.layout(w - footer.getMeasuredWidth(), h - footer.getMeasuredHeight(), w, h);
         if (sidebar != null) sidebar.layout(0, sideTop(), sidebarW, sideTop() + sidebar.getMeasuredHeight());
@@ -258,10 +189,6 @@ class ConsoleFrame extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         int w = getWidth(), h = getHeight();
-        if (plaque) {
-            drawPlaque(canvas, w, h);
-            return;
-        }
         if (Ui.cloak) {
             // cloaked: the frame becomes a dim outline
             paint.setStyle(Paint.Style.STROKE);
@@ -290,66 +217,9 @@ class ConsoleFrame extends ViewGroup {
         }
     }
 
-    /** Plaque mode: the framed panel ({@link PipeDraw#plaque}) with the bar blocks flanking the plates. */
-    private void drawPlaque(Canvas canvas, int w, int h) {
-        float d = Ui.density(getContext());
-        float half = plaqueBorder / 2f;
-        RectF tr = null, fr = null;
-        if (title != null && title.getWidth() > 0) {
-            titleRect.set(title.getLeft(), title.getTop(), title.getRight(), title.getBottom());
-            tr = titleRect;
-        }
-        if (footer != null && footer.getWidth() > 0) {
-            footRect.set(footer.getLeft(), footer.getTop(), footer.getRight(), footer.getBottom());
-            fr = footRect;
-        }
-        PipeDraw.plaque(canvas, getContext(), w, h, plaqueBorder, tr, fr, lit("elbowT", colorTop), lit("elbowB", colorBot), plaqueHeader, progress);
-        plaqueRects.clear();
-        plaqueNames.clear();
-        float topY = tr != null ? tr.centerY() : half;
-        float botY = fr != null ? fr.centerY() : h - half;
-        placeBlocks(canvas, topBlocks, "blockT", tr, topY, w, d);
-        placeBlocks(canvas, botBlocks, "blockB", fr, botY, w, d);
-    }
-
-    /**
-     * Plaque mode: draws the bar blocks on the border line at {@code y}, alternating left and right of
-     * the plate (or spread around the centre when there is no plate). A single block is drawn twice,
-     * once on each side, so the plate stays symmetrical.
-     */
-    private void placeBlocks(Canvas canvas, int[] cols, String name, RectF plate, float y, int w, float d) {
-        if (cols == null || cols.length == 0 || progress < 0.2f) return;
-        float bw = blockW;
-        float step = bw + gap;
-        float bh = Math.max(plaqueBorder, 12 * d);
-        int n = cols.length;
-        int drawn = n == 1 ? 2 : n;
-        for (int k = 0; k < drawn; k++) {
-            int idx = n == 1 ? 0 : k;
-            float cx;
-            if (plate != null) {
-                boolean left = k % 2 == 0;
-                int dist = k / 2;
-                cx = left ? plate.left - 14 * d - bw / 2f - dist * step : plate.right + 14 * d + bw / 2f + dist * step;
-            } else {
-                cx = w / 2f + (k - (drawn - 1) / 2f) * step * 1.4f;
-            }
-            String part = name + idx;
-            PipeDraw.frameBlock(canvas, cx + bw / 2f, y - bh / 2f, y + bh / 2f, bw, lit(part, cols[idx]), d, part.equals(pressed));
-            plaqueRects.add(new RectF(cx - bw / 2f, y - bh, cx + bw / 2f, y + bh));
-            plaqueNames.add(part);
-        }
-    }
-
     /** The corner piece joining sidebar and bar, in the current faction's geometry. */
     private void drawCorner(Canvas canvas, int barH, int end) {
-        if (Skin.pipe()) {
-            int col = paint.getColor();
-            float dd = Ui.density(getContext());
-            if (Skin.lounge()) buildBracket(barH, end);
-            else buildElbow(barH, end);
-            PipeDraw.frameCorner(canvas, getContext(), path, col, dd, sidebarW, barH, sweptBarEnd(sidebarW, end, progress));
-        } else if (Skin.imperial()) {
+        if (Skin.imperial()) {
             // hollow, double-lined bracket in a heavy red line, ▲▼ row near its end
             int col = paint.getColor();
             float dd = Ui.density(getContext());
@@ -388,7 +258,7 @@ class ConsoleFrame extends ViewGroup {
     }
 
     /**
-     * Imperial (and Ember Lounge): an angular bracket. Bevelled outer corner, a straight diagonal
+     * Imperial: an angular bracket. Bevelled outer corner, a straight diagonal
      * where console has its concave curve, a narrower rail down the side and an oblique cut at the end
      * of the bar.
      */
@@ -475,9 +345,7 @@ class ConsoleFrame extends ViewGroup {
             if (x - blockW < sidebarW + rIn + gap) break;
             paint.setColor(lit(prefix + i, colors[i]));
             float p = progress;
-            if (Skin.pipe()) {
-                PipeDraw.frameBlock(canvas, x, top, bottom, blockW * p, paint.getColor(), d, (prefix + i).equals(pressed));
-            } else if (Skin.imperial()) {
+            if (Skin.imperial()) {
                 // blocks become solid triangles, alternately pointing up and down
                 boolean up = (x / Math.max(1, blockW + gap)) % 2 == 0;
                 ImperialDraw.tri(canvas, x - blockW * p / 2f, (top + bottom) / 2f, blockW * p, (bottom - top) * 1.0f, up, paint.getColor(), 1f);
@@ -505,26 +373,8 @@ class ConsoleFrame extends ViewGroup {
 
     // ---- touch -----------------------------------------------------------------------------------
 
-    /** Plaque mode hit test: the flanking blocks, then the corners as the elbows. */
-    private String plaquePart(float x, float y) {
-        int slop = Ui.dp(getContext(), PLAQUE_SLOP_DP);
-        for (int i = 0; i < plaqueRects.size(); i++) {
-            RectF r = plaqueRects.get(i);
-            if (x >= r.left - slop && x <= r.right + slop && y >= r.top - slop && y <= r.bottom + slop) {
-                return plaqueNames.get(i);
-            }
-        }
-        float corner = plaqueBorder * 2.8f;
-        int w = getWidth(), h = getHeight();
-        boolean side = x <= corner || x >= w - corner;
-        if (side && y <= corner + (title != null ? title.getHeight() / 2f : 0)) return "elbowT";
-        if (side && y >= h - corner - (footer != null ? footer.getHeight() / 2f : 0)) return "elbowB";
-        return null;
-    }
-
     /** The drawn part under a touch point, or null. */
     String partAt(float x, float y) { // package-private: HomeGestureDetector skips double-taps on frame parts
-        if (plaque) return plaquePart(x, y);
         int pad = Ui.dp(getContext(), PART_PAD_DP);
         int h = getHeight();
         for (int i = 0; i < topRects.size(); i++) {

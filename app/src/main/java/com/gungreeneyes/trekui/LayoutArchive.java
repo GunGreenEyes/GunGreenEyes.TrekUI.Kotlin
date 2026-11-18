@@ -79,7 +79,6 @@ final class LayoutArchive {
             "welcomed", "bootSeen", "bootPreview", "calAsked",        // first-run and one-shot flags
             "wxCache", "wxCacheF", "wxTime", "wxLat", "wxLon", "wxName", // weather cache and the user's location
             "cloakUntil", "cloakPrevMode", "cloakPrevValue", "cloakSetValue", // a cloak in progress
-            "pipeTimerAcc", "pipeTimerRun", "pipeTimerStart",         // a running smoke timer
             "goveeKey", "goveeDevices", "goveeLastIp",                // Govee cloud key and LAN lights
             "nestProject", "nestClientId", "nestSecret", "nestAccess", "nestAccessExp", "nestRefresh", "nestDevices",
             Onboarding.KEY_SEEN, Onboarding.KEY_REPLAY, LayoutSnapshots.KEY_VERSION_CODE));
@@ -135,7 +134,7 @@ final class LayoutArchive {
      */
     static boolean isExcluded(String key) {
         if (key == null || key.isEmpty()) return true;
-        if (EXCLUDED_KEYS.contains(key)) return true;
+        if (EXCLUDED_KEYS.contains(key) || Prefs.retiredKey(key)) return true;
         for (String p : EXCLUDED_PREFIXES) if (key.startsWith(p)) return true;
         String lower = key.toLowerCase(Locale.ROOT);
         for (String f : SECRET_FRAGMENTS) if (lower.contains(f)) return true;
@@ -211,9 +210,9 @@ final class LayoutArchive {
     @SuppressWarnings("unchecked")
     private static Set<String> stringSet(Object v) { return (Set<String>) v; }
 
-    /** Display name of an interface index (falls back to Command's for an unknown one). */
+    /** Display name of an interface index (falls back to Command's for an unknown or retired one). */
     static String interfaceName(int faction) {
-        return Skin.NAMES[faction >= 0 && faction < Skin.NAMES.length ? faction : 0];
+        return Skin.NAMES[Skin.exists(faction) ? faction : Skin.COMMAND];
     }
 
     // ---- decoding --------------------------------------------------------------------------------

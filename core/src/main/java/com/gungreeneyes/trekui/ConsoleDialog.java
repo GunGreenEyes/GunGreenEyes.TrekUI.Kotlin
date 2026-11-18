@@ -21,8 +21,7 @@ import android.widget.TextView;
 /**
  * Modal panels in the current interface's style: option lists, text prompts and messages.
  *
- * <p>Every dialog is built by {@link #base}: a framed panel (console outline, faction tray or pipe
- * material) with a title strip and a scrolling body. Sizing is responsive: the panel is
+ * <p>Every dialog is built by {@link #base}: a framed panel (console outline or faction tray) with a title strip and a scrolling body. Sizing is responsive: the panel is
  * {@link #MAX_WIDTH_DP} wide at most (times the window's {@link Ui#zoom}), never wider than the
  * window minus {@link #SIDE_MARGIN_DP}, so dialogs stay a readable column on tablets and desktop
  * windows instead of stretching across a 1280dp screen; the body scrolls once it would exceed
@@ -73,8 +72,7 @@ final class ConsoleDialog {
         LinearLayout root = new LinearLayout(c);
         root.setOrientation(LinearLayout.VERTICAL);
         Drawable frame;
-        if (Skin.pipe()) frame = PipeDraw.dialog(c, p);
-        else if (Skin.command()) frame = Ui.outline(c, Color.BLACK, p.c(1), 26, 2);
+        if (Skin.command()) frame = Ui.outline(c, Color.BLACK, p.c(1), 26, 2);
         else frame = Ui.outline(c, Skin.surface(), p.c(Skin.imperial() ? 0 : 1), Skin.trayRadius(26), 1.5f);
         root.setBackground(frame);
         int pad = Ui.dp(c, 14);

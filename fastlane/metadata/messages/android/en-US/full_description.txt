@@ -1,4 +1,4 @@
-TrekUI Messages is a complete text messaging app drawn in the TrekUI interfaces. Conversations, threads and the compose bar are all drawn live on screen as a starship console or a warm Pipe Lounge, and every function works the same in each one.
+TrekUI Messages is a complete text messaging app drawn in the TrekUI interfaces. Conversations, threads and the compose bar are all drawn live on screen as a starship console, and every function works the same in each one.
 
 MESSAGING
 • Default SMS and MMS app: conversations newest first, threads with sent, delivered and not-sent state

@@ -20,8 +20,8 @@ import java.util.concurrent.ExecutorService;
  *
  * <p>The network calls ({@link #get}, {@link #search}) block and must run on {@link #IO}. Building
  * URLs, parsing replies, describing WMO weather codes and formatting values are pure functions
- * (no Android types) and are unit-tested on the JVM. {@link WeatherPanel} and the Pipe Lounge
- * scenes read the cached forecast JSON through {@link #parse}.
+ * (no Android types) and are unit-tested on the JVM. {@link WeatherPanel} reads the cached forecast
+ * JSON through {@link #parse}.
  */
 final class Weather {
     /** Background executor for every weather and geocoding request (one at a time, in order). */
@@ -220,7 +220,7 @@ final class Weather {
         }
     }
 
-    /** Pictogram kinds drawn by {@link WeatherPanel.WxIcon} and the Pipe Lounge scenes. */
+    /** Pictogram kinds drawn by {@link WeatherPanel.WxIcon}. */
     static final int K_CLEAR = 0, K_PARTLY = 1, K_CLOUD = 2, K_FOG = 3, K_RAIN = 4, K_SNOW = 5, K_STORM = 6;
 
     /** Maps a WMO code to the pictogram kind ({@code K_*}). */

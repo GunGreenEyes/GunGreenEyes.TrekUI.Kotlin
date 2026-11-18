@@ -37,6 +37,8 @@ public class HomeScenarios extends AppScenario {
         MainActivity home = launchHome(Interface.COMMAND);
         scenario.then("the TrekUI home screen is shown");
         assertShowsContent(home);
+        // Right after boot the accessibility tree can lag; wait for our window before reading the package.
+        device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 10000);
         assertEquals(scenario.lastStep() + ": foreground package", context.getPackageName(), device.getCurrentPackageName());
         media.screenshot("home");
         scenario.and("nothing on it is clipped or under a system bar");
@@ -136,20 +138,31 @@ public class HomeScenarios extends AppScenario {
     private boolean answerHomeDialog() {
         String label = context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
         boolean clicked = false;
-        UiObject2 entry = device.wait(Until.findObject(By.text(label)), 4000);
-        if (entry != null) {
-            entry.click();
+        if (clickWhenFound(By.text(label), 4000)) {
             clicked = true;
             SystemClock.sleep(600);
         }
         BySelector confirm = By.text(Pattern.compile("(?i)(set as default|always|ok|allow|yes)"));
-        UiObject2 button = device.wait(Until.findObject(confirm), 3000);
-        if (button != null) {
+        if (device.wait(Until.hasObject(confirm), 3000)) {
             media.screenshot("role-confirm");
-            button.click();
-            clicked = true;
+            clicked |= clickWhenFound(confirm, 3000);
         }
         return clicked;
+    }
+
+    /** Finds and clicks {@code sel}, finding it again if the dialog redraws between find and click. */
+    private boolean clickWhenFound(BySelector sel, long timeoutMs) {
+        for (int attempt = 0; attempt < 3; attempt++) {
+            UiObject2 o = device.wait(Until.findObject(sel), timeoutMs);
+            if (o == null) return false;
+            try {
+                o.click();
+                return true;
+            } catch (androidx.test.uiautomator.StaleObjectException e) {
+                SystemClock.sleep(300);
+            }
+        }
+        return false;
     }
 
     /** Makes {@code pkg} the home app from the shell (API 29+: role; older: preferred activity). */

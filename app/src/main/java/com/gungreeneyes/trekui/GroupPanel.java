@@ -29,8 +29,6 @@ import java.util.List;
  *       under a band of warning chevrons.</li>
  *   <li><b>Collective</b>: an orbit: the name in a hub node, apps on an ellipse joined to it by traces that
  *       stretch outward as it opens.</li>
- *   <li><b>Pipe Lounge</b>: a card in the interface's material (as its dialogs) with the apps in a grid,
- *       rising and fading in.</li>
  * </ul>
  *
  * <p>All sizes come from {@link ScreenMetrics} (margins, columns, orientation) and {@link Ui#dp}
@@ -51,12 +49,12 @@ final class GroupPanel extends FrameLayout {
     private static final float COMMAND_TITLE_H = 50, COMMAND_TITLE_MAX_W = 300, COMMAND_SPINE = 20, COMMAND_ROW_MIN = 36, COMMAND_ROW_MAX = 62, COMMAND_KEY_MAX_W = 260;
     /** Command key corner radius and icon size (dp). */
     private static final float COMMAND_RADIUS = 30, ICON_DP = 26;
-    /** Grid key height range for the Imperial and Pipe layouts (dp). */
+    /** Grid key height range for the Imperial layout (dp). */
     private static final float GRID_ROW_MIN = 44, GRID_ROW_MAX = 64;
     /** Collective hub diameter and key size range (dp). */
     private static final float COLLECTIVE_HUB = 104, COLLECTIVE_KEY_MIN = 58, COLLECTIVE_KEY_MAX = 88;
 
-    private static final int STYLE_COMMAND = 0, STYLE_IMPERIAL = 1, STYLE_COLLECTIVE = 2, STYLE_PIPE = 3;
+    private static final int STYLE_COMMAND = 0, STYLE_IMPERIAL = 1, STYLE_COLLECTIVE = 2;
 
     private final MainActivity activity;
     private final AppGroups.Group group;
@@ -68,7 +66,6 @@ final class GroupPanel extends FrameLayout {
     private final List<Integer> keyColors = new ArrayList<>();
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF r = new RectF();
-    private final Drawable card;
 
     /** Laid-out key positions (left, top, right, bottom) and the title's rectangle. */
     private float[][] keyRects = new float[0][];
@@ -85,14 +82,13 @@ final class GroupPanel extends FrameLayout {
         this.group = group;
         this.pal = a.pal != null ? a.pal : Prefs.get(a).palette();
         this.metrics = ScreenMetrics.of(a);
-        this.style = Skin.pipe() ? STYLE_PIPE : Skin.imperial() ? STYLE_IMPERIAL : Skin.collective() ? STYLE_COLLECTIVE : STYLE_COMMAND;
+        this.style = Skin.imperial() ? STYLE_IMPERIAL : Skin.collective() ? STYLE_COLLECTIVE : STYLE_COMMAND;
         setId(R.id.group_panel);
         setTag("group_panel");
         setWillNotDraw(false);
         setClickable(true);
         setOnClickListener(v -> fold());
         setContentDescription(a.getString(R.string.cd_group_panel, group.name));
-        card = style == STYLE_PIPE ? PipeDraw.dialog(a, pal) : null;
 
         title = Ui.oneLine(Ui.bold(a, group.name, style == STYLE_COLLECTIVE ? 15 : 20,
                 style == STYLE_COMMAND ? Ui.ink() : ink(pal.c(0))));
@@ -379,12 +375,12 @@ final class GroupPanel extends FrameLayout {
         spineBottom = keysTop + rows * (rowH + gap) - gap;
     }
 
-    /** Imperial and Pipe: title plate on top, keys in a grid whose column count follows the window width. */
+    /** Imperial: title plate on top, keys in a grid whose column count follows the window width. */
     private void layoutGrid(RectF a, int n) {
         int cols = Math.max(1, Math.min(n, metrics.columns(120f, 2, metrics.isLandscape() ? 5 : 3)));
         float titleH = dp(46);
         int rows = Math.max(1, (n + cols - 1) / cols);
-        float pad = style == STYLE_PIPE ? dp(Ui.L) : 0;
+        float pad = 0;
         float gridW = Math.min(a.width() - pad * 2, cols * dp(190));
         float keyW = (gridW - gap * (cols - 1)) / cols;
         float avail = a.height() - titleH - gap * 3 - pad * 2;
@@ -476,9 +472,6 @@ final class GroupPanel extends FrameLayout {
                     v.setScaleX(0.4f + 0.6f * e);
                     v.setScaleY(0.4f + 0.6f * e);
                     break;
-                default:
-                    v.setTranslationY((1 - e) * dp(24));
-                    break;
             }
             v.setAlpha(0.15f + 0.85f * e);
             v.setVisibility(e <= 0.001f ? INVISIBLE : VISIBLE);
@@ -486,7 +479,7 @@ final class GroupPanel extends FrameLayout {
         invalidate();
     }
 
-    /** Scrim, then the style's decorations (spine, chevron band, orbit traces, card), then the keys. */
+    /** Scrim, then the style's decorations (spine, chevron band, orbit traces), then the keys. */
     @Override
     protected void dispatchDraw(Canvas cv) {
         float fade = clamp(progress / 0.3f, 0f, 1f);
@@ -498,7 +491,6 @@ final class GroupPanel extends FrameLayout {
             case STYLE_COMMAND: drawSpine(cv); break;
             case STYLE_IMPERIAL: drawChevrons(cv, fade); break;
             case STYLE_COLLECTIVE: drawTraces(cv, d); break;
-            default: drawCard(cv, fade); break;
         }
         super.dispatchDraw(cv);
     }
@@ -544,23 +536,5 @@ final class GroupPanel extends FrameLayout {
             CollectiveDraw.curveTrace(cv, hubX, hubY, x, y, (i % 2 == 0 ? 0.18f : -0.18f), keyColors.get(i), d, keyProgress(i));
         }
         CollectiveDraw.ringNode(cv, hubX, hubY, titleRect.width() / 2f + dp(6), pal.c(1), d, ease(progress / 0.35f));
-    }
-
-    /** Pipe: the panel card in the interface's material, rising with the keys. */
-    private void drawCard(Canvas cv, float alpha) {
-        if (card == null || keyRects.length == 0) return;
-        float pad = dp(Ui.L);
-        float l = Float.MAX_VALUE, rgt = -Float.MAX_VALUE;
-        for (float[] k : keyRects) {
-            l = Math.min(l, k[0]);
-            rgt = Math.max(rgt, k[2]);
-        }
-        l = Math.min(l, titleRect.left);
-        rgt = Math.max(rgt, titleRect.right);
-        float lift = (1 - ease(progress / 0.5f)) * dp(24);
-        r.set(l - pad, titleRect.top - pad + lift, rgt + pad, spineBottom + pad + lift);
-        card.setBounds(Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom));
-        card.setAlpha(Math.round(255 * alpha));
-        card.draw(cv);
     }
 }

@@ -30,7 +30,7 @@ import java.util.Locale;
  * session is over, the voice key when a voice keyboard exists) above the rows of keys of the current
  * {@link KeyLayout}. Keys are painted with the active interface's own cell drawables
  * ({@link KeyboardLook#cell}), so they look like the launcher's controls in Command, Imperial, Collective,
- * the console eras and the pipe-lounge styles; function keys use {@link KeyIcons}.
+ * and the console eras; function keys use {@link KeyIcons}.
  *
  * <p>Touch: keys type on release (with sound / haptic on press); a second finger commits the first key at
  * once (fast two-thumb typing). Long press opens the alternates popup (slide to choose, release to type),

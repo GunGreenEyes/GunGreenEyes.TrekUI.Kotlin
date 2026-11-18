@@ -34,7 +34,7 @@ GitHub issues are welcome too. The maintainer turns them into tickets.
 - **Modern APIs.** Avoid deprecated calls where a replacement exists on API 26, using `Build.VERSION` guards.
   - No network or disk I/O on the main thread. Network goes through `Http`, which is HTTPS only.
   - Don't keep `Activity` contexts in static fields.
-- **All eleven interfaces.** A feature must work in every interface. Look at how `Skin`, `PipeDraw`, `ImperialDraw` and `CollectiveDraw` branch.
+- **All five interfaces.** A feature must work in every interface. Look at how `Skin`, `ImperialDraw` and `CollectiveDraw` branch.
 - **Dependencies.** Add new ones only through `gradle/libs.versions.toml`, and keep them few.
 
 ## Tests

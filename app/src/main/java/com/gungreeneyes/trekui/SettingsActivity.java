@@ -99,11 +99,10 @@ public class SettingsActivity extends Activity {
     /** Sound-library groups the user has expanded (kept for the process lifetime). */
     private static final Set<String> openSoundGroups = new HashSet<>();
 
-    /** Accent colours of the interface cards (Command, Imperial, Collective, then the pipe materials). */
+    /** Accent colours of the interface cards (Command, Imperial, Collective). */
     private static final int COMMAND_ACCENT = 0xFFF0B279, IMPERIAL_ACCENT = 0xFFE6A15C, COLLECTIVE_ACCENT = 0xFF84D88E;
     /** Interface-card accents of the 23rd-century (console amber) and 25th-century (fleet steel blue) eras. */
     private static final int ERA23_ACCENT = 0xFFF2C230, ERA25_ACCENT = 0xFF8FB4D8;
-    private static final int PIPE_BRASS = 0xFFC9A04E, PIPE_GILT = 0xFFD4AF37, PIPE_KRAFT = 0xFFC9A063;
 
     private final List<Anchor> anchors = new ArrayList<>();
     private int insetTop, insetBottom, insetLeft, insetRight;
@@ -547,33 +546,11 @@ public class SettingsActivity extends Activity {
         }
     }
 
-    /** INTERFACE: family, interface cards, colour theme, layout, lettering, background and wallpapers. */
+    /** INTERFACE: interface cards, colour theme, layout, lettering, background and wallpapers. */
     private void interfaceSection() {
         section("INTERFACE", pal.c(1), "THEME");
-        choice("INTERFACE FAMILY", new String[]{"STARSHIP", "PIPE LOUNGE"}, Skin.pipe() ? 1 : 0, which -> {
-            boolean toPipe = which == 1;
-            if (toPipe == Skin.pipe()) return;
-            int current = prefs.faction();
-            prefs.put(Skin.pipeFaction(current) ? "lastPipe" : "lastStarship", current);
-            int target = SettingsLogic.familyTarget(toPipe,
-                    prefs.i("lastPipe", SettingsLogic.FIRST_PIPE_FACTION), prefs.i("lastStarship", 0));
-            selectFaction(target);
-        });
-        if (Skin.pipe()) {
-            note("Six interfaces built around the pipe: three drawn from materials, and three painted scenes (Ember & Briar, the Tobacconist's Ledger, Midnight Ember). The first three are the Victorian tobacconist's cabinet, the Art Deco smoking room and the tobacco-barn journal. Every tile, slot, panel, sound assignment and device control carries over from your starship layout and back again. Switch back with STARSHIP above. Tap LORE (or the title) for a page of pipe craft.");
-        } else {
-            note("Every function, slot, sound assignment and device control works the same in all five; only the geometry, lettering and colours change. CLASSIC CONSOLE (23rd-century style) and NEXT CONSOLE (25th-century style) keep the first interface's layouts (grid and cascade) and its sound profile. PIPE LOUNGE above switches to the pipe interfaces.");
-        }
-        int first = Skin.pipe() ? SettingsLogic.FIRST_PIPE_FACTION : 0;
-        int count = Skin.pipe() ? 6 : SettingsLogic.STARSHIP_FACTIONS.length;
-        for (int n = 0; n < count; n++) {
-            int faction = Skin.pipe() ? first + n : SettingsLogic.STARSHIP_FACTIONS[n];
-            if (faction == 6) {
-                label("PAINTED SCENES");
-                note("Three homes painted as complete scenes: the fireside study, the merchant's folio and the Art Deco night lounge. Their plaques, tabs and keys are live controls and can be reassigned with a long press like any console slot. Clock, date, weather, battery, the session clock and your current pipe and blend are drawn live over the painting. The pipe register, blend catalogue, journal, ritual checklist and session clock open from the scene.");
-            }
-            factionRow(faction);
-        }
+        note("Every function, slot, sound assignment and device control works the same in all five; only the geometry, lettering and colours change. CLASSIC CONSOLE (23rd-century style) and NEXT CONSOLE (25th-century style) keep the first interface's layouts (grid and cascade) and its sound profile.");
+        for (int faction : SettingsLogic.STARSHIP_FACTIONS) factionRow(faction);
         if (SubThemes.selectable(Skin.faction)) { // LCA-T35: every interface with more than one sub-theme
             section(getString(R.string.config_color_theme), pal.c(1), null);
             for (int i = 0; i < Palette.themesFor(Skin.faction).length; i++) themeRow(i);
@@ -603,9 +580,7 @@ public class SettingsActivity extends Activity {
             });
             note("TRACE COLUMN: one node per row, linked top to bottom. HUB AND SPOKE: nodes of different sizes around a central hub, linked by traces of different lengths. The network stays folded into the hub until you tap it, and folds away again after you open an app. Long-press the hub for all apps.");
         }
-        String[] backgrounds = Skin.pipe()
-                ? new String[]{Skin.patternName(), "PLAIN DARK", "WALLPAPER"}
-                : new String[]{"BLACK", Skin.patternName(), "WALLPAPER"};
+        String[] backgrounds = {"BLACK", Skin.patternName(), "WALLPAPER"};
         choice("BACKGROUND", backgrounds, prefs.bgMode(), which -> {
             prefs.put("bg", which);
             changed();
@@ -630,24 +605,14 @@ public class SettingsActivity extends Activity {
 
     /** Note shown instead of the theme list for interfaces whose colours are fixed. */
     private static String fixedColoursNote() {
-        if (Skin.scene()) {
-            String materials = Skin.mTob() ? "walnut and brass" : Skin.mLounge() ? "lacquer and gilt" : "leather and kraft";
-            return "The colours of the painted scenes come from the paintings themselves; the drawer, CONFIG and dialogs use matching materials (" + materials + ").";
-        }
-        if (Skin.pipe()) {
-            if (Skin.tob()) return "Tobacconist colours are its materials: walnut, brass, oxblood leather and parchment.";
-            if (Skin.lounge()) return "Ember Lounge colours are its materials: black lacquer, gilt, lacquer red and the ember glow.";
-            return "Blend Journal colours are its materials: tobacco leather, kraft paper, saddle stitching and red stamp ink.";
-        }
         return Skin.imperial() ? "Imperial colours are fixed: red, orange, gold and copper on near-black."
                 : "Collective colours are fixed: matrix greens on near-black.";
     }
 
-    /** Switches to an interface (faction), remembers it per family and reloads its sound profile. */
+    /** Switches to an interface (faction) and reloads its sound profile. */
     private void selectFaction(int faction) {
         if (faction != prefs.faction()) LayoutSnapshots.snapshot(this, LayoutSnapshots.R_INTERFACE); // LCA-T16
         prefs.put("faction", faction);
-        prefs.put(Skin.pipeFaction(faction) ? "lastPipe" : "lastStarship", faction);
         Skin.faction = faction;
         Sfx.reloadProfile(this);
         Sfx.play(this, Sfx.CONFIRM);
@@ -662,9 +627,7 @@ public class SettingsActivity extends Activity {
             case 2: return COLLECTIVE_ACCENT;
             case Skin.ERA23: return ERA23_ACCENT;
             case Skin.ERA25: return ERA25_ACCENT;
-            case 3: case 6: return PIPE_BRASS;
-            case 4: case 8: return PIPE_GILT;
-            default: return PIPE_KRAFT;
+            default: return COMMAND_ACCENT;
         }
     }
 
@@ -673,9 +636,7 @@ public class SettingsActivity extends Activity {
         // Skin.* answers for the current faction, so borrow this one while drawing its card.
         int saved = Skin.faction;
         Skin.faction = faction;
-        Palette palette;
-        if (Skin.pipeFaction(faction)) palette = Skin.pipePalette(faction);
-        else palette = Palette.of(faction, prefs.subTheme(faction)); // LCA-T35: the card shows its chosen sub-theme
+        Palette palette = Palette.of(faction, prefs.subTheme(faction)); // LCA-T35: the card shows its chosen sub-theme
         boolean selected = saved == faction;
         int accent = factionAccent(faction);
 
@@ -2062,11 +2023,6 @@ public class SettingsActivity extends Activity {
 
     /** Explanation of the ICON STYLE options for the current interface. */
     private static String iconStyleNote() {
-        if (Skin.pipe()) {
-            String engraving = Skin.tob() ? "engraved in brass" : Skin.lounge() ? "in gilt Deco line" : "in red rubber stamp";
-            String badges = Skin.tob() ? "brass roundels" : Skin.lounge() ? "gilt octagons" : "kraft labels";
-            return "PICTOGRAM: hand-drawn pipe-room pictograms for every app the launcher recognises (a candlestick telephone, a wax-sealed letter, a pocket watch, a tobacco tin…) " + engraving + ", framed icons for the rest. FRAMED: every app icon framed. NATIVE: original icons. FACTION ART: full badges for the 24 core apps (" + badges + "), framed icons for the rest.";
-        }
         if (Skin.command()) {
             return "CONSOLE: themed pictograms for every app the launcher recognises (AUTO PICTOGRAMS), console frames for the rest. FRAMED: every app icon in a console frame. NATIVE: original icons.";
         }

@@ -5,7 +5,7 @@
 TrekUI Launcher is a home-screen app. It was built to keep your data on your phone.
 
 - **We do not collect, store or sell personal data.** There is no developer server, no user account, no analytics, no advertising, no crash-reporting SDK and no tracking identifier.
-- **Your settings stay on your device.** Your layout, settings, pipe collection and sounds live in the app's private storage on your device.
+- **Your settings stay on your device.** Your layout, settings and sounds live in the app's private storage on your device.
 - **Every network request is one you turned on, and is listed below.** All of them use encrypted HTTPS, except commands to Govee lights on your own Wi-Fi and, if you choose an `http://…local` address, your own Home Assistant on your home network.
 
 ## What the app reads on your device, and why
@@ -43,14 +43,14 @@ Open-Meteo, Govee and Google have their own privacy policies: [Open-Meteo](https
 
 ## Storage, backup and deletion
 
-- **On your device.** Your settings, layout, pipe collection and licence state are stored in the app's private storage.
+- **On your device.** Your settings, layout and licence state are stored in the app's private storage.
 - **Android backup.** If you have Android backup turned on, Android may include the settings in your device backup to your Google account, encrypted by Android. Downloaded and imported sound files are excluded from backup and device transfer.
 - **Deleting your data.** Clear the app's storage (**Settings › Apps › TrekUI › Storage › Clear data**) or uninstall the app. Because there is no account or server, there is nothing else to delete and nothing for us to hand over.
-- **Exported files.** If you export your pipe collection or app art, the file goes where you save it, and you control it.
+- **Exported files.** If you export your layout or app art, the file goes where you save it, and you control it.
 
 ## Children
 
-TrekUI Launcher is not directed at children. It is intended for adults (18+), partly because the Pipe Lounge interfaces depict tobacco pipes and blends. We do not knowingly collect any information from anyone, including children.
+TrekUI Launcher is not directed at children. It is intended for adults (18+). We do not knowingly collect any information from anyone, including children.
 
 ## Changes
 

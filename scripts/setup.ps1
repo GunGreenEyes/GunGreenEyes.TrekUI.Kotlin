@@ -12,7 +12,7 @@
          With -Emulators it also installs the system images used by scripts/avd.
       3. Sets ANDROID_HOME (user environment) and writes local.properties (sdk.dir with forward slashes).
       4. Checks hardware virtualisation (WHPX / HAXM / AEHD) for the emulator and says how to enable it.
-      5. Smoke build: gradlew assembleDevelopDebug.
+      5. Check build: gradlew assembleDevelopDebug.
 
     Use -WhatIf to print every action without changing anything.
 
@@ -20,7 +20,7 @@
     Also install the emulator system images (several GB).
 
 .PARAMETER SkipBuild
-    Skip the final smoke build.
+    Skip the final check build.
 
 .PARAMETER SdkRoot
     Android SDK location. Default: ANDROID_HOME, ANDROID_SDK_ROOT, local.properties sdk.dir,
@@ -280,9 +280,9 @@ if (Test-Path $emulatorExe) {
 }
 
 if ($SkipBuild) {
-    Write-Section 'Smoke build skipped (-SkipBuild)'
+    Write-Section 'Check build skipped (-SkipBuild)'
 } else {
-    Write-Section 'Smoke build'
+    Write-Section 'Check build'
     Invoke-Step 'gradlew assembleDevelopDebug' {
         Push-Location $RepoRoot
         try {

@@ -168,7 +168,7 @@ public final class SettingsActivity extends ComponentActivity {
 
         int faction = TrekPrefs.get(this).faction();
         String[] names = LockLook.interfaceNames();
-        String current = names[Math.max(0, Math.min(names.length - 1, faction))];
+        String current = names[LockLook.interfaceIndex(faction)];
         if (LockTheme.followingLauncher()) {
             row(list, "row_interface", getString(R.string.row_interface),
                     getString(R.string.interface_following, current), null, 4, null);
@@ -176,7 +176,7 @@ public final class SettingsActivity extends ComponentActivity {
             row(list, "row_interface", getString(R.string.row_interface), current,
                     getString(R.string.action_change), 4, v -> LockLook.options(this,
                             getString(R.string.row_interface), names, which -> {
-                                TrekPrefs.get(this).setFaction(which);
+                                TrekPrefs.get(this).setFaction(LockLook.interfaceAt(which));
                                 rebuild();
                             }));
             if (LockLook.hasSubThemes(faction)) {

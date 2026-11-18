@@ -60,21 +60,72 @@ final class Prefs extends TrekPrefs {
     /** Pref key for the current faction's home layout: 0 = grid/column, 1 = deploying layout. */
     String layoutKey() { return layoutKeyFor(faction()); }
 
-    /** Pref key holding the home layout choice for {@code faction} (pipe interfaces each have their own). */
+    /** Pref key holding the home layout choice for {@code faction}. */
     static String layoutKeyFor(int faction) {
-        if (Skin.pipeFaction(faction)) return "pipeLayout" + faction;
         if (faction == Skin.COLLECTIVE) return "collectiveLayout";
         if (faction == Skin.IMPERIAL) return "imperialLayout";
         return "commandLayout";
     }
 
-    /** True when the home tiles use the press-to-deploy layout (hub, cascade or tactical deploy). Never for pipe interfaces. */
+    /** True when the home tiles use the press-to-deploy layout (hub, cascade or tactical deploy). */
     boolean revealMode() {
-        if (Skin.pipeFaction(faction())) return false;
         return i(layoutKey(), 0) == 1;
     }
 
     int bgMode() { return i("bg", BG_BLACK); }
+
+    // ---- retired interfaces (ids 3-8, removed in 44) ------------------------------------------
+
+    /** SharedPreferences file of the retired interfaces' own records (dropped on upgrade). */
+    static final String RETIRED_FILE = "pipe_collection_v3";
+    /** Exact pref keys only the retired interfaces used (family memory and their session timer). */
+    private static final Set<String> RETIRED_KEYS = new HashSet<>(Arrays.asList(
+            "lastPipe", "lastStarship", "pipeTimerAcc", "pipeTimerRun", "pipeTimerStart"));
+
+    /**
+     * True for a pref key that belonged only to the retired interfaces: the keys above and the
+     * per-interface keys of ids 3-8 (layout "pipeLayout&lt;id&gt;", header "header&lt;id&gt;", colour
+     * theme "theme&lt;id&gt;", sound picks "sndBi&lt;id&gt;_&lt;event&gt;"). They are never exported or
+     * imported ({@link LayoutArchive#isExcluded}) and {@link #dropRetiredData} deletes them.
+     */
+    static boolean retiredKey(String key) {
+        if (key == null) return false;
+        if (RETIRED_KEYS.contains(key)) return true;
+        for (String prefix : new String[]{"pipeLayout", "header", "theme"}) {
+            if (key.length() == prefix.length() + 1 && key.startsWith(prefix) && retiredDigit(key.charAt(prefix.length()))) return true;
+        }
+        return key.startsWith("sndBi") && key.length() > 7 && retiredDigit(key.charAt(5)) && key.charAt(6) == '_';
+    }
+
+    private static boolean retiredDigit(char ch) {
+        return ch >= '0' + Skin.FIRST_RETIRED && ch <= '0' + Skin.LAST_RETIRED;
+    }
+
+    private static boolean retiredDropped;
+
+    /**
+     * Once per process: deletes what the retired interfaces stored (their records file and their pref
+     * keys). A saved choice of one of them is switched to Command by {@link TrekPrefs#faction()}.
+     */
+    void dropRetiredData(Context c) {
+        if (retiredDropped) return;
+        retiredDropped = true;
+        dropRetiredData(c, sp);
+    }
+
+    /** {@link #dropRetiredData(Context)} on the given {@code "trekui"} preferences, without the once-per-process guard. */
+    static void dropRetiredData(Context c, android.content.SharedPreferences sp) {
+        android.content.SharedPreferences.Editor e = sp.edit();
+        boolean any = false;
+        for (String k : sp.getAll().keySet()) {
+            if (retiredKey(k)) {
+                e.remove(k);
+                any = true;
+            }
+        }
+        if (any) e.apply();
+        c.getApplicationContext().deleteSharedPreferences(RETIRED_FILE);
+    }
 
     /** Header line under the title. Each faction keeps its own ("header", "header1", "header2", ...). */
     String headerKey() { return headerKeyFor(faction()); }

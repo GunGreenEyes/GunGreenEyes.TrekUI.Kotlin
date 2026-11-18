@@ -1,6 +1,6 @@
 // :core - the shared TrekUI library every TrekUI app (launcher, Messages, Keyboard, Lock Screen) builds on:
 // interface/theme model (Skin, Palette, Era, TrekPrefs), Canvas drawing helpers (Ui, ConsoleFrame/Card/Dialog,
-// Imperial/Collective/Pipe/Era draw code), ScreenMetrics, fonts and glyphs, Sfx + synth sounds + the
+// Imperial/Collective/Era draw code), ScreenMetrics, fonts and glyphs, Sfx + synth sounds + the
 // downloadable sound library, licensing (trial + the shared trekui_unlock purchase) and the suite contract
 // (SuiteContract / SuiteClient / SuiteProvider). No product flavors: per-app values (trial length, product
 // id, flavor) come from the app through com.gungreeneyes.trekui.core.CoreConfig.

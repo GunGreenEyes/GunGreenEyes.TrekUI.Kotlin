@@ -85,22 +85,19 @@ Also:
 | Violence | **No** for realistic violence. If asked about fantasy or cartoon violence: **No**, or *mild fantasy* to be cautious | The "bridge stations" are abstract toy consoles: a reticle and a shield bubble, marked SIMULATION, with no characters or harm shown |
 | Sexuality, nudity | No | |
 | Language (profanity) | No | |
-| Controlled substances: **tobacco** | **Yes: references or depictions of tobacco** | The six Pipe Lounge interfaces are built around pipe smoking: a pipe register, tobacco blend catalogue, smoking journal and paintings of smoking rooms. There is no sale and no encouragement to minors |
-| Alcohol, drugs | No (unless the Pipe artwork shows drinks; check the painted scenes) | |
+| Controlled substances (all of them) | **No** | No references to or depictions of controlled substances; every interface is a starship console |
 | Gambling (real or simulated) | No | |
 | User interaction: users can communicate or share content | No | No chat, no accounts, no user-generated content shared with others |
 | Shares user location with other users | No | Weather coordinates go to a weather API, not to other users |
 | Digital purchases | **Yes** | The $0.99 in-app unlock |
 | Unrestricted internet / web browser | No | Web search hands off to the user's browser |
 
-- **Expected result:** because of the tobacco references, probably **PEGI 12 / USK 12 / ESRB Teen**, not "Everyone". Ship the rating you get. Never under-declare to get a lower one; the rating is enforced, and a wrong one can get the app suspended.
-
-> **Option:** if you want an "Everyone" rating, ship the Pipe Lounge interfaces in a separate listing or remove them from the production flavor. This is a product decision for the owner.
+- **Expected result:** with no controlled-substance, violence, language or sexual content, probably **PEGI 3 / USK 0 / ESRB Everyone** (one step higher if you declare mild fantasy violence). The in-app purchase is shown as an interactive element and does not raise the age rating. Ship the rating you get. Never under-declare to get a lower one; the rating is enforced, and a wrong one can get the app suspended.
 
 ### Target audience and content
 
 - [ ] **Age groups: 18 and over.** If you prefer, choose 16–17 and 18+.
-  - Do **not** pick any group under 13. That puts the app under the **Families policy**, which a tobacco-themed app cannot meet.
+  - Do **not** pick any group under 13. That puts the app under the **Families policy** (stricter ads, data and content rules), which this app does not set out to meet.
   - The 18+ choice also fits the IP-licensing caution in section 9.
 - [ ] **Unintended appeal to children:** answer *No*. The store listing must not use cartoon or child-oriented art.
 
@@ -133,7 +130,7 @@ These answers are derived from the code. "Collected" in Play's sense means data 
 | Calendar events | No | No | Read on the device only. |
 | Call logs | No | No | Read on the device only, and only if kept; see section 4. |
 | Messages, photos, videos, audio files | No | No | Imported sound files stay on the device and are excluded from backup. |
-| Files and docs | No | No | Pipe collection export/import writes to a file the user picks. |
+| Files and docs | No | No | Exported files are written to a location the user picks and never sent anywhere. |
 | Health, fitness, financial info | No | No | |
 | **Financial info › Purchase history** | **No**, by the developer | No | Google Play Billing processes the purchase under Google's own policies. The app gets an entitlement on the device and sends nothing to the developer. |
 | App activity (app interactions, installed apps, search history) | No | No | The installed-app list is read on the device via `LauncherApps` and never leaves it. App search runs on the device; a web search opens the user's browser. |
@@ -206,7 +203,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 | Element | Limit / size | Notes |
 |---|---|---|
 | App name | 30 characters | See section 9 |
-| Short description | 80 characters | e.g. "Starship-console home screen: 9 interfaces, live panels, no ads." |
+| Short description | 80 characters | e.g. "Starship-console home screen: 5 interfaces, live panels, no ads." |
 | Full description | 4000 characters | Features, then the permission explanations, then the one-line originality notice ("an independent, original design; ships no third-party recordings or artwork") |
 | App icon | **512 × 512** PNG, 32-bit with alpha, ≤ 1 MB | Full square. Play applies the mask and shadow. Original art only: no third-party logos or insignia |
 | Feature graphic | **1024 × 500** JPG or 24-bit PNG (no alpha) | Required |
@@ -217,7 +214,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 | Promo video | YouTube URL | Optional. The CI-captured MP4s are a good source |
 
 - **Screenshot source.** The CI emulator runs write screenshots to `assets/<device>-api<N>/`, and `scripts/release/fill-play-screenshots.py` copies a selection into `fastlane/metadata/launcher/android/en-US/images/{phoneScreenshots,sevenInchScreenshots,tenInchScreenshots}`.
-- **Interface coverage.** Show at least one Command, one Imperial, one Collective and one Pipe Lounge interface.
+- **Interface coverage.** Show at least one Command, one Imperial, one Collective and one Classic or Next Console interface.
 
 **Store settings**
 
@@ -250,7 +247,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 - [ ] Data safety is complete, matching section 3
 - [x] There is no `READ_CALL_LOG` in the production AAB (section 4, option A)
 - [ ] The Accessibility API declaration for `LockService` (LOCK SCREEN) is submitted with its video, and the in-app disclosure matches section 4
-- [ ] Content rating is done (tobacco references declared) and target audience is 18+
+- [ ] Content rating is done (no controlled substances declared) and target audience is 18+
 - [ ] Ads: No. App access: all functionality available.
 - [ ] `trekui_unlock` is active at US$0.99, and a licence-tester purchase and restore both work
 - [ ] The listing has the icon, feature graphic, 4 or more phone screenshots and tablet screenshots, plus the originality notice in the description
@@ -261,9 +258,8 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 
 This is the biggest risk to the listing. Read it before choosing the name and graphics.
 
-- **Trademarks.** The app, listing, site and graphics use only this project's own names (TrekUI, Command, Imperial, Collective, Classic Console, Next Console, Pipe Lounge) and original art. Keep it that way: no third-party franchise names, logos, insignia, ship names, screenshots or likenesses anywhere, including keywords and screenshots. Google Play's **Intellectual Property** and **Impersonation** policies let rights holders file complaints, and repeated strikes can terminate the developer account.
+- **Trademarks.** The app, listing, site and graphics use only this project's own names (TrekUI, Command, Imperial, Collective, Classic Console, Next Console) and original art. Keep it that way: no third-party franchise names, logos, insignia, ship names, screenshots or likenesses anywhere, including keywords and screenshots. Google Play's **Intellectual Property** and **Impersonation** policies let rights holders file complaints, and repeated strikes can terminate the developer account.
 - **Name check.** Before the first upload, run a trademark search for "TrekUI" in the target markets.
 - **Audio.** The app ships no recordings. The **in-app sound download** fetches third-party recordings from public sound sites at the user's request, and a reviewer or rights holder may see that as facilitating infringement. For the safest listing, keep the download as an opt-in with a clear notice, or turn it off in the production flavor, leaving "import your own sounds" as the only path.
 - **Warrior Blade** is the project's own font, designed from scratch.
-- **Pipe Lounge:** no third-party IP. The art comes from the owner's PIPE_COLLECTION set, and the fonts are OFL or Apache. The tobacco theme affects the content rating (section 3), not IP.
 - **Fallback plan.** If the listing is taken down, the GitHub Releases APK and the GitHub Pages site stay available for sideloading.

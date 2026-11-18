@@ -14,8 +14,8 @@ import android.widget.TextView;
  * after the "set as default home" welcome and replayable from CONFIG › DEFAULT HOME › REPLAY TOUR.
  *
  * <p>The tour is one {@link ConsoleDialog} panel whose body is redrawn per stop, so it takes the
- * current interface's frame (console outline, Imperial or Collective tray, pipe material) and its key names
- * ({@link Skin#nav}: APPS / CONFIG on console, CABINET / WORKSHOP on the Tobacconist, …). SKIP, BACK
+ * current interface's frame (console outline, Imperial or Collective tray) and its key names
+ * ({@link Skin#nav}: APPS / CONFIG). SKIP, BACK
  * and the system back key end or step it; it never blocks the home screen. The flags live in
  * {@link Prefs} ({@link #KEY_SEEN}, {@link #KEY_REPLAY}) and are excluded from layout archives.
  */
@@ -91,7 +91,7 @@ final class Onboarding {
     /** Shows the tour from {@code step}; returns the dialog (already showing). */
     static Dialog show(final Activity a, int step) {
         Sfx.play(a, Sfx.ALERT);
-        final ConsoleDialog.Built b = ConsoleDialog.base(a, a.getString(Skin.pipe() ? R.string.tour_title_pipe : R.string.tour_title_console));
+        final ConsoleDialog.Built b = ConsoleDialog.base(a, a.getString(R.string.tour_title_console));
         b.body.setTag("tour_body");
         render(a, b, step);
         b.dialog.show();

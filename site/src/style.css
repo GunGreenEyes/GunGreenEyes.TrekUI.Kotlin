@@ -182,7 +182,7 @@ main { padding: 18px 0 32px 40px; min-width: 0; }
 .card p { margin: 0; color: var(--text); font-size: 1.02rem; }
 .card .tag { display: block; margin: 0 0 2px; font-size: 0.8rem; letter-spacing: 0.1em; color: var(--muted); }
 .card.command { --a: var(--orange); } .card.imperial { --a: #ff6a3d; } .card.collective { --a: var(--green); }
-.card.pipe { --a: #d9a35b; } .card.pipe2 { --a: #c98a4b; } .card.pipe3 { --a: #e2c27a; }
+.card.classic { --a: var(--gold); } .card.next { --a: var(--blue); }
 
 .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px 26px; margin: 0; padding: 0; list-style: none; }
 .features li { border-top: 4px solid var(--f, var(--blue)); padding: 10px 0 0; }

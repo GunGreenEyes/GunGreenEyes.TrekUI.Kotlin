@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * Home panel with live weather: current conditions and a three-day forecast from Open-Meteo
  * ({@link Weather}). The location is the device's (coarse location, asked only when chosen) or a
- * searched city. The forecast JSON is cached in preferences (also read by the Pipe Lounge scenes)
+ * searched city. The forecast JSON is cached in preferences
  * and refreshed at most every {@link #MAX_AGE} ms while the home screen is visible.
  *
  * <p>All network and geocoding work runs on {@link Weather#IO}; results are applied on the main

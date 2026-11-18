@@ -1,4 +1,4 @@
-TrekUI Lock Screen shows a console drawn in your TrekUI interface whenever you wake a locked phone: a starship console or a warm Pipe Lounge, in the colour theme you chose.
+TrekUI Lock Screen shows a console drawn in your TrekUI interface whenever you wake a locked phone: a starship console in the colour theme you chose.
 
 AT A GLANCE
 • A big clock, the date and a decimal date

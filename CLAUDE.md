@@ -6,7 +6,7 @@ The project guide for agents is [AGENTS.md](AGENTS.md), imported here so Claude 
 
 ## In short (if the import above was not loaded)
 
-- **Project.** TrekUI Launcher is an Android home launcher (`com.gungreeneyes.trekui`): pure Java, Canvas-drawn views, no XML layouts, eleven interfaces (`Skin.faction` 0–10).
+- **Project.** TrekUI Launcher is an Android home launcher (`com.gungreeneyes.trekui`): pure Java, Canvas-drawn views, no XML layouts, five interfaces (`Skin.faction` 0–2, 9 and 10).
 - **Build.**
   - `./gradlew assembleDevelopDebug` builds the app, `testDevelopDebugUnitTest` runs the tests, and `:app:dist` copies every APK and AAB to `dist/`.
   - It needs JDK 21 and SDK 37. Set them up with `scripts/setup.ps1` or `scripts/setup.sh`.

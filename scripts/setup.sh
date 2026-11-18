@@ -9,7 +9,7 @@
 #      (+ emulator system images with --emulators).
 #   3. Writes local.properties (sdk.dir) and prints the ANDROID_HOME line for your shell profile.
 #   4. Checks emulator acceleration (KVM on Linux, Hypervisor.framework on macOS).
-#   5. Smoke build: ./gradlew assembleDevelopDebug
+#   5. Check build: ./gradlew assembleDevelopDebug
 #
 # Termux (building on the phone itself, how the original developer built it):
 #   - Tools come from Termux packages; adb comes from android-tools, aapt2 from the aapt package.
@@ -308,11 +308,11 @@ esac
 
 # ---------------------------------------------------------------------------------------------
 if [ "$SKIP_BUILD" -eq 1 ]; then
-  section "Smoke build skipped (--skip-build)"
+  section "Check build skipped (--skip-build)"
 else
-  section "Smoke build"
-  smoke_build() { (cd "$REPO_ROOT" && chmod +x gradlew && ./gradlew assembleDevelopDebug --console=plain); }
-  run "./gradlew assembleDevelopDebug" smoke_build
+  section "Check build"
+  check_build() { (cd "$REPO_ROOT" && chmod +x gradlew && ./gradlew assembleDevelopDebug --console=plain); }
+  run "./gradlew assembleDevelopDebug" check_build
   if [ "$DRY_RUN" -eq 0 ]; then
     ok "APK: app/build/outputs/apk/develop/debug/"
     if [ "$PLATFORM" = termux ]; then

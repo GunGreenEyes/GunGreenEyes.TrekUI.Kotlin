@@ -24,7 +24,7 @@ final class HomeLogic {
     static final int HUB_PAGE_TILES = 0;
     /** Hub page: one node per information panel (weather, calendar…). */
     static final int HUB_PAGE_INFO = 1;
-    /** Hub page: the "stations" (pipe/ship stations) list. */
+    /** Hub page: the "stations" (ship stations) list. */
     static final int HUB_PAGE_STATIONS = 2;
 
     /** Package-name fragments of chat, call and messaging apps (launching one plays the COMM chirp). */

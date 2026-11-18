@@ -2,7 +2,7 @@
 
 TrekUI Launcher is one Android application module (`:app`, package `com.gungreeneyes.trekui`). It is written in plain Java against the Android framework, with only a few AndroidX libraries (core, activity, window) and Play Billing.
 
-There are **no XML layouts and no fragments**. Every screen is built in code from `View`/`ViewGroup` subclasses and `Drawable`s that paint themselves on a `Canvas`. That is how one codebase can render nine visually unrelated interfaces: the same view tree is decorated by whichever interface ("skin") is active.
+There are **no XML layouts and no fragments**. Every screen is built in code from `View`/`ViewGroup` subclasses and `Drawable`s that paint themselves on a `Canvas`. That is how one codebase can render five visually distinct interfaces: the same view tree is decorated by whichever interface ("skin") is active.
 
 > Other contributors are actively refactoring the code. Class names below are current at the time of writing. Small helpers come and go, but the shape described here is stable. The code itself is the reference: every class carries a Javadoc saying what it is and how it fits.
 
@@ -19,12 +19,9 @@ flowchart TD
     GR --> DR[DrawerView<br/>all apps + search]
     GR --> SH[ShadeView<br/>console shade]
     GR --> DI[DialerView]
-    GR --> BOOT[BootSequence / PipeBoot]
+    GR --> BOOT[BootSequence]
     HOMEV -->|Starship| LF[ConsoleFrame + tiles + panels]
     HOMEV -->|deploying layouts| RL[RevealLayout<br/>CommandCascade / ImperialDeploy / CollectiveHub]
-    HOMEV -->|Pipe drawn| PH[PipeHome]
-    HOMEV -->|Pipe painted| PS[PipeScene]
-    PS --> PP[PipePages] --> PDS[(PipeDataStore)]
     MA --> AR[AppRepo] 
     MA --> PANELS[Panel subclasses<br/>Weather, Calendar, Media, Power, Systems]
     MA --> SA[SettingsActivity<br/>CONFIG]
@@ -32,7 +29,7 @@ flowchart TD
     MA --> PREFS
     MA --> LIC[licensing.Licensing]
     PANELS --> HTTP[Http] 
-    SKIN[Skin / Ui / Palette / IconFactory] -.styles.-> LF & RL & PH & PS & DR & SH & DI
+    SKIN[Skin / Ui / Palette / IconFactory] -.styles.-> LF & RL & DR & SH & DI
 ```
 
 ## The home activity
@@ -55,15 +52,11 @@ flowchart TD
 4. **`onPause`** pauses every `Panel`, so nothing polls while another app is in front.
 5. **Window insets** (status bar, navigation bar and display cutout) are read in `readInsets` and applied as padding in `applyInsets`, so the layout is edge-to-edge on every API level.
 
-`buildHome()` chooses one of four home builders from the interface:
+`buildHome()` chooses the home builder from the interface and the CONFIG layout:
 
 ```mermaid
 flowchart LR
-    BH[buildHome] --> Q1{Skin.scene?}
-    Q1 -->|yes, 6-8| PS[PipeScene.build]
-    Q1 -->|no| Q2{Skin.pipe?}
-    Q2 -->|yes, 3-5| PH[PipeHome.build]
-    Q2 -->|no, 0-2| Q3{deploying layout<br/>chosen in CONFIG?}
+    BH[buildHome] --> Q3{deploying layout<br/>chosen in CONFIG?}
     Q3 -->|no| CL[Classic console frame:<br/>header frame, code blocks,<br/>tile grid, panels, dock]
     Q3 -->|Command| FC[CommandCascade]
     Q3 -->|Imperial| KD[ImperialDeploy]
@@ -77,7 +70,7 @@ flowchart LR
   - **Long-press:** opens a menu to assign an app or function, rename, recolour, set a sound, or reset.
 - **`Tile`.** Describes what a tile or dock slot launches: an app (component plus user), a console function (drawer, search, config, shade, dialer, cloak, `LIGHTS:` Govee device, `CLIMATE:` Nest device, `HA:` Home Assistant entity, …), or nothing.
 - **`HomeLogic`.** Holds the pure decisions behind the home screen, so they are unit-testable.
-- **App groups (OPEN GROUP).** `AppGroups` stores named app sets as one JSON array in the `group.list` pref (pure encode/parse/edit functions). A `Tile` with action `group` and the group id as `arg` opens `GroupPanel`, an overlay added to the home root that unfolds in the interface's style (Command spine cascade, Imperial deploy grid, Collective orbit, Pipe card), sized with `ScreenMetrics` inside the insets. `GroupEditor` holds the create / apps / reorder / rename / move / delete dialogs used from the home screen, the drawer's ADD TO GROUP and CONFIG › APP GROUPS.
+- **App groups (OPEN GROUP).** `AppGroups` stores named app sets as one JSON array in the `group.list` pref (pure encode/parse/edit functions). A `Tile` with action `group` and the group id as `arg` opens `GroupPanel`, an overlay added to the home root that unfolds in the interface's style (Command spine cascade, Imperial deploy grid, Collective orbit), sized with `ScreenMetrics` inside the insets. `GroupEditor` holds the create / apps / reorder / rename / move / delete dialogs used from the home screen, the drawer's ADD TO GROUP and CONFIG › APP GROUPS.
 - **Gestures.** `MainActivity.GestureRoot` offers every touch to `HomeGestureDetector` first. It recognises double-tap (only on empty space), two-finger swipes, pinch and horizontal swipes on the bare home screen, and runs the `Tile` stored under `gesture.<id>` (see `HomeGestures`, which also holds the thresholds). A gesture with nothing assigned is never taken, so the fixed swipe up (drawer) and swipe down (shade) behave as before. `GestureSettings` builds the CONFIG › GESTURES pickers.
 - **LOCK SCREEN.** `LockScreen` runs the function through `LockService`, an optional `AccessibilityService` with no event types and no window access that only performs `GLOBAL_ACTION_LOCK_SCREEN` (API 28+). Play's prominent disclosure (`LockScreen.showDisclosure`) comes before Accessibility settings; see `docs/PLAY_STORE.md`. No Device Admin.
 
@@ -103,23 +96,17 @@ Behind the **INFO** key, the panels appear as small keys (`RevealInfo`) or Colle
 
 The interface is an `int` in `Skin.faction`:
 
-| Value | Interface | Family | Home builder | Material (`Skin.mat()`) |
-|---|---|---|---|---|
-| 0 | Command | Starship | ConsoleFrame / CommandCascade | – |
-| 1 | Imperial | Starship | ConsoleFrame / ImperialDeploy | – |
-| 2 | Collective | Starship | ConsoleFrame / CollectiveHub | – |
-| 3 | The Tobacconist | Pipe (drawn) | PipeHome | 3 walnut/brass |
-| 4 | Ember Lounge | Pipe (drawn) | PipeHome | 4 lacquer/gilt |
-| 5 | Blend Journal | Pipe (drawn) | PipeHome | 5 leather/kraft |
-| 6 | Ember & Briar | Pipe (painted) | PipeScene | 3 |
-| 7 | Tobacconist's Ledger | Pipe (painted) | PipeScene | 5 |
-| 8 | Midnight Ember | Pipe (painted) | PipeScene | 4 |
-| 9 | Classic Console (23rd-century style) | Starship (Command era) | ConsoleFrame / CommandCascade | – |
-| 10 | Next Console (25th-century style) | Starship (Command era) | ConsoleFrame / CommandCascade | – |
+| Value | Interface | Family | Home builder |
+|---|---|---|---|
+| 0 | Command | Starship | ConsoleFrame / CommandCascade |
+| 1 | Imperial | Starship | ConsoleFrame / ImperialDeploy |
+| 2 | Collective | Starship | ConsoleFrame / CollectiveHub |
+| 9 | Classic Console (23rd-century style) | Starship (Command era) | ConsoleFrame / CommandCascade |
+| 10 | Next Console (25th-century style) | Starship (Command era) | ConsoleFrame / CommandCascade |
+
+Ids 3–8 are retired. A saved choice of one of them reads as Command (sub-theme 0), in the launcher and in the companion apps that read the launcher's theme row.
 
 `Skin.command()` is true for 0, 9 and 10, so the eras reuse every Command code path; `Skin.era()` / `era23()` / `era25()` pick the era drawing. CONFIG lists the starship family in `SettingsLogic.STARSHIP_FACTIONS` order (0, 9, 10, 1, 2).
-
-The painted scenes reuse a drawn material for every screen other than the home: the drawer, dialogs, settings and so on. `Skin.mat()` maps each interface to its material.
 
 ### Drawing vocabulary
 
@@ -128,25 +115,14 @@ The painted scenes reuse a drawn material for every screen other than the home: 
 | `Skin` | Current interface, palettes per interface, shape `Drawable`s for Imperial/Collective (`Chamfer`, `NodeCell`, `NodeNet`, `TacticalDisplay`), asset folders per interface |
 | `Ui` | Shared helpers: dp/sp conversion with the responsive zoom, the spacing scale (HAIR 2 · XS 4 · GUTTER 6 · S 8 · M 12 · L 16 · XL 24 dp), fonts per interface, cloak state |
 | `Palette` | The six Command colour themes (CLASSIC is the default) plus per-interface palettes; six accents used in rotation. `Palette.themesFor(faction)` / `Palette.of(faction, index)` is the one sub-theme lookup; Imperial and Collective palettes also carry chrome tones (bg, surface, grid, detail, ink) |
-| `SubThemes` (`:core`, LCA-T35) | Pure `#RRGGBB` specs of every interface's sub-themes: Command 11 (0-5 the original themes, 6-10 DEEP BLUE .. MODERN GRAY), Imperial 5, Collective 5, eras from `Era`, Pipe Lounge 1 (fixed materials). `count` / `clamp` / `name` / `accents` are public for companions; `SuiteContract.parseTheme` clamps with it. Index 0 is always the original look. `TrekPrefs.palette()` calls `Skin.useSubTheme`, which points `Skin.imperialTheme` / `collectiveTheme` and `ImperialDraw.RED/ORANGE/YELLOW/DEEP` at the active Imperial / Collective theme, so `Skin.bg/surface/grid/detail/ink/glow` and the faction drawing follow it. Stored per interface under `TrekPrefs.themeKeyFor` (`theme`, `theme1`, `theme2`, `theme9`, `theme10`) |
+| `SubThemes` (`:core`, LCA-T35) | Pure `#RRGGBB` specs of every interface's sub-themes: Command 11 (0-5 the original themes, 6-10 DEEP BLUE .. MODERN GRAY), Imperial 5, Collective 5, eras from `Era`. `count` / `clamp` / `name` / `accents` are public for companions; `SuiteContract.parseTheme` clamps with it. Index 0 is always the original look. `TrekPrefs.palette()` calls `Skin.useSubTheme`, which points `Skin.imperialTheme` / `collectiveTheme` and `ImperialDraw.RED/ORANGE/YELLOW/DEEP` at the active Imperial / Collective theme, so `Skin.bg/surface/grid/detail/ink/glow` and the faction drawing follow it. Stored per interface under `TrekPrefs.themeKeyFor` (`theme`, `theme1`, `theme2`, `theme9`, `theme10`) |
 | `ConsoleFrame` | The Command frame (elbows, bars, segments) and its Imperial/Collective counterparts; reports taps on each part to slots |
 | `ImperialDraw`, `CollectiveDraw` | Faction-specific primitives (octagon plates, triangle rows; glowing nodes, traces, `TraceColumn`) |
 | `Era`, `EraDraw`, `EraBoot` | The 23rd/25th-century Command eras: pure theme specs, contrast, lamp-blink and cut-corner rules (`Era`, unit-tested); console keys with blinking lamps, glass cells, frame corners, card brackets, icon frames, clock ornaments and CONFIG previews (`EraDraw`, reached from `Ui.shape/outline`, `ConsoleFrame`, `ConsoleCard`, `CommandCascade`, `IconFactory`); start-up sequences (`EraBoot`, from `BootSequence`). Themes: `Palette.ERA23` / `ERA25`, stored per era as `theme9` / `theme10` |
-| `PipeDraw` | All Pipe materials and shapes (`Cell`, `Drawer`, `DecoPanel`, `Tag`, grain textures) |
-| `IconFactory` | App icons in the active style: console pictograms, framed icons, faction/pipe badges, or native icons |
-| `Pictograms`, `IconPacks`, `IconPackParser`, `IconPicker` | Icon customisation (LCA-T22): the 109-name pictogram catalogue and package/label keyword table (`Pictograms`, pure); icon-pack discovery through the `<queries>` theme intents, `appfilter.xml` / `drawable.xml` parsing (`IconPackParser`, pure) and the raw-icon swap inside `AppRepo`'s background load, with backplate/mask composition for uncovered apps (`IconPacks`); the drawer's CHANGE ICON dialog (`IconPicker`). Per-app choices are `appIcon.<key>` prefs (`glyph:`, `pack:`, `app`); `iconPack` and `autoGlyphs` hold the CONFIG choices. Glyph art: `tools/art/glyphs.py` + `glyphs_extra.py`, rendered by `glyph_render.py` |
+| `IconFactory` | App icons in the active style: console pictograms, framed icons, faction badges, or native icons |
+| `Pictograms`, `IconPacks`, `IconPackParser`, `IconPicker` | Icon customisation (LCA-T22): the 109-name pictogram catalogue and package/label keyword table (`Pictograms`, pure); icon-pack discovery through the `<queries>` theme intents, `appfilter.xml` / `drawable.xml` parsing (`IconPackParser`, pure) and the raw-icon swap inside `AppRepo`'s background load, with backplate/mask composition for uncovered apps (`IconPacks`); the drawer's CHANGE ICON dialog (`IconPicker`). Per-app choices are `appIcon.<key>` prefs (`glyph:`, `pack:`, `app`); `iconPack` and `autoGlyphs` hold the CONFIG choices. Glyph art: the core 28 from `tools/legacy/make_glyphs.py`, the extended set from `tools/art/glyphs_extra.py`, rendered by `glyph_render.py` |
 | `Starfield` | Background drawn once into a bitmap |
 | `ConsoleDialog` | Every menu and prompt, drawn in the active skin (no platform `AlertDialog` look) |
-
-### Pipe Lounge
-
-| Class | Role |
-|---|---|
-| `PipeHome` | The three drawn Pipe homes (slots, tiles, panels and dock in walnut/lacquer/kraft), plus their lore |
-| `PipeScene` | The three painted homes. A `Stage` crops the painting from `assets/pipe/scenes` to the available area and maps launcher slots onto hotspots given in the paintings' 941×1672 coordinate space (generated by `tools/art/scene_maps.py`). A `Live` overlay draws the clock, weather and other live values |
-| `PipePages` | Collection pages: pipe register, blend catalogue, journal, ritual and session clock, reference shelves, export/import |
-| `PipeDataStore` | The offline collection store (its own prefs file, `pipe_collection_v3`) |
-| `PipeBoot` | Start-up animation for the Pipe interfaces (a match is struck and the bowl lights) |
 
 ## Other screens
 
@@ -204,7 +180,6 @@ flowchart LR
 - **`Prefs`** is a singleton over `SharedPreferences("trekui")`. It stores the interface, palette, tiles, dock, slot assignments, panel order, the weather location mode, and the device credentials the user enters (Govee API key, Nest OAuth tokens).
   - Any change that alters the home calls `bump()`, and the home rebuilds on its next resume.
 - **CONFIG › SUITE** (LCA-T35, `SettingsActivity.suiteSection` + `SuiteSettings`): KEYBOARD (active input method, `InputMethodManager.showInputMethodPicker`, the enable screen), LOCK SCREEN (`TrekPrefs.lockscreenEnabled`, key `suiteLockscreen`, published on the suite provider's additive `lockscreen` path; `SuiteClient.launcherLockscreenEnabled` reads it) and MESSAGES (default SMS: `Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT` up to Android 9, `SuiteContract.ACTION_REQUEST_SMS_ROLE` sent to TrekUI Messages on 10+ since `RoleManager` only requests roles for the caller; falls back to the default-apps screen; the previous SMS app is kept in `suitePrevSms` for RESTORE). INSTALL opens `SuiteContract.marketUri` / `playUrl`. Picking a sub-theme or flipping LOCK SCREEN calls `SuiteProvider.notifyChanged` so running companions re-read at once.
-- **The Pipe collection** has its own store (`PipeDataStore`).
 - **Licensing state** has its own store (`licensing.PrefsKeyValueStore`).
 - **Layout files and snapshots** (`LayoutArchive`, `LayoutSnapshots`) cover the `trekui` prefs minus credentials, device-bound and transient keys. Applying one replaces those layout keys, leaves the excluded ones alone and calls `bump()`.
 - **Backups.** Android Auto Backup covers the prefs. Imported and downloaded sound files are excluded (`res/xml/backup_rules.xml`, `data_extraction_rules.xml`).

@@ -28,7 +28,7 @@ Reports go to `app/build/reports/tests/testDevelopDebugUnitTest/index.html`.
 
 ## Robolectric screenshots
 
-The Robolectric tests build real launcher views (home, drawer, Pipe pages, frames and so on) in each interface and at several screen sizes, then render them to PNG on the JVM. No emulator is needed, so they are a quick visual check of all eleven interfaces.
+The Robolectric tests build real launcher views (home, drawer, frames and so on) in each interface and at several screen sizes, then render them to PNG on the JVM. No emulator is needed, so they are a quick visual check of all five interfaces.
 
 - **Output:** `assets/robolectric/` at the repository root.
 - **In CI:** the images are uploaded as the `capture-robolectric` artifact and shown on the GitHub Pages site.
@@ -52,7 +52,7 @@ The supporting classes are:
 - **`Gherkin`:** logs each Given/When/Then step to logcat under the tag `TREKUI-GHERKIN`, so a failure shows exactly which step it reached.
 - **`MediaCapture`:** screenshots and screen recordings, written on the device to `/sdcard/trekui-test/`. The names follow `<scenario>[-<step>]__<device>__api<N>__<orientation>.png|.mp4`.
 - **`LayoutAudit`:** checks that nothing is clipped or hidden under a system bar or display cutout.
-- **`Interface`:** enumerates the eleven interfaces.
+- **`Interface`:** enumerates the five interfaces.
 
 Cucumber is not used on purpose. Plain JUnit 4 keeps the toolchain small and runs on every API level from 26 up.
 
@@ -128,7 +128,7 @@ The root `assets/` folder is gitignored, apart from its index file. CI uploads t
 ## Manual checklist before a release
 
 - Set as default home on a real phone, then press Home from another app and confirm it returns to TrekUI.
-- Switch through all eleven interfaces in portrait and landscape.
+- Switch through all five interfaces in portrait and landscape.
 - Check a foldable or tablet in multi-window: resize the window and confirm nothing is clipped.
 - Trial flow on a develop build:
   - wait 5 minutes and confirm the purchase screen appears on Home only;

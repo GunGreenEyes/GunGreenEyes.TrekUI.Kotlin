@@ -222,9 +222,9 @@ public final class KeyboardSettingsActivity extends Activity {
         TrekPrefs tp = TrekPrefs.get(this);
         final int faction = tp.faction();
         final String[] names = KeyboardLook.interfaceNames();
-        valueRow(getString(R.string.look_interface), names[faction], v -> KeyboardLook.options(this,
+        valueRow(getString(R.string.look_interface), names[KeyboardLook.interfaceIndex(faction)], v -> KeyboardLook.options(this,
                 getString(R.string.look_interface), names, which -> {
-                    tp.setFaction(which);
+                    tp.setFaction(KeyboardLook.interfaceAt(which));
                     KeyboardLook.reloadSounds(this);
                     rebuild();
                 }).show());

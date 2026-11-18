@@ -51,7 +51,7 @@ public final class ScreenMetrics {
     public final float marginDp;
     /** Space between neighbouring elements in dp. */
     public final float gutterDp;
-    /** Multiplier for fixed-size console/Pipe elements (bars, elbows, text). */
+    /** Multiplier for fixed-size console elements (bars, elbows, text). */
     public final float uiScale;
 
     private ScreenMetrics(float widthDp, float heightDp, float density) {

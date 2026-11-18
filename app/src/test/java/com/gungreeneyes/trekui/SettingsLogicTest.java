@@ -49,15 +49,6 @@ public class SettingsLogicTest {
     }
 
     @Test
-    public void familyTarget_restoresOrFallsBack() {
-        assertThat(SettingsLogic.familyTarget(true, 6, 0)).isEqualTo(6);
-        assertThat(SettingsLogic.familyTarget(true, 1, 0)).isEqualTo(3);
-        assertThat(SettingsLogic.familyTarget(true, 9, 0)).isEqualTo(3);
-        assertThat(SettingsLogic.familyTarget(false, 3, 2)).isEqualTo(2);
-        assertThat(SettingsLogic.familyTarget(false, 3, 5)).isEqualTo(0);
-    }
-
-    @Test
     public void isIpv4() {
         assertThat(SettingsLogic.isIpv4("192.168.1.42")).isTrue();
         assertThat(SettingsLogic.isIpv4("10.0.0.255")).isTrue();

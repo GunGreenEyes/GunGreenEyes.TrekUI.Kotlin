@@ -70,19 +70,45 @@ public class TrekPrefs {
 
     // ---- interface / sub-theme ----------------------------------------------------------------
 
-    /** The selected interface (Skin.COMMAND .. Skin.ERA25); out-of-range values fall back to Command. */
+    /**
+     * The selected interface (one of {@link Skin#INTERFACES}); out-of-range values and the retired
+     * ids 3-8 read as Command.
+     */
     public int faction() {
         SuiteTheme o = override;
         if (o != null) return clampFaction(o.faction);
-        return clampFaction(i(KEY_FACTION, Skin.COMMAND));
+        int stored = i(KEY_FACTION, Skin.COMMAND);
+        if (retiredFaction(stored)) {
+            migrateRetired();
+            return Skin.COMMAND;
+        }
+        return clampFaction(stored);
+    }
+
+    /**
+     * A saved choice of a retired interface (ids 3-8) switches to Command at its first sub-theme: the
+     * stored faction and Command's theme key are rewritten, so the change survives and the rest of
+     * the app (sounds, layouts, the suite provider) sees one consistent choice.
+     */
+    void migrateRetired() {
+        sp.edit().putInt(KEY_FACTION, Skin.COMMAND).putInt(themeKeyFor(Skin.COMMAND), 0).apply();
     }
 
     /** Stores the app's own interface choice (ignored for display while an override is set). */
     public void setFaction(int faction) { put(KEY_FACTION, clampFaction(faction)); }
 
-    /** Maps a stored faction index to a valid one. */
+    /**
+     * Maps a stored faction index to a valid one: an out-of-range value or a retired interface (ids
+     * 3-8, removed in 44) reads as Command, whose sub-theme then comes from its own key ({@link
+     * #subTheme}), so the old choice cannot leak into it.
+     */
     public static int clampFaction(int f) {
-        return f < 0 || f > MAX_FACTION ? Skin.COMMAND : f;
+        return Skin.exists(f) ? f : Skin.COMMAND;
+    }
+
+    /** True for a stored faction index that no longer names an interface (the retired ids 3-8). */
+    public static boolean retiredFaction(int f) {
+        return f >= Skin.FIRST_RETIRED && f <= Skin.LAST_RETIRED;
     }
 
     /**
@@ -135,7 +161,6 @@ public class TrekPrefs {
     public Palette palette() {
         Skin.faction = faction();
         Skin.lettering = lettering();
-        if (Skin.pipe()) return Skin.pipePalette(Skin.faction);
         Palette p = Palette.of(Skin.faction, subTheme(Skin.faction));
         Skin.useSubTheme(Skin.faction, p);
         return p;

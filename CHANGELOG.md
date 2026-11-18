@@ -2,6 +2,10 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
+## 44 (Unreleased)
+
+- Removed the Pipe Lounge interfaces: TrekUI is now starship consoles only; a saved Pipe Lounge choice switches to COMMAND. (LCA-T58)
+
 ## 43 (versionCode 43, 2026-11-17)
 
 - Log release 43 (LCA-T52)

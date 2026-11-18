@@ -1,4 +1,4 @@
-TrekUI Keyboard is an on-screen keyboard drawn in every TrekUI interface. The keys look like the launcher's own controls, whether you use a starship console or a warm Pipe Lounge, in the colour theme you chose.
+TrekUI Keyboard is an on-screen keyboard drawn in every TrekUI interface. The keys look like the launcher's own controls, in whichever starship console you use, in the colour theme you chose.
 
 TYPING
 • English QWERTY, German QWERTZ, French AZERTY and Spanish layouts, switched with the globe key or a long press on the space bar

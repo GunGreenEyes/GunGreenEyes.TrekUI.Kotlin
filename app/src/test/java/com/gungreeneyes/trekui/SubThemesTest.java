@@ -25,13 +25,7 @@ public class SubThemesTest {
         assertThat(SubThemes.count(Skin.COLLECTIVE)).isAtMost(5);
         assertThat(SubThemes.count(Skin.ERA23)).isEqualTo(Era.ERA23_THEMES.length);
         assertThat(SubThemes.count(Skin.ERA25)).isEqualTo(Era.ERA25_THEMES.length);
-        for (int f = Skin.FIRST_PIPE; f <= Skin.LAST_PIPE; f++) {
-            assertThat(SubThemes.count(f)).isEqualTo(1);
-            assertThat(SubThemes.selectable(f)).isFalse();
-            assertThat(Palette.themesFor(f)).hasLength(1);
-            assertThat(Palette.themesFor(f)[0]).isSameInstanceAs(Skin.pipePalette(f));
-        }
-        for (int f = 0; f <= TrekPrefs.MAX_FACTION; f++) {
+        for (int f : Skin.INTERFACES) {
             assertThat(Palette.themesFor(f)).hasLength(SubThemes.count(f));
         }
     }
@@ -44,7 +38,7 @@ public class SubThemesTest {
         int imperial = SubThemes.count(Skin.IMPERIAL);
         assertThat(SubThemes.clamp(Skin.IMPERIAL, imperial - 1)).isEqualTo(imperial - 1);
         assertThat(SubThemes.clamp(Skin.IMPERIAL, imperial)).isEqualTo(0);
-        assertThat(SubThemes.clamp(Skin.TOBACCONIST, 2)).isEqualTo(0);
+        assertThat(SubThemes.clamp(Skin.FIRST_RETIRED, 2)).isEqualTo(0);
         assertThat(TrekPrefs.clampSubTheme(Skin.ERA23, Era.ERA23_THEMES.length)).isEqualTo(0);
         assertThat(Palette.of(Skin.COLLECTIVE, 99)).isSameInstanceAs(Palette.COLLECTIVE[0]);
     }
@@ -58,8 +52,8 @@ public class SubThemesTest {
         assertThat(Palette.ALL[0].alert).isEqualTo(0xFFFF2200);
         assertThat(Palette.ALL[6].c[0]).isEqualTo(0xFF2266FF);
         assertThat(SubThemes.accents(Skin.COMMAND, 7)[0]).isEqualTo(0xFFFF7700);
-        assertThat(SubThemes.name(Skin.LOUNGE, 0)).isEmpty();
-        assertThat(SubThemes.accents(Skin.LOUNGE, 0)).isEmpty();
+        assertThat(SubThemes.name(Skin.FIRST_RETIRED, 0)).isEmpty();
+        assertThat(SubThemes.accents(Skin.FIRST_RETIRED, 0)).isEmpty();
     }
 
     @Test

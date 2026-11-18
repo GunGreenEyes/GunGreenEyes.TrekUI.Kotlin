@@ -1,10 +1,9 @@
-"""The extended pictogram set (LCA-T22): 81 more glyphs beside the 28 core ones in glyphs.py.
+"""The extended pictogram set (LCA-T22): 81 more glyphs beside the 28 core ones.
 
-Same contract as glyphs.py: a 192x192 viewBox, line art drawn with strokes (the renderer sets
-the stroke width per style) plus a few solid marks (class "f"). Every drawing here is original.
-glyph_render.py renders them in the three pipe styles (engraved / deco / stamp) and, because the
-plain TrekUI set for the core 28 comes from the older Pillow script (tools/legacy/make_glyphs.py),
-also as a bold "trekui" stroke set into app/src/main/assets/glyphs/.
+Each glyph is a 192x192 viewBox of line art drawn with strokes (the renderer sets the stroke
+width) plus a few solid marks (class "f"). Every drawing here is original. glyph_render.py
+renders them as a bold "trekui" stroke set into the glyphs/ assets folder; the plain TrekUI set
+for the core 28 comes from the older Pillow script (tools/legacy/make_glyphs.py).
 
 The app's keyword table (Pictograms.java) maps package names and labels onto these names, and
 Pictograms.ALL must list every name defined here.

@@ -40,23 +40,51 @@ public class PrefsTest {
         assertThat(Prefs.layoutKeyFor(Skin.COMMAND)).isEqualTo("commandLayout");
         assertThat(Prefs.layoutKeyFor(Skin.IMPERIAL)).isEqualTo("imperialLayout");
         assertThat(Prefs.layoutKeyFor(Skin.COLLECTIVE)).isEqualTo("collectiveLayout");
-        for (int f = Skin.TOBACCONIST; f <= Skin.MIDNIGHT; f++) {
-            assertThat(Prefs.layoutKeyFor(f)).isEqualTo("pipeLayout" + f);
-        }
+        assertThat(Prefs.layoutKeyFor(Skin.ERA25)).isEqualTo("commandLayout");
     }
 
     @Test
     public void headerKeys_perFaction() {
         assertThat(Prefs.headerKeyFor(Skin.COMMAND)).isEqualTo("header");
         assertThat(Prefs.headerKeyFor(Skin.COLLECTIVE)).isEqualTo("header2");
-        assertThat(Prefs.headerKeyFor(Skin.MIDNIGHT)).isEqualTo("header8");
+        assertThat(Prefs.headerKeyFor(Skin.ERA25)).isEqualTo("header10");
     }
 
     @Test
-    public void clampFaction_outOfRangeIsCommand() {
+    public void clampFaction_outOfRangeAndRetiredAreCommand() {
         assertThat(Prefs.clampFaction(-1)).isEqualTo(Skin.COMMAND);
         assertThat(Prefs.clampFaction(Prefs.MAX_FACTION + 1)).isEqualTo(Skin.COMMAND);
-        for (int f = 0; f <= Prefs.MAX_FACTION; f++) assertThat(Prefs.clampFaction(f)).isEqualTo(f);
+        for (int f : Skin.INTERFACES) assertThat(Prefs.clampFaction(f)).isEqualTo(f);
+        for (int f = Skin.FIRST_RETIRED; f <= Skin.LAST_RETIRED; f++) {
+            assertThat(Prefs.clampFaction(f)).isEqualTo(Skin.COMMAND);
+            assertThat(Prefs.retiredFaction(f)).isTrue();
+        }
+        for (int f : Skin.INTERFACES) assertThat(Prefs.retiredFaction(f)).isFalse();
+    }
+
+    @Test
+    public void retiredKeys_onlyTheRemovedInterfacesKeys() {
+        for (int f = Skin.FIRST_RETIRED; f <= Skin.LAST_RETIRED; f++) {
+            assertThat(Prefs.retiredKey("pipeLayout" + f)).isTrue();
+            assertThat(Prefs.retiredKey("header" + f)).isTrue();
+            assertThat(Prefs.retiredKey("theme" + f)).isTrue();
+            assertThat(Prefs.retiredKey("sndBi" + f + "_3")).isTrue();
+        }
+        for (String k : new String[]{"lastPipe", "lastStarship", "pipeTimerAcc", "pipeTimerRun", "pipeTimerStart"}) {
+            assertThat(Prefs.retiredKey(k)).isTrue();
+        }
+        // the remaining interfaces' keys stay
+        for (int f : Skin.INTERFACES) {
+            assertThat(Prefs.retiredKey(Prefs.headerKeyFor(f))).isFalse();
+            assertThat(Prefs.retiredKey(Prefs.themeKeyFor(f))).isFalse();
+            assertThat(Prefs.retiredKey(Prefs.layoutKeyFor(f))).isFalse();
+            assertThat(Prefs.retiredKey("sndBi" + f + "_3")).isFalse();
+        }
+        for (String k : new String[]{"faction", "theme", "header", "sndBi3", "sndBi10_3", "collectiveLayout", "tilesJson", null}) {
+            assertThat(Prefs.retiredKey(k)).isFalse();
+        }
+        assertThat(LayoutArchive.isExcluded("header5")).isTrue();
+        assertThat(LayoutArchive.isExcluded("header1")).isFalse();
     }
 
     @Test

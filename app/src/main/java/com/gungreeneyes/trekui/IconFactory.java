@@ -27,9 +27,8 @@ import java.util.Set;
  * Builds launcher icons in the selected style ({@link Prefs#iconStyle()}): console pictograms, app
  * icons inside a faction frame, the faction's own artwork badges, or the native icon.
  *
- * <p>Pictograms ("glyphs") exist for a fixed set of core apps ({@link #GLYPH_RULES}); the pipe
- * interfaces have their own engraved / deco / rubber-stamp glyph sets and fall back to the plain
- * set. Decoded bitmaps are cached for the life of the process.
+ * <p>Pictograms ("glyphs") exist for a fixed set of core apps ({@link #GLYPH_RULES}). Decoded
+ * bitmaps are cached for the life of the process.
  */
 final class IconFactory {
     /** Core apps that get an console pictogram. First installed package in each row wins, so glyphs stay unique. */
@@ -140,30 +139,20 @@ final class IconFactory {
         return auto ? Pictograms.defaultGlyph(pkg, label, category) : null;
     }
 
-    /**
-     * Asset paths tried, in order, for a pictogram: the pipe interface's own glyph set first (when
-     * {@code pipeFolder} is not null), then the plain console set.
-     */
-    static String[] glyphPaths(String pipeFolder, String name) {
-        if (pipeFolder != null) return new String[]{pipeFolder + name + ".png", "glyphs/" + name + ".png"};
-        return new String[]{"glyphs/" + name + ".png"};
+    /** Asset path of the pictogram {@code name}. */
+    static String glyphPath(String name) {
+        return "glyphs/" + name + ".png";
     }
 
-    /** The pictogram bitmap for a glyph name in the current interface's style, or null. Cached. */
+    /** The pictogram bitmap for a glyph name, or null. Cached. */
     static synchronized Bitmap glyph(Context c, String name) {
-        String pipeFolder = Skin.pipe() ? Skin.glyphFolder() : null;
-        String key = pipeFolder != null ? pipeFolder + name : name;
-        if (glyphs.containsKey(key)) return glyphs.get(key);
-        Bitmap b = null;
-        for (String path : glyphPaths(pipeFolder, name)) {
-            b = decodeAsset(c, path);
-            if (b != null) break;
-        }
-        glyphs.put(key, b);
+        if (glyphs.containsKey(name)) return glyphs.get(name);
+        Bitmap b = decodeAsset(c, glyphPath(name));
+        glyphs.put(name, b);
         return b;
     }
 
-    /** The faction artwork badge for a pictogram name (Imperial octagon, Collective module, pipe badge), or null. */
+    /** The faction artwork badge for a pictogram name (Imperial octagon, Collective module), or null. */
     static synchronized Bitmap factionArt(Context c, String name) {
         if (Skin.command() || name == null) return null;
         String path = Skin.artFolder() + name + ".png";
@@ -232,7 +221,7 @@ final class IconFactory {
      * Tile frame around an icon or glyph, in the geometry of the faction active when it was created:
      * console rounded key with two accent bars, Imperial octagon with a diamond marker, Collective disk with an
      * inner ring and node, the 23rd-century square key with a lamp or 25th-century cut-corner glass
-     * ({@link EraDraw#iconFrame}), or a pipe material plate ({@link PipeDraw#iconPlate}). Scales with its bounds.
+     * ({@link EraDraw#iconFrame}). Scales with its bounds.
      */
     static final class Framed extends Drawable {
         private final Drawable inner;
@@ -256,10 +245,6 @@ final class IconFactory {
             this.fill = solid ? color : fill;
             this.mark = solid ? SOLID_MARK : color;
             int glyphInk = solid ? 0xFF000000 : color;
-            // pipe glyph sets carry their own ink: red stamp on leather/kraft, pale gold on lacquer
-            int family = Skin.mat(faction);
-            if (family == Skin.JOURNAL) glyphInk = PipeDraw.RED_INK;
-            else if (family == Skin.LOUNGE) glyphInk = PipeDraw.GOLD_PALE;
             gp.setColorFilter(new PorterDuffColorFilter(glyphInk, PorterDuff.Mode.SRC_IN));
         }
 
@@ -270,13 +255,7 @@ final class IconFactory {
             float x0 = b.centerX() - s / 2f, y0 = b.centerY() - s / 2f;
             float sw = Math.max(2f, s * 0.035f);
             r.set(x0 + sw, y0 + sw, x0 + s - sw, y0 + s - sw);
-            if (Skin.pipeFaction(faction)) {
-                // PipeDraw reads Skin.faction; draw as the faction this frame was made for
-                int keep = Skin.faction;
-                Skin.faction = faction;
-                PipeDraw.iconPlate(cv, r, color, fill, s);
-                Skin.faction = keep;
-            } else if (Skin.eraFaction(faction)) {
+            if (Skin.eraFaction(faction)) {
                 EraDraw.iconFrame(cv, r, s, sw, color, fill, mark, faction);
             } else if (faction == Skin.COMMAND) {
                 paint.setStyle(Paint.Style.FILL);
