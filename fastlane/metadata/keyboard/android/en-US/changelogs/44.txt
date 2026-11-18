@@ -1,0 +1,1 @@
+• Remove the Pipe Lounge interfaces from the code: TrekUI is a starship-console launcher only
