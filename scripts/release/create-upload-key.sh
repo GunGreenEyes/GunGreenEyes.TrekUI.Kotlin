@@ -16,7 +16,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-REPO="GunGreenEyes/TrekUI.Java"
+REPO="GunGreenEyes/TrekUI.Kotlin"
 ALIAS="trekui-upload"
 STORE="signing/trekui-upload.jks"
 

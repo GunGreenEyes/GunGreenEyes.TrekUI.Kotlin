@@ -54,10 +54,10 @@ TrekUI Launcher is not directed at children. It is intended for adults (18+), pa
 
 ## Changes
 
-If this policy changes, the new version will be published at this address with a new effective date. The history is in the project's [Git repository](https://github.com/GunGreenEyes/TrekUI.Java/commits/main/PRIVACY.md).
+If this policy changes, the new version will be published at this address with a new effective date. The history is in the project's [Git repository](https://github.com/GunGreenEyes/TrekUI.Kotlin/commits/main/PRIVACY.md).
 
 ## Contact
 
-For questions about privacy, open an issue at <https://github.com/GunGreenEyes/TrekUI.Java/issues>, or use the developer contact email shown on the Google Play listing.
+For questions about privacy, open an issue at <https://github.com/GunGreenEyes/TrekUI.Kotlin/issues>, or use the developer contact email shown on the Google Play listing.
 
 *TrekUI Launcher is an independent app with no third-party sponsors.*

@@ -33,7 +33,7 @@ const CACHE = path.join(SITE, ".cache");
 // SITE_ASSETS=<dir> builds from another media folder (e.g. a downloaded site-media.zip).
 const ASSETS = process.env.SITE_ASSETS ? path.resolve(process.env.SITE_ASSETS) : path.join(ROOT, "assets");
 
-const REPO = "GunGreenEyes/TrekUI.Java";
+const REPO = "GunGreenEyes/TrekUI.Kotlin";
 const REPO_URL = `https://github.com/${REPO}`;
 const PACKAGE = "com.gungreeneyes.trekui";
 const PLAY_URL = `https://play.google.com/store/apps/details?id=${PACKAGE}`;

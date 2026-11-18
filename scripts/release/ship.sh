@@ -209,7 +209,7 @@ for _ in $(seq 1 15); do
   [ -n "$URL" ] && break
 done
 if [ -z "$URL" ]; then
-  REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo GunGreenEyes/TrekUI.Java)"
+  REPO="$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo GunGreenEyes/TrekUI.Kotlin)"
   URL="https://github.com/$REPO/actions/workflows/release.yml"
 fi
 echo "Release $NEW_NAME started on the $TRACK track: $URL"

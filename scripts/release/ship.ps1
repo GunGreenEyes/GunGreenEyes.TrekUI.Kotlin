@@ -227,7 +227,7 @@ for ($i = 0; $i -lt 15 -and -not $url; $i++) {
 }
 if (-not $url) {
   $repo = Invoke-Quiet { gh repo view --json nameWithOwner --jq .nameWithOwner }
-  if (-not $repo) { $repo = 'GunGreenEyes/TrekUI.Java' }
+  if (-not $repo) { $repo = 'GunGreenEyes/TrekUI.Kotlin' }
   $url = "https://github.com/$repo/actions/workflows/release.yml"
 }
 Write-Host "Release $newName started on the $Track track: $url"

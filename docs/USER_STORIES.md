@@ -1,14 +1,14 @@
 ---
 codex: 1
-project: TrekUI.Java
-code: LCA
+project: TrekUI.Kotlin
+code: TUK
 layer: stories
 status: living
-updated: 2026-11-17
+updated: 2026-11-18
 ---
 <!-- GENERATED from MindAttic.Tickets/data/Tickets.db by `tickets db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the tickets CLI. -->
 
-# TrekUI.Java — User Stories
+# TrekUI.Kotlin — User Stories
 > ✅ done (shipped & tested) · 🟡 partial · ⬜ planned. Every ✅ cites the test.
 
 ## Priority backlog
@@ -21,59 +21,5 @@ _Nothing recorded yet._
 
 | ID | Date | Type | Status | Summary | Ref |
 |---|---|---|---|---|---|
-| LCA-T1 | 2026-11-17 | docs | closed | Start the permanent ticket log in USER_STORIES.md | — |
-| LCA-T2 | 2026-11-17 | chore | closed | Toolchain: Android SDK, system images API 26-36 phone/tablet/foldable, Gradle wrapper, AVD matrix | toolchain in place (SDK D:\Android\Sdk, AVD matrix scripts/avd) |
-| LCA-T3 | 2026-11-17 | feature | closed | Modern Gradle project: merge 5.2 source + 6.1 Pipe overlay; KTS, version catalog, latest AGP, targetSdk 36, Java 17, develop/production flavors, APK/AAB to dist/ | Gradle 9.9.1 / AGP 9.5.1, KTS + version catalog, flavors |
-| LCA-T4 | 2026-11-17 | chore | closed | Code cleanup and comments: fix decompiler artifacts, modernize APIs, document every class/method | — |
-| LCA-T5 | 2026-11-17 | feature | closed | Responsive layout: sizes/padding/gutters from window size, density, aspect ratio, cutouts, foldables; edge-to-edge; phone to tablet | ScreenMetrics responsive layout; CI emulator matrix green |
-| LCA-T6 | 2026-11-17 | feature | closed | Tests: unit tests for logic; instrumented tests, screenshots and video across emulator matrix (API 26-36, phone/tablet/foldable, resolutions, aspect ratios) | — |
-| LCA-T7 | 2026-11-17 | feature | closed | CI/CD: GitHub Actions develop + production pipelines, signed AAB, Play upload, screenshots auto-published to GitHub Pages every release | develop/emulator/pages/release workflows; LCA-T37 one-command release |
-| LCA-T8 | 2026-11-17 | feature | closed | Sound manifest: ship no copyrighted audio; catalogue every sound with public source URL + checksum; user downloads in-app | — |
-| LCA-T9 | 2026-11-17 | feature | closed | Monetization: free with session timeout (default 24h) + purchase screen; one-time 0.99 USD Play Billing unlock; no ads; research other launchers | — |
-| LCA-T10 | 2026-11-17 | docs | closed | Documentation: README, architecture, build, test, release, Play listing/data safety/privacy policy, editing from Claude Code and phone | — |
-| LCA-T11 | 2026-11-17 | chore | closed | Freeze finished+tested Java version and rename project to GunGreenEyes.LCARS.Java | renamed to TrekUI.Java (LCA-T38); Java finished to shippable |
-| LCA-T12 | 2026-11-17 | feature | open | Recreate the entire app in Kotlin as GunGreenEyes.LCARS.Kotlin | — |
-| LCA-T13 | 2026-11-17 | feature | open | Investigate and build a web-browser version of the launcher | — |
-| LCA-T14 | 2026-11-17 | feature | open | Competitive parity: match and exceed NSTEnterprises TREK LCARS4 (Total Launcher theme) and other LCARS launchers; feature matrix + gap tickets | — |
-| LCA-T15 | 2026-11-17 | feature | closed | A1: original synthesized LCARS sound set bundled (no recordings), so the Play build is not silent | — |
-| LCA-T16 | 2026-11-17 | feature | closed | A3+A2+B1: first-run tour; layout export/import via file picker (no secrets); auto snapshots before upgrades + undo | — |
-| LCA-T17 | 2026-11-17 | feature | closed | B6+A13: Quick Settings tiles (CLOAK, RED ALERT); assignable red-alert mode with looping klaxon + mute | — |
-| LCA-T18 | 2026-11-17 | feature | open | A5+B2: interface/text size settings and TalkBack accessibility for Canvas-drawn UI | — |
-| LCA-T19 | 2026-11-17 | feature | closed | A4: host any Android widget inside an LCARS/Pipe frame panel | — |
-| LCA-T20 | 2026-11-17 | feature | closed | A6+A9: OPEN GROUP app groups; assignable gestures (double-tap, two-finger swipe, pinch) + optional screen-lock action | — |
-| LCA-T21 | 2026-11-17 | feature | closed | A8: 23rd-century and 25th-century Federation interface styles (original designs) | — |
-| LCA-T22 | 2026-11-17 | feature | closed | A7: icon pack support, per-app pictogram picker, ~100 pictograms | — |
-| LCA-T23 | 2026-11-17 | feature | closed | B4+B3: Home Assistant smart-home device; notification reply from the shade + unread badges on tiles | — |
-| LCA-T24 | 2026-11-17 | feature | open | Wave 2: widgets for other launchers, screensaver, auto alert conditions, translations/locale dates, voice commands, Captain's Log, foldable tabletop mode, Wear OS face, Android TV, wallpaper library | — |
-| LCA-T25 | 2026-11-17 | feature | closed | Rebrand store build to TrekUI Launcher: app ID com.gungreeneyes.trekui, personal flavor keeps com.gungreeneyes.trekui; listing/site/docs/in-app brand strings free of Star Trek/LCARS trademarks | — |
-| LCA-T26 | 2026-11-17 | chore | closed | Full TrekUI rename after wave 2: Java package com.gungreeneyes.trekui, prefs/files/env vars/site/docs/listing/in-app names; remove all LCARS/old IDs (pre-v1, no migration) | — |
-| LCA-T27 | 2026-11-17 | feature | open | Competitor-review requirements: cover and exceed every TREK Total Interface review theme (checklist in session scratchpad REVIEW_CHECKLIST.md) | — |
-| LCA-T28 | 2026-11-17 | feature | open | Reviews A/B/C/E/F/G: default-home watchdog + return-to-standard, smart default app mapping (no dead buttons), layout lock, instant undo, in-app help, weather units/12-24h/locale dates, notification-access status, sound volume/stream/mute/DND | — |
-| LCA-T29 | 2026-11-17 | feature | open | Reviews H/I: foldable posture, lock/home wallpaper generator + screensaver, voice commands, sensors + image panels, animation level, viewscreen launch, stardate formats, translations (de/fr/es), wallpaper library, ambient soundscape | — |
-| LCA-T30 | 2026-11-17 | feature | closed | Multi-module split: extract :core library (skins, drawing, palettes, sounds, ScreenMetrics, shared unlock client) from :app so companion apps share the look | build: :core:assembleDebug + :app:assembleDevelopDebug/ProductionDebug |
-| LCA-T31 | 2026-11-17 | feature | closed | TrekUI Messages: standalone default-SMS app (SMS/MMS, threads, compose, notifications, quick reply, blocking) in TrekUI styles; free, unlocked by launcher purchase | build: messages assemble |
-| LCA-T32 | 2026-11-17 | feature | closed | TrekUI Keyboard: standalone IME in TrekUI styles with synthesized key sounds, themes, sizes, languages; free, unlocked by launcher purchase | build: keyboard assemble |
-| LCA-T33 | 2026-11-17 | feature | closed | TrekUI Lock Screen: standalone show-when-locked wake screen (clock, notifications, media, quick actions) that hands off to the system keyguard; free, unlocked by launcher purchase | build: lockscreen assemble |
-| LCA-T34 | 2026-11-17 | feature | closed | Shared unlock: launcher exposes signature-protected unlock-status provider; companions query it; same Play signing key across the 4 apps; docs | SuiteProvider/SuiteClient signature-protected suite contract (LCA-T30) |
-| LCA-T35 | 2026-11-17 | feature | closed | Sub-themes for every interface family (COMMAND: CLASSIC, DEEP BLUE, SUNSET DECK, NIGHT PADD, STELLAR SILVER, MODERN GRAY; original sets for IMPERIAL and COLLECTIVE); Messages/Keyboard/Lock Screen follow the chosen interface+sub-theme; launcher SUITE controls + home-screen widget/QS tiles to switch Messages/Keyboard/Lock Screen on and off | build: core+app assemble |
-| LCA-T36 | 2026-11-17 | feature | closed | Suite licensing: every TrekUI app sells the same $0.99 trekui_unlock and works standalone; entitlement shared + cached across siblings; one purchase unlocks all | trekui_unlock in all four apps, sibling entitlement cached (LCA-T30/T31-T33) |
-| LCA-T37 | 2026-11-17 | feature | closed | One-command release: ship script + release workflow builds, signs and uploads all four apps to Play (track/rollout/approval inputs), runnable from GitHub mobile and Claude Code | yaml+script validation, ship --dry-run |
-| LCA-T38 | 2026-11-17 | chore | closed | Rename the GitHub repos to TrekUI.Java and TrekUI.Kotlin (the owner's names) and point every clone, Pages, issue and release link at TrekUI.Java | owner request 2026-11-17 |
-| LCA-T39 | 2026-11-17 | feature | open | Suite follow-ups from LCA-T35: Quick Settings tiles + home-screen widget to switch Keyboard/Lock Screen/Messages on and off; app-theme and Quick Panel art for the six new COMMAND sub-themes (exports reuse the nearest original art today) | LCA-T35 report |
-| LCA-T40 | 2026-11-17 | fix | closed | Ship-blocker bug batch from the emulator screenshots: clipped/overflowing labels (CLASSIC CONSOLE mdpi sidebar, NEXT CONSOLE landscape, COMMAND NAVIGATION tile), Pipe Midnight landscape icon row clipped, drawer too transparent, trial screen RESTORE clipped + wording + accessibility labels, Samsung text on non-Samsung devices, PipeSceneTest -0.0 and SoundCatalogTest manifest mismatch | build: core+app assemble; tests fixed by reading |
-| LCA-T41 | 2026-11-17 | chore | closed | Stay current automatically: Dependabot for Gradle/AGP/AndroidX/Actions, a weekly platform watch that opens an upgrade issue when Google ships a new Android API level or Gradle, and a local weekly task that turns those issues into queued tickets | first run queued Dependabot PR #1 as LCA-T42 |
-| LCA-T42 | 2026-11-17 | chore | closed | Review and merge: ci: bump the actions group with 12 updates (https://github.com/GunGreenEyes/TrekUI.Java/pull/1) | PR #1 merged (f7aaf92): Develop, emulators, Pages and Platform watch green on the new action versions |
-| LCA-T43 | 2026-11-17 | chore | closed | One owner setup script: upload key, GitHub release secrets, google-play approval environment, Pages via Actions, upgrade-queue task, then a printed Play Console checklist for the four apps | parse check; steps idempotent |
-| LCA-T44 | 2026-11-17 | fix | closed | run-matrix -FromCommit failed on Windows when TEMP is on another drive: Git's GNU tar read R:\... as a remote host; use Windows' System32 tar | matrix run 2026-11-17 |
-| LCA-T45 | 2026-11-17 | fix | closed | CI emulator jobs hung to the 60-minute limit: heavier devices (API 33/35, tablet, foldable) went offline mid-test on the default emulator RAM, then 'adb logcat -d' waited forever for the dead device; give CI emulators 4 GB RAM / 4 cores and time-limit the post-test adb calls | Develop run 44208198942 |
-| LCA-T46 | 2026-11-17 | fix | closed | CONFIG fell off the bottom of the screen at 130% display size (nexus_5 api27, RotationScenarios.resizeDoesNotCrash): the sidebar's three fixed 62dp buttons didn't fit a short main frame; shrink them evenly when space is short | local matrix nexus_5-api27 |
-| LCA-T47 | 2026-11-17 | fix | closed | CI emulator flake: hosted-runner emulators sometimes drop off adb as the launcher's tests start (phone-api33/api36 'device offline'); reconnect, wait for boot and retry the suite once; run only :app's device tests | Develop run 44216632845 |
-| LCA-T48 | 2026-11-17 | chore | closed | Whole-number versions from now on (6, 7, 8...): this release becomes TrekUI 6 (versionCode stays monotonic: 42); bump/ship scripts, release workflow input, docs and changelog follow; dist/ holds APKs for all four apps | dry-run 6 -> 7; scripts parse |
-| LCA-T49 | 2026-11-17 | chore | closed | One version number: this release is 42 (versionName == versionCode), next 43; bump/ship scripts keep the two equal | owner: make everything version 42 |
-| LCA-T50 | 2026-11-17 | fix | closed | Release lint errors to zero: Fragment 1.3+ for Messages' ActivityResult APIs; mark the launcher's pre-33 onBackPressed and hidden statusbar service as intentional | lintProductionRelease: 0 errors in all four apps |
-| LCA-T51 | 2026-11-17 | docs | closed | Full README for TrekUI 42: the four apps, supported devices (every phone 2022+, every resolution/aspect ratio) and how it's tested, test-device install from dist/, build, release | owner request |
-| LCA-T52 | 2026-11-17 | chore | closed | Release 43: version 43 for all four apps, tag v43, dist/ APKs and a GitHub pre-release with the test APKs (Play upload waits for the signing secrets from setup-owner.ps1) | owner: deploy everything to v43 |
-| LCA-T53 | 2026-11-17 | feature | closed | Project site: colour-theme picker with the app's six COMMAND sub-themes (Classic, Deep Blue, Sunset Deck, Night PADD, Stellar Silver, Modern Gray), saved per visitor; gallery fed from the CI emulator screenshots via site-media.zip on the v43 release | owner: GitHub Page with images, console colour themes |
-| LCA-T54 | 2026-11-17 | fix | closed | CI emulator job hung 48 min after all tests passed: the emulator's own shutdown stalled after 'removeAll' and the runner action waited for it; kill the emulator in the script after results are saved, plus a 40-minute step limit | PR #1 run 44223943966 phone-api26 |
-| LCA-T55 | 2026-11-17 | fix | closed | HomeScenarios.setAsDefaultHome failed on Android 10 (pixel_3a api29): the shell fallback passed a FLAGS argument that Android 10's 'cmd role add-role-holder' does not accept; omit it on API 29 | local matrix pixel_3a-api29 |
-| LCA-T56 | 2026-11-17 | fix | closed | HomeScenarios.setAsDefaultHome flaked on Android 12L (pixel_4 api32): the role was granted but the first Home press after the switch still reached the old launcher; wait longer and press Home once more | local matrix pixel_4-api32 |
+| TUK-T1 | 2026-11-18 | docs | closed | Start the permanent ticket log in the ticket database | — |
+| TUK-T2 | 2026-11-18 | chore | open | Kotlin edition, phase 0: seed from TrekUI.Java 43, point repo/site/release links at TrekUI.Kotlin, re-enable CI and Pages, write the port plan (docs/KOTLIN_PORT.md) | owner goal 2026-11-18 |

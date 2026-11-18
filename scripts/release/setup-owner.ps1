@@ -21,7 +21,7 @@
 [CmdletBinding()]
 param(
     [string]$ServiceAccountJson,
-    [string]$Repo = 'GunGreenEyes/TrekUI.Java'
+    [string]$Repo = 'GunGreenEyes/TrekUI.Kotlin'
 )
 $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -69,7 +69,7 @@ Step 'GitHub Pages (built by Actions)'
 gh api "repos/$Repo/pages" 2>$null | Out-Null
 if ($LASTEXITCODE -eq 0) { gh api -X PUT "repos/$Repo/pages" -f build_type=workflow | Out-Null }
 else { gh api -X POST "repos/$Repo/pages" -f build_type=workflow | Out-Null }
-Done "https://gungreeneyes.github.io/TrekUI.Java/ (published by the Pages workflow on the next release)"
+Done "https://gungreeneyes.github.io/TrekUI.Kotlin/ (published by the Pages workflow on the next release)"
 
 Step 'Weekly upgrade queue'
 & (Join-Path $Root 'scripts\maintenance\register-upgrade-task.ps1')

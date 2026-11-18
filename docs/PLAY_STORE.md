@@ -63,7 +63,7 @@ Also:
 
 ### Privacy policy
 
-- [ ] URL: **<https://gungreeneyes.github.io/TrekUI.Java/privacy.html>**, published by `pages.yml` from [PRIVACY.md](../PRIVACY.md). Check that the link works before you submit. If the site has not published it yet, the GitHub URL of `PRIVACY.md` also works: <https://github.com/GunGreenEyes/TrekUI.Java/blob/main/PRIVACY.md>.
+- [ ] URL: **<https://gungreeneyes.github.io/TrekUI.Kotlin/privacy.html>**, published by `pages.yml` from [PRIVACY.md](../PRIVACY.md). Check that the link works before you submit. If the site has not published it yet, the GitHub URL of `PRIVACY.md` also works: <https://github.com/GunGreenEyes/TrekUI.Kotlin/blob/main/PRIVACY.md>.
 
 ### Ads
 
@@ -226,7 +226,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 | Category | **Personalization** |
 | Tags | Launcher, Home screen, Theme, Customization |
 | Contact email | a project email, required and shown publicly |
-| Website | <https://gungreeneyes.github.io/TrekUI.Java/> |
+| Website | <https://gungreeneyes.github.io/TrekUI.Kotlin/> |
 
 ## 6. Pricing and distribution
 

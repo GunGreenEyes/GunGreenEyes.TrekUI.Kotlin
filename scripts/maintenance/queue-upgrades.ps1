@@ -10,7 +10,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$Repo = 'GunGreenEyes/TrekUI.Java',
+    [string]$Repo = 'GunGreenEyes/TrekUI.Kotlin',
     [string]$TicketsRoot = 'D:/Projects/GunGreenEyes',
     [string]$RepoDir = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 )
