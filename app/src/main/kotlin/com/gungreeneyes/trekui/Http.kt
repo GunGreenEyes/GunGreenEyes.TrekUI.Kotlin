@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * The launcher's one small HTTPS client, shared by [Weather] (Open-Meteo), [Govee]
- * (cloud API) and [Nest] (Google Smart Device Management).
+ * (cloud API), [Nest] (Google Smart Device Management) and the sound update channel ([SoundUpdateCheck]).
  *
  * Every request is HTTPS only (plain HTTP is refused before a socket is opened, on top of the
  * manifest's `usesCleartextTraffic="false"`), has connect and read timeouts, and reads at
@@ -141,7 +141,8 @@ internal object Http {
         readMs: Int,
     ): Response {
         if (!isHttps(url)) throw IOException("INSECURE ADDRESS REFUSED")
-        return execute(method, url!!, headers, body, connectMs, readMs, MAX_BODY_BYTES)
+        val r = execute(method, url!!, headers, body, connectMs, readMs, MAX_BODY_BYTES)
+        return Response(r.code, String(r.body, Charsets.UTF_8))
     }
 
     /**
@@ -163,10 +164,29 @@ internal object Http {
         maxBytes: Int,
     ): Response {
         if (!isHttps(url) && !isLocalCleartext(url)) throw IOException("INSECURE ADDRESS REFUSED")
-        return execute(method, url!!, headers, body, connectMs, readMs, maxBytes)
+        val r = execute(method, url!!, headers, body, connectMs, readMs, maxBytes)
+        return Response(r.code, String(r.body, Charsets.UTF_8))
     }
 
-    /** Opens the connection and performs the request; callers have already checked the scheme. */
+    /**
+     * One GET of a binary file for the sound update channel: HTTPS only, default timeouts, at most `maxBytes`
+     * of the body, and no redirect followed here. [SoundRedirect.follow] decides which redirects to take.
+     */
+    @JvmStatic
+    @Throws(IOException::class)
+    fun getOnce(url: String?, maxBytes: Int): SoundRedirect.Reply {
+        if (!isHttps(url)) throw IOException("INSECURE ADDRESS REFUSED")
+        val r = execute("GET", url!!, mapOf("Accept" to "*/*"), null, CONNECT_TIMEOUT_MS, READ_TIMEOUT_MS, maxBytes)
+        return SoundRedirect.Reply(r.code, r.body, r.location)
+    }
+
+    /** A raw reply: status, at most the caller's limit of body bytes, and the Location header. */
+    private class Raw(val code: Int, val body: ByteArray, val location: String?)
+
+    /**
+     * Opens the connection and performs the request: the status, at most `maxBytes` of the body (the
+     * error body for 4xx/5xx) and the Location header. Callers have already checked the scheme.
+     */
     private fun execute(
         method: String,
         url: String,
@@ -175,7 +195,7 @@ internal object Http {
         connectMs: Int,
         readMs: Int,
         maxBytes: Int,
-    ): Response {
+    ): Raw {
         val c = URI.create(url).toURL().openConnection() as HttpURLConnection
         try {
             c.requestMethod = method
@@ -192,17 +212,17 @@ internal object Http {
             }
             val code = c.responseCode
             val input: InputStream? = if (code >= 400) c.errorStream else c.inputStream
-            val text = input?.use { readLimited(it, maxBytes) } ?: ""
-            return Response(code, text)
+            val reply = input?.use { readLimitedBytes(it, maxBytes) } ?: ByteArray(0)
+            return Raw(code, reply, c.getHeaderField("Location"))
         } finally {
             c.disconnect()
         }
     }
 
-    /** Reads a stream as UTF-8 text, failing once more than `limit` bytes arrive. */
+    /** Reads a stream's bytes (callers decode text as UTF-8), failing once more than `limit` bytes arrive. */
     @JvmStatic
     @Throws(IOException::class)
-    fun readLimited(input: InputStream, limit: Int): String {
+    fun readLimitedBytes(input: InputStream, limit: Int): ByteArray {
         val out = ByteArrayOutputStream()
         val buf = ByteArray(BUFFER_BYTES)
         while (true) {
@@ -211,6 +231,6 @@ internal object Http {
             if (out.size() + n > limit) throw IOException("REPLY TOO LARGE")
             out.write(buf, 0, n)
         }
-        return String(out.toByteArray(), Charsets.UTF_8)
+        return out.toByteArray()
     }
 }

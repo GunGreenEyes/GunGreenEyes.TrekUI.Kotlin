@@ -280,6 +280,7 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         resumed = true
         Sfx.init(this)
         preloadElementSounds()
+        SoundUpdateCheck.maybeStart(this, false) // TUK-T21: owned-sound updates from mindattic.com, at most daily
         lastBattery = ContextCompat.registerReceiver(
             this, batteryReceiver,
             IntentFilter(Intent.ACTION_BATTERY_CHANGED), ContextCompat.RECEIVER_NOT_EXPORTED,

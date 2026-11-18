@@ -102,6 +102,7 @@ class SettingsActivity : Activity() {
             overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, android.R.anim.fade_in, android.R.anim.fade_out)
         }
         Sfx.init(this)
+        SoundUpdateCheck.maybeStart(this, true) // TUK-T21: opening the settings checks the sound update channel
     }
 
     override fun onResume() {

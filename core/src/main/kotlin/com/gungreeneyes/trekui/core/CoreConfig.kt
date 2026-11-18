@@ -69,6 +69,15 @@ class CoreConfig private constructor(
     }
 
     companion object {
+        /**
+         * The sound update channel (docs/SOUNDS.md): `manifest.json` and the project's own sound files live
+         * here. The one place this address is written; [com.gungreeneyes.trekui.SoundCatalog] and
+         * [com.gungreeneyes.trekui.SoundUpdate] read it from here, and tools/sounds/publish-sfx.py parses it
+         * from this line. The bare host: the site redirects www to it, and the HTTPS helper follows no
+         * redirects.
+         */
+        const val SFX_BASE_URL = "https://mindattic.com/gungreeneyes/trekui/sfx/"
+
         /** Production defaults: 24-hour sessions, the shared unlock product, release build. */
         @JvmField
         val DEFAULT: CoreConfig = Builder("TREKUI").build()

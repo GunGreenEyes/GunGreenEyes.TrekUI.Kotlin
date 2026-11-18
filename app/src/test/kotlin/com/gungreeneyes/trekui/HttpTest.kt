@@ -27,11 +27,12 @@ class HttpTest {
     @Test
     fun readLimited_readsUtf8() {
         val s = "TREKUI • 47"
-        assertThat(Http.readLimited(ByteArrayInputStream(s.toByteArray(Charsets.UTF_8)), 100)).isEqualTo(s)
+        val read = Http.readLimitedBytes(ByteArrayInputStream(s.toByteArray(Charsets.UTF_8)), 100)
+        assertThat(String(read, Charsets.UTF_8)).isEqualTo(s)
     }
 
     @Test(expected = IOException::class)
     fun readLimited_rejectsOversizedReplies() {
-        Http.readLimited(ByteArrayInputStream(ByteArray(101)), 100)
+        Http.readLimitedBytes(ByteArrayInputStream(ByteArray(101)), 100)
     }
 }
