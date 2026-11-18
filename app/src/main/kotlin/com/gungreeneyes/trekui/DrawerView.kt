@@ -1,6 +1,7 @@
 package com.gungreeneyes.trekui
 
 import android.app.SearchManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.LauncherApps
@@ -412,28 +413,7 @@ internal class DrawerView(act: MainActivity) : FrameLayout(act) {
         try {
             // App shortcuts exist from Android 7.1 (API 25); below it the menu starts with ADD TO HOME TILES.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && la.hasShortcutHostPermission()) {
-                val q = LauncherApps.ShortcutQuery()
-                q.setPackage(app.pkg)
-                q.setQueryFlags(LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST)
-                val list = la.getShortcuts(q, app.user!!)
-                if (list != null) {
-                    var n = 0
-                    for (si in list) {
-                        if (n++ >= MAX_SHORTCUTS) break
-                        val l = si.shortLabel ?: continue
-                        items.add("▸ " + l.toString().uppercase(Locale.getDefault()))
-                        acts.add(
-                            Runnable {
-                                try {
-                                    la.startShortcut(si, null, null)
-                                    Sfx.play(context, Sfx.LAUNCH)
-                                } catch (e: Exception) {
-                                    Sfx.play(context, Sfx.ERROR)
-                                }
-                            },
-                        )
-                    }
-                }
+                Api25Shortcuts.add(context, la, app, items, acts)
             }
         } catch (ignored: Exception) {
             // shortcut access requires being the default launcher
@@ -605,6 +585,47 @@ internal class DrawerView(act: MainActivity) : FrameLayout(act) {
             if (lowerLabel.startsWith(query)) return MATCH_PREFIX
             if (lowerLabel.contains(query) || pkg.contains(query)) return MATCH_CONTAINS
             return NO_MATCH
+        }
+    }
+}
+
+/**
+ * App shortcuts for the long-press menu (Android 7.1+). Kept out of DrawerView: the shortcut lambda
+ * compiles to a method taking android.content.pm.ShortcutInfo, and on Android 6.0-7.0, where that class
+ * is missing, any reflection over DrawerView's methods failed with NoClassDefFoundError (TUK-T14).
+ */
+@androidx.annotation.RequiresApi(Build.VERSION_CODES.N_MR1)
+private object Api25Shortcuts {
+    fun add(
+        context: Context,
+        la: LauncherApps,
+        app: AppInfo,
+        items: MutableList<String>,
+        acts: MutableList<Runnable>,
+    ) {
+        val q = LauncherApps.ShortcutQuery()
+        q.setPackage(app.pkg)
+        q.setQueryFlags(LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST)
+        val list = la.getShortcuts(q, app.user!!) ?: return
+        for (si in list.take(DrawerView.MAX_SHORTCUTS)) {
+            val l = si.shortLabel ?: continue
+            items.add("▸ " + l.toString().uppercase(Locale.getDefault()))
+            acts.add(
+                Runnable {
+                    val ok =
+                        try {
+                            la.startShortcut(si, null, null)
+                            true
+                        } catch (ignored: ActivityNotFoundException) {
+                            false
+                        } catch (ignored: SecurityException) {
+                            false // no longer the default launcher
+                        } catch (ignored: IllegalStateException) {
+                            false // user locked or shortcut disabled
+                        }
+                    Sfx.play(context, if (ok) Sfx.LAUNCH else Sfx.ERROR)
+                },
+            )
         }
     }
 }

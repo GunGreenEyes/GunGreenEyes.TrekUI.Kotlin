@@ -122,8 +122,7 @@
         <error line="1016" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/DrawerView.kt">
-        <error line="417" column="121" source="standard:max-line-length" />
-        <error line="516" column="121" source="standard:max-line-length" />
+        <error line="496" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/EraBoot.kt">
         <error line="97" column="121" source="standard:max-line-length" />
