@@ -1,0 +1,177 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:KeyboardView.kt$KeyboardView$s != null &amp;&amp; s !== current &amp;&amp; s.key.kind != Key.DELETE &amp;&amp; s.key.kind != Key.SPACE &amp;&amp; abs(y - downY) &lt; rowPx * 1.5f</ID>
+    <ID>CyclomaticComplexMethod:KeyboardView.kt$KeyboardView$private fun drawKey(c: Canvas, s: Slot)</ID>
+    <ID>CyclomaticComplexMethod:KeyboardView.kt$KeyboardView$private fun move(x: Float, y: Float)</ID>
+    <ID>CyclomaticComplexMethod:KeyboardView.kt$KeyboardView$private fun release(commit: Boolean)</ID>
+    <ID>LongMethod:KeyboardView.kt$KeyboardView$private fun rebuild()</ID>
+    <ID>LongParameterList:KeyIcons.kt$KeyIcons$(c: Canvas, cx: Float, cy: Float, s: Float, color: Int, on: Boolean, locked: Boolean)</ID>
+    <ID>LongParameterList:KeyboardLook.kt$KeyboardLook$(c: Context, title: View?, footer: View?, sidebar: View?, content: View, sidebarDp: Float)</ID>
+    <ID>LongParameterList:KeyboardView.kt$KeyboardView$(c: Canvas, s: String?, cx: Float, cy: Float, size: Float, maxW: Float)</ID>
+    <ID>LoopWithTooManyJumpStatements:WordStore.kt$WordStore$for</ID>
+    <ID>LoopWithTooManyJumpStatements:WordStore.kt$WordStore$while</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.02f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.03f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.085f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.13f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.16f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.25f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.2f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.32f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.34f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.35f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.36f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.3f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.42f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.45f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.55f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.56f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.5f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.62f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.6f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$0.7f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$1.5f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$1.9f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$140f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$180f</ID>
+    <ID>MagicNumber:KeyIcons.kt$KeyIcons$20f</ID>
+    <ID>MagicNumber:KeyboardLook.kt$KeyboardLook$100</ID>
+    <ID>MagicNumber:KeyboardLook.kt$KeyboardLook$3</ID>
+    <ID>MagicNumber:KeyboardLook.kt$KeyboardLook$4</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$0.1f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$0.3f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$0.4f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$1.1f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$100</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$104f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$12f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$13f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$14f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$15f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$16f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$22f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$24f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$26f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$28f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$3</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$33</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$4</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$44f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$48f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$4f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$5</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$50f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$52f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$6f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$80f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$8f</ID>
+    <ID>MagicNumber:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$96f</ID>
+    <ID>MagicNumber:KeyboardTheme.kt$KeyboardTheme$3</ID>
+    <ID>MagicNumber:KeyboardTheme.kt$KeyboardTheme$4</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.16f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.25f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.26f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.28f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.2f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.32f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.35f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.36f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.3f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.42f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.44f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.48f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.55f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.5f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.6f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.75f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.84f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.85f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.88f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.8f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.95f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$0.9f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$1.05f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$1.2f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$1.5f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$12</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$2.5f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$28</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$3</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$30</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$36</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$4</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$6</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$6f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$8</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$9</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView$999f</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView.Companion$3</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView.Companion$30</ID>
+    <ID>MagicNumber:KeyboardView.kt$KeyboardView.Companion$4</ID>
+    <ID>MagicNumber:Layouts.kt$Layouts$10</ID>
+    <ID>MagicNumber:Layouts.kt$Layouts$4f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$0.6f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$36f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$40f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$45f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$46f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$50f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$52f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$58f</ID>
+    <ID>MagicNumber:Sizing.kt$Sizing$64f</ID>
+    <ID>MagicNumber:Suggestions.kt$Suggestions$32</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService$28</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService$4</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService$48</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService.Companion$24</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService.Keys$24</ID>
+    <ID>MagicNumber:TrekKeyboardService.kt$TrekKeyboardService.Keys$64</ID>
+    <ID>MagicNumber:WordStore.kt$WordStore$10</ID>
+    <ID>MaxLineLength:FieldRulesTest.kt$FieldRulesTest$FieldRules.wantsCaps(TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_TEXT_VARIATION_PASSWORD)</ID>
+    <ID>MaxLineLength:FieldRulesTest.kt$FieldRulesTest$assertThat(FieldRules.fieldKind(TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)).isEqualTo(FieldRules.FieldKind.EMAIL)</ID>
+    <ID>MaxLineLength:FieldRulesTest.kt$FieldRulesTest$assertThat(FieldRules.fieldKind(TEXT or InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS)).isEqualTo(FieldRules.FieldKind.EMAIL)</ID>
+    <ID>MaxLineLength:FieldRulesTest.kt$FieldRulesTest$assertThat(FieldRules.modeFor(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)).isEqualTo(Mode.NUMERIC)</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$list.addView(field, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$root.addView(frame, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$val b = KeyboardLook.button(this, a.label, color, KeyboardLook.SQUARE) { scroll.smoothScrollTo(0, a.view.top) }</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$val b = KeyboardLook.button(this, getString(R.string.look_choose), KeyboardLook.accent(1), KeyboardLook.PILL, onClick)</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$val b = KeyboardLook.button(this, if (done) getString(R.string.setup_done) else button, color, KeyboardLook.PILL, onClick)</ID>
+    <ID>MaxLineLength:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$val footer = KeyboardLook.text(this, getString(R.string.settings_footer, version()), 14f, KeyboardLook.accent(1))</ID>
+    <ID>MaxLineLength:KeyboardView.kt$KeyboardView$c.drawRect(r.left, r.top + stripPx * 0.25f, r.left + maxOf(1f, density), r.bottom - stripPx * 0.25f, fillPaint)</ID>
+    <ID>MaxLineLength:KeyboardView.kt$KeyboardView$drawFitted(c, choice, cell.centerX(), cell.centerY(), cell.height() * 0.48f * KeyboardLook.textScale(), cell.width() * 0.9f)</ID>
+    <ID>MaxLineLength:KeyboardView.kt$KeyboardView$drawFitted(c, s, slot.r.centerX(), slot.r.centerY(), slot.r.height() * share * KeyboardLook.textScale(), slot.r.width() * 0.88f)</ID>
+    <ID>MaxLineLength:KeyboardView.kt$KeyboardView$if</ID>
+    <ID>NestedBlockDepth:WordStore.kt$WordStore$private fun readDictionary(lang: String): Map&lt;String, Int&gt;</ID>
+    <ID>ReturnCount:FieldRules.kt$FieldRules$fun suggestionsAllowed(inputType: Int, imeOptions: Int): Boolean</ID>
+    <ID>ReturnCount:FieldRules.kt$FieldRules$fun wantsCaps(inputType: Int): Boolean</ID>
+    <ID>ReturnCount:KeyboardTheme.kt$KeyboardTheme$fun decode(s: String?): SuiteTheme?</ID>
+    <ID>ReturnCount:KeyboardView.kt$KeyboardView$private fun move(x: Float, y: Float)</ID>
+    <ID>ReturnCount:KeyboardView.kt$KeyboardView$private fun stripHit(x: Float, y: Float): Int</ID>
+    <ID>ReturnCount:Suggestions.kt$Suggestions$fun learnable(word: String?): Boolean</ID>
+    <ID>ReturnCount:Suggestions.kt$Suggestions$fun matchCase(prefix: String, word: String, locale: Locale): String</ID>
+    <ID>ReturnCount:TrekKeyboardService.kt$TrekKeyboardService$@Suppress("DEPRECATION") private fun switchTo(id: String, subtype: InputMethodSubtype?)</ID>
+    <ID>ReturnCount:TrekKeyboardService.kt$TrekKeyboardService$private fun currentWord(): String</ID>
+    <ID>ReturnCount:WordEdit.kt$WordEdit$fun deleteWordLength(before: CharSequence?): Int</ID>
+    <ID>SwallowedException:KeyboardLook.kt$KeyboardLook$e: RuntimeException</ID>
+    <ID>SwallowedException:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$e: RuntimeException</ID>
+    <ID>SwallowedException:KeyboardTheme.kt$KeyboardTheme$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:TrekKeyboardService.kt$TrekKeyboardService$e: RuntimeException</ID>
+    <ID>SwallowedException:WordStore.kt$WordStore$e: IOException</ID>
+    <ID>SwallowedException:WordStore.kt$WordStore$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:KeyboardLook.kt$KeyboardLook$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:KeyboardSettingsActivity.kt$KeyboardSettingsActivity$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:TrekKeyboardService.kt$TrekKeyboardService$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:WordStore.kt$WordStore$e: RuntimeException</ID>
+    <ID>TooManyFunctions:KeyboardLook.kt$KeyboardLook</ID>
+    <ID>TooManyFunctions:KeyboardSettingsActivity.kt$KeyboardSettingsActivity : Activity</ID>
+    <ID>TooManyFunctions:KeyboardView.kt$KeyboardView : View</ID>
+    <ID>TooManyFunctions:KeyboardView.kt$KeyboardView$Listener</ID>
+    <ID>TooManyFunctions:Layouts.kt$Layouts</ID>
+    <ID>TooManyFunctions:TrekKeyboardService.kt$TrekKeyboardService : InputMethodService</ID>
+    <ID>TooManyFunctions:TrekKeyboardService.kt$TrekKeyboardService$Keys : Listener</ID>
+    <ID>UnusedParameter:FieldRules.kt$FieldRules$inputType: Int</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,246 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:ThreadActivity.kt$ThreadActivity$!draftLoaded &amp;&amp; l.draft != null &amp;&amp; field != null &amp;&amp; field.text.isEmpty()</ID>
+    <ID>CyclomaticComplexMethod:MessageStore.kt$MessageStore$fun conversations(c: Context): List&lt;Conversation&gt;</ID>
+    <ID>CyclomaticComplexMethod:PduCodec.kt$PduCodec$fun encode(pdu: MmsPdu): ByteArray</ID>
+    <ID>CyclomaticComplexMethod:PduCodec.kt$PduCodec$private fun decodeOrThrow(input: In): MmsPdu</ID>
+    <ID>CyclomaticComplexMethod:PduCodec.kt$PduCodec.In$fun contentType(): ContentType</ID>
+    <ID>CyclomaticComplexMethod:PhoneNumbers.kt$PhoneNumbers$fun normalize(raw: String?): String</ID>
+    <ID>CyclomaticComplexMethod:ThreadActivity.kt$ThreadActivity$private fun reload()</ID>
+    <ID>LongMethod:ConversationListActivity.kt$ConversationListActivity$override fun build()</ID>
+    <ID>LongMethod:PduCodec.kt$PduCodec$fun encode(pdu: MmsPdu): ByteArray</ID>
+    <ID>LongParameterList:MessageItem.kt$MessageItem.Companion$( id: Long, threadId: Long, address: String?, dateMillis: Long, body: String?, read: Boolean, outgoing: Boolean, )</ID>
+    <ID>LongParameterList:MessagesLook.kt$MessagesLook$(c: Context, title: View?, footer: View?, sidebar: View?, content: View, sidebarDp: Float)</ID>
+    <ID>LongParameterList:SmsSender.kt$SmsSender$(c: Context, action: String, row: Uri?, address: String, part: Int, parts: Int, base: Long)</ID>
+    <ID>LoopWithTooManyJumpStatements:PhoneNumbers.kt$PhoneNumbers$for</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$14f</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$28f</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$33</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$4f</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$50f</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$6f</ID>
+    <ID>MagicNumber:BaseScreen.kt$BaseScreen$8f</ID>
+    <ID>MagicNumber:BlockedActivity.kt$BlockedActivity$15f</ID>
+    <ID>MagicNumber:BlockedActivity.kt$BlockedActivity$16f</ID>
+    <ID>MagicNumber:BlockedActivity.kt$BlockedActivity$32f</ID>
+    <ID>MagicNumber:BlockedActivity.kt$BlockedActivity$5</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$0.62f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$0.78f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$0.9f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$1.5f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$12f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$16f</ID>
+    <ID>MagicNumber:BubbleView.kt$BubbleView$17f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$0.6f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$1.1f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$1.5f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$14f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$15f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$16f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$17f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$18f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$3</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$32f</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$4</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity$5</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity.&lt;no name provided&gt;$250</ID>
+    <ID>MagicNumber:ConversationListActivity.kt$ConversationListActivity.&lt;no name provided&gt;$300</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$0.8f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$1.5f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$13f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$14f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$15f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$18f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$19f</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$5</ID>
+    <ID>MagicNumber:ConversationRowView.kt$ConversationRowView$8f</ID>
+    <ID>MagicNumber:Images.kt$Images$10</ID>
+    <ID>MagicNumber:Images.kt$Images$160</ID>
+    <ID>MagicNumber:Images.kt$Images$3</ID>
+    <ID>MagicNumber:Images.kt$Images$4</ID>
+    <ID>MagicNumber:Images.kt$Images$85</ID>
+    <ID>MagicNumber:Images.kt$Images$90</ID>
+    <ID>MagicNumber:Images.kt$Images.&lt;no name provided&gt;$1024</ID>
+    <ID>MagicNumber:Images.kt$Images.&lt;no name provided&gt;$16</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$3</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$4</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$5</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$6</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$7</ID>
+    <ID>MagicNumber:MessageStore.kt$MessageStore$8</ID>
+    <ID>MagicNumber:MessagesLook.kt$MessagesLook$3</ID>
+    <ID>MagicNumber:MessagesLook.kt$MessagesLook$4</ID>
+    <ID>MagicNumber:MessagesTheme.kt$MessagesTheme$3</ID>
+    <ID>MagicNumber:MessagesTheme.kt$MessagesTheme$4</ID>
+    <ID>MagicNumber:MmsPdu.kt$MmsPdu$0x12</ID>
+    <ID>MagicNumber:MmsSender.kt$MmsSender$1000L</ID>
+    <ID>MagicNumber:MmsSender.kt$MmsSender$1024</ID>
+    <ID>MagicNumber:MmsSender.kt$MmsSender$24</ID>
+    <ID>MagicNumber:MmsStore.kt$MmsStore$1000L</ID>
+    <ID>MagicNumber:MmsStore.kt$MmsStore$3</ID>
+    <ID>MagicNumber:MmsStore.kt$MmsStore$4</ID>
+    <ID>MagicNumber:MmsStore.kt$MmsStore$5</ID>
+    <ID>MagicNumber:Notifier.kt$Notifier$0xFFFFFF</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x03</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x06</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x07</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x0B</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x0C</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x10</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x1C</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x1E</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x20</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x21</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x22</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x23</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x26</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x27</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x28</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x33</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x34</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x7F</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$0x80</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$1000</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$1013</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$1014</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$1015</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$24</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$3</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$3600</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$4</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec$7L</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$0x7F</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$0x80</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$0xFF</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$5</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$7</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.In$8</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.Out$0x7F</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.Out$0x80</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.Out$0xFF</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.Out$7</ID>
+    <ID>MagicNumber:PduCodec.kt$PduCodec.Out$8</ID>
+    <ID>MagicNumber:PhoneNumbers.kt$PhoneNumbers$4</ID>
+    <ID>MagicNumber:SmsSender.kt$SmsSender$31</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$0.6f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$1.5f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$17f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$18f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$3</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$3f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$4</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$5</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$72f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity$8f</ID>
+    <ID>MagicNumber:ThreadActivity.kt$ThreadActivity.&lt;no name provided&gt;$250</ID>
+    <ID>MaxLineLength:BaseScreen.kt$BaseScreen$protected</ID>
+    <ID>MaxLineLength:BlockedActivity.kt$BlockedActivity$val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)</ID>
+    <ID>MaxLineLength:BubbleView.kt$BubbleView$if (!DateUtils.isToday(m.dateMillis)) flags = flags or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH</ID>
+    <ID>MaxLineLength:Contacts.kt$Contacts$c.contentResolver.query(uri, arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME), null, null, null)</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$background = MessagesLook.outline(this@ConversationListActivity, MessagesLook.panel(), MessagesLook.accent(2), 18f, 1.5f)</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$holder.addView(empty, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$holder.addView(list, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$private val roleRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { afterRole() }</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$side.add(SideButton(getString(R.string.btn_new), 0, "btn_new") { startActivity(ThreadActivity.intent(this, -1, null)) })</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$title = if (c.addresses.isEmpty()) getString(R.string.unknown_sender) else Contacts.names(this, c.addresses)</ID>
+    <ID>MaxLineLength:ConversationListActivity.kt$ConversationListActivity$val</ID>
+    <ID>MaxLineLength:ConversationRowView.kt$ConversationRowView$row.dateMillis</ID>
+    <ID>MaxLineLength:Images.kt$Images$/** Decodes a thumbnail of [uri] no larger than [maxSide] px in the background; [loaded] gets it on the main thread (null when unreadable). */</ID>
+    <ID>MaxLineLength:Images.kt$Images$val opened = c.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds); true } ?: false</ID>
+    <ID>MaxLineLength:MessageStore.kt$MessageStore$c.contentResolver.query(Telephony.Sms.CONTENT_URI, cols, where, args, Telephony.Sms.DATE + " DESC")</ID>
+    <ID>MaxLineLength:MmsBuilder.kt$MmsBuilder$if (imageCount &gt; 0) append("&lt;region id=\"Image\" top=\"0\" left=\"0\" height=\"80%\" width=\"100%\" fit=\"meet\"/&gt;")</ID>
+    <ID>MaxLineLength:MmsPart.kt$MmsPart.Companion$MmsPart(PduCodec.TEXT_PLAIN, name, stripExtension(name), PduCodec.CHARSET_UTF8, text.toByteArray(Charsets.UTF_8))</ID>
+    <ID>MaxLineLength:MmsStore.kt$MmsStore$Telephony.Mms.Part.CONTENT_TYPE + "='text/plain' AND " + Telephony.Mms.Part.TEXT + " LIKE ? ESCAPE '\\'"</ID>
+    <ID>MaxLineLength:MmsStore.kt$MmsStore$c.contentResolver.query(Telephony.Mms.CONTENT_URI, cols, where, args, Telephony.Mms.DATE + " DESC")</ID>
+    <ID>MaxLineLength:MmsStore.kt$MmsStore$uri</ID>
+    <ID>MaxLineLength:Notifier.kt$Notifier$NotificationActionReceiver.intent(c, NotificationActionReceiver.ACTION_MARK_READ, threadId, last.address, false)</ID>
+    <ID>MaxLineLength:Notifier.kt$Notifier$NotificationChannel(CHANNEL_ERRORS, c.getString(R.string.channel_errors), NotificationManager.IMPORTANCE_DEFAULT)</ID>
+    <ID>MaxLineLength:Notifier.kt$Notifier$for (m in unread) style.addMessage(Notification.MessagingStyle.Message(m.preview(imageMarker), m.dateMillis, them))</ID>
+    <ID>MaxLineLength:Notifier.kt$Notifier$val def = NotificationChannel(CHANNEL_DEFAULT, c.getString(R.string.channel_messages), NotificationManager.IMPORTANCE_HIGH)</ID>
+    <ID>MaxLineLength:Notifier.kt$Notifier$val i = if (threadId &gt; 0) ThreadActivity.intent(c, threadId, null) else Intent(c, ConversationListActivity::class.java)</ID>
+    <ID>MaxLineLength:PduCodec.kt$PduCodec$pdu.parts.add(MmsPart(ct.type, ct.name, null, ct.charset, input.data.copyOfRange(input.pos, input.end)))</ID>
+    <ID>MaxLineLength:SmsSender.kt$SmsSender$private</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$PickVisualMediaRequest.Builder().setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly).build()</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$private fun simLabel(): String</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$row.addView(attach, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$row.addView(send, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$side.add(SideButton(getString(R.string.btn_block), 3, "btn_block") { confirmBlock(this, recipients) { finish() } })</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$val</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity$val send = MessagesLook.button(this, getString(R.string.btn_send), MessagesLook.accent(0), MessagesLook.RIGHT) { send() }</ID>
+    <ID>MaxLineLength:ThreadActivity.kt$ThreadActivity.Companion$Toast.makeText(a, if (done) R.string.blocked_done else R.string.block_needs_default, Toast.LENGTH_SHORT)</ID>
+    <ID>MaxLineLength:ThreadGrouperTest.kt$ThreadGrouperTest$ThreadGrouper.sameParticipants(listOf("5550102345", "5559990000"), listOf("+1 555 999 0000", "555-010-2345"))</ID>
+    <ID>NestedBlockDepth:Blocking.kt$Blocking$fun entries(c: Context): List&lt;String&gt;</ID>
+    <ID>NestedBlockDepth:Contacts.kt$Contacts$private fun lookup(c: Context, address: String?): String?</ID>
+    <ID>NestedBlockDepth:MessageStore.kt$MessageStore$fun conversations(c: Context): List&lt;Conversation&gt;</ID>
+    <ID>NestedBlockDepth:MessageStore.kt$MessageStore$private fun smsWhere(c: Context, where: String, args: Array&lt;String&gt;, limit: Int): List&lt;MessageItem&gt;</ID>
+    <ID>NestedBlockDepth:MmsStore.kt$MmsStore$private fun readParts(c: Context, mmsId: Long, text: StringBuilder, images: MutableList&lt;String&gt;)</ID>
+    <ID>NestedBlockDepth:MmsStore.kt$MmsStore$private fun where(c: Context, where: String, args: Array&lt;String&gt;?, limit: Int): List&lt;MessageItem&gt;</ID>
+    <ID>NestedBlockDepth:PduCodec.kt$PduCodec.In$fun contentType(): ContentType</ID>
+    <ID>NestedBlockDepth:SmsStatusReceiver.kt$SmsStatusReceiver$override fun onReceive(context: Context, intent: Intent)</ID>
+    <ID>ReturnCount:BlockList.kt$BlockList$fun matches(address: String?): Boolean</ID>
+    <ID>ReturnCount:Blocking.kt$Blocking$fun block(c: Context, entry: String): Boolean</ID>
+    <ID>ReturnCount:Blocking.kt$Blocking$fun isBlocked(c: Context, address: String?): Boolean</ID>
+    <ID>ReturnCount:Contacts.kt$Contacts$private fun lookup(c: Context, address: String?): String?</ID>
+    <ID>ReturnCount:DraftStore.kt$DraftStore.Companion$fun decode(value: String?): Draft?</ID>
+    <ID>ReturnCount:Images.kt$Images$fun jpegWithin(file: File, budget: Int): ByteArray?</ID>
+    <ID>ReturnCount:MessageStore.kt$MessageStore$fun threadOf(c: Context, row: Uri?, mms: Boolean): Long</ID>
+    <ID>ReturnCount:MessagesTheme.kt$MessagesTheme$fun decode(s: String?): SuiteTheme?</ID>
+    <ID>ReturnCount:MmsPushReceiver.kt$MmsPushReceiver$override fun onReceive(context: Context, intent: Intent)</ID>
+    <ID>ReturnCount:MmsStore.kt$MmsStore$fun insertIncoming(c: Context, pdu: MmsPdu, subId: Int): Uri?</ID>
+    <ID>ReturnCount:MmsStore.kt$MmsStore$fun search(c: Context, like: String, limit: Int): List&lt;MessageItem&gt;</ID>
+    <ID>ReturnCount:PduCodec.kt$PduCodec$fun encode(pdu: MmsPdu): ByteArray</ID>
+    <ID>ReturnCount:PduCodec.kt$PduCodec.In$fun contentType(): ContentType</ID>
+    <ID>ReturnCount:PhoneNumbers.kt$PhoneNumbers$fun initials(displayName: String?): String</ID>
+    <ID>ReturnCount:PhoneNumbers.kt$PhoneNumbers$fun isPhoneLike(s: String?): Boolean</ID>
+    <ID>ReturnCount:PhoneNumbers.kt$PhoneNumbers$fun key(raw: String?): String</ID>
+    <ID>ReturnCount:PhoneNumbers.kt$PhoneNumbers$fun normalize(raw: String?): String</ID>
+    <ID>ReturnCount:RespondViaMessageService.kt$RespondViaMessageService$override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int</ID>
+    <ID>ReturnCount:Sims.kt$Sims$fun active(c: Context): List&lt;Sim&gt;</ID>
+    <ID>ReturnCount:SmsDeliverReceiver.kt$SmsDeliverReceiver$override fun onReceive(context: Context, intent: Intent)</ID>
+    <ID>ReturnCount:ThreadActivity.kt$ThreadActivity$private fun send()</ID>
+    <ID>SwallowedException:BaseScreen.kt$BaseScreen$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:BaseScreen.kt$BaseScreen$e: RuntimeException</ID>
+    <ID>SwallowedException:Blocking.kt$Blocking$e: RuntimeException</ID>
+    <ID>SwallowedException:ConversationListActivity.kt$ConversationListActivity$e: RuntimeException</ID>
+    <ID>SwallowedException:Images.kt$Images$e: IOException</ID>
+    <ID>SwallowedException:Images.kt$Images$e: OutOfMemoryError</ID>
+    <ID>SwallowedException:Images.kt$Images$e: RuntimeException</ID>
+    <ID>SwallowedException:MessageStore.kt$MessageStore$e: RuntimeException</ID>
+    <ID>SwallowedException:MessagesTheme.kt$MessagesTheme$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:MmsPushReceiver.kt$MmsPushReceiver$e: RuntimeException</ID>
+    <ID>SwallowedException:MmsSender.kt$MmsSender$e: IOException</ID>
+    <ID>SwallowedException:MmsSender.kt$MmsSender$e: RuntimeException</ID>
+    <ID>SwallowedException:PduCodec.kt$PduCodec$e: RuntimeException</ID>
+    <ID>SwallowedException:RequestRoleActivity.kt$RequestRoleActivity$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:RequestRoleActivity.kt$RequestRoleActivity$e: SecurityException</ID>
+    <ID>SwallowedException:Sims.kt$Sims$e: RuntimeException</ID>
+    <ID>SwallowedException:SmsSender.kt$SmsSender$e: RuntimeException</ID>
+    <ID>SwallowedException:ThreadActivity.kt$ThreadActivity$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:BaseScreen.kt$BaseScreen$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:Blocking.kt$Blocking$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:ConversationListActivity.kt$ConversationListActivity$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:Images.kt$Images$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:MessageStore.kt$MessageStore$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:MmsPushReceiver.kt$MmsPushReceiver$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:MmsSender.kt$MmsSender$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:PduCodec.kt$PduCodec$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:Sims.kt$Sims$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:SmsSender.kt$SmsSender$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:ThreadActivity.kt$ThreadActivity$e: RuntimeException</ID>
+    <ID>TooManyFunctions:BaseScreen.kt$BaseScreen : ComponentActivity</ID>
+    <ID>TooManyFunctions:ConversationListActivity.kt$ConversationListActivity : BaseScreen</ID>
+    <ID>TooManyFunctions:MessageStore.kt$MessageStore</ID>
+    <ID>TooManyFunctions:MessagesLook.kt$MessagesLook</ID>
+    <ID>TooManyFunctions:MmsStore.kt$MmsStore</ID>
+    <ID>TooManyFunctions:PduCodec.kt$PduCodec$In</ID>
+    <ID>TooManyFunctions:PduCodec.kt$PduCodec$Out</ID>
+    <ID>TooManyFunctions:ThreadActivity.kt$ThreadActivity : BaseScreen</ID>
+    <ID>UseRequire:PduCodec.kt$PduCodec.In$throw IllegalArgumentException("length past end")</ID>
+    <ID>UseRequire:PduCodec.kt$PduCodec.In$throw IllegalArgumentException("long-integer too long")</ID>
+    <ID>UseRequire:PduCodec.kt$PduCodec.In$throw IllegalArgumentException("part past end")</ID>
+    <ID>UseRequire:PduCodec.kt$PduCodec.In$throw IllegalArgumentException("truncated PDU")</ID>
+    <ID>UseRequire:PduCodec.kt$PduCodec.In$throw IllegalArgumentException("unterminated text")</ID>
+  </CurrentIssues>
+</SmellBaseline>

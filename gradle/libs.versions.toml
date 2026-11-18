@@ -17,6 +17,10 @@ uiautomator = "2.4.1"
 billing = "9.1.0"
 profileinstaller = "1.4.1"
 orgjson = "20260814"
+# Style checks (ktlintCheck, detekt). detekt-kotlin: the Kotlin compiler detekt 1.23.8 was built with.
+ktlint = "1.8.0"
+detekt = "1.23.8"
+detekt-kotlin = "2.0.21"
 
 [libraries]
 androidx-core = { module = "androidx.core:core", version.ref = "androidx-core" }
@@ -38,6 +42,18 @@ profileinstaller = { module = "androidx.profileinstaller:profileinstaller", vers
 
 orgjson = { module = "org.json:json", version.ref = "orgjson" }
 
+ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
+
+# build-logic (convention plugins) compiles against these.
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+# Convention plugins from build-logic/ (no version: they are built with the project).
+trekui-android-application = { id = "trekui.android.application" }
+trekui-android-library = { id = "trekui.android.library" }
+trekui-quality = { id = "trekui.quality" }

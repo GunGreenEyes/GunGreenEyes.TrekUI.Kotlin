@@ -220,7 +220,7 @@ class SettingsActivity : Activity() {
         appendSections(gen, frame, sections, eager, scrollY)
     }
 
-    /** Adds `sections[from..]` one per message, then the sidebar and the saved scroll position. */
+    /** Adds the sections from index `from` on, one per message, then the sidebar and the saved scroll position. */
     private fun appendSections(gen: Int, frame: ConsoleFrame, sections: Array<() -> Unit>, from: Int, scrollY: Int) {
         if (gen != buildGen || isFinishing || isDestroyed) return
         if (from >= sections.size) {

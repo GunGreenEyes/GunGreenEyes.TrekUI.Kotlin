@@ -1,0 +1,903 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:BillingManager.kt$BillingManager$valid &amp;&amp; p.purchaseState == Purchase.PurchaseState.PURCHASED &amp;&amp; !p.isAcknowledged &amp;&amp; p.products.contains(entitlement.productId())</ID>
+    <ID>ComplexCondition:EraDraw.kt$EraDraw$!cloak &amp;&amp; !faint &amp;&amp; (kind == Ui.LEFT || kind == Ui.RIGHT)</ID>
+    <ID>ComplexCondition:EraDraw.kt$EraDraw$!faint &amp;&amp; !cloak &amp;&amp; h &gt;= 40 * d &amp;&amp; w &gt;= 100 * d</ID>
+    <ID>ComplexCondition:Sfx.kt$Sfx$!enabled(context) || !(explicit || eventOn(context, event)) || !audioAllowed(context)</ID>
+    <ID>ComplexCondition:Sfx.kt$Sfx$!explicit &amp;&amp; now &lt; quietUntil &amp;&amp; event != E_ERROR &amp;&amp; event != E_RED</ID>
+    <ID>ComplexCondition:Sfx.kt$Sfx$id != null &amp;&amp; "none" != id &amp;&amp; !isRotation(id) &amp;&amp; !isLong(context, id)</ID>
+    <ID>ComplexCondition:Skin.kt$Skin.Chamfer$big || (kind == Ui.SQUARE &amp;&amp; h &gt; 30 * d &amp;&amp; w &gt; 56 * d)</ID>
+    <ID>ComplexCondition:SoundCache.kt$SoundCache$id == null || id.isEmpty() || "none" == id || id.startsWith(SoundLibrary.PREFIX)</ID>
+    <ID>ComplexCondition:SoundImporter.kt$SoundImporter$e.isDirectory || name.contains("__MACOSX") || base.startsWith(".") || !isAudio(base)</ID>
+    <ID>CyclomaticComplexMethod:ConsoleFrame.kt$ConsoleFrame$fun partAt(x: Float, y: Float): String?</ID>
+    <ID>CyclomaticComplexMethod:EraDraw.kt$EraDraw$@JvmStatic fun glass(cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, kind: Int, d: Float, cloak: Boolean)</ID>
+    <ID>CyclomaticComplexMethod:EraDraw.kt$EraDraw$@JvmStatic fun key23( cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, kind: Int, d: Float, seed: Int, now: Long, cloak: Boolean, ): Long</ID>
+    <ID>CyclomaticComplexMethod:EraDraw.kt$EraDraw.LampBank$override fun draw(cv: Canvas)</ID>
+    <ID>CyclomaticComplexMethod:PurchaseActivity.kt$PurchaseActivity$private fun buildContent(): View</ID>
+    <ID>CyclomaticComplexMethod:Sfx.kt$Sfx$@JvmStatic fun init(context: Context)</ID>
+    <ID>CyclomaticComplexMethod:Sfx.kt$Sfx$@JvmStatic fun playClip(context: Context, clipId: String?, explicit: Boolean)</ID>
+    <ID>CyclomaticComplexMethod:Sfx.kt$Sfx$@JvmStatic fun playEvent(context: Context, event: Int, explicit: Boolean)</ID>
+    <ID>CyclomaticComplexMethod:Skin.kt$Skin.Chamfer$override fun draw(cv: Canvas)</ID>
+    <ID>CyclomaticComplexMethod:Skin.kt$Skin.NodeCell$override fun draw(cv: Canvas)</ID>
+    <ID>CyclomaticComplexMethod:SoundDecoder.kt$SoundDecoder$@JvmStatic @Throws(IOException::class) fun decode(file: File, untilSeconds: Double): SoundProcessor.Pcm</ID>
+    <ID>CyclomaticComplexMethod:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) private fun runAll(c: Context, coreOnly: Boolean, r: Result)</ID>
+    <ID>CyclomaticComplexMethod:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun decode(c: Context, item: Item, srOut: IntArray): FloatArray</ID>
+    <ID>CyclomaticComplexMethod:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun process(x: FloatArray, sr: Int, maxSeconds: Int): FloatArray</ID>
+    <ID>CyclomaticComplexMethod:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun unzip(c: Context, zip: Uri): List&lt;Item&gt;</ID>
+    <ID>CyclomaticComplexMethod:SoundImporter.kt$SoundImporter$@JvmStatic fun importAuto(c: Context, items: List&lt;Item&gt;, sourceLabel: String): Report</ID>
+    <ID>EmptyFunctionBlock:EraDraw.kt$EraDraw.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:EraDraw.kt$EraDraw.Blinker${}</ID>
+    <ID>EmptyFunctionBlock:EraDraw.kt$EraDraw.GlassCell${}</ID>
+    <ID>EmptyFunctionBlock:EraDraw.kt$EraDraw.Reticle${}</ID>
+    <ID>EmptyFunctionBlock:Skin.kt$Skin.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:Skin.kt$Skin.Base${}</ID>
+    <ID>EmptyFunctionBlock:Skin.kt$Skin.NodeNet${}</ID>
+    <ID>EmptyFunctionBlock:Skin.kt$Skin.TacticalDisplay${}</ID>
+    <ID>EmptyFunctionBlock:Starfield.kt$Starfield${}</ID>
+    <ID>EmptyFunctionBlock:Ui.kt$Ui.&lt;no name provided&gt;${}</ID>
+    <ID>FunctionOnlyReturningConstant:Skin.kt$Skin$@JvmStatic fun drawerTitle(): String</ID>
+    <ID>LongMethod:ConsoleCard.kt$ConsoleCard.Bracket$override fun onDraw(cv: Canvas)</ID>
+    <ID>LongMethod:PurchaseActivity.kt$PurchaseActivity$private fun buildContent(): View</ID>
+    <ID>LongMethod:SoundDecoder.kt$SoundDecoder$@JvmStatic @Throws(IOException::class) fun decode(file: File, untilSeconds: Double): SoundProcessor.Pcm</ID>
+    <ID>LongMethod:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) private fun runAll(c: Context, coreOnly: Boolean, r: Result)</ID>
+    <ID>LongMethod:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun decode(c: Context, item: Item, srOut: IntArray): FloatArray</ID>
+    <ID>LongParameterList:CollectiveDraw.kt$CollectiveDraw$(cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, d: Float)</ID>
+    <ID>LongParameterList:CollectiveDraw.kt$CollectiveDraw$(cv: Canvas, path: Path, color: Int, d: Float, alpha: Float, widthDp: Float)</ID>
+    <ID>LongParameterList:CollectiveDraw.kt$CollectiveDraw$(cv: Canvas, x0: Float, y0: Float, x1: Float, y1: Float, bend: Float, color: Int, d: Float, alpha: Float)</ID>
+    <ID>LongParameterList:CollectiveDraw.kt$CollectiveDraw$(cv: Canvas, x: Float, y: Float, n: Int, color: Int, d: Float, seed: Int, alpha: Float)</ID>
+    <ID>LongParameterList:CollectiveDraw.kt$CollectiveDraw$(cv: Canvas, x: Float, y: Float, r: Float, color: Int, d: Float, alpha: Float)</ID>
+    <ID>LongParameterList:ConsoleFrame.kt$ConsoleFrame$( canvas: Canvas, colors: IntArray, right: Int, top: Int, bottom: Int, rects: MutableList&lt;RectF&gt;, prefix: String, )</ID>
+    <ID>LongParameterList:Era.kt$Era$(l: Float, t: Float, r: Float, b: Float, k: Float, corners: Int)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$( cv: Canvas, d: Float, color: Int, sidebarW: Float, barH: Float, depth: Float, barEnd: Float, gap: Float, cloak: Boolean, seed: Int, now: Long, )</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$( cv: Canvas, d: Float, color: Int, sidebarW: Float, barH: Float, depth: Float, barEnd: Float, rIn: Float, rOut: Float, cloak: Boolean, )</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$( cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, kind: Int, d: Float, seed: Int, now: Long, cloak: Boolean, )</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, cx: Float, cy: Float, s: Float, color: Int, on: Boolean, d: Float, alpha: Float)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, d: Float, w: Float, h: Float, color: Int, cloak: Boolean)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, d: Float, cloak: Boolean)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, kind: Int, d: Float, cloak: Boolean)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, r: RectF, color: Int, kind: Int, d: Float, cloak: Boolean, seed: Int)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, r: RectF, s: Float, sw: Float, color: Int, fill: Int, mark: Int, faction: Int)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw$(cv: Canvas, x0: Float, x1: Float, y: Float, up: Boolean, color: Int, d: Float, alpha: Float)</ID>
+    <ID>LongParameterList:EraDraw.kt$EraDraw.Reticle$(cv: Canvas, x: Float, y: Float, arm: Float, k: Float, sx: Int, sy: Int)</ID>
+    <ID>LongParameterList:ImperialDraw.kt$ImperialDraw$(cv: Canvas, cx: Float, cy: Float, s: Float, h: Float, up: Boolean, color: Int, alpha: Float)</ID>
+    <ID>LongParameterList:ImperialDraw.kt$ImperialDraw$(cv: Canvas, outer: Path, inner: Path?, color: Int, d: Float, alpha: Float)</ID>
+    <ID>LongParameterList:ImperialDraw.kt$ImperialDraw$(cv: Canvas, r: RectF, step: Float, color: Int, alpha: Float, d: Float)</ID>
+    <ID>LongParameterList:ImperialDraw.kt$ImperialDraw$(cv: Canvas, x: Float, y: Float, w: Float, h: Float, colors: IntArray, alpha: Float)</ID>
+    <ID>LongParameterList:ImperialDraw.kt$ImperialDraw$(p: Path, l: Float, t: Float, r: Float, b: Float, k: Float, leftCuts: Boolean, rightCuts: Boolean)</ID>
+    <ID>LongParameterList:Palette.kt$Palette$( @JvmField val name: String, accents: Array&lt;String&gt;, textHi: String, textLo: String, alert: String, panel: String, /** Chrome tones {bg, surface, grid, detail, ink}, or null for none. */ tones: Array&lt;String&gt;?, )</ID>
+    <ID>LongParameterList:PurchaseRecord.kt$PurchaseRecord$( productIds: List&lt;String&gt;?, @JvmField val state: Int, @JvmField val purchaseToken: String?, @JvmField val orderId: String?, @JvmField val purchaseTime: Long, @JvmField val acknowledged: Boolean, /** True when the purchase JSON's signature verified (or no verification key is configured). */ @JvmField val signatureValid: Boolean, )</ID>
+    <ID>LongParameterList:SoundCatalog.kt$SoundCatalog.Sound$( @JvmField val id: String, @JvmField val label: String, @JvmField val group: String, @JvmField val events: List&lt;String&gt;, @JvmField val available: Boolean, @JvmField val core: Boolean, @JvmField val source: Source?, @JvmField val alternates: List&lt;Source&gt;, /** Cut from the original, in seconds; `end &lt;= 0` means "to the end of the file". */ @JvmField val start: Double, @JvmField val end: Double, @JvmField val gainDb: Double, @JvmField val mono: Boolean, @JvmField val fadeInMs: Int, @JvmField val fadeOutMs: Int, @JvmField val confidence: Double, )</ID>
+    <ID>LongParameterList:SoundProcessor.kt$SoundProcessor$( original: Pcm, startSec: Double, endSec: Double, gainDb: Double, mono: Boolean, fadeInMs: Int, fadeOutMs: Int, )</ID>
+    <ID>LoopWithTooManyJumpStatements:SoundDownloader.kt$SoundDownloader$for</ID>
+    <ID>LoopWithTooManyJumpStatements:SoundImporter.kt$SoundImporter$for</ID>
+    <ID>LoopWithTooManyJumpStatements:SoundImporter.kt$SoundImporter$while</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.12f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.14f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.15f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.16f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.18f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.35f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.38f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.3f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.45f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.55f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.5f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.64f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.65f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.68f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.6f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.72f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.7f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.85f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.8f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.92f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.95f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$0.9f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$1.2f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$1.3f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$1.45f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$1.4f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$1.5f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$22</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$3.2f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$4.5f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$4.6f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$6</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw$8</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$0.5f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$0.6f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$0.7f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$0.8f</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$14</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$18</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$22</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$3</ID>
+    <ID>MagicNumber:CollectiveDraw.kt$CollectiveDraw.TraceColumn$32</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard$0.55f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard$13f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard$17f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard$30f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard$3f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.1f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.2f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.35f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.42f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.4f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.5f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.6f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.7f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.85f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$0.8f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$1.2f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$14</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$180f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$270f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$3</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$4</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$5</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$6</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$7f</ID>
+    <ID>MagicNumber:ConsoleCard.kt$ConsoleCard.Bracket$90f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$0.6f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$1.15f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$1.5f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$14f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$16f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$17f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$18f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$19f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$22f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$26f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$3</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$30f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$34f</ID>
+    <ID>MagicNumber:ConsoleDialog.kt$ConsoleDialog$52f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.05f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.06f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.08f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.10f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.12f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.14f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.18f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.19f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.22f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.27f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.3f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.42f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.55f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.56f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.5f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.62f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.6f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.75f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.7f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.95f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$0.9f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$1.5f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$1.6f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$10</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$13</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$15</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$16</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$180f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$270f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$3</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$3.5f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$31</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$4</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$5</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$6</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$64</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$8</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame$90f</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame.Companion$0xFF</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame.Companion$16</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame.Companion$255</ID>
+    <ID>MagicNumber:ConsoleFrame.kt$ConsoleFrame.Companion$8</ID>
+    <ID>MagicNumber:CoreConfig.kt$CoreConfig.Builder$1440L</ID>
+    <ID>MagicNumber:Entitlement.kt$Entitlement$16</ID>
+    <ID>MagicNumber:Entitlement.kt$Entitlement$4</ID>
+    <ID>MagicNumber:Era.kt$Era$0.04045</ID>
+    <ID>MagicNumber:Era.kt$Era$0.05</ID>
+    <ID>MagicNumber:Era.kt$Era$0.055</ID>
+    <ID>MagicNumber:Era.kt$Era$0.0722</ID>
+    <ID>MagicNumber:Era.kt$Era$0.2126</ID>
+    <ID>MagicNumber:Era.kt$Era$0.35f</ID>
+    <ID>MagicNumber:Era.kt$Era$0.7152</ID>
+    <ID>MagicNumber:Era.kt$Era$0x27d4eb2d</ID>
+    <ID>MagicNumber:Era.kt$Era$0x5bd1e995</ID>
+    <ID>MagicNumber:Era.kt$Era$0x7FFFFFFF</ID>
+    <ID>MagicNumber:Era.kt$Era$0xFF</ID>
+    <ID>MagicNumber:Era.kt$Era$0xFF000000L</ID>
+    <ID>MagicNumber:Era.kt$Era$1.055</ID>
+    <ID>MagicNumber:Era.kt$Era$12.92</ID>
+    <ID>MagicNumber:Era.kt$Era$13</ID>
+    <ID>MagicNumber:Era.kt$Era$15</ID>
+    <ID>MagicNumber:Era.kt$Era$16</ID>
+    <ID>MagicNumber:Era.kt$Era$18</ID>
+    <ID>MagicNumber:Era.kt$Era$2.4</ID>
+    <ID>MagicNumber:Era.kt$Era$255.0</ID>
+    <ID>MagicNumber:Era.kt$Era$3</ID>
+    <ID>MagicNumber:Era.kt$Era$31</ID>
+    <ID>MagicNumber:Era.kt$Era$4</ID>
+    <ID>MagicNumber:Era.kt$Era$40</ID>
+    <ID>MagicNumber:Era.kt$Era$6</ID>
+    <ID>MagicNumber:Era.kt$Era$8</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.05f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.06f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.07f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.08f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.09f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.15f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.18f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.1f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.22f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.28f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.30f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.35f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.38f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.3f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.45f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.48f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.4f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.55f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.5f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.62f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.6f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.74f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.75f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.7f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.85f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.8f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.92f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.95f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0.9f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$0x80</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$1.2f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$1.3f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$1.5f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$10</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$100</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$120</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$13</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$14</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$16</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$2.5f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$20</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$255f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$3</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$3f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$4</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$40</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$46</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$48</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$4f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$5</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$6</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$6f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$7</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$8</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$8f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw$9</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0.14f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0.2f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0.5f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0.6f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0.7f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0x20</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$0x7E57</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$10</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$2.5f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$20</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$24</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$28</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$3</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$4</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$40</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$5</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$6</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$60</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$70</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.&lt;no name provided&gt;$8</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$0.16f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$0.35f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$0.75f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$0x2301</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$11</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$3f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$5</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$6</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$7</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$8</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.LampBank$97</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.12f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.3f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.42f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.6f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.7f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$0.8f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$140f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$22</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$255f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$3</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$34</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$40f</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$5</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$8</ID>
+    <ID>MagicNumber:EraDraw.kt$EraDraw.Reticle$80f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.45f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.55f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.866f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.87f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.8f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.92f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$0.9f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$1.15f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$1.2f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$1.732f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$2.4f</ID>
+    <ID>MagicNumber:ImperialDraw.kt$ImperialDraw$3</ID>
+    <ID>MagicNumber:Licensing.kt$Licensing$1000L</ID>
+    <ID>MagicNumber:Licensing.kt$Licensing$60_000L</ID>
+    <ID>MagicNumber:Palette.kt$Palette$3</ID>
+    <ID>MagicNumber:Palette.kt$Palette$4</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$1.1f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$1.3f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$15f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$16</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$16f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$17f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$18</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$1800L</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$24f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$255</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$56</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$6</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$60</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$70</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$8</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$96</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity$999</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.&lt;no name provided&gt;$1000L</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.Companion$0.5f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.Companion$0.6f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.Companion$0.98f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.Companion$60</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$0.2f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$0.32f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$0.35f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$0.9f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$1.15f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$10</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$180f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$270f</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$3</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$6</ID>
+    <ID>MagicNumber:PurchaseActivity.kt$PurchaseActivity.HeaderView$90f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$0.06f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$10f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$12f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$14f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$24f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$32f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$480f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$600f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$6f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$840f</ID>
+    <ID>MagicNumber:ScreenMetrics.kt$ScreenMetrics.Companion$900f</ID>
+    <ID>MagicNumber:SegBar.kt$SegBar$0.12f</ID>
+    <ID>MagicNumber:SegBar.kt$SegBar$0.15f</ID>
+    <ID>MagicNumber:SegBar.kt$SegBar$0.22f</ID>
+    <ID>MagicNumber:SegBar.kt$SegBar$700</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$0.1f</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$100.0f</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$3</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$4</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$5</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$55</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$6</ID>
+    <ID>MagicNumber:Sfx.kt$Sfx$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.02f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.03f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.05f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.06f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.0722f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.09f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.2126f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.7152f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.75f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.80f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.84f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0.90f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0x00FFFFFF</ID>
+    <ID>MagicNumber:Skin.kt$Skin$0xFF</ID>
+    <ID>MagicNumber:Skin.kt$Skin$16</ID>
+    <ID>MagicNumber:Skin.kt$Skin$2.2f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$22f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$255f</ID>
+    <ID>MagicNumber:Skin.kt$Skin$300</ID>
+    <ID>MagicNumber:Skin.kt$Skin$500</ID>
+    <ID>MagicNumber:Skin.kt$Skin$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.12f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.14f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.15f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.16f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.18f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.1f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.22f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.45f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.4f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.6f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0.9f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$0xFFFF</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$1.4f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$100f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$1931</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$2.2f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$2654435</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$3</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$3.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$4</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$40</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$5</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$6</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$70</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$7349</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.&lt;no name provided&gt;$92</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$0.10f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$0.13f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$0.65f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$0.85f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$0x80</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Base$1.4f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.03f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.07f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.08f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.13f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.22f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.2f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.36f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.45f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.4f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.95f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0.9f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$0x80</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$10</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$110</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$13</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$16</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$2.4f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$3.6f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$30</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$34</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$36</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$40</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$42</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$56</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.Chamfer$9</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.12f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.18f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.2f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.36f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.38f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.45f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.55f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.6f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.7f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.8f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0.9f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$0x80</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$12</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$120</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$16</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$17</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$18</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$2.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$22</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$3.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$31</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$32</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$34</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$4</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$40</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$5</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$6</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeCell$80</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.02f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.04f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.06f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.08f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.15f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.18f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.25f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.28f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.42f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.55f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.6f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.7f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0.8f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0x3D</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$0x5B</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$255f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$3</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin.NodeNet$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.13f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.16f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.32f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.3f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.55f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.5f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.75f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$0.7f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$13</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$22</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$255f</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$26</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$4</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$7</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$8</ID>
+    <ID>MagicNumber:Skin.kt$Skin.TacticalDisplay$90</ID>
+    <ID>MagicNumber:SoundCache.kt$SoundCache$4</ID>
+    <ID>MagicNumber:SoundCache.kt$SoundCache$44</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$16384</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$24.0</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$3.0</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$4</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$40.0</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$44</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$44100</ID>
+    <ID>MagicNumber:SoundCatalog.kt$SoundCatalog.Companion$5000</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$0.5</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$0xFF</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$128</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$128f</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$32768f</ID>
+    <ID>MagicNumber:SoundDecoder.kt$SoundDecoder$4</ID>
+    <ID>MagicNumber:SoundDownloader.kt$SoundDownloader$1024</ID>
+    <ID>MagicNumber:SoundDownloader.kt$SoundDownloader$20L</ID>
+    <ID>MagicNumber:SoundDownloader.kt$SoundDownloader$32768</ID>
+    <ID>MagicNumber:SoundDownloader.kt$SoundDownloader.Result$8</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.0006f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.0015f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.003f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.0056f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.01f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.04f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.05f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.126</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.355</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0.89</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$0xFF</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$10</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$1024</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$128</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$128f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$16</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$16384</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$1e-4f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$2.82</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$20</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$3</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$30L</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$32767f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$32768f</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$36</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$4</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$44</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$5000</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$600</ID>
+    <ID>MagicNumber:SoundImporter.kt$SoundImporter$8</ID>
+    <ID>MagicNumber:SoundLibrary.kt$SoundLibrary$40</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$0xFF</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$10.0</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$1000</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$16</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$16384</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$20</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$20.0</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$32767f</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$36</ID>
+    <ID>MagicNumber:SoundProcessor.kt$SoundProcessor$44</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.12f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.15f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.16f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.3f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.6f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.78f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.8f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.92f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$0.9f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$1.1f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$1.4f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$1.8f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$10</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$165</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$255f</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$3</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$4</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$5</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$8</ID>
+    <ID>MagicNumber:Starfield.kt$Starfield$90</ID>
+    <ID>MagicNumber:SubThemes.kt$SubThemes$3</ID>
+    <ID>MagicNumber:SubThemes.kt$SubThemes$4</ID>
+    <ID>MagicNumber:SubThemes.kt$SubThemes$5</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0.1f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0.5f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0.75f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0.85f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0.97f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0x00FFFFFF</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0x80</ID>
+    <ID>MagicNumber:Ui.kt$Ui$0xFF</ID>
+    <ID>MagicNumber:Ui.kt$Ui$1.5f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$10f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$12f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$14f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$16</ID>
+    <ID>MagicNumber:Ui.kt$Ui$16f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$18f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$20f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$24</ID>
+    <ID>MagicNumber:Ui.kt$Ui$255</ID>
+    <ID>MagicNumber:Ui.kt$Ui$3</ID>
+    <ID>MagicNumber:Ui.kt$Ui$6f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$7f</ID>
+    <ID>MagicNumber:Ui.kt$Ui$8</ID>
+    <ID>MaxLineLength:CollectiveDraw.kt$CollectiveDraw$P.color = if (Ui.cloak) Ui.alpha(color, 0.6f * alpha) else Ui.alpha(Skin.mix(color, Color.WHITE, 0.3f), 0.9f * alpha)</ID>
+    <ID>MaxLineLength:CollectiveDraw.kt$CollectiveDraw$fun</ID>
+    <ID>MaxLineLength:ConsoleCard.kt$ConsoleCard$header.addView(titleView, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT))</ID>
+    <ID>MaxLineLength:ConsoleDialog.kt$ConsoleDialog$e.setPadding(Ui.dp(c, Ui.L.toFloat()), Ui.dp(c, Ui.M.toFloat()), Ui.dp(c, Ui.L.toFloat()), Ui.dp(c, Ui.M.toFloat()))</ID>
+    <ID>MaxLineLength:ConsoleDialog.kt$ConsoleDialog$root.addView(sv, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))</ID>
+    <ID>MaxLineLength:Era.kt$Era$0.2126 * linear((color shr 16) and 0xFF) + 0.7152 * linear((color shr 8) and 0xFF) + 0.0722 * linear(color and 0xFF)</ID>
+    <ID>MaxLineLength:EraDraw.kt$EraDraw$if (!cloak &amp;&amp; h &gt; 40 * d) lamp(cv, reach - 6 * d, stub / 2f, min(stub * 0.6f, 5 * d), Era.LAMPS[1], true, d, 1f)</ID>
+    <ID>MaxLineLength:ImperialDraw.kt$ImperialDraw$fun</ID>
+    <ID>MaxLineLength:SegBar.kt$SegBar$open</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$/** SOUND SET (CONFIG › AUDIO): the downloaded / bundled library, with synthesized clips wherever it is missing (default). */</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$// Display names and descriptions of the sets: R.array.sound_set_names / sound_set_descriptions (same order as SET_KEYS).</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$fun</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$if</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$if (Settings.System.getInt(context.contentResolver, Settings.System.SOUND_EFFECTS_ENABLED, 1) == 0) return false</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$if (event != E_BUTTON &amp;&amp; now - lastButtonAt &lt; BUTTON_CUTOFF_MS &amp;&amp; lastButtonStream != 0) p.stop(lastButtonStream)</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$private</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$private val BASE_LABELS = arrayOf("TAP ROTATION (7 SOUNDS)", "CLASSIC CHIRP", "PANEL DATA BURST", "VIEWSCREEN-ON SEQUENCE", "VIEWSCREEN-OFF SEQUENCE", "SHORT ALERT TONE", "DENY BEEP", "HAIL BEEP", "HAILING FREQUENCIES OPEN", "INCOMING TRANSMISSION", "WARNING ALARM", "RED ALERT", "TRANSPORTER", "TRANSFER COMPLETE", "VOICE: ACCESSING LIBRARY COMPUTER DATA", "VOICE: AFFIRMATIVE", "VOICE: UNABLE TO COMPLY", "VOICE: COMMAND CODES VERIFIED", "VOICE: COMMAND FUNCTIONS OFFLINE", "VOICE: AUTO-DEFENSE", "VOICE: DECOUPLING SEQUENCE", "VOICE: PRIORITY ONE MESSAGE", "COLLECTIVE COMPUTER", "FORCEFIELD TOUCH", "IMPERIAL TRANSPORTER (LONG)")</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$private val BASE_LIBRARY = arrayOf(TAP_SET, "ui_button_tap", "ui_panel_open", "ui_screen_open", "ui_screen_close", "alert_general_short", "ui_denied", "comms_hail", "comms_hailing_open", "comms_incoming_transmission", "alert_warning", "alert_red_tng", "tng_transporter", "system_transfer_complete", "voice_accessing_library", "voice_affirmative", "voice_unable_to_comply", "voice_command_codes_verified", "voice_command_functions_offline", "voice_autodefense", "voice_decoupling_sequence", "voice_priority_one_message", "alt_borg_computer", "alt_forcefield_touch", "alt_klingon_transporter")</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$private val BASE_ORIGINAL = arrayOf("tng_chirp_clean + 6 beeps cut from scrshow / tng_viewscreen_on / tng_viewscreen_off", "tng_chirp_clean.mp3", "scrshow.mp3", "tng_viewscreen_on.mp3", "tng_viewscreen_off.mp3", "alarm03.mp3", "denybeep3.mp3", "hailbeep_clean.mp3", "hailingfrequencies_open3.mp3 (trekcore)", "incomingtransmission_clean.mp3", "alert04.mp3", "tng_red_alert3.mp3", "tng_transporter1.mp3", "transfercomplete_clean.mp3", "accessinglibrarycomputerdata_clean.mp3", "affirmative1_ep.mp3", "unabletocomply1_ep.mp3", "commandcodesverified_ep.mp3", "commandfunctionsoffline_ep.mp3", "autodefense_ep.mp3", "initiatingdecouplingsequence_ep.mp3", "priorityonemessagefromstarfleet_ep.mp3", "borg_computer_beep.mp3", "forcefield_touch.mp3", "imperial transporter (faction bundle)")</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$return eventClip(soundSet(context), chosen, event, "none" != chosen &amp;&amp; available(context, chosen), synthEventFor(Skin.faction))</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$val</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$val commandIds = arrayOf(SYNTH_TAPS, "synth_tap_1", "synth_tap_2", "synth_tap_3", "synth_tap_4", "synth_tap_5", "synth_tap_6", "synth_nav", "synth_launch", "synth_confirm", "synth_error", "synth_comms", "synth_diag", "synth_red_alert", "synth_boot")</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$val commandLabels = arrayOf("SYNTHESIZED: TAP ROTATION (6 SOUNDS)", "SYNTHESIZED: TAP 1", "SYNTHESIZED: TAP 2", "SYNTHESIZED: TAP 3", "SYNTHESIZED: TAP 4", "SYNTHESIZED: TAP 5", "SYNTHESIZED: TAP 6", "SYNTHESIZED: NAVIGATION CHIRP", "SYNTHESIZED: LAUNCH ARPEGGIO", "SYNTHESIZED: CONFIRM CHIME", "SYNTHESIZED: ERROR BUZZ", "SYNTHESIZED: COMMS HAIL", "SYNTHESIZED: DIAGNOSTIC BLIPS", "SYNTHESIZED: RED ALERT KLAXON", "SYNTHESIZED: POWER-UP SWEEP")</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$val fams = arrayOf(arrayOf("kl", "SYNTHESIZED IMPERIAL", SYNTH_KL_TAPS), arrayOf("bg", "SYNTHESIZED COLLECTIVE", SYNTH_BG_TAPS))</ID>
+    <ID>MaxLineLength:Sfx.kt$Sfx$val partNames = arrayOf("NAVIGATION", "LAUNCH", "CONFIRM", "ERROR", "COMMS", "DIAGNOSTICS", "RED ALERT LOOP", "START-UP")</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$*</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$/** Frame behind a tile icon: Imperial hexagon optic; none for Command, Collective (the node is the frame) and the eras. */</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$if (imperial()) return if (lettering == BLADE_ALL) "fonts/WarriorBlade-Regular.ttf" else "fonts/Oxanium-SemiBold.ttf"</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$return if (imperial()) "IMPERIAL TERMINAL" else if (collective()) "COLLECTIVE LINK" else "PERSONAL ACCESS TERMINAL"</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$return if (imperial()) imperialTheme.detail else if (collective()) collectiveTheme.detail else 0xFF2A2840.toInt()</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$return if (imperial()) imperialTheme.surface else if (collective()) collectiveTheme.surface else 0xFF0E0C16.toInt()</ID>
+    <ID>MaxLineLength:Skin.kt$Skin$val</ID>
+    <ID>MaxLineLength:Skin.kt$Skin.&lt;no name provided&gt;$CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + 1], ys[n + 1], if (h % 2 == 0) 0.12f else -0.1f, line, dd, 0.16f * dim)</ID>
+    <ID>MaxLineLength:Skin.kt$Skin.&lt;no name provided&gt;$CollectiveDraw.curveTrace(cv, xs[n], ys[n], xs[n + cols], ys[n + cols], 0.1f, line, dd, 0.14f * dim)</ID>
+    <ID>MaxLineLength:Skin.kt$Skin.Chamfer$ImperialDraw.octagon(inner, x + g, y + g, x2 - g, y2 - g, max(2f, k - g * 0.4f), kind != Ui.RIGHT, kind != Ui.LEFT)</ID>
+    <ID>MaxLineLength:Skin.kt$Skin.Chamfer$if (kind == Ui.SQUARE) ImperialDraw.tri(cv, x + 13 * d, (y + y2) / 2f, 9 * d, 10 * d, false, ImperialDraw.YELLOW, 0.95f)</ID>
+    <ID>MaxLineLength:Skin.kt$Skin.NodeCell$CollectiveDraw.curveTrace(cv, cx + nr * 0.9f, cy + nr * 0.5f, x + w * 0.55f, ty, 0.12f, col, d, 0.8f * fa)</ID>
+    <ID>MaxLineLength:SoundCache.kt$SoundCache$if (listed != null) for (n in listed) if (n.endsWith(".ogg")) found.add(n.substring(0, n.length - 4))</ID>
+    <ID>MaxLineLength:SoundDecoder.kt$SoundDecoder$if (of.containsKey(MediaFormat.KEY_CHANNEL_COUNT)) ch = Math.max(1, of.getInteger(MediaFormat.KEY_CHANNEL_COUNT))</ID>
+    <ID>MaxLineLength:SoundDecoder.kt$SoundDecoder$val limit = if (untilSeconds &gt; 0) Math.min(untilSeconds + 0.5, MAX_SECONDS.toDouble()) else MAX_SECONDS.toDouble()</ID>
+    <ID>MaxLineLength:SoundDownloader.kt$SoundDownloader$throw IOException(String.format(Locale.US, "not enough free space (needs about %d MB)", need / (1024 * 1024)))</ID>
+    <ID>MaxLineLength:SoundDownloader.kt$SoundDownloader$val clip = SoundProcessor.render(pcm, s.start, s.end, s.gainDb, s.mono, s.fadeInMs, s.fadeOutMs)</ID>
+    <ID>MaxLineLength:SoundDownloader.kt$SoundDownloader.Result$sb.append(String.format(Locale.US, "%d DOWNLOADED, %d ALREADY PRESENT, %d FAILED", rendered, skipped, failed))</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$/** File-name tags of other collections / non-console sources (as named on the public source pages), and spoken clips: ranked last. */</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$Sfx.E_COMMS to arrayOf("chirp", "hail", "communicator", "combadge", "incoming", "ringin", "transmission", "comm_badge")</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$Sfx.E_CONFIRM to arrayOf("confirm", "affirm", "complete", "verified", "accept", "acknowledg", "authacc", "filedone", "success")</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$Sfx.E_DIAG to arrayOf("scan", "scanner", "diagnostic", "working", "thinking", "accessing", "sequence", "processing")</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$Sfx.E_ERROR to arrayOf("deny", "denied", "error", "incorrect", "unable", "invalid", "fail", "criticalstop", "reject")</ID>
+    <ID>MaxLineLength:SoundImporter.kt$SoundImporter$if (of.containsKey(MediaFormat.KEY_CHANNEL_COUNT)) ch = Math.max(1, of.getInteger(MediaFormat.KEY_CHANNEL_COUNT))</ID>
+    <ID>MaxLineLength:SoundProcessor.kt$SoundProcessor$.</ID>
+    <ID>MaxLineLength:SoundProcessor.kt$SoundProcessor$String.format(Locale.US, "cut %.3f-%.3f s is outside the %.2f s original", startSec, endSec, original.seconds())</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"ALERTS: RED ALERT 2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMMS: COMMUNICATIONS - STAR TRRANSMISSION"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER ALERT: DAMAGE ALARM"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: 0600 REGENERATION CYCLE COMPLETE"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: AFFIRMATIVE 2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: AMBIENT BRIDGE 4"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: AMBIENT BRIDGE 8"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: DO NOT ADDRESS THIS UNIT IN THAT MANNER"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: HELM 3"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: INITIATING DECOUPLING SEQUENCE"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: ORDERS REGARDING COMMAND FUNCTIONS..."</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: PRIORITY CLEARANCE ALPHA ONE"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: PROGRAM INITIATED ENTER WHEN READY"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: SCREEN SCROLL 1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: SCREEN SHOW"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: SELF DESTRUCT SEQUENCE INITIATED..."</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"COMPUTER: SPECIFY PARAMETERS"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 11"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 15"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 19"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 23"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 27"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 31"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 35"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 39"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 43"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 47"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 51"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 55"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 59"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 63"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 67"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP 71"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: COMPUTER BEEP SEQUENCE 4"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: DENY BEEP 3"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: INPUT FAILED 2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"CONSOLE: KEYPRESS 1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"DOORS: CARGOBAY 2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"SHIPBOARD: FLYBY 1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"SHIPBOARD: TRACTOR BEAM 3"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"TRANSPORTER: TRANSPORTER 1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"TRANSPORTER: TRANSPORTER 5"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"WARP: WARP EXIT"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"authorization_required.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"command_codes_verified.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"communications_star_trransmission.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"computer_work_beep.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"hail_all_ship.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"input_ok_2.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"keypress_2.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"keypress_6.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"one_minute_to_autodestruct.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"procession_2.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"regeneration_cycle_complete.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"self_destruct_sequence_terminated.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_amb_bridge_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_amb_command_center"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_amb_data_s_room"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_calrt_alarm_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_calrt_alert_5"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_calrt_damage_alarm_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_calrt_warning_structural_integrity"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_ccomm_communications_end_transmission"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_ccomm_hailing_frequencies_open_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_ambient_bridge_12"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_ambient_bridge_16"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_ambient_bridge_8"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_auto_initate_emh"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_calibration_locked_diagnostic_underway"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_computer_work_beep"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_enter_authorization_code"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_please_specify_how_you_would_like"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_priority_one_message_from_starfleet"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_regeneration_cycle_complete"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_stability_loss_due_to"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_transfer_of_data_complete"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_cvox_you_are_not_authorized_to_access"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_door_door_open_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_lift_turbolift_stops_moving"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_misc_engineering_device_1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_misc_flyby_2"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_misc_powering_up"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_tric_tricorder_3"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_tric_tricorder_8"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_trn_transporter_1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_trn_transporter_10"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_trn_transporter_11"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_trn_transporter_6"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_wpn_fire_all_weapons"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_wpn_phaser_6"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_wpn_weapons_1"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tk_xvoy_ds9_intercom"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tng_bridge_1.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tng_engineering_device_2.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tng_jeffreys_tube.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"tng_warp_2.mp3 (trekcore)"</ID>
+    <ID>MaxLineLength:SourceSoundLibrary.kt$SourceSoundLibrary$"you_are_not_authorized_to_access.mp3 (trekcore)"</ID>
+    <ID>NestedBlockDepth:EraDraw.kt$EraDraw.LampBank$override fun draw(cv: Canvas)</ID>
+    <ID>NestedBlockDepth:Sfx.kt$Sfx$private fun loadClip(context: Context, id: String): Int</ID>
+    <ID>NestedBlockDepth:SoundDecoder.kt$SoundDecoder$@JvmStatic @Throws(IOException::class) fun decode(file: File, untilSeconds: Double): SoundProcessor.Pcm</ID>
+    <ID>NestedBlockDepth:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) internal fun download(url: String, dst: File): String</ID>
+    <ID>NestedBlockDepth:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) private fun runAll(c: Context, coreOnly: Boolean, r: Result)</ID>
+    <ID>NestedBlockDepth:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun decode(c: Context, item: Item, srOut: IntArray): FloatArray</ID>
+    <ID>NestedBlockDepth:SoundImporter.kt$SoundImporter$@JvmStatic @Throws(IOException::class) fun unzip(c: Context, zip: Uri): List&lt;Item&gt;</ID>
+    <ID>NestedBlockDepth:SuiteClient.kt$SuiteClient$@JvmStatic internal fun query(context: Context, pkg: String, path: String): Map&lt;String, String?&gt;?</ID>
+    <ID>ReturnCount:BillingManager.kt$BillingManager$fun launchPurchase(activity: Activity): LaunchResult</ID>
+    <ID>ReturnCount:ConsoleCard.kt$ConsoleCard.Bracket$override fun onDraw(cv: Canvas)</ID>
+    <ID>ReturnCount:ConsoleFrame.kt$ConsoleFrame$fun partAt(x: Float, y: Float): String?</ID>
+    <ID>ReturnCount:ConsoleFrame.kt$ConsoleFrame$override fun onTouchEvent(e: MotionEvent): Boolean</ID>
+    <ID>ReturnCount:CoreConfig.kt$CoreConfig.Companion$@JvmStatic fun get(context: Context?): CoreConfig</ID>
+    <ID>ReturnCount:Entitlement.kt$Entitlement$@Synchronized fun apply(purchases: List&lt;PurchaseRecord?&gt;?, authoritative: Boolean): Result</ID>
+    <ID>ReturnCount:Entitlement.kt$Entitlement$@Synchronized fun grantSuite(fromPackage: String?, time: Long): Boolean</ID>
+    <ID>ReturnCount:Entitlement.kt$Entitlement$@Synchronized fun source(): Source</ID>
+    <ID>ReturnCount:Era.kt$Era$@JvmStatic fun lampCount(widthPx: Float, heightPx: Float, d: Float): Int</ID>
+    <ID>ReturnCount:EraDraw.kt$EraDraw$@JvmStatic fun block23(cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, d: Float, cloak: Boolean)</ID>
+    <ID>ReturnCount:EraDraw.kt$EraDraw$@JvmStatic fun key23( cv: Canvas, l: Float, t: Float, r: Float, b: Float, color: Int, kind: Int, d: Float, seed: Int, now: Long, cloak: Boolean, ): Long</ID>
+    <ID>ReturnCount:PurchaseVerifier.kt$PurchaseVerifier$fun verify(signedData: String?, signature: String?): Boolean</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun audioAllowed(context: Context): Boolean</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun clipsOf(id: String?): Array&lt;String&gt;</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun eventClip(set: String?, chosen: String?, event: Int, libraryPlayable: Boolean, synth: Array&lt;String&gt;): String</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun isLong(context: Context, id: String): Boolean</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun loopEvent(context: Context, event: Int): Int</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun playClip(context: Context, clipId: String?, explicit: Boolean)</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$@JvmStatic fun playEvent(context: Context, event: Int, explicit: Boolean)</ID>
+    <ID>ReturnCount:Sfx.kt$Sfx$private fun playLong(context: Context, id: String, vol: Float)</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun fontHeavy(): String?</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun fontRegular(): String?</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun ink(): Int</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun rule(c: Context, color: Int): Drawable</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun ship(command: String?): String?</ID>
+    <ID>ReturnCount:Skin.kt$Skin$@JvmStatic fun textScale(): Float</ID>
+    <ID>ReturnCount:Skin.kt$Skin.NodeCell$override fun draw(cv: Canvas)</ID>
+    <ID>ReturnCount:SoundCatalog.kt$SoundCatalog.Companion$private fun parseSource(o: JSONObject?): Source?</ID>
+    <ID>ReturnCount:SoundImporter.kt$SoundImporter$@JvmStatic fun assign(c: Context, event: Int, items: List&lt;Item&gt;, sourceLabel: String, r: Report): Int</ID>
+    <ID>ReturnCount:SoundImporter.kt$SoundImporter$@JvmStatic fun match(fileName: String): Int</ID>
+    <ID>ReturnCount:SoundLibrary.kt$SoundLibrary$@JvmStatic fun exists(c: Context, id: String?): Boolean</ID>
+    <ID>ReturnCount:SoundLibrary.kt$SoundLibrary$@JvmStatic fun label(c: Context, id: String?): String</ID>
+    <ID>ReturnCount:SuiteClient.kt$SuiteClient$@JvmStatic internal fun query(context: Context, pkg: String, path: String): Map&lt;String, String?&gt;?</ID>
+    <ID>ReturnCount:SuiteContract.kt$SuiteContract$@JvmStatic fun parseTheme(row: Map&lt;String, String?&gt;?): SuiteTheme?</ID>
+    <ID>ReturnCount:TrekPrefs.kt$TrekPrefs$fun faction(): Int</ID>
+    <ID>ReturnCount:TrialClock.kt$TrialClock$@Synchronized fun onProcessStart(): Boolean</ID>
+    <ID>ReturnCount:Ui.kt$Ui$@JvmStatic fun shape(c: Context, color: Int, kind: Int, radiusDp: Float): Drawable</ID>
+    <ID>SwallowedException:PrefsKeyValueStore.kt$PrefsKeyValueStore$e: ClassCastException</ID>
+    <ID>SwallowedException:PurchaseActivity.kt$PurchaseActivity$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:PurchaseActivity.kt$PurchaseActivity$e: RuntimeException</ID>
+    <ID>SwallowedException:PurchaseVerifier.kt$PurchaseVerifier$e: Exception</ID>
+    <ID>SwallowedException:Sfx.kt$Sfx$e: IOException</ID>
+    <ID>SwallowedException:Sfx.kt$Sfx$e: RuntimeException</ID>
+    <ID>SwallowedException:SoundCatalog.kt$SoundCatalog.Companion$e: IOException</ID>
+    <ID>SwallowedException:SoundCatalog.kt$SoundCatalog.Companion$e: JSONException</ID>
+    <ID>SwallowedException:SoundCatalog.kt$SoundCatalog.Companion$e: RuntimeException</ID>
+    <ID>SwallowedException:SoundDownloader.kt$SoundDownloader$e: Exception</ID>
+    <ID>SwallowedException:SoundLibrary.kt$SoundLibrary$e: Exception</ID>
+    <ID>SwallowedException:SuiteClient.kt$SuiteClient$e: RuntimeException</ID>
+    <ID>SwallowedException:SystemTimeSource.kt$SystemTimeSource$e: SecurityException</ID>
+    <ID>SwallowedException:SystemTimeSource.kt$SystemTimeSource$e: Settings.SettingNotFoundException</ID>
+    <ID>SwallowedException:Ui.kt$Ui$t: Throwable</ID>
+    <ID>ThrowsCount:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) internal fun download(url: String, dst: File): String</ID>
+    <ID>ThrowsCount:SoundDownloader.kt$SoundDownloader$@Throws(IOException::class) private fun runAll(c: Context, coreOnly: Boolean, r: Result)</ID>
+    <ID>TooGenericExceptionCaught:BillingManager.kt$BillingManager$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:PurchaseActivity.kt$PurchaseActivity$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:PurchaseVerifier.kt$PurchaseVerifier$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Sfx.kt$Sfx$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:SoundCatalog.kt$SoundCatalog.Companion$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:SoundDownloader.kt$SoundDownloader$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SoundDownloader.kt$SoundDownloader$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SoundImporter.kt$SoundImporter$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SoundLibrary.kt$SoundLibrary$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SoundLibrary.kt$SoundLibrary$t: Throwable</ID>
+    <ID>TooGenericExceptionCaught:SuiteClient.kt$SuiteClient$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:Ui.kt$Ui$t: Throwable</ID>
+    <ID>TooManyFunctions:BillingManager.kt$BillingManager : PurchasesUpdatedListener</ID>
+    <ID>TooManyFunctions:ConsoleFrame.kt$ConsoleFrame : ViewGroup</ID>
+    <ID>TooManyFunctions:Entitlement.kt$Entitlement</ID>
+    <ID>TooManyFunctions:Era.kt$Era</ID>
+    <ID>TooManyFunctions:EraDraw.kt$EraDraw</ID>
+    <ID>TooManyFunctions:Licensing.kt$Licensing</ID>
+    <ID>TooManyFunctions:PurchaseActivity.kt$PurchaseActivity : ActivityListener</ID>
+    <ID>TooManyFunctions:Sfx.kt$Sfx</ID>
+    <ID>TooManyFunctions:Skin.kt$Skin</ID>
+    <ID>TooManyFunctions:SoundCache.kt$SoundCache</ID>
+    <ID>TooManyFunctions:SoundCatalog.kt$SoundCatalog$Companion</ID>
+    <ID>TooManyFunctions:SoundImporter.kt$SoundImporter</ID>
+    <ID>TooManyFunctions:SoundLibrary.kt$SoundLibrary</ID>
+    <ID>TooManyFunctions:SoundProcessor.kt$SoundProcessor</ID>
+    <ID>TooManyFunctions:SuiteContract.kt$SuiteContract</ID>
+    <ID>TooManyFunctions:TrekPrefs.kt$TrekPrefs</ID>
+    <ID>TooManyFunctions:TrialClock.kt$TrialClock</ID>
+    <ID>TooManyFunctions:Ui.kt$Ui</ID>
+    <ID>UnusedParameter:Skin.kt$Skin$radiusDp: Float</ID>
+    <ID>UnusedPrivateProperty:SoundDecoder.kt$SoundDecoder$s</ID>
+    <ID>UnusedPrivateProperty:Starfield.kt$Starfield$i</ID>
+    <ID>UseRequire:ScreenMetrics.kt$ScreenMetrics.Companion$throw IllegalArgumentException("dimensions and density must be positive")</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:Redaction.kt$Redaction$ownPackage || groupSummary || mediaSession || suspended</ID>
+    <ID>ComplexCondition:WakeTrigger.kt$WakeTrigger$!enabled || !keyguardLocked || inCall || wakeVisible</ID>
+    <ID>CyclomaticComplexMethod:LockListener.kt$LockListener$internal fun rebuild()</ID>
+    <ID>LongMethod:SettingsActivity.kt$SettingsActivity$private fun content(): View</ID>
+    <ID>LongParameterList:LockItem.kt$LockItem$( val key: String, val packageName: String, appName: String?, title: String?, text: String?, val postTime: Long, /** The notification's accent colour, or 0 for "use the interface's". */ val color: Int, val show: Redaction.Show, /** Opened after the user unlocks (may be null). */ val contentIntent: PendingIntent?, )</ID>
+    <ID>LongParameterList:LockLook.kt$LockLook$(c: Context, title: View?, footer: View?, sidebar: View?, content: View, sidebarDp: Float)</ID>
+    <ID>LongParameterList:Redaction.kt$Redaction$( notificationVisibility: Int, channelVisibility: Int, keyguardSecure: Boolean, systemShowsOnLock: Boolean, systemAllowsPrivate: Boolean?, userAllowsPrivate: Boolean, )</ID>
+    <ID>LongParameterList:SettingsActivity.kt$SettingsActivity$( list: LinearLayout, tag: String, title: String, status: String, action: String?, accent: Int, l: View.OnClickListener?, )</ID>
+    <ID>LongParameterList:WakeView.kt$WakeView$( c: Canvas, left: Float, top: Float, right: Float, bottom: Float, side: Float, bar: Float, color: Int, topCorner: Boolean, )</ID>
+    <ID>LongParameterList:WakeView.kt$WakeView$(c: Canvas, s: String, r: RectF, y: Float, sizeSp: Float, color: Int, bold: Boolean)</ID>
+    <ID>LoopWithTooManyJumpStatements:LockListener.kt$LockListener$for</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$10.0</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$100</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$1e-9</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$365</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$366</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$4</ID>
+    <ID>MagicNumber:DecimalDate.kt$DecimalDate$400</ID>
+    <ID>MagicNumber:LockListener.kt$LockListener$28</ID>
+    <ID>MagicNumber:LockLook.kt$LockLook$3</ID>
+    <ID>MagicNumber:LockLook.kt$LockLook$4</ID>
+    <ID>MagicNumber:LockTheme.kt$LockTheme$3</ID>
+    <ID>MagicNumber:LockTheme.kt$LockTheme$4</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$1.1f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$10f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$12f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$14f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$17f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$28f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$29</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$3</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$30</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$33</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$4</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$4f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$5</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$50f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$6</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$6f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$8f</ID>
+    <ID>MagicNumber:SettingsActivity.kt$SettingsActivity$96f</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$100</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$1000</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$100f</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$24L</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$27</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$3600</ID>
+    <ID>MagicNumber:WakeActivity.kt$WakeActivity$60</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.16f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.18f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.22f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.24f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.28f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.2f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.30f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.3f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.40f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.46f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.48f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.4f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.55f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.6f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.7f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$0.92f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$1.15f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$1.5f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$100</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$104f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$10f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$12f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$132f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$13f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$140f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$14f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$15f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$16f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$180f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$18f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$200</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$20f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$220</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$22f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$270f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$28f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$3</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$34f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$4</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$40f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$48f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$4f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$52f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$56f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$58f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$64f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$6f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$8f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$90f</ID>
+    <ID>MagicNumber:WakeView.kt$WakeView$99</ID>
+    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$row</ID>
+    <ID>MaxLineLength:SettingsActivity.kt$SettingsActivity$val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LockLook.dp(this, LockLook.MIN_TOUCH_DP))</ID>
+    <ID>MaxLineLength:WakeTrigger.kt$WakeTrigger$fun</ID>
+    <ID>MaxLineLength:WakeTrigger.kt$WakeTrigger$if</ID>
+    <ID>MaxLineLength:WakeView.kt$WakeView$path.arcTo(RectF(left + side, top + bar, left + side + 2 * inner, top + bar + 2 * inner), 270f, -90f, false)</ID>
+    <ID>MaxLineLength:WakeView.kt$WakeView$val content = RectF(area.left + side + dp(12f), area.top + bar + dp(10f), area.right, area.bottom - bar - dp(10f))</ID>
+    <ID>ReturnCount:LockTheme.kt$LockTheme$fun decode(s: String?): SuiteTheme?</ID>
+    <ID>ReturnCount:Redaction.kt$Redaction$fun decide( notificationVisibility: Int, channelVisibility: Int, keyguardSecure: Boolean, systemShowsOnLock: Boolean, systemAllowsPrivate: Boolean?, userAllowsPrivate: Boolean, ): Show</ID>
+    <ID>ReturnCount:WakeActivity.kt$WakeActivity$private fun findTorchCamera(): String?</ID>
+    <ID>ReturnCount:WakeTrigger.kt$WakeTrigger$@Synchronized fun onScreenOn(nowMs: Long, enabled: Boolean, keyguardLocked: Boolean, inCall: Boolean, wakeVisible: Boolean): Boolean</ID>
+    <ID>ReturnCount:WakeView.kt$WakeView.&lt;no name provided&gt;$override fun createAccessibilityNodeInfo(virtualViewId: Int): AccessibilityNodeInfo?</ID>
+    <ID>ReturnCount:WakeView.kt$WakeView.&lt;no name provided&gt;$override fun performAction(virtualViewId: Int, action: Int, arguments: Bundle?): Boolean</ID>
+    <ID>SwallowedException:LockListener.kt$LockListener$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:LockListener.kt$LockListener$e: RuntimeException</ID>
+    <ID>SwallowedException:LockSettings.kt$LockSettings$e: SecurityException</ID>
+    <ID>SwallowedException:LockSettings.kt$LockSettings$e: Settings.SettingNotFoundException</ID>
+    <ID>SwallowedException:LockTheme.kt$LockTheme$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:SettingsActivity.kt$SettingsActivity$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:SettingsActivity.kt$SettingsActivity$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:SettingsActivity.kt$SettingsActivity$e: SecurityException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity$e: CameraAccessException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity$e: RuntimeException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity$e: SecurityException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity$none: ActivityNotFoundException</ID>
+    <ID>SwallowedException:WakeActivity.kt$WakeActivity.Companion$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:LockListener.kt$LockListener$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:WakeActivity.kt$WakeActivity$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:WakeActivity.kt$WakeActivity.Companion$e: RuntimeException</ID>
+    <ID>TooManyFunctions:LockListener.kt$LockListener : NotificationListenerService</ID>
+    <ID>TooManyFunctions:LockLook.kt$LockLook</ID>
+    <ID>TooManyFunctions:LockSettings.kt$LockSettings</ID>
+    <ID>TooManyFunctions:SettingsActivity.kt$SettingsActivity : ComponentActivity</ID>
+    <ID>TooManyFunctions:WakeActivity.kt$WakeActivity : ActivityActionsObserver</ID>
+    <ID>TooManyFunctions:WakeView.kt$WakeView : View</ID>
+  </CurrentIssues>
+</SmellBaseline>

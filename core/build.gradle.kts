@@ -3,35 +3,21 @@
 // Imperial/Collective/Era draw code), ScreenMetrics, fonts and glyphs, Sfx + synth sounds + the
 // downloadable sound library, licensing (trial + the shared trekui_unlock purchase) and the suite contract
 // (SuiteContract / SuiteClient / SuiteProvider). No product flavors: per-app values (trial length, product
-// id, flavor) come from the app through com.gungreeneyes.trekui.core.CoreConfig.
+// id, flavor) come from the app through com.gungreeneyes.trekui.core.CoreConfig. The shared setup is the
+// trekui.android.library convention in build-logic/.
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.trekui.android.library)
 }
 
 android {
     namespace = "com.gungreeneyes.trekui.core"
-    compileSdk = 37
 
     defaultConfig {
-        minSdk = 26
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
-        unitTests.isReturnDefaultValues = true
-    }
-
-    lint {
-        abortOnError = false
-        xmlReport = true
-        htmlReport = true
     }
 }
 

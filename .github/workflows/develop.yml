@@ -1,5 +1,6 @@
 # Continuous integration for main and pull requests:
-#   build   - develop debug APK, JVM unit tests (incl. Robolectric screenshots), lint; uploads all reports
+#   build   - develop debug APK, JVM unit tests (incl. Robolectric screenshots), lint, ktlint + detekt;
+#             uploads all reports
 #   emulator - instrumented tests + screenshots/video on the emulator matrix (quick set on PRs, full on main)
 name: Develop
 
@@ -43,10 +44,11 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
-      - name: Assemble, unit test, lint
+      - name: Assemble, unit test, lint, style checks
         env:
           TREKUI_SCREENSHOTS: '1'   # RobolectricScreenshots writes assets/robolectric/
-        run: ./gradlew --console=plain assembleDevelopDebug testDevelopDebugUnitTest lintDevelopDebug
+        # ktlintCheck and detekt fail only on findings that are not in each module's baseline (docs/BUILD.md).
+        run: ./gradlew --console=plain assembleDevelopDebug testDevelopDebugUnitTest lintDevelopDebug ktlintCheck detekt
 
       - name: Upload APK
         if: always()

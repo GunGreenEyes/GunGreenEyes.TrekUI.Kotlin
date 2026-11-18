@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/CollectiveDraw.kt">
+        <error line="75" column="121" source="standard:max-line-length" />
+        <error line="115" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/ConsoleCard.kt">
+        <error line="26" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="27" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="28" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="29" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="48" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/ConsoleDialog.kt">
+        <error line="49" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="51" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="53" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="111" column="121" source="standard:max-line-length" />
+        <error line="194" column="121" source="standard:max-line-length" />
+        <error line="221" column="43" source="standard:paren-spacing" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/ConsoleFrame.kt">
+        <error line="43" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="43" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="45" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="45" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="47" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="47" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="49" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="49" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="51" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="51" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="53" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="53" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="55" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="55" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="57" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="58" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="58" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="60" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="61" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="61" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="68" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="151" column="52" source="standard:paren-spacing" />
+        <error line="520" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="522" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="524" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Era.kt">
+        <error line="74" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="80" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="83" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="120" column="121" source="standard:max-line-length" />
+        <error line="141" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="143" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="147" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="208" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="244" column="46" source="standard:statement-wrapping" />
+        <error line="244" column="62" source="standard:statement-wrapping" />
+        <error line="244" column="79" source="standard:statement-wrapping" />
+        <error line="245" column="46" source="standard:statement-wrapping" />
+        <error line="245" column="62" source="standard:statement-wrapping" />
+        <error line="245" column="79" source="standard:statement-wrapping" />
+        <error line="246" column="46" source="standard:statement-wrapping" />
+        <error line="246" column="62" source="standard:statement-wrapping" />
+        <error line="246" column="79" source="standard:statement-wrapping" />
+        <error line="247" column="46" source="standard:statement-wrapping" />
+        <error line="247" column="62" source="standard:statement-wrapping" />
+        <error line="247" column="79" source="standard:statement-wrapping" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/EraDraw.kt">
+        <error line="43" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="45" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="513" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/ImperialDraw.kt">
+        <error line="26" column="9" source="standard:property-naming" />
+        <error line="27" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="28" column="9" source="standard:property-naming" />
+        <error line="29" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="30" column="9" source="standard:property-naming" />
+        <error line="31" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="32" column="9" source="standard:property-naming" />
+        <error line="113" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Palette.kt">
+        <error line="28" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="28" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="30" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="30" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="32" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="32" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="34" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="34" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="36" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="36" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="43" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="45" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="45" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="47" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="47" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="49" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="49" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="51" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="51" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="85" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="85" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="88" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="88" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="91" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="91" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/ScreenMetrics.kt">
+        <error line="45" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="46" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="46" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="48" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="48" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="50" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="50" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SegBar.kt">
+        <error line="17" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Sfx.kt">
+        <error line="79" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="86" column="22" source="standard:property-wrapping" />
+        <error line="86" column="121" source="standard:max-line-length" />
+        <error line="89" column="21" source="standard:property-wrapping" />
+        <error line="89" column="121" source="standard:max-line-length" />
+        <error line="93" column="24" source="standard:property-wrapping" />
+        <error line="93" column="121" source="standard:max-line-length" />
+        <error line="94" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="96" column="31" source="standard:property-wrapping" />
+        <error line="96" column="121" source="standard:max-line-length" />
+        <error line="97" column="30" source="standard:property-wrapping" />
+        <error line="97" column="121" source="standard:max-line-length" />
+        <error line="98" column="32" source="standard:property-wrapping" />
+        <error line="98" column="121" source="standard:max-line-length" />
+        <error line="101" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="103" column="26" source="standard:property-wrapping" />
+        <error line="103" column="121" source="standard:max-line-length" />
+        <error line="104" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="106" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="106" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="108" column="22" source="standard:property-wrapping" />
+        <error line="108" column="121" source="standard:max-line-length" />
+        <error line="109" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="114" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="116" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="118" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="120" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="122" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="139" column="25" source="standard:property-wrapping" />
+        <error line="139" column="121" source="standard:max-line-length" />
+        <error line="140" column="28" source="standard:property-wrapping" />
+        <error line="140" column="121" source="standard:max-line-length" />
+        <error line="143" column="19" source="standard:property-wrapping" />
+        <error line="143" column="121" source="standard:max-line-length" />
+        <error line="145" column="24" source="standard:property-wrapping" />
+        <error line="145" column="121" source="standard:max-line-length" />
+        <error line="165" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="167" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="169" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="176" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="178" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="180" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="180" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="182" column="22" source="standard:property-wrapping" />
+        <error line="182" column="121" source="standard:max-line-length" />
+        <error line="183" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="183" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="185" column="27" source="standard:property-wrapping" />
+        <error line="185" column="121" source="standard:max-line-length" />
+        <error line="186" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="186" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="188" column="29" source="standard:property-wrapping" />
+        <error line="188" column="121" source="standard:max-line-length" />
+        <error line="189" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="189" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="195" column="26" source="standard:property-wrapping" />
+        <error line="195" column="121" source="standard:max-line-length" />
+        <error line="221" column="27" source="standard:property-wrapping" />
+        <error line="221" column="121" source="standard:max-line-length" />
+        <error line="225" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="227" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="229" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="231" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="244" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="247" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="253" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="393" column="121" source="standard:max-line-length" />
+        <error line="413" column="121" source="standard:max-line-length" />
+        <error line="668" column="121" source="standard:max-line-length" />
+        <error line="674" column="121" source="standard:max-line-length" />
+        <error line="747" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Skin.kt">
+        <error line="50" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="53" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="69" column="36" source="standard:property-wrapping" />
+        <error line="69" column="121" source="standard:max-line-length" />
+        <error line="148" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="148" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="155" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="165" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="207" column="121" source="standard:max-line-length" />
+        <error line="221" column="121" source="standard:max-line-length" />
+        <error line="260" column="121" source="standard:max-line-length" />
+        <error line="308" column="121" source="standard:max-line-length" />
+        <error line="389" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="470" column="121" source="standard:max-line-length" />
+        <error line="478" column="121" source="standard:max-line-length" />
+        <error line="514" column="121" source="standard:max-line-length" />
+        <error line="666" column="41" source="standard:multiline-loop" />
+        <error line="672" column="41" source="standard:multiline-loop" />
+        <error line="676" column="121" source="standard:max-line-length" />
+        <error line="679" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundCache.kt">
+        <error line="27" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="83" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundCatalog.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+        <error line="90" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundDecoder.kt">
+        <error line="23" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="62" column="121" source="standard:max-line-length" />
+        <error line="111" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundDownloader.kt">
+        <error line="36" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="37" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="38" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="39" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="40" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="45" column="121" source="standard:max-line-length" />
+        <error line="60" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="61" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="126" column="121" source="standard:max-line-length" />
+        <error line="163" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundImporter.kt">
+        <error line="36" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="37" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="38" column="1" source="standard:spacing-between-declarations-with-annotations" />
+        <error line="62" column="121" source="standard:max-line-length" />
+        <error line="63" column="121" source="standard:max-line-length" />
+        <error line="64" column="121" source="standard:max-line-length" />
+        <error line="65" column="121" source="standard:max-line-length" />
+        <error line="376" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundLibrary.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SoundProcessor.kt">
+        <error line="129" column="121" source="standard:max-line-length" />
+        <error line="146" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/SourceSoundLibrary.kt">
+        <error line="16" column="121" source="standard:max-line-length" />
+        <error line="17" column="121" source="standard:max-line-length" />
+        <error line="18" column="121" source="standard:max-line-length" />
+        <error line="21" column="121" source="standard:max-line-length" />
+        <error line="22" column="121" source="standard:max-line-length" />
+        <error line="24" column="121" source="standard:max-line-length" />
+        <error line="27" column="121" source="standard:max-line-length" />
+        <error line="34" column="121" source="standard:max-line-length" />
+        <error line="35" column="121" source="standard:max-line-length" />
+        <error line="37" column="121" source="standard:max-line-length" />
+        <error line="42" column="121" source="standard:max-line-length" />
+        <error line="44" column="121" source="standard:max-line-length" />
+        <error line="46" column="121" source="standard:max-line-length" />
+        <error line="72" column="121" source="standard:max-line-length" />
+        <error line="75" column="121" source="standard:max-line-length" />
+        <error line="78" column="121" source="standard:max-line-length" />
+        <error line="79" column="121" source="standard:max-line-length" />
+        <error line="84" column="121" source="standard:max-line-length" />
+        <error line="85" column="121" source="standard:max-line-length" />
+        <error line="87" column="121" source="standard:max-line-length" />
+        <error line="88" column="121" source="standard:max-line-length" />
+        <error line="90" column="121" source="standard:max-line-length" />
+        <error line="93" column="121" source="standard:max-line-length" />
+        <error line="94" column="121" source="standard:max-line-length" />
+        <error line="95" column="121" source="standard:max-line-length" />
+        <error line="96" column="121" source="standard:max-line-length" />
+        <error line="97" column="121" source="standard:max-line-length" />
+        <error line="100" column="121" source="standard:max-line-length" />
+        <error line="103" column="121" source="standard:max-line-length" />
+        <error line="105" column="121" source="standard:max-line-length" />
+        <error line="106" column="121" source="standard:max-line-length" />
+        <error line="107" column="121" source="standard:max-line-length" />
+        <error line="109" column="121" source="standard:max-line-length" />
+        <error line="115" column="121" source="standard:max-line-length" />
+        <error line="116" column="121" source="standard:max-line-length" />
+        <error line="117" column="121" source="standard:max-line-length" />
+        <error line="118" column="121" source="standard:max-line-length" />
+        <error line="130" column="121" source="standard:max-line-length" />
+        <error line="132" column="121" source="standard:max-line-length" />
+        <error line="133" column="121" source="standard:max-line-length" />
+        <error line="137" column="121" source="standard:max-line-length" />
+        <error line="139" column="121" source="standard:max-line-length" />
+        <error line="141" column="121" source="standard:max-line-length" />
+        <error line="142" column="121" source="standard:max-line-length" />
+        <error line="143" column="121" source="standard:max-line-length" />
+        <error line="145" column="121" source="standard:max-line-length" />
+        <error line="146" column="121" source="standard:max-line-length" />
+        <error line="154" column="121" source="standard:max-line-length" />
+        <error line="155" column="121" source="standard:max-line-length" />
+        <error line="156" column="121" source="standard:max-line-length" />
+        <error line="157" column="121" source="standard:max-line-length" />
+        <error line="158" column="121" source="standard:max-line-length" />
+        <error line="159" column="121" source="standard:max-line-length" />
+        <error line="160" column="121" source="standard:max-line-length" />
+        <error line="161" column="121" source="standard:max-line-length" />
+        <error line="162" column="121" source="standard:max-line-length" />
+        <error line="163" column="121" source="standard:max-line-length" />
+        <error line="164" column="121" source="standard:max-line-length" />
+        <error line="165" column="121" source="standard:max-line-length" />
+        <error line="166" column="121" source="standard:max-line-length" />
+        <error line="167" column="121" source="standard:max-line-length" />
+        <error line="168" column="121" source="standard:max-line-length" />
+        <error line="169" column="121" source="standard:max-line-length" />
+        <error line="172" column="121" source="standard:max-line-length" />
+        <error line="173" column="121" source="standard:max-line-length" />
+        <error line="174" column="121" source="standard:max-line-length" />
+        <error line="175" column="121" source="standard:max-line-length" />
+        <error line="178" column="121" source="standard:max-line-length" />
+        <error line="191" column="121" source="standard:max-line-length" />
+        <error line="194" column="121" source="standard:max-line-length" />
+        <error line="200" column="121" source="standard:max-line-length" />
+        <error line="201" column="121" source="standard:max-line-length" />
+        <error line="202" column="121" source="standard:max-line-length" />
+        <error line="209" column="121" source="standard:max-line-length" />
+        <error line="214" column="121" source="standard:max-line-length" />
+        <error line="216" column="121" source="standard:max-line-length" />
+        <error line="237" column="121" source="standard:max-line-length" />
+        <error line="240" column="121" source="standard:max-line-length" />
+        <error line="242" column="121" source="standard:max-line-length" />
+        <error line="253" column="121" source="standard:max-line-length" />
+        <error line="258" column="121" source="standard:max-line-length" />
+        <error line="259" column="121" source="standard:max-line-length" />
+        <error line="264" column="121" source="standard:max-line-length" />
+        <error line="271" column="121" source="standard:max-line-length" />
+        <error line="302" column="121" source="standard:max-line-length" />
+        <error line="303" column="121" source="standard:max-line-length" />
+        <error line="304" column="121" source="standard:max-line-length" />
+        <error line="306" column="121" source="standard:max-line-length" />
+        <error line="307" column="121" source="standard:max-line-length" />
+        <error line="333" column="121" source="standard:max-line-length" />
+        <error line="354" column="121" source="standard:max-line-length" />
+        <error line="358" column="121" source="standard:max-line-length" />
+        <error line="362" column="121" source="standard:max-line-length" />
+        <error line="378" column="121" source="standard:max-line-length" />
+        <error line="380" column="121" source="standard:max-line-length" />
+        <error line="382" column="121" source="standard:max-line-length" />
+        <error line="383" column="121" source="standard:max-line-length" />
+        <error line="385" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Starfield.kt">
+        <error line="69" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/TrekPrefs.kt">
+        <error line="129" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/Ui.kt">
+        <error line="67" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="69" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="71" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+</baseline>

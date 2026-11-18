@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/BaseScreen.kt">
+        <error line="132" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/BlockedActivity.kt">
+        <error line="69" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/BubbleView.kt">
+        <error line="165" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/Contacts.kt">
+        <error line="44" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/ConversationListActivity.kt">
+        <error line="45" column="30" source="standard:property-wrapping" />
+        <error line="45" column="120" source="standard:max-line-length" />
+        <error line="143" column="121" source="standard:max-line-length" />
+        <error line="144" column="121" source="standard:max-line-length" />
+        <error line="148" column="121" source="standard:max-line-length" />
+        <error line="179" column="121" source="standard:max-line-length" />
+        <error line="202" column="121" source="standard:max-line-length" />
+        <error line="264" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/ConversationRowView.kt">
+        <error line="101" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/Images.kt">
+        <error line="59" column="68" source="standard:statement-wrapping" />
+        <error line="59" column="113" source="standard:statement-wrapping" />
+        <error line="59" column="119" source="standard:statement-wrapping" />
+        <error line="59" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/MessageStore.kt">
+        <error line="162" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/MmsStore.kt">
+        <error line="49" column="121" source="standard:max-line-length" />
+        <error line="66" column="121" source="standard:max-line-length" />
+        <error line="133" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/Notifier.kt">
+        <error line="43" column="18" source="standard:property-wrapping" />
+        <error line="43" column="121" source="standard:max-line-length" />
+        <error line="47" column="121" source="standard:max-line-length" />
+        <error line="99" column="121" source="standard:max-line-length" />
+        <error line="114" column="121" source="standard:max-line-length" />
+        <error line="161" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/SmsSender.kt">
+        <error line="58" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/ThreadActivity.kt">
+        <error line="174" column="121" source="standard:max-line-length" />
+        <error line="226" column="121" source="standard:max-line-length" />
+        <error line="245" column="120" source="standard:max-line-length" />
+        <error line="251" column="121" source="standard:max-line-length" />
+        <error line="256" column="121" source="standard:max-line-length" />
+        <error line="274" column="120" source="standard:max-line-length" />
+        <error line="276" column="121" source="standard:max-line-length" />
+        <error line="457" column="120" source="standard:max-line-length" />
+        <error line="580" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/mms/MmsBuilder.kt">
+        <error line="62" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/mms/MmsPart.kt">
+        <error line="38" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/mms/PduCodec.kt">
+        <error line="248" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/test/kotlin/com/gungreeneyes/trekui/messages/data/ThreadGrouperTest.kt">
+        <error line="64" column="121" source="standard:max-line-length" />
+    </file>
+</baseline>

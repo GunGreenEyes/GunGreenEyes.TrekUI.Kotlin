@@ -1,7 +1,10 @@
-// Root build: plugin versions come from gradle/libs.versions.toml.
+// Root build: plugin versions come from gradle/libs.versions.toml. AGP and detekt are declared here (not
+// applied) so the build-logic convention plugins, which compile against them, run the same versions; each
+// module applies trekui.android.application or trekui.android.library (build-logic/, docs/BUILD.md).
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 // ./gradlew dist: builds every app (develop debug APK, production release APK + AAB) and copies them into

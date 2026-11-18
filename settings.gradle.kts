@@ -1,4 +1,6 @@
 pluginManagement {
+    // Convention plugins (trekui.android.application, trekui.android.library, trekui.quality): docs/BUILD.md.
+    includeBuild("build-logic")
     repositories { google(); mavenCentral(); gradlePluginPortal() }
 }
 dependencyResolutionManagement {

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<baseline version="1.0">
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/KeyboardLook.kt">
+        <error line="48" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="50" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="52" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="54" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="56" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="58" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="60" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="62" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="68" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="70" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/KeyboardSettingsActivity.kt">
+        <error line="104" column="121" source="standard:max-line-length" />
+        <error line="127" column="121" source="standard:max-line-length" />
+        <error line="150" column="121" source="standard:max-line-length" />
+        <error line="191" column="121" source="standard:max-line-length" />
+        <error line="244" column="72" source="standard:statement-wrapping" />
+        <error line="244" column="88" source="standard:statement-wrapping" />
+        <error line="244" column="99" source="standard:statement-wrapping" />
+        <error line="245" column="82" source="standard:statement-wrapping" />
+        <error line="245" column="107" source="standard:statement-wrapping" />
+        <error line="245" column="118" source="standard:statement-wrapping" />
+        <error line="248" column="74" source="standard:statement-wrapping" />
+        <error line="248" column="95" source="standard:statement-wrapping" />
+        <error line="248" column="106" source="standard:statement-wrapping" />
+        <error line="377" column="121" source="standard:max-line-length" />
+        <error line="384" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/KeyboardTheme.kt">
+        <error line="29" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/KeyboardView.kt">
+        <error line="45" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="49" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="51" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="53" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="58" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="113" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="310" column="121" source="standard:max-line-length" />
+        <error line="358" column="121" source="standard:max-line-length" />
+        <error line="389" column="121" source="standard:max-line-length" />
+        <error line="433" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/TrekKeyboardService.kt">
+        <error line="59" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Key.kt">
+        <error line="33" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="35" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="37" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="39" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="41" column="9" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Layouts.kt">
+        <error line="15" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Mode.kt">
+        <error line="5" column="14" source="standard:enum-wrapping" />
+        <error line="5" column="23" source="standard:enum-wrapping" />
+        <error line="5" column="34" source="standard:enum-wrapping" />
+        <error line="5" column="43" source="standard:enum-wrapping" />
+        <error line="5" column="50" source="standard:enum-wrapping" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/ShiftState.kt">
+        <error line="23" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Sizing.kt">
+        <error line="17" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="19" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="21" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Suggestions.kt">
+        <error line="18" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="20" column="5" source="standard:spacing-between-declarations-with-comments" />
+    </file>
+    <file name="src/test/kotlin/com/gungreeneyes/trekui/keyboard/logic/AlternatesTest.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+    </file>
+    <file name="src/test/kotlin/com/gungreeneyes/trekui/keyboard/logic/FieldRulesTest.kt">
+        <error line="13" column="121" source="standard:max-line-length" />
+        <error line="21" column="121" source="standard:max-line-length" />
+        <error line="22" column="121" source="standard:max-line-length" />
+        <error line="63" column="121" source="standard:max-line-length" />
+    </file>
+    <file name="src/test/kotlin/com/gungreeneyes/trekui/keyboard/logic/SuggestionsTest.kt">
+        <error line="3" column="1" source="standard:import-ordering" />
+    </file>
+</baseline>
