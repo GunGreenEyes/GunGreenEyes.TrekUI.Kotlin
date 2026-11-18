@@ -46,6 +46,10 @@ else
   adb shell settings put system user_rotation 1
 fi
 # Clean status bar for screenshots (demo mode; harmless if unsupported).
+# Offline: a fresh google_apis image downloads and applies Play-services modules and flag syncs in its
+# first minutes, which froze API 34-36 guests mid-run. No scenario needs the network.
+adb shell svc wifi disable >/dev/null 2>&1 || true
+adb shell svc data disable >/dev/null 2>&1 || true
 adb shell settings put global sysui_demo_allowed 1 >/dev/null 2>&1 || true
 adb shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1047 >/dev/null 2>&1 || true
 adb shell am broadcast -a com.android.systemui.demo -e command battery -e level 100 -e plugged false >/dev/null 2>&1 || true
