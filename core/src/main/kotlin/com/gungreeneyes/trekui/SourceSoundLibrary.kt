@@ -1,18 +1,15 @@
-package com.gungreeneyes.trekui;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+package com.gungreeneyes.trekui
 
 /**
  * The downloadable source sound library (395 tk_* clips): ids, neutral display labels, and the original
  * file each clip is cut from (as named on its public source page). The app ships none of these
  * recordings; they are fetched on request through assets/sounds/manifest.json (see docs/SOUNDS.md).
+ *
+ * Only [Sfx] reads these tables, so they are `internal` to `:core`.
  */
-final class SourceSoundLibrary {
-    private SourceSoundLibrary() {}
-
-    static final String[] NAMES = {
+internal object SourceSoundLibrary {
+    @JvmField
+    val NAMES = arrayOf(
         "tk_cvox_0600_regeneration_cycle_complete", "tk_cvox_accessing_library_computer_data", "tk_cvox_affirmative_1",
         "tk_cvox_affirmative_2", "tk_cvox_ambient_bridge_1", "tk_cvox_ambient_bridge_2", "tk_cvox_ambient_bridge_3",
         "tk_cvox_ambient_bridge_4", "tk_cvox_ambient_bridge_5", "tk_cvox_ambient_bridge_6", "tk_cvox_ambient_bridge_7",
@@ -110,9 +107,11 @@ final class SourceSoundLibrary {
         "tk_amb_data_s_room", "tk_amb_engine_1", "tk_amb_engine_2", "tk_amb_engine_3", "tk_amb_engineering_hum", "tk_amb_hum",
         "tk_amb_jeffreys_tube", "tk_amb_lab", "tk_amb_room_1", "tk_amb_room_2", "tk_amb_sickbay_1", "tk_amb_sickbay_2",
         "tk_xvoy_ds9_intercom", "tk_xvoy_ds9_odo_s_console_1", "tk_xvoy_ds9_odo_s_console_2", "tk_xvoy_ds9_ops_button_1",
-        "tk_xvoy_ds9_ops_button_2", "tk_xvoy_ds9_shuttle_beep", "tk_xvoy_voy_hail"};
+        "tk_xvoy_ds9_ops_button_2", "tk_xvoy_ds9_shuttle_beep", "tk_xvoy_voy_hail",
+    )
 
-    static final String[] LABELS = {
+    @JvmField
+    val LABELS = arrayOf(
         "COMPUTER: 0600 REGENERATION CYCLE COMPLETE", "COMPUTER: ACCESSING LIBRARY COMPUTER DATA", "COMPUTER: AFFIRMATIVE 1",
         "COMPUTER: AFFIRMATIVE 2", "COMPUTER: AMBIENT BRIDGE 1", "COMPUTER: AMBIENT BRIDGE 2", "COMPUTER: AMBIENT BRIDGE 3",
         "COMPUTER: AMBIENT BRIDGE 4", "COMPUTER: AMBIENT BRIDGE 5", "COMPUTER: AMBIENT BRIDGE 6", "COMPUTER: AMBIENT BRIDGE 7",
@@ -221,9 +220,11 @@ final class SourceSoundLibrary {
         "AMBIENT: ACCESS TUBE (40 S EXCERPT)", "AMBIENT: LAB (40 S EXCERPT)", "AMBIENT: ROOM 1 (40 S EXCERPT)",
         "AMBIENT: ROOM 2 (40 S EXCERPT)", "AMBIENT: SICKBAY 1 (40 S EXCERPT)", "AMBIENT: SICKBAY 2 (40 S EXCERPT)",
         "STATION: INTERCOM", "STATION: SECURITY CONSOLE 1", "STATION: SECURITY CONSOLE 2", "STATION: OPS BUTTON 1",
-        "STATION: OPS BUTTON 2", "STATION: SHUTTLE BEEP", "STATION: STARSHIP HAIL"};
+        "STATION: OPS BUTTON 2", "STATION: SHUTTLE BEEP", "STATION: STARSHIP HAIL",
+    )
 
-    static final String[] ORIGINALS = {
+    @JvmField
+    val ORIGINALS = arrayOf(
         "0600_regeneration_cycle_complete.mp3 (trekcore)", "accessing_library_computer_data.mp3 (trekcore)",
         "affirmative_1.mp3 (trekcore)", "affirmative_2.mp3 (trekcore)", "ambient_bridge_1.mp3 (trekcore)",
         "ambient_bridge_2.mp3 (trekcore)", "ambient_bridge_3.mp3 (trekcore)", "ambient_bridge_4.mp3 (trekcore)",
@@ -361,10 +362,12 @@ final class SourceSoundLibrary {
         "tng_jeffreys_tube.mp3 (trekcore)", "tng_lab.mp3 (trekcore)", "tng_room_1.mp3 (trekcore)", "tng_room_2.mp3 (trekcore)",
         "tng_sickbay_1.mp3 (trekcore)", "tng_sickbay_2.mp3 (trekcore)", "ds9_intercom.mp3 (trekcore)",
         "ds9_odo_s_console_1.mp3 (trekcore)", "ds9_odo_s_console_2.mp3 (trekcore)", "ds9_ops_button_1.mp3 (trekcore)",
-        "ds9_ops_button_2.mp3 (trekcore)", "ds9_shuttle_beep.mp3 (trekcore)", "voy_hail.mp3 (trekcore)"};
+        "ds9_ops_button_2.mp3 (trekcore)", "ds9_shuttle_beep.mp3 (trekcore)", "voy_hail.mp3 (trekcore)",
+    )
 
     /** Clips longer than 5 s: played through MediaPlayer, since SoundPool may cut long samples short. */
-    static final Set<String> LONG = new HashSet<>(Arrays.asList(
+    @JvmField
+    val LONG: Set<String> = hashSetOf(
         "tk_cvox_ambient_bridge_8", "tk_cvox_ambient_bridge_21", "tk_cvox_engineering", "tk_cvox_evacuate_bridge",
         "tk_cvox_helm", "tk_cvox_implement_omega_directive", "tk_cvox_life_support_failure_all_decks_abandon",
         "tk_cvox_life_support_restored_level_ten", "tk_cvox_ops", "tk_cvox_padd", "tk_cvox_proximity_alert",
@@ -380,5 +383,6 @@ final class SourceSoundLibrary {
         "tk_misc_flyby_2", "tk_misc_flyby_3", "tk_misc_phaser_strike", "tk_misc_powering_down", "tk_misc_tractor_beam_2",
         "tk_amb_bridge_1", "tk_amb_bridge_2", "tk_amb_bridge_3", "tk_amb_brig_2", "tk_amb_brig", "tk_amb_cargobay",
         "tk_amb_command_center", "tk_amb_data_s_room", "tk_amb_engine_1", "tk_amb_engineering_hum", "tk_amb_jeffreys_tube",
-        "tk_amb_lab", "tk_amb_room_1", "tk_amb_room_2", "tk_amb_sickbay_1", "tk_amb_sickbay_2"));
+        "tk_amb_lab", "tk_amb_room_1", "tk_amb_room_2", "tk_amb_sickbay_1", "tk_amb_sickbay_2",
+    )
 }
