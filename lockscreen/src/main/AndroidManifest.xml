@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
 
-        <!-- The wake screen: shown over the keyguard (showWhenLocked; window flags on Android 8.0), in its
+        <!-- The wake screen: shown over the keyguard (showWhenLocked; window flags on Android 6.0-8.0), in its
              own task so unlocking or BACK reveals exactly what was there before. -->
         <activity
             android:name=".WakeActivity"

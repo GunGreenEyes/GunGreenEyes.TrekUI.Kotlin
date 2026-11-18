@@ -26,6 +26,13 @@ class SuggestionsTest {
         assertThat(Suggestions.rank("al", typed, dict, 3, EN)[0]).isEqualTo("alpha")
     }
 
+    /** TUK-T14: case variants of one dictionary word keep the higher frequency and the first spelling. */
+    @Test
+    fun dictionaryCaseVariantsKeepTheHigherFrequency() {
+        val dict = linkedMapOf("Alps" to 10, "alps" to 300, "alpine" to 150)
+        assertThat(Suggestions.rank("al", null, dict, 2, EN)).containsExactly("Alps", "alpine").inOrder()
+    }
+
     @Test
     fun tiesGoToShorterThenAlphabetical() {
         val typed = hashMapOf("cart" to 1, "car" to 1, "cab" to 1)

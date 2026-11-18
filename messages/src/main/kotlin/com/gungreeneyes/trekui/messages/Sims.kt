@@ -43,7 +43,7 @@ internal object Sims {
     /** The SmsManager for [subId]; the default SIM's for -1 / invalid. */
     @Suppress("DEPRECATION")
     fun manager(c: Context, subId: Int): SmsManager {
-        val valid = subId != SubscriptionManager.INVALID_SUBSCRIPTION_ID && subId >= 0
+        val valid = subId >= 0 // INVALID_SUBSCRIPTION_ID is -1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val base = c.getSystemService(SmsManager::class.java)
             return if (valid) base.createForSubscriptionId(subId) else base

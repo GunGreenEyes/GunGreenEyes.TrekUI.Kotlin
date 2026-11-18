@@ -47,5 +47,16 @@ internal class BlockList(entries: Collection<String?>?) {
             val t = rule?.javaTrim() ?: return false
             return t.endsWith("*") && PhoneNumbers.normalize(t.dropLast(1)).isNotEmpty()
         }
+
+        /**
+         * True when [entry] is kept in this app's own rules rather than the system block list: prefix rules
+         * always, and every entry when the device has no system list ([systemList] false: Android 6.0, API 23,
+         * which predates BlockedNumberContract).
+         */
+        fun storedLocally(entry: String?, systemList: Boolean): Boolean = !systemList || isPrefixRule(entry)
+
+        /** The text an entry is stored as locally: prefix rules trimmed, numbers normalised like the system list. */
+        fun localForm(entry: String?): String =
+            if (isPrefixRule(entry)) entry?.javaTrim().orEmpty() else PhoneNumbers.normalize(entry)
     }
 }

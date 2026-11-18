@@ -48,7 +48,8 @@ internal class WordStore private constructor(c: Context) {
     /** Counts one use of [word] and schedules a save. */
     @Synchronized
     fun learn(word: String) {
-        typed.merge(word.lowercase(Locale.ROOT), 1) { a, b -> a + b }
+        val key = word.lowercase(Locale.ROOT)
+        typed[key] = (typed[key] ?: 0) + 1
         if (typed.size > MAX_WORDS) prune()
         main.removeCallbacks(saveTask)
         main.postDelayed(saveTask, SAVE_DELAY_MS)
@@ -110,7 +111,7 @@ internal class WordStore private constructor(c: Context) {
                 }
             }
             synchronized(this) {
-                read.forEach { (w, n) -> typed.merge(w, n) { a, b -> a + b } }
+                read.forEach { (w, n) -> typed[w] = (typed[w] ?: 0) + n }
                 loaded = true
             }
         }

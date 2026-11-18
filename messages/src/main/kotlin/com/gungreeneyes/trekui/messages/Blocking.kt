@@ -2,6 +2,7 @@ package com.gungreeneyes.trekui.messages
 
 import android.content.ContentValues
 import android.content.Context
+import android.os.Build
 import android.provider.BlockedNumberContract
 import androidx.core.content.edit
 import com.gungreeneyes.trekui.messages.data.BlockList
@@ -13,11 +14,19 @@ import com.gungreeneyes.trekui.messages.data.javaTrim
  * the dialer; only the default SMS / dialer app may write it); prefix rules ending in `*` are kept
  * in this app's settings because the system list cannot hold them. [isBlocked] combines both via
  * the pure [BlockList]. Blocking calls; use off the main thread.
+ *
+ * Android 6.0 (API 23) has no system block list (BlockedNumberContract is API 24): there every entry,
+ * exact numbers included, is kept in this app's own rules, so blocking works the same, only not shared
+ * with the dialer.
  */
 internal object Blocking {
+    /** True below Android 7.0, where every entry (numbers too) lives in this app's own list. */
+    fun localOnly(): Boolean = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+
     /** True if the system block list can be used by this app right now. */
     fun systemAvailable(c: Context): Boolean = try {
-        BlockedNumberContract.canCurrentUserBlockNumbers(c) && SmsRole.isDefault(c)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+            BlockedNumberContract.canCurrentUserBlockNumbers(c) && SmsRole.isDefault(c)
     } catch (e: RuntimeException) {
         false
     }
@@ -25,7 +34,7 @@ internal object Blocking {
     /** Every entry: system-blocked numbers, then this app's prefix rules. */
     fun entries(c: Context): List<String> {
         val out = ArrayList<String>()
-        if (systemAvailable(c)) {
+        if (systemAvailable(c) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 c.contentResolver.query(
                     BlockedNumberContract.BlockedNumbers.CONTENT_URI,
@@ -42,7 +51,7 @@ internal object Blocking {
     /** True if messages from [address] must be dropped. */
     fun isBlocked(c: Context, address: String?): Boolean {
         if (address.isNullOrEmpty()) return false
-        if (systemAvailable(c)) {
+        if (systemAvailable(c) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 if (BlockedNumberContract.isBlocked(c, address)) return true
             } catch (ignored: RuntimeException) {
@@ -55,16 +64,18 @@ internal object Blocking {
     /**
      * Blocks [entry]: a prefix rule (`+1900*`) is stored locally, a number in the system list.
      *
+     * On Android 6.0 numbers are stored locally too ([BlockList.storedLocally]).
+     *
      * @return false if the system list is unavailable (Messages is not the default SMS app)
      */
     fun block(c: Context, entry: String): Boolean {
-        if (BlockList.isPrefixRule(entry)) {
+        if (BlockList.storedLocally(entry, systemList = !localOnly())) {
             val rules = HashSet(prefixRules(c))
-            rules.add(entry.javaTrim())
+            rules.add(BlockList.localForm(entry))
             saveRules(c, rules)
             return true
         }
-        if (!systemAvailable(c)) return false
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !systemAvailable(c)) return false
         val v = ContentValues().apply {
             put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, PhoneNumbers.normalize(entry))
         }
@@ -82,7 +93,7 @@ internal object Blocking {
             saveRules(c, rules)
             return
         }
-        if (!systemAvailable(c)) return
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !systemAvailable(c)) return
         try {
             BlockedNumberContract.unblock(c, entry)
         } catch (ignored: RuntimeException) {

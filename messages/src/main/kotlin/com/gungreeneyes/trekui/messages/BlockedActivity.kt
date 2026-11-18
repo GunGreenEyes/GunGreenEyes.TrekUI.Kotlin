@@ -45,7 +45,8 @@ class BlockedActivity : BaseScreen() {
             val l = list
             if (entries == null || l == null) return@load
             l.removeAllViews()
-            if (!Blocking.systemAvailable(this)) {
+            // Android 6.0 keeps every entry in the app's own list, so it needs no SMS role to block
+            if (!Blocking.localOnly() && !Blocking.systemAvailable(this)) {
                 val note = MessagesLook.text(this, getString(R.string.block_needs_default), 15f, MessagesLook.alert())
                 note.setPadding(0, 0, 0, MessagesLook.dp(this, MessagesLook.M))
                 l.addView(note)

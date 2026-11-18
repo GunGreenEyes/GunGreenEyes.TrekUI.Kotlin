@@ -82,6 +82,21 @@ class RedactionTest {
         assertThat(Redaction.listable(false, false, false, 3, true)).isFalse()
     }
 
+    /** TUK-T14: Android 6.0 has no importance; the priority maps the way Android 7.0 migrated it. */
+    @Test
+    fun priorityMapsToImportanceOnAndroid6() {
+        assertThat(Redaction.importanceFromPriority(-2)).isEqualTo(1)
+        assertThat(Redaction.importanceFromPriority(-1)).isEqualTo(2)
+        assertThat(Redaction.importanceFromPriority(0)).isEqualTo(3)
+        assertThat(Redaction.importanceFromPriority(1)).isEqualTo(4)
+        assertThat(Redaction.importanceFromPriority(2)).isEqualTo(5)
+        assertThat(Redaction.importanceFromPriority(-9)).isEqualTo(1)
+        assertThat(Redaction.importanceFromPriority(9)).isEqualTo(5)
+        // a PRIORITY_MIN notification stays off the lock screen, a default one is listed
+        assertThat(Redaction.listable(false, false, false, Redaction.importanceFromPriority(-2), false)).isFalse()
+        assertThat(Redaction.listable(false, false, false, Redaction.importanceFromPriority(0), false)).isTrue()
+    }
+
     private companion object {
         const val PUB = Redaction.PUBLIC
         const val PRIV = Redaction.PRIVATE

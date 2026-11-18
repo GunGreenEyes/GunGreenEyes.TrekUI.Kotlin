@@ -40,20 +40,29 @@ internal object Suggestions {
         dictionary?.forEach { (w, freq) ->
             val lw = w.lowercase(locale)
             if (!lw.startsWith(p) || lw == p) return@forEach
-            scores.merge(lw, maxOf(0, freq ?: 0)) { a, b -> maxOf(a, b) }
-            display.putIfAbsent(lw, w)
+            scores.keepMax(lw, maxOf(0, freq ?: 0))
+            display.getOrPut(lw) { w }
         }
         typed?.forEach { (word, uses) ->
             val lw = word.lowercase(locale)
             if (!lw.startsWith(p) || lw == p) return@forEach
             val s = minOf(TYPED_CAP, maxOf(0, uses ?: 0) * TYPED_WEIGHT)
-            scores.merge(lw, s) { a, b -> a + b }
-            display.putIfAbsent(lw, word)
+            scores.add(lw, s)
+            display.getOrPut(lw) { word }
         }
         val order = compareByDescending<String> { scores.getValue(it) }
             .thenBy { it.length }
             .thenBy { it }
         return scores.keys.sortedWith(order).take(limit).map { matchCase(prefix, display.getValue(it), locale) }
+    }
+
+    // Map.merge / putIfAbsent are API 24 (Java 8 default methods): plain map updates keep Android 6.0 working.
+    private fun MutableMap<String, Int>.keepMax(key: String, value: Int) {
+        this[key] = maxOf(this[key] ?: value, value)
+    }
+
+    private fun MutableMap<String, Int>.add(key: String, value: Int) {
+        this[key] = (this[key] ?: 0) + value
     }
 
     /** [word] in the capitalisation of [prefix]: ALL CAPS, Capitalised, or as stored. */

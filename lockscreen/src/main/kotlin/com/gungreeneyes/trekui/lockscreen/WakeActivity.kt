@@ -42,9 +42,10 @@ import kotlin.math.roundToInt
  * PREVIEW from settings. It draws [WakeView] and wires its controls to the system.
  *
  * **Security.** This activity is a cosmetic layer, never a lock. It is shown with `setShowWhenLocked`
- * (window flags on Android 8.0), which leaves the real keyguard in place underneath; it never calls a
- * "dismiss without credentials" API. Unlocking is always [KeyguardManager.requestDismissKeyguard]: the
- * system asks for the PIN, pattern, password or biometric and only then lets anything behind it show. A
+ * (window flags on Android 6.0-8.0), which leaves the real keyguard in place underneath; it never calls a
+ * "dismiss without credentials" API. Unlocking is always [KeyguardManager.requestDismissKeyguard] (on
+ * Android 6.0-7.1, which lack it, `FLAG_DISMISS_KEYGUARD`: see [legacyDismissKeyguard]): the system asks for
+ * the PIN, pattern, password or biometric and only then lets anything behind it show. A
  * notification's intent, the purchase screen and the non-secure camera are only opened after that
  * succeeds. CAMERA uses [MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE] (the camera app's locked mode,
  * which cannot open the gallery), and TORCH only switches the flash. BACK simply reveals the system
@@ -59,6 +60,13 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
     private var preview = false
     private var started = false
     private var receiver: BroadcastReceiver? = null
+
+    // Android 6.0-7.1 unlock ([legacyDismissKeyguard]): what runs once unlocked, the USER_PRESENT receiver,
+    // and whether the system bouncer has taken the focus since the dismissal was asked for
+    private var legacyAfter: (() -> Unit)? = null
+    private var userPresent: BroadcastReceiver? = null
+    private var legacyBouncerShown = false
+    private val legacyGiveUp = Runnable { if (keyguardLocked()) endLegacyDismiss() else legacyUnlocked() }
     private var batteryPercent = -1
     private var charging = false
     private var sessions: MediaSessionManager? = null
@@ -88,7 +96,7 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
         torchCamera = findTorchCamera()
     }
 
-    /** Shows the window over the keyguard and turns the screen on (attributes on 8.1+, flags on 8.0). */
+    /** Shows the window over the keyguard and turns the screen on (attributes on 8.1+, flags on 6.0-8.0). */
     @Suppress("DEPRECATION")
     private fun showOverKeyguard() {
         if (Build.VERSION.SDK_INT >= 27) {
@@ -128,6 +136,10 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
     override fun onResume() {
         super.onResume()
         val km = getSystemService(KeyguardManager::class.java)
+        if (legacyAfter != null && km != null && !km.isKeyguardLocked) {
+            legacyUnlocked() // Android 6.0-7.1: unlocked through the bouncer [legacyDismissKeyguard] asked for
+            return
+        }
         if (!preview && km != null && !km.isKeyguardLocked) {
             finish() // already unlocked: never sit on top of an unlocked phone
             return
@@ -153,6 +165,33 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
             receiver = null
         }
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        endLegacyDismiss()
+        super.onDestroy()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (legacyAfter == null) return
+        if (!hasFocus) {
+            legacyBouncerShown = true
+        } else if (legacyBouncerShown) {
+            legacyBouncerClosed()
+        }
+    }
+
+    /**
+     * Android 6.0-7.1: the system bouncer gave the focus back. Stop asking for the dismissal; unless
+     * USER_PRESENT (or an unlocked keyguard) shows it succeeded within the grace time, it was cancelled
+     * and the wake screen stays up, as after a cancelled requestDismissKeyguard.
+     */
+    private fun legacyBouncerClosed() {
+        legacyBouncerShown = false
+        clearDismissFlag()
+        main.removeCallbacks(legacyGiveUp)
+        main.postDelayed(legacyGiveUp, LEGACY_UNLOCK_GRACE_MS)
     }
 
     override fun onItemsChanged() {
@@ -405,6 +444,10 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
             finish()
             return
         }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            legacyDismissKeyguard(after)
+            return
+        }
         km.requestDismissKeyguard(
             this,
             object : KeyguardManager.KeyguardDismissCallback() {
@@ -416,9 +459,58 @@ class WakeActivity : Activity(), WakeView.Actions, LockHub.Observer {
         )
     }
 
+    /**
+     * Android 6.0-7.1 have no requestDismissKeyguard. `FLAG_DISMISS_KEYGUARD` on this show-when-locked window
+     * makes the system show its own bouncer for a secure keyguard, so the PIN / pattern / password is still
+     * required; [after] runs only on `ACTION_USER_PRESENT`, which the system sends once the user has
+     * unlocked. A cancelled bouncer clears the flag again ([onWindowFocusChanged]).
+     */
+    @Suppress("DEPRECATION")
+    private fun legacyDismissKeyguard(after: (() -> Unit)?) {
+        legacyAfter = after ?: {}
+        legacyBouncerShown = false
+        if (userPresent == null) {
+            val r = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) = legacyUnlocked()
+            }
+            userPresent = r
+            ContextCompat.registerReceiver(
+                this, r, IntentFilter(Intent.ACTION_USER_PRESENT), ContextCompat.RECEIVER_NOT_EXPORTED,
+            )
+        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+    }
+
+    /** The legacy unlock succeeded: runs what waited for it, once, and closes the wake screen. */
+    private fun legacyUnlocked() {
+        val then = legacyAfter ?: return
+        endLegacyDismiss()
+        then()
+        finish()
+    }
+
+    private fun endLegacyDismiss() {
+        main.removeCallbacks(legacyGiveUp)
+        legacyAfter = null
+        legacyBouncerShown = false
+        userPresent?.let {
+            unregisterReceiver(it)
+            userPresent = null
+        }
+        clearDismissFlag()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun clearDismissFlag() = window.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+
+    private fun keyguardLocked(): Boolean = getSystemService(KeyguardManager::class.java)?.isKeyguardLocked == true
+
     companion object {
         /** Boolean extra: started from settings to preview (the device is unlocked; UNLOCK just closes it). */
         internal const val EXTRA_PREVIEW = "preview"
+
+        /** Android 6.0-7.1: how long after the bouncer closes a USER_PRESENT still counts as its unlock. */
+        private const val LEGACY_UNLOCK_GRACE_MS = 1000L
 
         private var showing = WeakReference<WakeActivity>(null)
 

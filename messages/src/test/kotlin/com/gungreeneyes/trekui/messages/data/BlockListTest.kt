@@ -38,4 +38,24 @@ class BlockListTest {
         assertThat(BlockList.isPrefixRule("*")).isFalse()
         assertThat(BlockList.isPrefixRule("+44")).isFalse()
     }
+
+    /** TUK-T14: Android 6.0 has no system block list, so numbers are kept in the app's own rules there. */
+    @Test
+    fun withoutASystemListEveryEntryIsKeptLocally() {
+        assertThat(BlockList.storedLocally("+1 555 010 2345", systemList = false)).isTrue()
+        assertThat(BlockList.storedLocally("+1900*", systemList = false)).isTrue()
+        assertThat(BlockList.storedLocally("+1 555 010 2345", systemList = true)).isFalse()
+        assertThat(BlockList.storedLocally("+1900*", systemList = true)).isTrue()
+    }
+
+    @Test
+    fun localFormMatchesLikeTheSystemList() {
+        val number = BlockList.localForm(" +1 (555) 010-2345 ")
+        assertThat(number).isEqualTo(PhoneNumbers.normalize("+1 (555) 010-2345"))
+        assertThat(BlockList.localForm(" +1900* ")).isEqualTo("+1900*")
+        val b = BlockList(listOf(number, BlockList.localForm("PROMO*")))
+        assertThat(b.matches("(555) 010-2345")).isTrue()
+        assertThat(b.matches("PromoDeals")).isTrue()
+        assertThat(b.matches("5550102346")).isFalse()
+    }
 }

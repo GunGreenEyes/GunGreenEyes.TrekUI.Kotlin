@@ -61,8 +61,8 @@ internal object ThreadGrouper {
      */
     fun merge(sms: List<MessageItem>?, mms: List<MessageItem>?): List<MessageItem> {
         val unique = LinkedHashMap<String, MessageItem>()
-        sms?.forEach { unique.putIfAbsent(it.uid, it) }
-        mms?.forEach { unique.putIfAbsent(it.uid, it) }
+        sms?.forEach { unique.getOrPut(it.uid) { it } }
+        mms?.forEach { unique.getOrPut(it.uid) { it } }
         return unique.values.sortedWith(CHRONOLOGICAL)
     }
 

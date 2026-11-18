@@ -10,7 +10,7 @@ import android.provider.Telephony
 
 /**
  * The default-SMS-app role: whether Messages holds it and the system intent that asks the user for it
- * ([RoleManager.ROLE_SMS] on API 29+, [Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT] on 26-28),
+ * ([RoleManager.ROLE_SMS] on API 29+, [Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT] on 23-28),
  * plus the runtime permissions still missing. Only the default SMS app may write to the SMS/MMS provider
  * and receives SMS_DELIVER / WAP_PUSH_DELIVER; reading works with READ_SMS alone.
  */

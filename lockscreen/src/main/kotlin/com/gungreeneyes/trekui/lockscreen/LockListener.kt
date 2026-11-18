@@ -196,9 +196,12 @@ class LockListener : NotificationListenerService() {
             var importance = Redaction.IMPORTANCE_UNSPECIFIED
             var channelVisibility = Redaction.NO_OVERRIDE
             var suspended = false
-            if (ranking != null && ranking.getRanking(sbn.key, r)) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                // Android 6.0: no ranking importance, so the notification's own priority stands in
+                importance = Redaction.importanceFromPriority(legacyPriority(n))
+            } else if (ranking != null && ranking.getRanking(sbn.key, r)) {
                 importance = r.importance
-                r.channel?.let { channelVisibility = it.lockscreenVisibility }
+                channelVisibility = channelVisibility(r)
                 if (Build.VERSION.SDK_INT >= 28) suspended = r.isSuspended
             }
             val media = n.extras?.containsKey(Notification.EXTRA_MEDIA_SESSION) == true
@@ -238,6 +241,18 @@ class LockListener : NotificationListenerService() {
             pkg.substringAfterLast('.').uppercase(Locale.ROOT)
         }
     }
+
+    /** The lock-screen visibility of the notification's channel; channels are API 26, so none before. */
+    private fun channelVisibility(r: Ranking): Int =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            r.channel?.lockscreenVisibility ?: Redaction.NO_OVERRIDE
+        } else {
+            Redaction.NO_OVERRIDE
+        }
+
+    /** `Notification.priority`: deprecated from API 26, but the only importance signal on API 23. */
+    @Suppress("DEPRECATION")
+    private fun legacyPriority(n: Notification): Int = n.priority
 
     companion object {
         /** Most notifications kept for the wake screen. */

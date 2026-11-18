@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import com.gungreeneyes.trekui.messages.data.MessageItem
 import com.gungreeneyes.trekui.messages.data.PhoneNumbers
 import com.gungreeneyes.trekui.messages.data.ThreadGrouper
+import java.util.Collections
 
 /**
  * Reads and writes the system SMS/MMS store (Telephony provider): the conversation list, one thread's
@@ -143,7 +144,7 @@ internal object MessageStore {
         val out = ArrayList<MessageItem>()
         out.addAll(smsWhere(c, Telephony.Sms.BODY + " LIKE ? ESCAPE '\\'", arrayOf(like), SEARCH_LIMIT))
         out.addAll(MmsStore.search(c, like, SEARCH_LIMIT))
-        out.sortWith(ThreadGrouper.CHRONOLOGICAL.reversed())
+        out.sortWith(Collections.reverseOrder(ThreadGrouper.CHRONOLOGICAL)) // Comparator.reversed is API 24
         return out
     }
 

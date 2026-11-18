@@ -46,6 +46,19 @@ object Redaction {
     /** `NotificationManager.IMPORTANCE_UNSPECIFIED`: no channel information. */
     const val IMPORTANCE_UNSPECIFIED = -1000
 
+    /** `Notification.PRIORITY_MIN` and `PRIORITY_MAX`; priority + [PRIORITY_TO_IMPORTANCE] is the importance. */
+    private const val PRIORITY_MIN = -2
+    private const val PRIORITY_MAX = 2
+    private const val PRIORITY_TO_IMPORTANCE = 3
+
+    /**
+     * Android 6.0 (API 23) has no ranking importance, only `Notification.priority` (PRIORITY_MIN -2 ..
+     * PRIORITY_MAX 2). This maps it the way Android 7.0 itself migrated priorities to importance:
+     * MIN -> 1 (minimised), LOW -> 2, DEFAULT -> 3, HIGH -> 4, MAX -> 5.
+     */
+    fun importanceFromPriority(priority: Int): Int =
+        priority.coerceIn(PRIORITY_MIN, PRIORITY_MAX) + PRIORITY_TO_IMPORTANCE
+
     /**
      * The more private of a notification's visibility and its channel's lock-screen visibility. Unknown
      * values are treated as PRIVATE.
