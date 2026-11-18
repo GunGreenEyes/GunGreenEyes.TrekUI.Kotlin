@@ -1,0 +1,22 @@
+TrekUI Lock Screen shows a console drawn in your TrekUI interface whenever you wake a locked phone: a starship console or a warm Pipe Lounge, in the colour theme you chose.
+
+AT A GLANCE
+• A big clock, the date and a decimal date
+• Your next alarm and the battery level
+• Media controls for whatever is playing
+• Your notifications, with sensitive content hidden unless you allow it
+• CAMERA and TORCH keys
+
+A LOOK, NOT A LOCK
+Swipe up or tap UNLOCK to go to your phone's own lock screen. Your PIN, pattern, fingerprint or face unlock always does the unlocking: TrekUI Lock Screen never replaces, bypasses or weakens it. It stays out of the way during calls and closes as soon as the phone is unlocked another way.
+
+ONE SUITE
+Follows the TrekUI Launcher's interface and colour theme when it is installed, and offers its own interface picker when it is not. Turn it on or off from the launcher or from the app itself.
+
+PRIVATE BY DESIGN
+No accounts, no ads, no analytics, no tracking. Notifications are read only to draw them on the wake screen and are kept in memory only. Nothing is sent to the developer.
+
+FREE TO TRY, $0.99 TO KEEP
+Every feature works for free in 24-hour sessions. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
+
+TrekUI Lock Screen is an independent, original design. It ships no third-party recordings or artwork.

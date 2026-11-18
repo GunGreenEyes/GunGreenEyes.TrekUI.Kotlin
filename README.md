@@ -185,7 +185,7 @@ app/src/test/                           JVM + Robolectric unit/screenshot tests
 app/src/androidTest/                    instrumented Given/When/Then scenarios with screen capture
 assets/                                 generated screenshots/videos (gitignored; published to GitHub Pages)
 docs/                                   architecture, build, testing, release, Play Store
-fastlane/metadata/                      Play Store listing text and images
+fastlane/metadata/<app>/                Play Store listing text and images, one folder per app
 scripts/                                setup (bootstrap), avd + capture (emulator matrix), release, BlueStacks
 site/                                   GitHub Pages product site
 tools/                                  art, glyph, font and sound-catalogue generators (Python/Node)

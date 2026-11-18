@@ -9,11 +9,12 @@
 
 .DESCRIPTION
   1. version.properties: versionCode + 1, versionName = the new version
-  2. fastlane/metadata/android/en-US/changelogs/<versionCode>.txt: release notes (max 500 chars, Play's
-     limit). Without -Notes/-NotesFile they are built from commit subjects since the last tag.
+  2. fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt for every app (launcher, messages,
+     keyboard, lockscreen): release notes (max 500 chars, Play's limit). Without -Notes/-NotesFile they are
+     built from commit subjects since the last tag. scripts/release/ship.* then writes per-app notes.
   3. fastlane/release-history.json: adds {versionCode, versionName, date} (the site's changelog page)
   4. commits those three files and creates the annotated tag v<versionName>
-  Then push with:  git push origin main v<versionName>   (the tag starts .github/workflows/release.yml)
+  Then push and start the release with scripts/release/ship.ps1 (which runs this script for you).
 #>
 param(
   [Parameter(Mandatory = $true, Position = 0)][string]$Bump,
@@ -76,11 +77,18 @@ $props = $props | ForEach-Object {
 }
 [System.IO.File]::WriteAllText($propsPath, (($props -join "`n") + "`n"), $utf8)
 
-# 2. changelog
-$changelogRel = "fastlane/metadata/android/en-US/changelogs/$newCode.txt"
-$changelog = Join-Path $Root $changelogRel
-New-Item -ItemType Directory -Force (Split-Path $changelog) | Out-Null
-[System.IO.File]::WriteAllText($changelog, ($Notes -replace "`r`n", "`n") + "`n", $utf8)
+# 2. changelog, one per app's metadata folder (all apps share one versionCode)
+$changelogRels = @()
+foreach ($app in (Get-ChildItem (Join-Path $Root "fastlane/metadata") -Directory)) {
+  $meta = Join-Path $app.FullName "android/en-US"
+  if (-not (Test-Path $meta)) { continue }
+  $rel = "fastlane/metadata/$($app.Name)/android/en-US/changelogs/$newCode.txt"
+  $changelog = Join-Path $Root $rel
+  New-Item -ItemType Directory -Force (Split-Path $changelog) | Out-Null
+  [System.IO.File]::WriteAllText($changelog, ($Notes -replace "`r`n", "`n") + "`n", $utf8)
+  $changelogRels += $rel
+}
+if ($changelogRels.Count -eq 0) { throw "No fastlane/metadata/<app>/android/en-US folders found." }
 
 # 3. release history
 $historyRel = "fastlane/release-history.json"
@@ -96,18 +104,19 @@ $history = @($entry) + $history
 [System.IO.File]::WriteAllText($historyPath, (ConvertTo-Json -InputObject $history -Depth 3) + "`n", $utf8)
 
 Write-Host "Version $oldName ($oldCode) -> $newName ($newCode)"
-Write-Host "Release notes ($changelogRel):"
+Write-Host "Release notes ($($changelogRels -join ', ')):"
 Write-Host $Notes
 
 if (-not $NoCommit) {
   $msg = "Release $newName ($newCode)"
   if ($Ticket) { $msg = "${Ticket}: $msg" }
-  git add version.properties $changelogRel $historyRel
-  git commit -q -m $msg -- version.properties $changelogRel $historyRel
+  git add version.properties @changelogRels $historyRel
+  git commit -q -m $msg -- version.properties @changelogRels $historyRel
   if ($LASTEXITCODE -ne 0) { throw "git commit failed" }
   git tag -a $tag -m "TrekUI $newName ($newCode)" -m $Notes
   if ($LASTEXITCODE -ne 0) { throw "git tag failed" }
   Write-Host ""
   Write-Host "Committed and tagged $tag (not pushed). To publish the release run:"
-  Write-Host "  git push origin main $tag"
+  Write-Host "  git push origin main $tag; gh workflow run release.yml --ref $tag"
+  Write-Host "(scripts/release/ship.ps1 does all of this in one step.)"
 }

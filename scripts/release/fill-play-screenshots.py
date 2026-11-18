@@ -83,7 +83,7 @@ def fit_for_play(img):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--captures", default=os.path.join(ROOT, "assets"))
-    ap.add_argument("--metadata", default=os.path.join(ROOT, "fastlane", "metadata", "android", "en-US"))
+    ap.add_argument("--metadata", default=os.path.join(ROOT, "fastlane", "metadata", "launcher", "android", "en-US"))
     a = ap.parse_args()
 
     found = runs(a.captures)

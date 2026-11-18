@@ -1,0 +1,21 @@
+TrekUI Messages is a complete text messaging app drawn in the TrekUI interfaces. Conversations, threads and the compose bar are all drawn live on screen as a starship console or a warm Pipe Lounge, and every function works the same in each one.
+
+MESSAGING
+• Default SMS and MMS app: conversations newest first, threads with sent, delivered and not-sent state
+• Picture messages through the system photo picker, and group messages to several people
+• Search across names, numbers and message text
+• Drafts are kept per conversation
+• Dual SIM: pick the SIM per conversation
+• Blocking: the system block list plus your own number-prefix rules
+• Per-conversation notifications with inline REPLY and MARK READ, and quick replies from the incoming-call screen
+
+ONE SUITE
+Follows the TrekUI Launcher's interface and colour theme when it is installed, and offers its own interface picker when it is not.
+
+PRIVATE BY DESIGN
+No accounts, no ads, no analytics, no tracking. Your messages stay in your phone's own message store and go only to the people you send them to. Nothing is sent to the developer.
+
+FREE TO TRY, $0.99 TO KEEP
+Every feature works for free in 24-hour sessions. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
+
+TrekUI Messages is an independent, original design. It ships no third-party recordings or artwork.

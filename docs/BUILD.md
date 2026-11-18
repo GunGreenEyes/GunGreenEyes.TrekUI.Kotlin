@@ -93,7 +93,7 @@ Both values are read by `app/build.gradle.kts`. This file is the single source o
 
 - **`versionCode`:** an integer that must go up for every build uploaded to Google Play. Never reuse one.
 - **`versionName`:** semantic `MAJOR.MINOR.PATCH`. The release workflow refuses a tag `vX.Y.Z` that does not match it.
-- **Release notes:** put the Play release notes for each build in `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
+- **Release notes:** put the Play release notes for each build and app in `fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt` (`<app>` is `launcher`, `messages`, `keyboard` or `lockscreen`; 500 characters at most). `scripts/release/ship.*` writes them.
 
 See [RELEASE.md](RELEASE.md) for the bump, tag and publish steps.
 

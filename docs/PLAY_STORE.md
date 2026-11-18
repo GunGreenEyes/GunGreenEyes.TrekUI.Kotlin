@@ -201,7 +201,7 @@ Google Play allows the Call Log permissions only for apps that are the user's **
 
 ## 5. Store listing (Grow › Store presence › Main store listing)
 
-The listing text lives in `fastlane/metadata/android/en-US/`. The release workflow can push it with `update-listing: true` ([RELEASE.md](RELEASE.md)).
+The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher in `fastlane/metadata/launcher/`, the companion apps in `messages/`, `keyboard/` and `lockscreen/`). The release workflow can push it with `update-listing: true` ([RELEASE.md](RELEASE.md)).
 
 | Element | Limit / size | Notes |
 |---|---|---|
@@ -216,7 +216,7 @@ The listing text lives in `fastlane/metadata/android/en-US/`. The release workfl
 | Chromebook, Wear, TV, XR | – | Not applicable |
 | Promo video | YouTube URL | Optional. The CI-captured MP4s are a good source |
 
-- **Screenshot source.** The CI emulator runs write screenshots to `assets/<device>-api<N>/`, and `scripts/release/fill-play-screenshots.py` copies a selection into `fastlane/metadata/android/en-US/images/{phoneScreenshots,sevenInchScreenshots,tenInchScreenshots}`.
+- **Screenshot source.** The CI emulator runs write screenshots to `assets/<device>-api<N>/`, and `scripts/release/fill-play-screenshots.py` copies a selection into `fastlane/metadata/launcher/android/en-US/images/{phoneScreenshots,sevenInchScreenshots,tenInchScreenshots}`.
 - **Interface coverage.** Show at least one Command, one Imperial, one Collective and one Pipe Lounge interface.
 
 **Store settings**
@@ -242,7 +242,7 @@ The listing text lives in `fastlane/metadata/android/en-US/`. The release workfl
 2. **Testing › Closed testing:** this is required for new personal accounts: 12 or more testers for 14 continuous days. Collect feedback.
 3. **Production access:** apply in the Dashboard once Play says the account is eligible.
 4. **Production:** promote a tested build, using a **staged rollout** (for example 20%, then 50%, then 100%).
-5. Later releases go through the release workflow: tag `v*`, the build lands on internal, then you promote ([RELEASE.md](RELEASE.md)).
+5. Later releases go through `scripts/release/ship.*` (or Actions › Release › Run workflow): every app lands on the internal track, then you promote ([RELEASE.md](RELEASE.md)).
 
 ## 8. Final pre-submit checklist
 

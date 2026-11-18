@@ -16,7 +16,7 @@
 //                                  failed,skipped}, cases:[{class,name,status}], screenshots:[...]}]} or
 //                                  {devices:{<id>:{...same fields}}} or a bare array of runs.
 //   PRIVACY.md, CHANGELOG.md       rendered to privacy.html, changelog.html
-//   fastlane/metadata/android/en-US/changelogs/<versionCode>.txt + fastlane/release-history.json
+//   fastlane/metadata/launcher/android/en-US/changelogs/<versionCode>.txt + fastlane/release-history.json
 //   version.properties, app/src/main/assets/fonts/Antonio.ttf, app/src/main/res/drawable/ic_launcher_fg.xml
 //
 // Output: site/_out/{index,privacy,changelog,404}.html, style.css, app.js, fonts/, media/, data/index.json
@@ -665,7 +665,7 @@ function privacyPage(ctx) {
 }
 
 function changelogPage(ctx) {
-  const dir = path.join(ROOT, "fastlane/metadata/android/en-US/changelogs");
+  const dir = path.join(ROOT, "fastlane/metadata/launcher/android/en-US/changelogs");
   const history = readJson(path.join(ROOT, "fastlane/release-history.json")) || [];
   const byCode = new Map(history.map((h) => [String(h.versionCode), h]));
   const codes = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => /^\d+\.txt$/.test(f)).map((f) => f.replace(".txt", "")) : [];

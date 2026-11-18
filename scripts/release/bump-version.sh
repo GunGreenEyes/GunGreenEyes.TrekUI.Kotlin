@@ -7,11 +7,12 @@
 #
 # What it does:
 #   1. version.properties: versionCode + 1, versionName = the new version
-#   2. fastlane/metadata/android/en-US/changelogs/<versionCode>.txt: the release notes (max 500 chars,
-#      Play's limit). Without --notes/--notes-file they are built from commit subjects since the last tag.
+#   2. fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt for every app (launcher, messages,
+#      keyboard, lockscreen): the release notes (max 500 chars, Play's limit). Without --notes/--notes-file
+#      they are built from commit subjects since the last tag. scripts/release/ship.* then writes per-app notes.
 #   3. fastlane/release-history.json: adds {versionCode, versionName, date} (the site's changelog page)
 #   4. commits those three files and creates the annotated tag v<versionName>
-# Then push with:  git push origin main v<versionName>   (the tag starts .github/workflows/release.yml)
+# Then push and start the release with scripts/release/ship.sh (which runs this script for you).
 #
 # Options: --notes TEXT | --notes-file FILE, --ticket ID (commit message prefix), --no-commit (files only)
 set -euo pipefail
@@ -73,10 +74,16 @@ NOTES="$(printf '%s' "$NOTES" | head -c 500)"
 sed -i.bak -E "s/^versionCode=.*/versionCode=$NEW_CODE/; s/^versionName=.*/versionName=$NEW_NAME/" version.properties
 rm -f version.properties.bak
 
-# 2. changelog
-CHANGELOG="fastlane/metadata/android/en-US/changelogs/$NEW_CODE.txt"
-mkdir -p "$(dirname "$CHANGELOG")"
-printf '%s\n' "$NOTES" > "$CHANGELOG"
+# 2. changelog, one per app's metadata folder (all apps share one versionCode)
+CHANGELOGS=()
+for meta in fastlane/metadata/*/android/en-US; do
+  [ -d "$meta" ] || continue
+  mkdir -p "$meta/changelogs"
+  printf '%s\n' "$NOTES" > "$meta/changelogs/$NEW_CODE.txt"
+  CHANGELOGS+=("$meta/changelogs/$NEW_CODE.txt")
+done
+[ ${#CHANGELOGS[@]} -gt 0 ] || { echo "No fastlane/metadata/<app>/android/en-US folders found." >&2; exit 1; }
+CHANGELOG="${CHANGELOGS[0]}"
 
 # 3. release history (node is already needed for the site build)
 HISTORY="fastlane/release-history.json"
@@ -89,15 +96,16 @@ node -e '
 ' "$HISTORY" "$NEW_CODE" "$NEW_NAME"
 
 echo "Version $OLD_NAME ($OLD_CODE) -> $NEW_NAME ($NEW_CODE)"
-echo "Release notes ($CHANGELOG):"; cat "$CHANGELOG"
+echo "Release notes (${CHANGELOGS[*]}):"; cat "$CHANGELOG"
 
 if [ "$COMMIT" = 1 ]; then
   MSG="Release $NEW_NAME ($NEW_CODE)"
   [ -n "$TICKET" ] && MSG="$TICKET: $MSG"
-  git add version.properties "$CHANGELOG" "$HISTORY"
-  git commit -q -m "$MSG" -- version.properties "$CHANGELOG" "$HISTORY"
+  git add version.properties "${CHANGELOGS[@]}" "$HISTORY"
+  git commit -q -m "$MSG" -- version.properties "${CHANGELOGS[@]}" "$HISTORY"
   git tag -a "$TAG" -m "TrekUI $NEW_NAME ($NEW_CODE)" -m "$NOTES"
   echo
   echo "Committed and tagged $TAG (not pushed). To publish the release run:"
-  echo "  git push origin main $TAG"
+  echo "  git push origin main $TAG && gh workflow run release.yml --ref $TAG"
+  echo "(scripts/release/ship.sh does all of this in one step.)"
 fi

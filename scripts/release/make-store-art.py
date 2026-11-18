@@ -3,7 +3,7 @@
 
     python scripts/release/make-store-art.py
 
-Writes into fastlane/metadata/android/en-US/images/:
+Writes into fastlane/metadata/launcher/android/en-US/images/:
   icon.png            512x512, 32-bit PNG: the adaptive-icon foreground (res/drawable/ic_launcher_fg.xml)
                       on the icon background colour, full bleed (Play applies its own mask)
   featureGraphic.png  1024x500, 24-bit PNG (no alpha): console frame, the icon and the title in Antonio
@@ -25,7 +25,7 @@ except ImportError:
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 VECTOR = os.path.join(ROOT, "app", "src", "main", "res", "drawable", "ic_launcher_fg.xml")
 FONT = os.path.join(ROOT, "app", "src", "main", "assets", "fonts", "Antonio.ttf")
-OUT = os.path.join(ROOT, "fastlane", "metadata", "android", "en-US", "images")
+OUT = os.path.join(ROOT, "fastlane", "metadata", "launcher", "android", "en-US", "images")
 ANDROID = "{http://schemas.android.com/apk/res/android}"
 
 ORANGE, GOLD, PEACH = (255, 156, 0), (255, 204, 102), (255, 204, 153)
