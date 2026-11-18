@@ -8,9 +8,34 @@ This file records the notable changes to TrekUI Launcher. From 6 on, versions ar
 - A zero-sized or NaN-scaled Collective hub no longer draws invalid geometry (TUK-T8).
 - The docs describe the Kotlin codebase: README, ARCHITECTURE, BUILD, TESTING, CONTRIBUTING, the agent guides and the port status in KOTLIN_PORT (TUK-T12).
 
-## 44 (Unreleased)
+## 44 (versionCode 44, 2026-11-18)
 
-- Removed the Pipe Lounge interfaces: TrekUI is now starship consoles only; a saved Pipe Lounge choice switches to COMMAND. (LCA-T58)
+**Highlights:** removed the Pipe Lounge interfaces, so TrekUI is starship consoles only, and a saved Pipe Lounge choice switches to COMMAND (LCA-T58). CONFIG now opens at once instead of freezing on slow phones (LCA-T60). Every one of the 24 local test devices and the 9 CI devices pass.
+
+- Log release 44 (LCA-T64)
+- Render the local emulator matrix on the host GPU by default: SwiftShader software rendering froze API 35/36 guests on the heaviest screens, and with the GPU the same devices pass every scenario (LCA-T63)
+- Run CI emulators offline too: the same Play-services post-boot churn that froze local API 34-36 guests also takes hosted emulators offline, and no scenario needs the network (LCA-T63)
+- Run the local emulator matrix offline: freshly wiped API 34-36 images froze while Play services downloaded modules and synced flags in their first minutes, and no scenario needs the network (LCA-T63)
+- Set the package manager's preferred home as well as the role in the test's shell fallback, because on the API 33 tablet image the Home key keeps following the old preferred activity after a role change (LCA-T55)
+- Fall back to a shell role grant when the Home key itself still opens the stock launcher, since on some API 33/34 images the app-level HOME lookup already names TrekUI while the key does not follow (LCA-T55)
+- Re-apply the home role through the shell when an emulator image keeps routing Home to the stock launcher after the dialog grant, so the test checks what the Home key does rather than an image quirk (LCA-T55)
+- Give each CI device a second attempt on a freshly booted emulator, so a hosted emulator dying at boot no longer fails a build whose tests pass (LCA-T62)
+- Also stop the emulator launcher process at the end of a CI device run, because it can hang on its own after qemu exits and the runner waits on it (LCA-T61)
+- Open CONFIG without freezing: show the first screenful at once and add the other sections a message at a time, so slow phones never hit an ANR (LCA-T60)
+- Make the default-home test press the role dialog's real button and wait for it to close, because Android 10 ignores taps on the label text (LCA-T59)
+- Record LCA-T58 as closed in the user stories (LCA-T58)
+- Drop the Pipe Lounge from docs, site, store text and art tools (LCA-T58)
+- Remove the Pipe Lounge interfaces from the code: TrekUI is a starship-console launcher only (LCA-T58)
+- Make the home scenarios wait for the launcher window and re-find dialog buttons that redraw, so a device still settling after boot can't fail them (LCA-T57)
+- Wait for Android to actually route the Home key to TrekUI before pressing it: the role flag flips first, and on a loaded device the routing lags many seconds (LCA-T55)
+- Revert the Android 10 role-command change: Android 10's add-role-holder does accept the flags argument, so that wasn't the cause of the local failure (LCA-T55)
+- Let the default-home test allow for Android 12L applying a new home app a moment late, so the first Home press after the switch can't fail it (LCA-T56)
+- Make the default-home test work on Android 10, whose role shell command takes no flags argument (the test, not the app, was failing there) (LCA-T55)
+- Record the GitHub Actions update as merged and verified on every workflow (LCA-T42)
+- Stop the CI emulator ourselves once results are saved, because its own shutdown can hang until the job limit even after every test passed (LCA-T54)
+- Feed the project site from the newest release even when it is a pre-release, so the v43 screenshots and videos actually appear on the page (LCA-T53)
+- Let site visitors switch the page between the app's six COMMAND colour themes, remembered per visitor, so the site shows off the same looks the launcher offers (LCA-T53)
+- Point the README at version 43 and its ready-built release APKs, and give each app player-facing Play notes for 43 instead of commit subjects (LCA-T52)
 
 ## 43 (versionCode 43, 2026-11-17)
 

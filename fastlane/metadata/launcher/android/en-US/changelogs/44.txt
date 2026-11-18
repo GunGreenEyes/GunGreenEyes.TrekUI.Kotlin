@@ -1,0 +1,4 @@
+• TrekUI is now starship consoles only: COMMAND, IMPERIAL, COLLECTIVE, CLASSIC CONSOLE and NEXT CONSOLE, with their colour themes
+• If you used a Pipe Lounge interface, TrekUI switches you to COMMAND
+• CONFIG opens instantly, even on slower phones
+• Tested on 24 phone, tablet and foldable setups from Android 8 to 17
