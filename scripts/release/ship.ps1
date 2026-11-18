@@ -3,7 +3,7 @@
   Ships the whole TrekUI suite (launcher, messages, keyboard, lockscreen) to Google Play in one command.
 
 .EXAMPLE
-  .\scripts\release\ship.ps1                          # next whole number (e.g. 6 -> 7), internal track
+  .\scripts\release\ship.ps1                          # next whole number (e.g. 42 -> 43), internal track
   .\scripts\release\ship.ps1 -Track beta
   .\scripts\release\ship.ps1 9 -Track production -Rollout 0.1
   .\scripts\release\ship.ps1 -DryRun                  # print what would happen; change nothing
@@ -12,8 +12,8 @@
   In order:
   1. bump to the next whole-number version (or the given one, which must be greater) with
      scripts/release/bump-version.ps1: one shared versionCode (always +1) and versionName for every app
-     in version.properties, plus fastlane/release-history.json. Versions are whole numbers (6, 7, 8, ...);
-     versionCode is a separate, strictly increasing integer.
+     in version.properties, plus fastlane/release-history.json. Versions are whole numbers (42, 43, 44, ...);
+     versionCode is always the same number.
   2. changelog from the commits since the last v* tag: a new section at the top of CHANGELOG.md and a
      Play "What's new" text per app in fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt
      (500 characters at most; each app lists the commits that touched it or :core)
@@ -83,6 +83,8 @@ $oldCode = [int]((($props | Where-Object { $_ -match '^versionCode=' }) -replace
 # Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
 if ($oldName -notmatch '^(\d+)') { throw "versionName '$oldName' in version.properties does not start with a number" }
 $current = [int]$Matches[1]
+# One number for both: versionName == versionCode (42, 43, ...).
+$current = [Math]::Max($current, $oldCode)
 switch -Regex ($Version) {
   '^(next|major)?$' { $newName = "$($current + 1)"; break }
   '^(minor|patch)$' { throw "There are no minor/patch versions any more: versions are whole numbers. Leave the version out (next: $($current + 1)) or give a whole number greater than $current." }
@@ -92,7 +94,7 @@ switch -Regex ($Version) {
   }
   default { throw "The version must be a whole number greater than $current, or left out for the next one (got '$Version')." }
 }
-$newCode = $oldCode + 1
+$newCode = [int]$newName
 $tag = "v$newName"
 $date = Get-Date -Format 'yyyy-MM-dd'
 Invoke-Quiet { git rev-parse -q --verify "refs/tags/$tag" } | Out-Null

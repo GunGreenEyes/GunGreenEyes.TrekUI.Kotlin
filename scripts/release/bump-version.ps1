@@ -3,12 +3,12 @@
   Bumps the app version, writes the Play changelog and creates the release tag (does NOT push).
 
 .EXAMPLE
-  .\scripts\release\bump-version.ps1                       # next whole number, e.g. 6 -> 7
+  .\scripts\release\bump-version.ps1                       # next whole number, e.g. 42 -> 43
   .\scripts\release\bump-version.ps1 next -Notes "New Collective layout"
   .\scripts\release\bump-version.ps1 9 -NotesFile notes.txt -Ticket LCA-T12
 
 .DESCRIPTION
-  Versions are whole numbers (6, 7, 8, ...); versionCode is a separate, strictly increasing integer.
+  Versions are whole numbers (42, 43, 44, ...), and versionCode is always the same number.
   The argument is 'next' (the default) or an explicit whole number greater than the current one. An old
   X.Y.Z versionName counts as its major (6.2.0 -> next is 7). 'major' is still accepted as an alias of
   'next' for one transition release; 'minor' and 'patch' are rejected.
@@ -40,6 +40,8 @@ $oldCode = [int]((($props | Where-Object { $_ -match '^versionCode=' }) -replace
 # Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
 if ($oldName -notmatch '^(\d+)') { throw "versionName '$oldName' in version.properties does not start with a number" }
 $current = [int]$Matches[1]
+# One number for both: versionName == versionCode (42, 43, ...).
+$current = [Math]::Max($current, $oldCode)
 
 switch -Regex ($Bump) {
   '^(next|major)?$' { $newName = "$($current + 1)"; break }
@@ -50,7 +52,7 @@ switch -Regex ($Bump) {
   }
   default { throw "First argument must be 'next' or a whole number greater than $current (got '$Bump')." }
 }
-$newCode = $oldCode + 1
+$newCode = [int]$newName
 $tag = "v$newName"
 
 git rev-parse -q --verify "refs/tags/$tag" *> $null

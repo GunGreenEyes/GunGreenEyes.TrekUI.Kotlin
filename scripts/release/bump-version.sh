@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Bumps the app version, writes the Play changelog and creates the release tag (does NOT push).
 #
-#   scripts/release/bump-version.sh                             next whole number, e.g. 6 -> 7
+#   scripts/release/bump-version.sh                             next whole number, e.g. 42 -> 43
 #   scripts/release/bump-version.sh next --notes "New Collective layout"
 #   scripts/release/bump-version.sh 9 --notes-file notes.txt --ticket LCA-T12
 #
-# Versions are whole numbers (6, 7, 8, ...); versionCode is a separate, strictly increasing integer.
+# Versions are whole numbers (42, 43, 44, ...); versionCode is always the same number.
 # The argument is 'next' (the default) or a whole number greater than the current one; an old X.Y.Z
 # versionName counts as its major (6.2.0 -> next is 7). 'major' is still accepted as an alias of 'next'
 # for one transition release; 'minor' and 'patch' are rejected.
@@ -51,6 +51,8 @@ OLD_NAME="$(prop versionName)"; OLD_CODE="$(prop versionCode)"
 CURRENT="${OLD_NAME%%[!0-9]*}"
 [ -n "$CURRENT" ] || { echo "versionName '$OLD_NAME' in version.properties does not start with a number" >&2; exit 1; }
 CURRENT=$((10#$CURRENT))
+# One number for both: versionName == versionCode (42, 43, ...).
+[ "$((10#$OLD_CODE))" -gt "$CURRENT" ] && CURRENT=$((10#$OLD_CODE))
 case "$BUMP" in
   next|major) NEW_NAME="$((CURRENT + 1))";;
   minor|patch) echo "There are no minor/patch versions any more: versions are whole numbers. Use 'next' (or no argument) for $((CURRENT + 1)), or a whole number greater than $CURRENT." >&2; exit 1;;
@@ -58,7 +60,7 @@ case "$BUMP" in
   *) if [ "$((10#$BUMP))" -le "$CURRENT" ]; then echo "Version $BUMP must be greater than the current version $CURRENT." >&2; exit 1; fi
      NEW_NAME="$((10#$BUMP))";;
 esac
-NEW_CODE=$((OLD_CODE + 1))
+NEW_CODE=$NEW_NAME
 TAG="v$NEW_NAME"
 
 if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then

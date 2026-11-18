@@ -34,7 +34,7 @@ This is what makes phone-only development possible ([REMOTE_DEVELOPMENT.md](REMO
 
 All four apps share one `versionCode` / `versionName` (`version.properties`) and one upload key, and ship together in every run.
 
-**Version scheme:** `versionName` is a whole number (6, 7, 8, ...), one higher each release, tagged `v<N>`; `versionCode` is a separate integer that goes up by one every release.
+**Version scheme:** one whole number (42, 43, 44, ...) is both `versionName` and `versionCode`, one higher each release, tagged `v<N>`.
 
 | App | Module | Package | Release files | Listing and notes |
 |---|---|---|---|---|
@@ -83,13 +83,13 @@ The four apps must be signed with the **same** key: the suite permission is sign
 ### Shipping a release (one command)
 
 ```powershell
-.\scripts\release\ship.ps1                    # next whole number (6 -> 7), internal track
+.\scripts\release\ship.ps1                    # next whole number (42 -> 43), internal track
 .\scripts\release\ship.ps1 -Track beta
 .\scripts\release\ship.ps1 -DryRun            # show the version, notes and commands; change nothing
 ```
 
 ```sh
-scripts/release/ship.sh                       # next whole number (6 -> 7), internal track
+scripts/release/ship.sh                       # next whole number (42 -> 43), internal track
 scripts/release/ship.sh --track beta
 scripts/release/ship.sh 9 --track production --rollout 0.1
 scripts/release/ship.sh --dry-run
@@ -97,7 +97,7 @@ scripts/release/ship.sh --dry-run
 
 The ship script, in order:
 
-1. **Bumps** the version through `bump-version.*`: the next whole number (or the one given, which must be higher), `versionCode` + 1, both in `version.properties`, and a row in `fastlane/release-history.json`. `versionCode` must be higher than any build ever uploaded to Play. There is no minor or patch version; `major` is still accepted as an alias of `next` for one transition release, `minor` / `patch` are refused.
+1. **Bumps** the version through `bump-version.*`: the next whole number (or the one given, which must be higher), written as both `versionName` and `versionCode` in `version.properties`, and a row in `fastlane/release-history.json`. `versionCode` must be higher than any build ever uploaded to Play. There is no minor or patch version; `major` is still accepted as an alias of `next` for one transition release, `minor` / `patch` are refused.
 2. **Writes the changelog** from the commit subjects since the last `v*` tag:
    - a new section at the top of `CHANGELOG.md` (full subjects, ticket IDs kept);
    - a Play "What's new" per app in `fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt`, 500 characters at most, from the commits that touched that app or `:core`. Ticket IDs and maintenance commits (docs, logs, tests) are left out. Check them with `--dry-run` first; you can still edit them in Play Console afterwards.

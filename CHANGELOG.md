@@ -2,7 +2,7 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
-## 6 (versionCode 42)
+## 42
 
 ### Sub-themes and the TrekUI suite
 - **TrekUI Messages (LCA-T31).** A new companion app (`:messages`): a full default SMS/MMS app drawn in the TrekUI interfaces. Conversation list, threads with delivery state, picture messages through the system photo picker, group sends, search across names and message text, drafts, blocking (system list plus prefix rules), dual-SIM choice, per-conversation notification channels with inline REPLY and MARK READ, and quick replies from the incoming-call screen. Follows the launcher's interface and sub-theme, or offers its own picker when the launcher isn't installed. Same trial; one purchase unlocks every TrekUI app.

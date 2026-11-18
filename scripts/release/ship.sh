@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Ships the whole TrekUI suite (launcher, messages, keyboard, lockscreen) to Google Play in one command.
 #
-#   scripts/release/ship.sh                       next whole number (e.g. 6 -> 7), internal track
+#   scripts/release/ship.sh                       next whole number (e.g. 42 -> 43), internal track
 #   scripts/release/ship.sh --track beta
 #   scripts/release/ship.sh 9 --track production --rollout 0.1
 #   scripts/release/ship.sh --dry-run             print what would happen; writes, commits and pushes nothing
@@ -9,8 +9,8 @@
 # In order:
 #   1. bump to the next whole-number version (or the given one, which must be greater) with
 #      scripts/release/bump-version.sh: one shared versionCode (always +1) and versionName for every app
-#      in version.properties, plus fastlane/release-history.json. Versions are whole numbers (6, 7, 8, ...);
-#      versionCode is a separate, strictly increasing integer.
+#      in version.properties, plus fastlane/release-history.json. Versions are whole numbers (42, 43, 44, ...);
+#      versionCode is always the same number.
 #   2. changelog from the commits since the last v* tag: a new section at the top of CHANGELOG.md and a
 #      Play "What's new" text per app in fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt
 #      (500 characters at most; each app lists the commits that touched it or :core)
@@ -83,6 +83,8 @@ OLD_NAME="$(prop versionName)"; OLD_CODE="$(prop versionCode)"
 CURRENT="${OLD_NAME%%[!0-9]*}"
 [ -n "$CURRENT" ] || { echo "versionName '$OLD_NAME' in version.properties does not start with a number" >&2; exit 1; }
 CURRENT=$((10#$CURRENT))
+# One number for both: versionName == versionCode (42, 43, ...).
+[ "$((10#$OLD_CODE))" -gt "$CURRENT" ] && CURRENT=$((10#$OLD_CODE))
 case "$VERSION" in
   next|major) NEW_NAME="$((CURRENT + 1))";;
   minor|patch) echo "There are no minor/patch versions any more: versions are whole numbers. Leave the version out (next: $((CURRENT + 1))) or give a whole number greater than $CURRENT." >&2; exit 1;;
@@ -90,7 +92,7 @@ case "$VERSION" in
   *) if [ "$((10#$VERSION))" -le "$CURRENT" ]; then echo "Version $VERSION must be greater than the current version $CURRENT." >&2; exit 1; fi
      NEW_NAME="$((10#$VERSION))";;
 esac
-NEW_CODE=$((OLD_CODE + 1))
+NEW_CODE=$NEW_NAME
 TAG="v$NEW_NAME"
 DATE="$(date +%Y-%m-%d)"
 git rev-parse -q --verify "refs/tags/$TAG" >/dev/null && fail "Tag $TAG already exists."
