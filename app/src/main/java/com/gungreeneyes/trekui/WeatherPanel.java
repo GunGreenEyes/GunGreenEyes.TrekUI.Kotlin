@@ -71,11 +71,11 @@ class WeatherPanel extends Panel {
         try { return Double.parseDouble(s); } catch (NumberFormatException e) { return Double.NaN; }
     }
 
-    @Override String id() { return Prefs.W_WEATHER; }
-    @Override String title() { return "WEATHER"; }
+    @Override public String id() { return Prefs.W_WEATHER; }
+    @Override public String title() { return "WEATHER"; }
 
     @Override
-    void build() {
+    public void build() {
         render();
         card.body.setOnClickListener(Ui.feedback(new View.OnClickListener() {
             @Override public void onClick(View v) {
@@ -85,11 +85,11 @@ class WeatherPanel extends Panel {
         }));
     }
 
-    @Override String[] extraMenu() {
+    @Override public String[] extraMenu() {
         return new String[]{"REFRESH NOW", "CHANGE LOCATION", p.fahrenheit() ? "USE °C" : "USE °F"};
     }
 
-    @Override void onExtraMenu(int w) {
+    @Override public void onExtraMenu(int w) {
         if (w == 0) refresh(true);
         else if (w == 1) chooseLocation();
         else {
@@ -99,8 +99,8 @@ class WeatherPanel extends Panel {
         }
     }
 
-    @Override void resume() { refresh(false); }
-    @Override void tick() { refresh(false); }
+    @Override public void resume() { refresh(false); }
+    @Override public void tick() { refresh(false); }
 
     // ---- location ------------------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ class WeatherPanel extends Panel {
     }
 
     @Override
-    void onPermissionResult(int code, boolean granted) {
+    public void onPermissionResult(int code, boolean granted) {
         if (code != MainActivity.REQ_LOCATION) return;
         if (granted) locate();
         else {

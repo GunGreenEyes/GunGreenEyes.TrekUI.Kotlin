@@ -63,11 +63,11 @@ class CalendarPanel extends Panel {
         };
     }
 
-    @Override String id() { return Prefs.W_CALENDAR; }
-    @Override String title() { return "SCHEDULE"; }
+    @Override public String id() { return Prefs.W_CALENDAR; }
+    @Override public String title() { return "SCHEDULE"; }
 
     @Override
-    void build() {
+    public void build() {
         card.status.setOnClickListener(Ui.feedback(new View.OnClickListener() {
             @Override public void onClick(View v) { openCalendar(System.currentTimeMillis(), v); }
         }));
@@ -80,7 +80,7 @@ class CalendarPanel extends Panel {
     }
 
     @Override
-    void resume() {
+    public void resume() {
         if (granted() && !observing) {
             try {
                 a.getContentResolver().registerContentObserver(CalendarContract.Events.CONTENT_URI, true, observer);
@@ -92,7 +92,7 @@ class CalendarPanel extends Panel {
     }
 
     @Override
-    void pause() {
+    public void pause() {
         generation++;
         if (observing) {
             a.getContentResolver().unregisterContentObserver(observer);
@@ -100,10 +100,10 @@ class CalendarPanel extends Panel {
         }
     }
 
-    @Override void tick() { refresh(); }
+    @Override public void tick() { refresh(); }
 
     @Override
-    void onPermissionResult(int code, boolean ok) {
+    public void onPermissionResult(int code, boolean ok) {
         if (code != MainActivity.REQ_CALENDAR) return;
         if (ok) resume();
         else refresh();

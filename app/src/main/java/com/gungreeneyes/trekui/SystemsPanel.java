@@ -111,8 +111,8 @@ class SystemsPanel extends Panel {
 
     SystemsPanel(MainActivity a, int accent) { super(a, accent); }
 
-    @Override String id() { return Prefs.W_SYSTEMS; }
-    @Override String title() { return "SHIP SYSTEMS"; }
+    @Override public String id() { return Prefs.W_SYSTEMS; }
+    @Override public String title() { return "SHIP SYSTEMS"; }
 
     /** A labelled segmented bar with a value on the right and a detail line underneath. */
     private Meter meter(String label, int color) {
@@ -134,7 +134,7 @@ class SystemsPanel extends Panel {
     }
 
     @Override
-    void build() {
+    public void build() {
         cpu = meter("CPU", pal.c(0));
         mem = meter("MEMORY", pal.c(1));
         disk = meter("STORAGE", pal.c(2));
@@ -218,7 +218,7 @@ class SystemsPanel extends Panel {
     // ---- lifecycle -------------------------------------------------------------------------------
 
     @Override
-    void resume() {
+    public void resume() {
         if (cams != null && torchId != null) {
             try { cams.registerTorchCallback(torchCb, a.handler()); } catch (Exception ignored) { }
         }
@@ -235,7 +235,7 @@ class SystemsPanel extends Panel {
     }
 
     @Override
-    void pause() {
+    public void pause() {
         running = false;
         generation++;
         a.handler().removeCallbacks(fast);
@@ -244,7 +244,7 @@ class SystemsPanel extends Panel {
         }
     }
 
-    @Override void tick() { sampleDisk(); sampleIdent(); }
+    @Override public void tick() { sampleDisk(); sampleIdent(); }
 
     // ---- CPU & thermal ---------------------------------------------------------------------------
 

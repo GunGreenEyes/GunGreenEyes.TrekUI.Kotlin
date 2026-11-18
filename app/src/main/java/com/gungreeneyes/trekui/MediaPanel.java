@@ -93,8 +93,8 @@ class MediaPanel extends Panel {
         prefs = Prefs.get(a);
     }
 
-    @Override String id() { return Prefs.W_MEDIA; }
-    @Override String title() { return "AUDIO SYSTEMS"; }
+    @Override public String id() { return Prefs.W_MEDIA; }
+    @Override public String title() { return "AUDIO SYSTEMS"; }
 
     // ---- sources ---------------------------------------------------------------------------------
 
@@ -276,12 +276,12 @@ class MediaPanel extends Panel {
         }));
     }
 
-    @Override String[] extraMenu() {
+    @Override public String[] extraMenu() {
         String sel = selected();
         return sel == null ? new String[]{"CHANGE SOURCE BUTTONS"} : new String[]{"OPEN " + shortName(a, sel), "CHANGE SOURCE BUTTONS"};
     }
 
-    @Override void onExtraMenu(int w) {
+    @Override public void onExtraMenu(int w) {
         String sel = selected();
         if (sel != null && w == 0) openApp(null);
         else {
@@ -296,7 +296,7 @@ class MediaPanel extends Panel {
     // ---- UI --------------------------------------------------------------------------------------
 
     @Override
-    void build() {
+    public void build() {
         msm = (MediaSessionManager) a.getSystemService(Context.MEDIA_SESSION_SERVICE);
         listener = new ComponentName(a, MediaListener.class);
 
@@ -405,7 +405,7 @@ class MediaPanel extends Panel {
     // ---- lifecycle -------------------------------------------------------------------------------
 
     @Override
-    void resume() {
+    public void resume() {
         resumed = true;
         hint.setVisibility(hasAccess() ? View.GONE : View.VISIBLE);
         if (hasAccess() && msm != null && !listening) {
@@ -421,7 +421,7 @@ class MediaPanel extends Panel {
     }
 
     @Override
-    void pause() {
+    public void pause() {
         resumed = false;
         if (listening && msm != null) {
             try { msm.removeOnActiveSessionsChangedListener(sessions); } catch (Exception ignored) { }
@@ -431,7 +431,7 @@ class MediaPanel extends Panel {
         setController(null, false);
     }
 
-    @Override void tick() { if (controller == null) render(); }
+    @Override public void tick() { if (controller == null) render(); }
 
     // ---- targeting the selected app ----------------------------------------------------------------
 

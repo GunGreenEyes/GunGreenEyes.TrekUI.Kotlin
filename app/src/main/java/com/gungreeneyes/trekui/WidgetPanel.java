@@ -57,12 +57,12 @@ final class WidgetPanel extends Panel {
     }
 
     @Override
-    String id() {
+    public String id() {
         return panelId;
     }
 
     @Override
-    String title() {
+    public String title() {
         String label = providerLabel();
         return label == null ? WidgetSlots.fallbackName(slot) : label.toUpperCase(Locale.getDefault());
     }
@@ -79,7 +79,7 @@ final class WidgetPanel extends Panel {
     }
 
     @Override
-    void build() {
+    public void build() {
         if (info == null) {
             offline(a.getString(R.string.widget_offline_missing));
             return;
@@ -161,7 +161,7 @@ final class WidgetPanel extends Panel {
     }
 
     @Override
-    String[] extraMenu() {
+    public String[] extraMenu() {
         menuActions.clear();
         List<String> labels = new ArrayList<>();
         if (info != null) {
@@ -178,7 +178,7 @@ final class WidgetPanel extends Panel {
     }
 
     @Override
-    void onExtraMenu(int which) {
+    public void onExtraMenu(int which) {
         if (which >= 0 && which < menuActions.size()) menuActions.get(which).run();
     }
 

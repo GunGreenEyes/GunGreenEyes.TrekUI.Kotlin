@@ -30,11 +30,11 @@ class PowerPanel extends Panel {
 
     PowerPanel(MainActivity a, int accent) { super(a, accent); }
 
-    @Override String id() { return Prefs.W_POWER; }
-    @Override String title() { return "POWER SYSTEMS"; }
+    @Override public String id() { return Prefs.W_POWER; }
+    @Override public String title() { return "POWER SYSTEMS"; }
 
     @Override
-    void build() {
+    public void build() {
         LinearLayout row = new LinearLayout(a);
         row.setGravity(Gravity.CENTER_VERTICAL);
         pct = Ui.bold(a, "--%", 50, pal.textHi);
@@ -59,11 +59,11 @@ class PowerPanel extends Panel {
         card.status.setText("TAP FOR USAGE");
     }
 
-    @Override void resume() { resumed = true; bar.setPulse(charging); }
-    @Override void pause() { resumed = false; bar.setPulse(false); }
+    @Override public void resume() { resumed = true; bar.setPulse(charging); }
+    @Override public void pause() { resumed = false; bar.setPulse(false); }
 
     @Override
-    void onBattery(Intent b) {
+    public void onBattery(Intent b) {
         int level = MainActivity.batteryPct(b);
         int status = b.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         int plugged = b.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
