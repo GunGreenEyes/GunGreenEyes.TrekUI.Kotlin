@@ -92,7 +92,8 @@ class DrawerView extends FrameLayout {
         a = act;
         prefs = Prefs.get(act);
         pal = prefs.palette();
-        setBackgroundColor(Ui.alpha(Skin.bg(), 0.96f));
+        // Opaque: at 96% the bright home labels (Pipe Journal, Imperial) ghosted through the app list.
+        setBackgroundColor(Ui.alpha(Skin.bg(), 1f));
         setClickable(true);
 
         frame = new ConsoleFrame(act);
@@ -265,13 +266,18 @@ class DrawerView extends FrameLayout {
             open = true;
             Sfx.play(getContext(), focusSearch ? Sfx.SEARCH : Sfx.OPEN);
             setVisibility(VISIBLE);
+            // The backdrop is opaque from the first frame and only the content fades in: fading the
+            // whole drawer let the home screen's labels show through the app list while it opened.
+            setAlpha(1f);
             if (animate) {
-                setAlpha(0f);
                 setTranslationY(getHeight() > 0 ? getHeight() * 0.06f : Ui.dp(getContext(), 40));
                 animate().alpha(1f).translationY(0).setDuration(240).setInterpolator(new DecelerateInterpolator(1.5f)).withEndAction(null).start();
+                frame.setAlpha(0f);
+                frame.animate().alpha(1f).setDuration(240).setInterpolator(new DecelerateInterpolator(1.5f)).start();
                 frame.reveal();
             } else {
-                setAlpha(1f);
+                frame.animate().cancel();
+                frame.setAlpha(1f);
                 setTranslationY(0);
             }
         }

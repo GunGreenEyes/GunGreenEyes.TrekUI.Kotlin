@@ -1001,6 +1001,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         }
         main.setSingleLine(true);
         main.setEllipsize(TextUtils.TruncateAt.END);
+        Ui.fitText(main, true); // short/narrow blocks (480x800 mdpi, landscape block 47) shrink the code to fit
         block.addView(main, matchParent());
 
         if (hasLabel && (!angular || isBlock47)) {
@@ -1678,6 +1679,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
                 iconParams.setMargins(Ui.dp(this, 8f), Ui.dp(this, 8f), 0, 0);
                 frame.addView(icon, iconParams);
                 caption.setGravity(Gravity.END);
+                Ui.fitText(caption, false); // long labels (NAVIGATION) shrink instead of truncating on mdpi landscape
                 FrameLayout.LayoutParams captionParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM | Gravity.END);
                 captionParams.setMargins(Ui.dp(this, 8f), 0, Ui.dp(this, 12f), Ui.dp(this, 8f));
                 frame.addView(caption, captionParams);

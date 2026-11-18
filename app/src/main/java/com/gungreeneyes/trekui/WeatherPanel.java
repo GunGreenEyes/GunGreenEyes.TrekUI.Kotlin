@@ -369,7 +369,11 @@ class WeatherPanel extends Panel {
             TextView btn = Ui.button(a, "SET LOCATION", accent, Ui.PILL, new View.OnClickListener() {
                 @Override public void onClick(View v) { chooseLocation(); }
             });
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, Ui.dp(a, 52));
+            // At least 52dp but free to grow, and the label shrinks rather than clipping, so the
+            // control isn't squeezed in short or narrow landscape cards (NEXT CONSOLE).
+            btn.setMinHeight(Ui.dp(a, 52));
+            Ui.fitText(btn, false);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
             lp.topMargin = Ui.dp(a, Ui.M);
             b.addView(btn, lp);
             card.status.setText("OFFLINE");

@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -236,6 +239,42 @@ final class Ui {
     static TextView oneLine(TextView t) {
         t.setSingleLine(true);
         t.setEllipsize(TextUtils.TruncateAt.END);
+        return t;
+    }
+
+    /**
+     * Keeps a single-line label inside its view: whenever the view's size or text changes, the text
+     * shrinks (never below half of the size it had when this was called) until it fits the width
+     * and, with {@code fitHeight}, the height. Only for views whose height doesn't wrap the text
+     * when {@code fitHeight} is set. Call after the label's final text size is set.
+     */
+    static TextView fitText(final TextView t, final boolean fitHeight) {
+        final float base = t.getTextSize();
+        final Runnable fit = () -> {
+            float w = t.getWidth() - t.getTotalPaddingLeft() - t.getTotalPaddingRight();
+            float h = t.getHeight() - t.getTotalPaddingTop() - t.getTotalPaddingBottom();
+            if (w <= 0 || (fitHeight && h <= 0)) return;
+            Paint p = new Paint(t.getPaint());
+            p.setTextSize(base);
+            float scale = 1f;
+            float textW = p.measureText(t.getText().toString());
+            if (textW > w) scale = w / textW;
+            if (fitHeight) {
+                Paint.FontMetrics fm = p.getFontMetrics();
+                float textH = fm.descent - fm.ascent;
+                if (textH > h) scale = Math.min(scale, h / textH);
+            }
+            float size = scale >= 1f ? base : Math.max(base * 0.5f, base * scale * 0.97f);
+            if (Math.abs(size - t.getTextSize()) > 0.5f) t.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        };
+        t.addOnLayoutChangeListener((v, l, top, r, b, ol, ot, or, ob) -> {
+            if (r - l != or - ol || b - top != ob - ot) v.post(fit);
+        });
+        t.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override public void afterTextChanged(Editable s) { t.post(fit); }
+        });
         return t;
     }
 

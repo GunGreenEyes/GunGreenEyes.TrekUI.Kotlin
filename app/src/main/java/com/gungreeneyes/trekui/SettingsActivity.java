@@ -534,7 +534,8 @@ public class SettingsActivity extends Activity {
             Onboarding.requestReplay(this);
             finish();
         }).setTag("config_replay_tour");
-        note("To return to Samsung's launcher: Settings › Apps › Choose default apps › Home app › One UI Home.");
+        note(isSamsung() ? "To return to Samsung's launcher: Settings › Apps › Choose default apps › Home app › One UI Home."
+                : "To return to your previous launcher: Settings › Apps › Default apps › Home app.");
         boolean dark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         list.addView(Ui.bold(this, dark ? "SYSTEM DARK MODE: ON" : "SYSTEM DARK MODE: OFF", 17f, dark ? pal.c(2) : pal.alert));
         if (!dark) {
@@ -892,8 +893,10 @@ public class SettingsActivity extends Activity {
     /** NOTIFICATION SHADE: console shade toggles, system-settings access and the Samsung Quick Panel recipe. */
     private void shadeSection() {
         section("NOTIFICATION SHADE", pal.c(2), "SHADE");
-        note("TREKUI SHADE: swipe down on the TrekUI home screen. Samsung's own panel (used in other apps) is themed separately below.");
-        toggle("SWIPE DOWN OPENS TREKUI SHADE", "Off: swipe down opens Samsung's panel instead", prefs.b("shadeConsole", true), on -> {
+        boolean samsung = isSamsung();
+        note(samsung ? "TREKUI SHADE: swipe down on the TrekUI home screen. Samsung's own panel (used in other apps) is themed separately below."
+                : "TREKUI SHADE: swipe down on the TrekUI home screen. The system's own panel is used in other apps.");
+        toggle("SWIPE DOWN OPENS TREKUI SHADE", samsung ? "Off: swipe down opens Samsung's panel instead" : "Off: swipe down opens the system panel instead", prefs.b("shadeConsole", true), on -> {
             prefs.put("shadeConsole", on);
             rebuild();
         });
@@ -910,6 +913,7 @@ public class SettingsActivity extends Activity {
         if (!canWrite) {
             action("ALLOW BRIGHTNESS & ROTATION CONTROL", pal.c(4), v -> openWriteSettings());
         }
+        if (!samsung) return; // the Quick Panel recipe needs Samsung's Good Lock
         label("SAMSUNG QUICK PANEL (ONE UI 9 + GOOD LOCK)");
         note("Android doesn't let a launcher restyle Samsung's panel, but Samsung's Good Lock can. Recipe for the " + pal.name + " theme:\n1. Install Good Lock (Galaxy Store), then add QuickStar and Theme Park inside it.\n2. QuickStar › Panel Theme: set the four colours below and transparency to 0%.\n3. Tap EXPORT below, then QuickStar › Edit panel style: give the button box, buttons, brightness slider, volume slider and media player the matching images from Pictures › TrekUI Quick Panel. Turn borders off.\n4. Optional: set a TrekUI wallpaper (THEME section) so Samsung's colour palette matches too.");
         colorRow("BACKGROUND", Color.BLACK);
@@ -965,6 +969,11 @@ public class SettingsActivity extends Activity {
         label("OUTLOOK");
         note("1. Outlook › your profile picture › Settings (gear) › Preferences/Appearance › Theme: DARK THEME (not “Set by Battery Saver”).\n2. If your version shows colour themes, pick the swatch closest to the accent above. Outlook has no custom backgrounds, so dark theme plus the TrekUI home icon is as far as it goes.");
         appButton("OUTLOOK", PKG_OUTLOOK, pal.c(3));
+        if (!isSamsung()) { // Theme Park, ClockFace and NavStar are Samsung Good Lock modules
+            label("KEYBOARD");
+            note("Gboard › Settings › Theme › My image with TrekUI Keyboard (EXPORT above).");
+            return;
+        }
         label("SAMSUNG KEYBOARD (GOOD LOCK › THEME PARK)");
         note("1. Good Lock › Theme Park › Keyboard › + (create). Tap the moon/sun icon so you're editing the dark version.\n2. Pink picture button: choose TrekUI Keyboard from Pictures › TrekUI App Themes (EXPORT above). The TrekUI frame shows around the keys.\n3. Go through the circles like reading a page: start top left, go left to right, then down a row. Tap each one and enter the colour below, in this order (skip the circle showing your picture, it's the background image).\n4. Download icon (top right) saves and applies.\nUsing Gboard instead? Gboard › Settings › Theme › My image with TrekUI Keyboard.");
         colorRow("1 · TOP ROW, LEFT: TYPING POP-UP", pal.c(1));
@@ -1477,7 +1486,8 @@ public class SettingsActivity extends Activity {
         }
         for (int type = 0; type < PhoneSounds.NAMES.length; type++) phoneSoundRow(type);
         note("SAVE FOR SPECIFIC APPS saves the notification sound without changing the default, so you can give it to just Messages and Signal (for example INCOMING TRANSMISSION) while everything else keeps its sound.");
-        note("Dual SIM: this sets SIM 1's ringtone; pick TrekUI for SIM 2 in Settings › Sounds and vibration › Ringtone. Samsung Clock keeps a sound per alarm: in Clock, open an alarm › Alarm sound and choose the TrekUI sound.");
+        note("Dual SIM: this sets SIM 1's ringtone; pick TrekUI for SIM 2 in Settings › Sounds and vibration › Ringtone."
+                + (isSamsung() ? " Samsung Clock keeps a sound per alarm: in Clock, open an alarm › Alarm sound and choose the TrekUI sound." : ""));
     }
 
     /** One phone sound (0 ringtone, 1 notification, 2 alarm): preview, CHOOSE, SET, RESTORE. */
@@ -1552,7 +1562,7 @@ public class SettingsActivity extends Activity {
                     message = "“" + name + "” is now your " + PhoneSounds.NAMES[type].toLowerCase(Locale.US) + " sound.";
                 } else if (!setDefault) {
                     title = "SOUND SAVED";
-                    message = "“" + name + "” is saved in your Notifications sounds. Pick it inside each app:\n• Samsung Messages: ⋮ › Settings › Notifications › New messages › Sound\n• Signal: profile picture › Settings › Notifications › Messages › Sound\n• Any app: Android Settings › Notifications › App notifications › the app › its message category › Sound.";
+                    message = "“" + name + "” is saved in your Notifications sounds. Pick it inside each app:\n" + (isSamsung() ? "• Samsung Messages: ⋮ › Settings › Notifications › New messages › Sound\n" : "") + "• Signal: profile picture › Settings › Notifications › Messages › Sound\n• Any app: Android Settings › Notifications › App notifications › the app › its message category › Sound.";
                 } else {
                     title = "SOUND SAVED";
                     message = "“" + name + "” was saved. Allow “Modify system settings” to set it automatically, or pick it in Settings › Sounds and vibration.";
@@ -2526,6 +2536,11 @@ public class SettingsActivity extends Activity {
 
     /** True when a package is installed and visible to us (see the manifest's &lt;queries&gt;). */
     @SuppressWarnings("deprecation")
+    /** Samsung / One UI device: gates the Samsung-only (One UI, Good Lock) notes and recipes. */
+    private static boolean isSamsung() {
+        return "samsung".equalsIgnoreCase(Build.MANUFACTURER);
+    }
+
     private boolean installed(String pkg) {
         try {
             if (Build.VERSION.SDK_INT >= 33) {

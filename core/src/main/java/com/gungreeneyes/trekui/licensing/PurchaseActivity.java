@@ -16,12 +16,17 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -148,10 +153,9 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         column.addView(body, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        String session = describeSession(config.trialSessionMinutes);
         String lead = expired
-                ? "YOUR " + session + " TRIAL SESSION HAS ENDED."
-                : config.appName + " IS FREE TO TRY IN SESSIONS OF " + session + ".";
+                ? "YOUR " + describeSessionAdjective(config.trialSessionMinutes) + " TRIAL SESSION HAS ENDED."
+                : config.appName + " IS FREE TO TRY IN SESSIONS OF " + describeSession(config.trialSessionMinutes) + ".";
         body.addView(text(lead, 24, ORANGE, true));
         body.addView(spacer(gutter));
         body.addView(text(pitch(config.appName, config.homeApp), 16, TEXT_HI, false));
@@ -256,7 +260,11 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         return t;
     }
 
-    /** console pill button: label bottom-right, black text on a coloured pill, min 48dp tall. */
+    /**
+     * console pill button: label bottom-right, black text on a coloured pill, min 48dp tall. The label
+     * shrinks to fit the pill (long labels like RESTORE PURCHASE were clipped on narrow phones), and
+     * TalkBack announces it as a button whose description follows the live label (price, countdown).
+     */
     private TextView button(String label, int color, View.OnClickListener onClick) {
         TextView b = text(label.toUpperCase(Locale.ROOT), 17, BLACK, true);
         b.setGravity(Gravity.BOTTOM | Gravity.END);
@@ -272,7 +280,39 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         b.setBackground(new RippleDrawable(ColorStateList.valueOf(RIPPLE), pill, null));
         b.setOnClickListener(onClick);
         b.setContentDescription(label);
+        b.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        b.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                info.setClassName(Button.class.getName());
+            }
+        });
+        float baseSize = b.getTextSize();
+        Runnable fit = () -> fitLabel(b, baseSize);
+        b.addOnLayoutChangeListener((v, l, t, r, bt, ol, ot, or, ob) -> {
+            if (r - l != or - ol) v.post(fit);
+        });
+        b.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override public void afterTextChanged(Editable s) {
+                b.setContentDescription(s.toString());
+                b.post(fit);
+            }
+        });
         return b;
+    }
+
+    /** Shrinks a single-line label (never below 60% of {@code baseSize}) so it fits its button. */
+    private static void fitLabel(TextView b, float baseSize) {
+        float avail = b.getWidth() - b.getTotalPaddingLeft() - b.getTotalPaddingRight();
+        if (avail <= 0) return;
+        TextPaint p = new TextPaint(b.getPaint());
+        p.setTextSize(baseSize);
+        float w = p.measureText(b.getText().toString());
+        float size = w <= avail ? baseSize : Math.max(baseSize * 0.6f, baseSize * avail / w * 0.98f);
+        if (Math.abs(size - b.getTextSize()) > 0.5f) b.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
     }
 
     private View spacer(int height) {
@@ -329,13 +369,19 @@ public final class PurchaseActivity extends Activity implements BillingManager.L
         return sb.toString();
     }
 
-    /** "24 HOURS", "5 MINUTES", "90 MINUTES". */
+    /** Noun form: "24 HOURS", "5 MINUTES", "90 MINUTES" ("in sessions of 5 MINUTES"). */
     static String describeSession(long minutes) {
         if (minutes >= 60 && minutes % 60 == 0) {
             long h = minutes / 60;
             return h + (h == 1 ? " HOUR" : " HOURS");
         }
         return minutes + (minutes == 1 ? " MINUTE" : " MINUTES");
+    }
+
+    /** Adjective form, always singular and hyphenated: "24-HOUR", "5-MINUTE" ("your 5-MINUTE trial"). */
+    static String describeSessionAdjective(long minutes) {
+        if (minutes >= 60 && minutes % 60 == 0) return (minutes / 60) + "-HOUR";
+        return minutes + "-MINUTE";
     }
 
     // ---------------------------------------------------------------- actions
