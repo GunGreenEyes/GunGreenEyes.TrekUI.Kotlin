@@ -35,4 +35,4 @@ _Nothing recorded yet._
 | TUK-T12 | 2026-11-18 | docs | closed | Docs describe the Kotlin codebase (README, ARCHITECTURE, BUILD, TESTING, CONTRIBUTING, agent guides, port status) | TUK-T4..T8 done |
 | TUK-T13 | 2026-11-18 | fix | closed | Sound tooling and comments read the Kotlin sources (Sfx.kt, SourceSoundLibrary.kt, Stations.kt, BootSequence.kt); output identical to the Java-era tools | equivalence diff |
 | TUK-T14 | 2026-11-18 | feature | open | Support every Android phone from 2016 on: minSdk 26 -> 23 in the Kotlin edition (mirror of the Java change), with version guards and Android 6/7/7.1 matrix devices | owner 2026-11-18 |
-| TUK-T15 | 2026-11-18 | chore | open | Quarterly platform job (copy of TrekUI.Java LCA-T66): scheduled task on the 1st of Jan/Apr/Jul/Oct 03:00 checks Android/Kotlin/AGP/Gradle, files upgrade tickets and starts a CLI | LCA-T66 |
+| TUK-T15 | 2026-11-18 | chore | closed | Quarterly platform job (copy of TrekUI.Java LCA-T66): scheduled task on the 1st of Jan/Apr/Jul/Oct 03:00 checks Android/Kotlin/AGP/Gradle, files upgrade tickets and starts a CLI | register-quarterly-task.ps1; dry-run verified |
