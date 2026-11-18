@@ -32,6 +32,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import com.gungreeneyes.trekui.Compat
 import com.gungreeneyes.trekui.ScreenMetrics
 import com.gungreeneyes.trekui.core.CoreConfig
 import com.gungreeneyes.trekui.core.SuiteClient
@@ -280,17 +281,9 @@ class PurchaseActivity : Activity(), BillingManager.Listener {
     private fun spacer(height: Int): View = View(this).apply { layoutParams = LinearLayout.LayoutParams(1, height) }
 
     private fun loadFonts() {
-        var r: Typeface? = null
-        var h: Typeface? = null
-        try {
-            r = Typeface.Builder(assets, "fonts/Antonio.ttf").setFontVariationSettings("'wght' 500").build()
-            h = Typeface.Builder(assets, "fonts/Antonio.ttf").setFontVariationSettings("'wght' 700").build()
-        } catch (e: RuntimeException) {
-            r = null
-            h = null
-        }
-        regular = r ?: Typeface.create("sans-serif-condensed", Typeface.NORMAL)
-        heavy = h ?: Typeface.create("sans-serif-condensed", Typeface.BOLD)
+        // variable weights on API 26+; the default instance (bolded for heavy) on 23-25
+        regular = Compat.variableFont(assets, "fonts/Antonio.ttf", FONT_REGULAR, false)
+        heavy = Compat.variableFont(assets, "fonts/Antonio.ttf", FONT_HEAVY, true)
     }
 
     private fun dp(value: Int): Int =
@@ -471,6 +464,10 @@ class PurchaseActivity : Activity(), BillingManager.Listener {
 
         /** Width of the header elbow's sidebar, in dp. */
         private const val SIDEBAR_DP = 72
+
+        /** Antonio's `wght` for body text and for headings. */
+        private const val FONT_REGULAR = 500
+        private const val FONT_HEAVY = 700
 
         /** Price shown until Play has returned the localized one. */
         private const val FALLBACK_PRICE = "\$0.99"

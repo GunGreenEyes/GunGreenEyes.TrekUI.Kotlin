@@ -222,7 +222,7 @@ object SoundDownloader {
             val code = con.responseCode
             if (code != HttpURLConnection.HTTP_OK) throw IOException("HTTP $code")
             if (!"https".equals(con.url.protocol, ignoreCase = true)) throw IOException("redirected off https")
-            val len = con.contentLengthLong
+            val len = Compat.contentLength(con.getHeaderField("Content-Length")) // contentLengthLong is API 24
             if (len > MAX_DOWNLOAD_BYTES) throw IOException("file too large")
             val md = SoundProcessor.sha256()
             var total = 0L

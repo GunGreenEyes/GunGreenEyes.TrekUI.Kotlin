@@ -1,6 +1,5 @@
 package com.gungreeneyes.trekui
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -74,6 +73,8 @@ object Ui {
     private const val RIPPLE_ON_FILL = 0x70FFFFFF
     private const val RIPPLE_ON_CLEAR = 0x50FFFFFF
     private const val ANTONIO = "fonts/Antonio.ttf"
+    private const val ANTONIO_REGULAR = 500
+    private const val ANTONIO_HEAVY = 700
 
     private var antonioRegular: Typeface? = null
     private var antonioBold: Typeface? = null
@@ -205,13 +206,9 @@ object Ui {
             return if (heavy) factionBold[f] else factionRegular[f]
         }
         if (antonioRegular == null) {
-            try {
-                antonioRegular = Typeface.Builder(c.assets, ANTONIO).setFontVariationSettings("'wght' 500").build()
-                antonioBold = Typeface.Builder(c.assets, ANTONIO).setFontVariationSettings("'wght' 700").build()
-            } catch (t: Throwable) {
-                antonioRegular = Typeface.create("sans-serif-condensed", Typeface.NORMAL)
-                antonioBold = Typeface.create("sans-serif-condensed", Typeface.BOLD)
-            }
+            // variable weights on API 26+; the default instance (bolded for heavy) on 23-25
+            antonioRegular = Compat.variableFont(c.assets, ANTONIO, ANTONIO_REGULAR, false)
+            antonioBold = Compat.variableFont(c.assets, ANTONIO, ANTONIO_HEAVY, true)
             if (antonioRegular == null) antonioRegular = Typeface.create("sans-serif-condensed", Typeface.NORMAL)
             if (antonioBold == null) antonioBold = Typeface.create("sans-serif-condensed", Typeface.BOLD)
         }
@@ -219,15 +216,8 @@ object Ui {
     }
 
     /** Antonio at a variable-font weight, falling back to condensed sans-serif. */
-    private fun antonio(c: Context, weight: Int, heavy: Boolean): Typeface {
-        var t: Typeface? = null
-        try {
-            t = Typeface.Builder(c.assets, ANTONIO).setFontVariationSettings("'wght' $weight").build()
-        } catch (ignored: Throwable) {
-            // fall through to the system face
-        }
-        return t ?: Typeface.create("sans-serif-condensed", if (heavy) Typeface.BOLD else Typeface.NORMAL)
-    }
+    private fun antonio(c: Context, weight: Int, heavy: Boolean): Typeface =
+        Compat.variableFont(c.assets, ANTONIO, weight, heavy)
 
     /** A plain label in the interface typeface; `sp` is the design size before zoom. */
     @JvmStatic
@@ -421,7 +411,7 @@ object Ui {
 
     /** True when the user allows animations and the system animator scale is not zero. */
     @JvmStatic
-    fun animate(c: Context): Boolean = TrekPrefs.get(c).animations() && ValueAnimator.areAnimatorsEnabled()
+    fun animate(c: Context): Boolean = TrekPrefs.get(c).animations() && Compat.animatorsEnabled(c)
 
     // ---- colour maths (pure) ----------------------------------------------------------------------
 

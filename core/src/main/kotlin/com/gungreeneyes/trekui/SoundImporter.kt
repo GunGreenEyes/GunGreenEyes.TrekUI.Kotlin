@@ -6,6 +6,7 @@ import android.media.MediaCodec
 import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.net.Uri
+import android.os.Build
 import android.provider.OpenableColumns
 import java.io.File
 import java.io.FileOutputStream
@@ -374,7 +375,12 @@ object SoundImporter {
                     val of = codec.outputFormat
                     if (of.containsKey(MediaFormat.KEY_SAMPLE_RATE)) sr = of.getInteger(MediaFormat.KEY_SAMPLE_RATE)
                     if (of.containsKey(MediaFormat.KEY_CHANNEL_COUNT)) ch = Math.max(1, of.getInteger(MediaFormat.KEY_CHANNEL_COUNT))
-                    if (of.containsKey(MediaFormat.KEY_PCM_ENCODING)) enc = of.getInteger(MediaFormat.KEY_PCM_ENCODING)
+                    // KEY_PCM_ENCODING is API 24; older decoders always output 16-bit PCM (the default)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                        of.containsKey(MediaFormat.KEY_PCM_ENCODING)
+                    ) {
+                        enc = of.getInteger(MediaFormat.KEY_PCM_ENCODING)
+                    }
                     progress = true
                 }
                 idle = if (progress) 0 else idle + 1

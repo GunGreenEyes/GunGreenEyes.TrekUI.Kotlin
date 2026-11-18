@@ -6,7 +6,7 @@ import org.gradle.api.Project
 /** SDK levels and JVM target shared by every TrekUI module. */
 internal object TrekUiSdk {
     const val COMPILE = 37
-    const val MIN = 26
+    const val MIN = 23
     const val TARGET = 37
     val JAVA = JavaVersion.VERSION_17
 }
