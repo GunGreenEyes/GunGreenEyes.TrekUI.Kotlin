@@ -30,7 +30,7 @@ SDK_ROOT_ARG=""
 # Keep in step with compileSdk/targetSdk in app/build.gradle.kts.
 SDK_PACKAGES=("platforms;android-37.0" "build-tools;37.0.0")
 HOST_ONLY_PACKAGES=("platform-tools" "emulator")   # not usable on Termux (x86_64 binaries)
-API_LEVELS_PHONE=(26 27 28 29 30 31 32 33 34 35 36)
+API_LEVELS_PHONE=(23 24 25 26 27 28 29 30 31 32 33 34 35 36)
 API_LEVELS_TABLET=(35 36)
 
 usage() { sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//'; }

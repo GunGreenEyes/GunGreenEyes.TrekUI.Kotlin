@@ -26,7 +26,7 @@ GitHub issues are welcome too. The maintainer turns them into tickets.
 
 ## Code conventions
 
-- **Idiomatic Kotlin**, JVM target 17, with `minSdk 26`. Sources go in `<module>/src/main/kotlin/`; no Java sources and no XML layouts. Views are built in code and draw on a `Canvas`; follow the existing classes. Compose arrives in phase 5 of [docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md); until then, don't add it.
+- **Idiomatic Kotlin**, JVM target 17, with `minSdk 23`. Sources go in `<module>/src/main/kotlin/`; no Java sources and no XML layouts. Views are built in code and draw on a `Canvas`; follow the existing classes. Compose arrives in phase 5 of [docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md); until then, don't add it.
   - Prefer `val`, null-safety and `object`s for stateless helpers; make declarations used only inside one module `internal`.
   - Keep `@JvmStatic` / `@JvmField` on members the instrumented tests reach by reflection (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#kotlin-conventions-in-this-codebase)).
   - **Style checks:** `./gradlew ktlintCheck detekt` must pass; CI runs both. The ktlint rules are in `.editorconfig` (Android Studio style, 120 columns); detekt uses its default rules. Findings the code already had are in each module's `ktlint-baseline.xml` and `detekt-baseline.xml`; never add new code to a baseline, fix it instead (`./gradlew ktlintFormat` fixes most ktlint findings). See [docs/BUILD.md](docs/BUILD.md#style-checks-ktlint-and-detekt). Keep release lint at zero errors.
@@ -35,7 +35,7 @@ GitHub issues are welcome too. The maintainer turns them into tickets.
   - Every screen must work in portrait and landscape, on phones through tablets, on foldables and in multi-window.
   - Handle window insets (system bars, display cutout) so layouts stay edge-to-edge.
 - **KDoc** on every class (what it is and how it fits) and on every non-trivial method. Use meaningful names and named constants, not magic numbers.
-- **Modern APIs.** Avoid deprecated calls where a replacement exists on API 26, using `Build.VERSION` guards.
+- **Modern APIs.** Avoid deprecated calls where a replacement exists, using `Build.VERSION` guards; anything newer than API 23 needs a guard and a fallback.
   - No network or disk I/O on the main thread. Network goes through `Http`, which is HTTPS only.
   - Don't keep `Activity` contexts in static fields.
 - **All five interfaces.** A feature must work in every interface. Look at how `Skin`, `ImperialDraw` and `CollectiveDraw` branch.

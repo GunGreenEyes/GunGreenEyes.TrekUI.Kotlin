@@ -1,5 +1,8 @@
 id,profile,api,tag,width,height,density,orientation,form,note
-phone_small_hdpi,small_phone,26,google_apis,720,1280,240,natural,phone,API 26 minSdk - 4.7in 16:9 hdpi
+nexus_5x,Nexus 5X,23,google_apis,1080,1920,420,natural,phone,API 23 minSdk - Android 6.0 (2015-16 flagship)
+pixel_xl,pixel_xl,24,google_apis,,,,natural,phone,API 24 - Android 7.0 (2016)
+pixel,pixel,25,google_apis,,,,natural,phone,API 25 - Android 7.1 (2016 Pixel)
+phone_small_hdpi,small_phone,26,google_apis,720,1280,240,natural,phone,API 26 - 4.7in 16:9 hdpi
 nexus_5,Nexus 5,27,default,1080,1920,480,natural,phone,API 27 - 16:9 xxhdpi
 phone_mdpi,medium_phone,28,google_apis,480,800,160,natural,phone,API 28 - 5:3 mdpi
 pixel_3a,pixel_3a,29,google_apis,,,,natural,phone,API 29 - 18.5:9 RoleManager era

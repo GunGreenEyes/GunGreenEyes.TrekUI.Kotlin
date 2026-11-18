@@ -40,6 +40,8 @@ jobs:
         run: |
           # device = folder prefix on the site, profile = AVD hardware profile.
           full='[
+            {"device":"phone","api":23,"profile":"Nexus 5X","orientation":"portrait"},
+            {"device":"phone","api":24,"profile":"pixel_xl","orientation":"portrait"},
             {"device":"phone","api":26,"profile":"pixel_2","orientation":"portrait"},
             {"device":"phone","api":29,"profile":"pixel_4","orientation":"portrait"},
             {"device":"phone","api":31,"profile":"pixel_5","orientation":"portrait"},
@@ -65,7 +67,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 9
+      max-parallel: 11
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     env:
       DEVICE: ${{ matrix.device }}

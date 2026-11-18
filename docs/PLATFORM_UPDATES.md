@@ -2,7 +2,7 @@
 
 ## Which phones
 
-TrekUI works on **every phone from 2022 onward**. Those phones shipped Android 11–13 or newer. `minSdk` is 26 (Android 8.0), which covers all of them with room to spare. Don't raise it without a strong reason, and never lower it. APIs newer than 26 are always guarded with `Build.VERSION.SDK_INT` checks. The emulator matrix (`scripts/capture/run-matrix.ps1`) covers phones, a tablet and a foldable, from the oldest supported API to the newest.
+TrekUI works on **every phone from 2016 onward**. Those phones shipped Android 6.0–7.1 or newer. `minSdk` is 23 (Android 6.0), the lowest AndroidX and Play Billing support (TUK-T14 lowered it from 26). Don't raise it without a strong reason. APIs newer than 23 are always guarded with `Build.VERSION.SDK_INT` checks (or `@RequiresApi` helpers) with a fallback for older versions; release lint (`NewApi`, `InlinedApi`) must stay at zero errors. Android 6.0–7.1 show the PNG launcher icons in `res/mipmap-<density>/` (made by `scripts/release/make-legacy-icons.py`); 8.0+ show the adaptive icon. The emulator matrix (`scripts/capture/run-matrix.ps1`) covers phones, a tablet and a foldable, from the oldest supported API to the newest.
 
 ## Upgrades are queued automatically
 

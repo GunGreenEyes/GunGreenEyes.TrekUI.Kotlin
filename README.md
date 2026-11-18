@@ -40,7 +40,7 @@ The five interfaces, all starship consoles: COMMAND (11 colour themes), IMPERIAL
 
 ## Supported devices
 
-**TrekUI works on every Android phone from 2022 onward, at every resolution and aspect ratio.** That includes:
+**TrekUI works on every Android phone from 2016 onward, at every resolution and aspect ratio.** That includes:
 
 - small phones and tall 20:9 / 21:9 phones;
 - foldables, on both the inner and the outer screen;
@@ -48,20 +48,20 @@ The five interfaces, all starship consoles: COMMAND (11 colour themes), IMPERIAL
 - phones in landscape and in multi-window;
 - large display-size and font settings.
 
-The floor is much lower than that: `minSdk` is **26 (Android 8.0)** and `targetSdk` is **37**. Phones from 2022 shipped Android 11 to 13, so they are covered with room to spare. No screen hard-codes sizes or orientation: everything is sized from the window by `ScreenMetrics` (size classes, margins, columns, a UI scale clamped to 0.85–1.6), edge-to-edge, with status bar, navigation bar, display cutouts and keyboard insets handled on every API level.
+The floor is `minSdk` **23 (Android 6.0)**, the lowest AndroidX and Play Billing allow, and `targetSdk` is **37**. Phones from 2016 shipped Android 6.0 to 7.1, so all of them are covered. Newer APIs are guarded by version checks with a fallback for Android 6.0–7.1 (see [docs/PLATFORM_UPDATES.md](docs/PLATFORM_UPDATES.md)). No screen hard-codes sizes or orientation: everything is sized from the window by `ScreenMetrics` (size classes, margins, columns, a UI scale clamped to 0.85–1.6), edge-to-edge, with status bar, navigation bar, display cutouts and keyboard insets handled on every API level.
 
 ### How it is tested
 
 | Where | What runs | Devices |
 |---|---|---|
-| **CI**, GitHub Actions **Develop** workflow (`.github/workflows/develop.yml`), every push to `main` and every PR | Build (`assembleDevelopDebug`), all unit tests (`testDevelopDebugUnitTest`) and lint (`lintDevelopDebug`) for all four apps; then the launcher's instrumented scenarios with screenshots and video on emulators (`.github/workflows/emulator.yml`) | 9 emulators on `main` (3 on PRs): phones on API **26, 29, 31, 33, 35, 36**; a phone in landscape (API 36); a tablet (Pixel Tablet, landscape, API 36); a foldable (Pixel Fold, API 36) |
-| **Local matrix**, `scripts/avd/matrix.csv`, run with `scripts/capture/run-matrix.ps1` (or `run-matrix.sh`) | The same instrumented scenarios, each emulator cold-booted with wiped data; results merged into `assets/index.json` | 24 devices (below) |
+| **CI**, GitHub Actions **Develop** workflow (`.github/workflows/develop.yml`), every push to `main` and every PR | Build (`assembleDevelopDebug`), all unit tests (`testDevelopDebugUnitTest`) and lint (`lintDevelopDebug`) for all four apps; then the launcher's instrumented scenarios with screenshots and video on emulators (`.github/workflows/emulator.yml`) | 11 emulators on `main` (3 on PRs): phones on API **23, 24, 26, 29, 31, 33, 35, 36**; a phone in landscape (API 36); a tablet (Pixel Tablet, landscape, API 36); a foldable (Pixel Fold, API 36) |
+| **Local matrix**, `scripts/avd/matrix.csv`, run with `scripts/capture/run-matrix.ps1` (or `run-matrix.sh`) | The same instrumented scenarios, each emulator cold-booted with wiped data; results merged into `assets/index.json` | 27 devices (below) |
 
-The 24-device local matrix covers:
+The 27-device local matrix covers:
 
 | Dimension | Coverage |
 |---|---|
-| API levels | 26 (minSdk), 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 and 37 |
+| API levels | 23 (minSdk), 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 and 37 |
 | Densities | mdpi (160), hdpi (240), xhdpi (320), 420 dpi, xxhdpi (480) and xxxhdpi (640) |
 | Phone aspect ratios | 5:3, 16:9, 18.5:9, 19:9, 19.5:9, 20:9 and 21:9 |
 | Tablets | 16:10 (7-inch and Pixel Tablet) and 4:3, plus a tablet held in portrait |
@@ -188,7 +188,7 @@ Choose the interface in **CONFIG › INTERFACE** (family, then interface), and i
 
 ### TrekUI Messages
 
-- Default SMS/MMS app on Android 8.0+ (role request on 10+).
+- Default SMS/MMS app on Android 6.0+ (role request on 10+, the system's change-default dialog below).
 - Conversation list and threads with sent / delivered / not sent state; new messages to numbers or contacts; CALL, BLOCK, DELETE.
 - MMS: up to 5 pictures through the system photo picker, group sends, incoming MMS downloaded at once.
 - Search across names and message text, drafts per conversation, blocking (system list plus prefix rules), dual-SIM choice per conversation.

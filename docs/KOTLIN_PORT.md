@@ -30,10 +30,10 @@ release, shipped as the next whole-number version, 44 or later, over the Java ed
 
 - Every feature of the final TrekUI.Java release works the same or better: the five starship interfaces
   (COMMAND, IMPERIAL, COLLECTIVE, CLASSIC CONSOLE, NEXT CONSOLE) with their sub-themes, and the three companions. Nothing is dropped silently.
-- **Every phone from 2022 onward**, every resolution and aspect ratio: `minSdk 26`, latest `targetSdk`,
+- **Every phone from 2016 onward**, every resolution and aspect ratio: `minSdk 23` (TUK-T14; was 26), latest `targetSdk`,
   phones, tall phones, foldables (inner and outer), tablets in both orientations, large font and display size.
 - **The same level of testing or higher**: every Java unit test has a Kotlin equivalent; the instrumented
-  scenarios (`app/src/androidTest`) keep passing; the CI 9-emulator matrix and the local 24-device matrix
+  scenarios (`app/src/androidTest`) keep passing; the CI emulator matrix (11 on `main`) and the local device matrix (27 rows)
   (`scripts/avd/matrix.csv`) both pass; release lint has zero errors.
 - **The same level of documentation or higher**: README, ARCHITECTURE, BUILD, TESTING, RELEASE, PLAY_STORE,
   PLATFORM_UPDATES and the per-app docs describe the Kotlin code as it is.

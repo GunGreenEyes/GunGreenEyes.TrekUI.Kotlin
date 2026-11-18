@@ -57,7 +57,7 @@ The supporting classes are:
 - **`LayoutAudit`:** checks that nothing is clipped or hidden under a system bar or display cutout.
 - **`Interface`:** enumerates the five interfaces.
 
-Cucumber is not used on purpose. Plain JUnit 4 keeps the toolchain small and runs on every API level from 26 up.
+Cucumber is not used on purpose. Plain JUnit 4 keeps the toolchain small and runs on every API level from 23 up.
 
 To add a scenario, write it in the right `.feature` file, then add a method with the scenario's name to the matching `*Scenarios` class in `app/src/androidTest/kotlin/com/gungreeneyes/trekui/` and call `Gherkin` for each step. The scenarios reach into the launcher through `AppHooks`, which uses reflection; keep the members it names (`MainActivity.openConfig`, `requestDefaultHome`, `Skin.faction`, `AppRepo.get`, …) static and un-renamed, or update `AppHooks` with them.
 
@@ -71,7 +71,7 @@ Instrumentation arguments: `trekuiOrientation` (natural | portrait | landscape) 
 
 ## Emulator matrix
 
-`scripts/avd/matrix.csv` lists the test devices: one row per AVD. Each row gives the device profile, API level (26 to 37), system-image tag, optional screen override (width, height, density), orientation and form factor (phone, tablet, foldable). Together the rows cover:
+`scripts/avd/matrix.csv` lists the test devices: one row per AVD. Each row gives the device profile, API level (23 to 37), system-image tag, optional screen override (width, height, density), orientation and form factor (phone, tablet, foldable). Together the rows cover:
 
 - aspect ratios from 4:3 to 21:9;
 - densities from mdpi to xxxhdpi;
@@ -100,7 +100,7 @@ The setup scripts check for it and say how to turn it on.
 `.github/workflows/emulator.yml` runs a matrix on GitHub's Ubuntu runners with KVM. It has two profiles:
 
 - **quick** (PRs): three devices.
-- **full** (`main` and releases): phones across API 26 to 36, plus a landscape phone, a tablet and a foldable.
+- **full** (`main` and releases): phones across API 23 to 36, plus a landscape phone, a tablet and a foldable.
 
 For each device, `.github/scripts/emulator-run.sh` records the screen, runs `connectedDevelopDebugAndroidTest`, pulls the screenshots, stitches the video and writes `meta.json` with the JUnit results. Each device's media is uploaded as the artifact `capture-<device>-api<N>`.
 
@@ -114,7 +114,7 @@ To do it by hand:
 2. Run `adb connect 127.0.0.1:<port>`.
 3. Run `./gradlew installDevelopDebug`.
 
-Use a Pie 64-bit or Android 11 instance. Nougat instances are below minSdk 26.
+Use a Pie 64-bit or Android 11 instance; Nougat instances work too (minSdk is 23).
 
 ## Where test media goes
 

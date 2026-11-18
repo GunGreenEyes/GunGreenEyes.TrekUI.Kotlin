@@ -46,6 +46,9 @@ $SdkPackages = @('platform-tools', 'emulator', 'platforms;android-37.0', 'build-
 # Emulator images for the test matrix. When scripts/avd/matrix.csv exists (columns include api and
 # tag), the images are taken from it instead; this list is the fallback.
 $DefaultImages = @(
+    'system-images;android-23;google_apis;x86_64',
+    'system-images;android-24;google_apis;x86_64',
+    'system-images;android-25;google_apis;x86_64',
     'system-images;android-26;google_apis;x86_64',
     'system-images;android-27;default;x86_64',
     'system-images;android-28;google_apis;x86_64',

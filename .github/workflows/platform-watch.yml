@@ -49,7 +49,7 @@ jobs:
           Google has released Android API $latest; the repo builds against $current.
 
           - [ ] Read the API $latest behaviour changes (apps targeting $latest and all apps) and fix what applies
-          - [ ] Bump compileSdk and targetSdk to $latest in every module's build.gradle.kts (minSdk stays 26: every phone from 2022 on)
+          - [ ] Bump compileSdk and targetSdk to $latest in every module's build.gradle.kts (minSdk stays 23: every phone from 2016 on)
           - [ ] Update \`platforms;android-$latest\` / build-tools in .github/workflows/*.yml and scripts/avd
           - [ ] Add the API $latest system image to the emulator matrix and run it
           - [ ] Note it in CHANGELOG.md; ship through the normal release

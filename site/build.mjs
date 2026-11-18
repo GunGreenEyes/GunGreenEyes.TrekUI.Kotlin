@@ -427,7 +427,7 @@ function page({ file, title, description, body, version }) {
       <div class="bar" aria-hidden="true"><span class="grow"></span><span class="seg-a"></span><span class="seg-b"></span><span class="cap"></span></div>
       <div class="title-row">
         <p class="site-title"><a href="index.html">TrekUI Launcher</a></p>
-        <span class="title-meta">Version ${esc(version.versionName || "")} · Android 8.0+</span>
+        <span class="title-meta">Version ${esc(version.versionName || "")} · Android 6.0+</span>
       </div>
     </div>
   </header>
@@ -493,7 +493,7 @@ const FEATURES = [
 function galleryHtml(runs) {
   const withShots = runs.filter((r) => r.shots.length);
   if (!withShots.length) {
-    return `<p class="empty">No screenshots yet. Every release runs the launcher on emulators from Android 8 to the latest
+    return `<p class="empty">No screenshots yet. Every release runs the launcher on emulators from Android 6 to the latest
     (phones, a tablet and a foldable, portrait and landscape) and publishes the captures here.</p>`;
   }
   const fams = [...new Set(withShots.map((r) => r.family))];
@@ -623,7 +623,7 @@ ${f.items.map(([cls, name, tag, text]) => `    <li class="card ${cls}"><span cla
     <p>TrekUI Launcher replaces the whole home screen: tiles, dock, app drawer, panels and dialer, drawn live in five
     starship-console interfaces, from the Command cascade to the Imperial and Collective decks.</p>
     <ul class="chips" aria-label="At a glance">
-      <li>5 interfaces</li><li>Android 8.0+</li><li>Phone · tablet · foldable</li><li>No ads · no tracking</li>
+      <li>5 interfaces</li><li>Android 6.0+</li><li>Phone · tablet · foldable</li><li>No ads · no tracking</li>
     </ul>
     <div class="pills">
       <a class="pill" href="#download">Download</a>
@@ -652,7 +652,7 @@ ${videoHtml(runs)}`)}
 ${section("diagnostics", "Diagnostics", "green", "", `<p class="lede">Results of the instrumented test suite on each emulator in the release matrix.</p>
 ${diagnosticsHtml(runs)}`)}
 
-${section("download", "Download", "gold", `v${version.versionName || ""}`, `<p class="lede">Get the store build from Google Play, or sideload the signed APK from GitHub Releases on any Android 8.0+ device. After installing, press Home and choose TrekUI as the default home app.</p>
+${section("download", "Download", "gold", `v${version.versionName || ""}`, `<p class="lede">Get the store build from Google Play, or sideload the signed APK from GitHub Releases on any Android 6.0+ device. After installing, press Home and choose TrekUI as the default home app.</p>
 <div class="pills">
   <a class="pill gold" href="${PLAY_URL}">Get it on Google Play</a>
   <a class="pill lav" href="${RELEASES_URL}">APK · GitHub Releases</a>

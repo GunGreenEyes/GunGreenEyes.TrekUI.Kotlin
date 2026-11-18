@@ -278,7 +278,7 @@ jobs:
             echo
             cat dist/CHANGELOG.txt
             echo "### Downloads"
-            echo "Sideload an APK on any Android 8.0+ phone or tablet; the AABs are the bundles uploaded to Google Play."
+            echo "Sideload an APK on any Android 6.0+ phone or tablet; the AABs are the bundles uploaded to Google Play."
             echo
             for p in TrekUI TrekUI-Messages TrekUI-Keyboard TrekUI-LockScreen; do
               echo "- \`$p-$NAME.apk\` / \`$p-$NAME.aab\` / \`$p-$NAME-mapping.txt\` (R8 mapping)"

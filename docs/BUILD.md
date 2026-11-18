@@ -10,7 +10,7 @@
 | Gradle | wrapper (9.x) | `gradle/wrapper/gradle-wrapper.properties` |
 | Android Gradle Plugin | see catalog | `gradle/libs.versions.toml` (`agp`) |
 | compileSdk / targetSdk | 37 | `build-logic` (`TrekUiSdk`) |
-| minSdk | 26 (Android 8.0) | `build-logic` (`TrekUiSdk`) |
+| minSdk | 23 (Android 6.0) | `build-logic` (`TrekUiSdk`) |
 | ktlint / detekt | see catalog | `gradle/libs.versions.toml` (`ktlint`, `detekt`) |
 | SDK packages | `platforms;android-37.0`, `build-tools;37.0.0`, `platform-tools` | installed by `scripts/setup.*` |
 
@@ -26,7 +26,7 @@ What the five modules share lives once, in the included build `build-logic/` (`s
 
 | File in `build-logic/convention/src/main/kotlin/` | Plugin id | What it sets |
 |---|---|---|
-| `TrekUiAndroid.kt` | (shared code) | compileSdk/minSdk/targetSdk 37/26/37, Java/Kotlin target 17, the instrumentation runner, `unitTests.isReturnDefaultValues`, lint (`abortOnError = false`, `checkReleaseBuilds`, XML + HTML reports) |
+| `TrekUiAndroid.kt` | (shared code) | compileSdk/minSdk/targetSdk 37/23/37, Java/Kotlin target 17, the instrumentation runner, `unitTests.isReturnDefaultValues`, lint (`abortOnError = false`, `checkReleaseBuilds`, XML + HTML reports) |
 | `AndroidApplicationConventionPlugin.kt` | `trekui.android.application` | the above plus the version from `version.properties`, the `TRIAL_SESSION_MINUTES` and `UNLOCK_PRODUCT_ID` fields, the `develop`/`production` flavors (`.dev` id suffix, `-dev` name suffix, 5-minute trial, the per-flavor `trekuiSuitePermission` placeholder), release signing (below), R8 + resource shrinking with `proguard-rules.pro`, `buildConfig`/`resValues`, the META-INF packaging exclude |
 | `AndroidLibraryConventionPlugin.kt` | `trekui.android.library` | the shared part, for `:core` |
 | `QualityConventionPlugin.kt` | `trekui.quality` | ktlint and detekt (below); applied by both Android plugins |
