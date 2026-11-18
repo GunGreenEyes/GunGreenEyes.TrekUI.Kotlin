@@ -39,9 +39,11 @@ jobs:
           PROFILE: ${{ inputs.profile }}
         run: |
           # device = folder prefix on the site, profile = AVD hardware profile.
+          # API 23 and 24 run the 32-bit x86 images with 2 GB: the x86_64 google_apis images of that age never
+          # finished booting on the hosted runners (sys.boot_completed stayed empty until the job limit).
           full='[
-            {"device":"phone","api":23,"profile":"Nexus 5X","orientation":"portrait"},
-            {"device":"phone","api":24,"profile":"pixel_xl","orientation":"portrait"},
+            {"device":"phone","api":23,"profile":"Nexus 5X","orientation":"portrait","arch":"x86","ram":"2048M"},
+            {"device":"phone","api":24,"profile":"pixel_xl","orientation":"portrait","arch":"x86","ram":"2048M"},
             {"device":"phone","api":26,"profile":"pixel_2","orientation":"portrait"},
             {"device":"phone","api":29,"profile":"pixel_4","orientation":"portrait"},
             {"device":"phone","api":31,"profile":"pixel_5","orientation":"portrait"},
@@ -107,18 +109,21 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api }}-${{ matrix.profile }}-google_apis-x86_64-v2
+          key: avd-${{ matrix.api }}-${{ matrix.profile }}-google_apis-${{ matrix.arch || 'x86_64' }}-v2
 
+      # Bounded: a snapshot boot that hangs must not eat the job; the test steps boot fresh anyway.
       - name: Create AVD snapshot
         if: steps.avd-cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        timeout-minutes: 20
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
-          arch: x86_64
+          arch: ${{ matrix.arch || 'x86_64' }}
           profile: ${{ matrix.profile }}
           disk-size: 6000M
-          ram-size: 4096M
+          ram-size: ${{ matrix.ram || '4096M' }}
           heap-size: 576M
           cores: 4
           force-avd-creation: false
@@ -134,10 +139,10 @@ jobs:
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
-          arch: x86_64
+          arch: ${{ matrix.arch || 'x86_64' }}
           profile: ${{ matrix.profile }}
           disk-size: 6000M
-          ram-size: 4096M
+          ram-size: ${{ matrix.ram || '4096M' }}
           heap-size: 576M
           cores: 4
           force-avd-creation: false
@@ -153,10 +158,10 @@ jobs:
         with:
           api-level: ${{ matrix.api }}
           target: google_apis
-          arch: x86_64
+          arch: ${{ matrix.arch || 'x86_64' }}
           profile: ${{ matrix.profile }}
           disk-size: 6000M
-          ram-size: 4096M
+          ram-size: ${{ matrix.ram || '4096M' }}
           heap-size: 576M
           cores: 4
           force-avd-creation: false
