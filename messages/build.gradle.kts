@@ -107,6 +107,8 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity)
+    // ActivityResult APIs need Fragment 1.3+; an older one arrives transitively (lint InvalidFragmentVersionForActivityResult).
+    implementation(libs.androidx.fragment)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)

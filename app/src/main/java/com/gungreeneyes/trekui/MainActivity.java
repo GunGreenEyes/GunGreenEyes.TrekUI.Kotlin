@@ -425,6 +425,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
     /** Back before API 33 (predictive back replaces this from 33 on; see {@link #registerBackHandler()}). */
     @SuppressWarnings("deprecation")
+    @android.annotation.SuppressLint("GestureBackNavigation") // API 33+ gestures go to backCallback
     @Override
     public void onBackPressed() {
         handleBack();
@@ -2429,6 +2430,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
      * Pulls down the system notification shade. There is no public API for this; the hidden
      * StatusBarManager method still works for apps holding EXPAND_STATUS_BAR, and failure is harmless.
      */
+    @android.annotation.SuppressLint("WrongConstant") // "statusbar" is the hidden service name, on purpose
     void expandNotifications() {
         try {
             Object statusBar = getSystemService("statusbar");
