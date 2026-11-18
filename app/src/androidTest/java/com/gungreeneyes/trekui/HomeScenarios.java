@@ -89,6 +89,15 @@ public class HomeScenarios extends AppScenario {
                 device.pressHome();
                 shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 15000);
             }
+            if (!shown) {
+                // Pixel emulator images for API 33/34 can keep the Home key on Pixel Launcher after a dialog grant
+                // even though the role and the HOME resolution both name TrekUI; a shell grant re-routes the key.
+                Log.i(TAG, "Home key still opens " + device.getCurrentPackageName() + " after the dialog grant; re-applying by shell");
+                setHomeByShell(context.getPackageName(), new ComponentName(context, MainActivity.class));
+                SystemClock.sleep(2000);
+                device.pressHome();
+                shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 15000);
+            }
             assertTrue(scenario.lastStep(), shown);
             waitForResumed(MainActivity.class, LAUNCH_TIMEOUT_MS);
             settle();
