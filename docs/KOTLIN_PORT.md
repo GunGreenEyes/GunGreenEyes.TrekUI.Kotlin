@@ -54,9 +54,15 @@ Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a mo
 8. **After parity**: the browser demo with Compose Multiplatform (wasm), and the Kotlin-only items moved from
    the Java edition (LCA-T12/T13/T14/T18/T24/T27/T28/T29/T39).
 
-## Not tonight
+## Findings from the first conversion
 
-The owner asked for the plan only for now. Implementation starts when the owner says so, phase by phase.
+- AGP 9 compiles Kotlin with its built-in Kotlin support: no `org.jetbrains.kotlin.android` plugin is applied
+  (it would conflict). Kotlin sources live in `src/<set>/kotlin`, next to the Java ones in `src/<set>/java`.
+- The Java code shares the package `com.gungreeneyes.trekui` across `:core` and `:app` and relies on
+  package-private access between them (and from `:app` tests into `:core`). Kotlin has no package-private
+  visibility and `internal` is per module, so converted declarations that other modules or their tests use
+  are `public`. Tighten them to `internal` only once every user is in the same module.
+- Constants in an interface become `companion object` `const val`s; Java callers keep `TimeSource.UNKNOWN_BOOT`.
 
 ## Rules
 
