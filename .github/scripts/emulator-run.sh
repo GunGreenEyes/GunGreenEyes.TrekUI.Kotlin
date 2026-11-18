@@ -4,7 +4,8 @@
 #  1. sets the orientation (ORIENTATION=landscape locks rotation to 90 degrees),
 #  2. starts a background `adb shell screenrecord` loop (screenrecord stops itself after 180 s,
 #     so the loop records numbered segments until the tests end),
-#  3. runs ./gradlew connectedDevelopDebugAndroidTest,
+#  3. runs ./gradlew :app:connectedDevelopDebugAndroidTest (the only module with device tests; add the
+#     others here when they get some), retrying once if the emulator drops off adb,
 #  4. pulls every screenshot the instrumented tests left on the device or in Gradle's
 #     additional-test-output folder into assets/<device>-api<N>/,
 #  5. if the tests produced no screenshots, takes a fallback tour (launch + screencap),
@@ -71,8 +72,23 @@ REC_PID=$!
 # ---- instrumented tests ------------------------------------------------------------------------------
 log "connectedDevelopDebugAndroidTest on ${RUN_ID} (${ORIENTATION})"
 # trekuiDevice names the files MediaCapture writes: <scenario>__<device>__api<N>__<orientation>.png
-./gradlew --no-daemon --console=plain connectedDevelopDebugAndroidTest   "-Pandroid.testInstrumentationRunnerArguments.trekuiDevice=${DEVICE}"
+run_tests() {
+  ./gradlew --no-daemon --console=plain :app:connectedDevelopDebugAndroidTest "-Pandroid.testInstrumentationRunnerArguments.trekuiDevice=${DEVICE}"
+}
+run_tests
 TEST_RC=$?
+# Hosted-runner emulators sometimes drop off adb as the tests start ("device offline"); that is the
+# runner, not a test result, so reconnect, wait for a full boot and run the suite once more.
+if [ $TEST_RC -ne 0 ] && [ "$(timeout 10 adb get-state 2>/dev/null)" != "device" ]; then
+  echo "::warning::emulator went offline during the tests; reconnecting and retrying once"
+  adb reconnect offline >/dev/null 2>&1 || true
+  if timeout 300 adb wait-for-device && \
+     timeout 300 adb shell 'while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 2; done'; then
+    adb shell input keyevent 82 >/dev/null 2>&1 || true
+    run_tests
+    TEST_RC=$?
+  fi
+fi
 endlog
 
 # ---- stop video -------------------------------------------------------------------------------------
