@@ -50,8 +50,8 @@ public class SfxTest {
     @Test
     public void synthClipsAreInTheLibraryAndShippedAsAssets() {
         java.util.List<String> lib = java.util.Arrays.asList(Sfx.LIBRARY);
-        java.io.File dir = new java.io.File("src/main/assets/sounds/synth");
-        if (!dir.isDirectory()) dir = new java.io.File("app/src/main/assets/sounds/synth");
+        java.io.File dir = new java.io.File("../core/src/main/assets/sounds/synth"); // synth clips ship from :core
+        if (!dir.isDirectory()) dir = new java.io.File("core/src/main/assets/sounds/synth");
         for (String id : Sfx.SYNTH_TAP_CLIPS) {
             assertThat(lib).contains(id);
             assertThat(new java.io.File(dir, id + ".ogg").isFile()).isTrue();
@@ -67,8 +67,8 @@ public class SfxTest {
 
     @Test
     public void everyInterfaceHasASoundForEveryEventByDefault() {
-        java.io.File dir = new java.io.File("src/main/assets/sounds/synth");
-        if (!dir.isDirectory()) dir = new java.io.File("app/src/main/assets/sounds/synth");
+        java.io.File dir = new java.io.File("../core/src/main/assets/sounds/synth"); // synth clips ship from :core
+        if (!dir.isDirectory()) dir = new java.io.File("core/src/main/assets/sounds/synth");
         java.util.List<String> lib = java.util.Arrays.asList(Sfx.LIBRARY);
         for (int f = 0; f < Sfx.FACTION_DEFAULT.length; f++) {
             String[] synth = Sfx.synthEventFor(f);

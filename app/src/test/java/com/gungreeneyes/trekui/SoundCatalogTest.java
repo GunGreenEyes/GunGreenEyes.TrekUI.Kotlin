@@ -107,8 +107,9 @@ public class SoundCatalogTest {
 
     @Test
     public void shippedManifestIsValid() throws IOException, JSONException {
-        File f = new File("src/main/assets/" + SoundCatalog.ASSET);
-        if (!f.isFile()) f = new File("app/src/main/assets/" + SoundCatalog.ASSET);
+        // the manifest ships from :core's assets (shared with the companion apps)
+        File f = new File("../core/src/main/assets/" + SoundCatalog.ASSET);
+        if (!f.isFile()) f = new File("core/src/main/assets/" + SoundCatalog.ASSET);
         assertThat(f.isFile()).isTrue();
         String json;
         try (InputStream in = new FileInputStream(f)) {

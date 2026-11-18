@@ -40,8 +40,9 @@ public class PictogramsTest {
 
     @Test
     public void everyPictogramHasPngsInEveryStyle() {
-        File assets = new File("src/main/assets");
-        if (!assets.isDirectory()) assets = new File("app/src/main/assets");
+        // the glyph PNGs ship from :core's assets (shared with the companion apps)
+        File assets = new File("../core/src/main/assets");
+        if (!assets.isDirectory()) assets = new File("core/src/main/assets");
         assertThat(assets.isDirectory()).isTrue();
         for (String n : Pictograms.ALL) {
             assertWithMessage("glyphs/" + n).that(new File(assets, "glyphs/" + n + ".png").isFile()).isTrue();

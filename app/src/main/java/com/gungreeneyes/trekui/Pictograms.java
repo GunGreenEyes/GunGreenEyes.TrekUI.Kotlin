@@ -119,7 +119,7 @@ final class Pictograms {
         {"umbrella", "insurance", "geico", "progressive", "statefarm", "allstate", "rain", "radar", "rainviewer", "storm"},
         {"alarm", "alarm", "alarmy", "wakeup", "sleepasandroid"},
         {"timer", "timer", "stopwatch", "pomodoro", "focus", "forest", "countdown", "habit", "habits"},
-        {"trophy", "espn", "sports", "score", "scores", "fantasy", "nfl", "nba", "mlb", "fifa", "uefa", "onefootball", "theScore", "fotmob", "sofascore", "league"},
+        {"trophy", "espn", "sports", "score", "scores", "fantasy", "nfl", "nba", "mlb", "fifa", "uefa", "onefootball", "thescore", "fotmob", "sofascore", "league"},
         {"ball", "golf", "tennis", "soccer", "football", "basketball", "baseball", "cricket", "ball"},
         {"star", "favorites", "favourites", "reviews", "rating", "starred", "wishlist", "star"},
         {"bell", "notifications", "notification", "reminder", "reminders", "alerts", "notify", "pushbullet"},

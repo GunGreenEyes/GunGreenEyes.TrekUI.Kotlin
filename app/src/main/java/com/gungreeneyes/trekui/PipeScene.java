@@ -81,6 +81,11 @@ final class PipeScene {
     static final float MAX_CROP = 0.08f;
     /** Margin (painting px) kept visible around the outermost tap targets. */
     static final float KEEP_PAD = 8f;
+    /**
+     * Per scene: keep the painting's foot visible too. Midnight's dock keys sit in a painted tray that
+     * runs to the bottom edge; keeping only the keys cut the tray's lower frame off (landscape 720p).
+     */
+    static final boolean[] KEEP_FOOT = {false, false, true};
     private static WeakReference<Stage> current;
 
     /** The scene index (0 Briar, 1 Ledger, 2 Midnight) of the current faction. */
@@ -783,7 +788,8 @@ final class PipeScene {
             if (offset + keepStart < 0) offset = -keepStart;
             if (offset + keepEnd > view) offset = view - keepEnd;
         }
-        return Math.max(view - size, Math.min(0f, offset));
+        // + 0f folds the -0f that -keepStart produces for keepStart == 0 into a plain 0
+        return Math.max(view - size, Math.min(0f, offset)) + 0f;
     }
 
     /** Maps a rectangle in painting coordinates (941x1672 space) to view pixels. */
@@ -826,6 +832,7 @@ final class PipeScene {
      */
     static final class Stage extends FrameLayout {
         private final int[] crop;
+        private final boolean keepFoot;
         private Bitmap art;
         private final Rect src = new Rect();
         private final RectF dst = new RectF();
@@ -852,6 +859,7 @@ final class PipeScene {
         Stage(Context c, int scene) {
             super(c);
             this.crop = CROP[scene];
+            this.keepFoot = KEEP_FOOT[scene];
             setWillNotDraw(false);
             setClipChildren(false);
             InputStream in = null;
@@ -915,7 +923,9 @@ final class PipeScene {
             if (w == fitW && h == fitH) return;
             fitW = w;
             fitH = h;
-            fit = fitScene(w, h, crop[2] - crop[0], crop[3] - crop[1], keepBounds(rects, crop, KEEP_PAD), MAX_CROP);
+            RectF keep = keepBounds(rects, crop, KEEP_PAD);
+            if (keep != null && keepFoot) keep.bottom = crop[3] - crop[1];
+            fit = fitScene(w, h, crop[2] - crop[0], crop[3] - crop[1], keep, MAX_CROP);
             dst.set(fit.left, fit.top, fit.left + (crop[2] - crop[0]) * fit.scale, fit.top + (crop[3] - crop[1]) * fit.scale);
         }
 
