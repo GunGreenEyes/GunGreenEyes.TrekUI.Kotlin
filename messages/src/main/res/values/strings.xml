@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_name comes from the product flavor (build.gradle.kts resValue). -->
+
+    <!-- Screens -->
+    <string name="title_messages">MESSAGES</string>
+    <string name="footer_messages">TREKUI MESSAGES %1$s</string>
+    <string name="title_new">NEW MESSAGE</string>
+    <string name="footer_new">ENTER A NUMBER OR PICK A CONTACT</string>
+    <string name="title_blocked">BLOCKED</string>
+    <string name="footer_blocked">NUMBERS AND PREFIX RULES</string>
+
+    <!-- Sidebar and buttons -->
+    <string name="btn_new">NEW</string>
+    <string name="btn_search">SEARCH</string>
+    <string name="btn_close_search">CLOSE</string>
+    <string name="btn_blocked">BLOCKED</string>
+    <string name="btn_config">CONFIG</string>
+    <string name="btn_set_default">SET DEFAULT</string>
+    <string name="btn_back">BACK</string>
+    <string name="btn_call">CALL</string>
+    <string name="btn_block">BLOCK</string>
+    <string name="btn_delete">DELETE</string>
+    <string name="btn_add">ADD</string>
+    <string name="btn_attach">ATTACH</string>
+    <string name="btn_send">SEND</string>
+    <string name="btn_contact">CONTACT</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="unblock">UNBLOCK</string>
+
+    <!-- Conversation list -->
+    <string name="banner_not_default">TrekUI Messages is not your default SMS app. Make it the default to receive, send and store messages.</string>
+    <string name="list_empty">NO CONVERSATIONS</string>
+    <string name="search_hint">Search names, numbers and messages</string>
+    <string name="search_empty">NO MATCHES</string>
+    <string name="unknown_sender">UNKNOWN SENDER</string>
+    <string name="draft_prefix">DRAFT:</string>
+    <string name="unread">unread</string>
+    <string name="image_marker">[IMAGE]</string>
+    <plurals name="matches">
+        <item quantity="one">%d MATCH</item>
+        <item quantity="other">%d MATCHES</item>
+    </plurals>
+    <string name="role_unavailable">This device cannot set a default SMS app.</string>
+
+    <!-- Menus -->
+    <string name="menu_mark_read">MARK READ</string>
+    <string name="menu_delete">DELETE</string>
+    <string name="menu_block">BLOCK</string>
+    <string name="menu_copy">COPY TEXT</string>
+    <string name="menu_resend">SEND AGAIN</string>
+    <string name="menu_message">MESSAGE</string>
+    <string name="confirm_delete_thread">Delete the whole conversation with %1$s?</string>
+    <string name="confirm_block">Block %1$s? Their messages will be dropped without a notification.</string>
+    <string name="confirm_unblock">Unblock %1$s?</string>
+    <string name="blocked_done">Blocked</string>
+
+    <!-- CONFIG -->
+    <string name="config_interface">INTERFACE</string>
+    <string name="config_interface_following">INTERFACE: FOLLOWS LAUNCHER</string>
+    <string name="following_launcher_note">The TrekUI launcher is installed, so Messages uses the interface and sub-theme chosen in the launcher\'s CONFIG. Change it there.</string>
+    <string name="config_reports_on">DELIVERY REPORTS: ON</string>
+    <string name="config_reports_off">DELIVERY REPORTS: OFF</string>
+    <string name="config_unlock">UNLOCK</string>
+
+    <!-- Thread -->
+    <string name="to_hint">To: number, or several separated by commas</string>
+    <string name="compose_hint">Message</string>
+    <string name="you">You</string>
+    <string name="attach_description">Attach a photo</string>
+    <string name="remove_attachment">Remove this photo</string>
+    <string name="too_many_images">At most %1$d photos per message</string>
+    <string name="image_unreadable">That image could not be read</string>
+    <string name="need_recipient">Enter a recipient first</string>
+    <string name="need_default_to_send">Android only lets the default SMS app send and store messages. Make TrekUI Messages the default?</string>
+    <string name="no_dialer">No phone app is installed</string>
+    <string name="state_sending">SENDING</string>
+    <string name="state_sent">SENT</string>
+    <string name="state_delivered">DELIVERED</string>
+    <string name="state_failed">NOT SENT</string>
+
+    <!-- Blocked -->
+    <string name="blocked_empty">NOBODY IS BLOCKED</string>
+    <string name="block_hint">Number, or a prefix ending in * (e.g. +1900*)</string>
+    <string name="block_needs_default">Blocking numbers needs TrekUI Messages to be the default SMS app. Prefix rules work either way.</string>
+    <string name="prefix_rule">%1$s (PREFIX RULE)</string>
+
+    <!-- Notifications -->
+    <string name="channel_group_conversations">Conversations</string>
+    <string name="channel_messages">Messages</string>
+    <string name="channel_errors">Send errors</string>
+    <string name="notification_me">You</string>
+    <string name="action_reply">REPLY</string>
+    <string name="action_mark_read">MARK READ</string>
+    <string name="reply_hint">Reply</string>
+    <string name="error_send">Message not sent</string>
+    <string name="error_mms_download">Picture message could not be downloaded</string>
+</resources>

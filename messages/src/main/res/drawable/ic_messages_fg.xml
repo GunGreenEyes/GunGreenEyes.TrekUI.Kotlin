@@ -1,0 +1,13 @@
+<!-- Original TrekUI Messages icon: a console elbow wrapped around two message bars. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#EA9C72"
+        android:pathData="M26,60 L26,38 A12,12 0 0 1 38,26 L82,26 L82,34 L44,34 A6,6 0 0 0 38,40 L38,60 Z" />
+    <path android:fillColor="#8899FF" android:pathData="M26,63 h12 v10 h-12 z" />
+    <!-- incoming bubble -->
+    <path android:fillColor="#BAA4E5" android:pathData="M45,42 h26 a5,5 0 0 1 5,5 v2 a5,5 0 0 1 -5,5 h-26 z" />
+    <!-- outgoing bubble with tail -->
+    <path android:fillColor="#EDB378" android:pathData="M54,60 h28 v12 h-24 l-6,6 v-6 a4,4 0 0 1 -4,-4 v-4 a4,4 0 0 1 6,-4 z" />
+    <path android:fillColor="#CF4F4F" android:pathData="M26,76 h12 v6 h-12 z" />
+</vector>
