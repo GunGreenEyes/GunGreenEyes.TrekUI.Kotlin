@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # Bumps the app version, writes the Play changelog and creates the release tag (does NOT push).
 #
-#   scripts/release/bump-version.sh patch                       6.2.0 -> 6.2.1
-#   scripts/release/bump-version.sh minor --notes "New Collective layout"
-#   scripts/release/bump-version.sh 7.0.0 --notes-file notes.txt --ticket LCA-T12
+#   scripts/release/bump-version.sh                             next whole number, e.g. 6 -> 7
+#   scripts/release/bump-version.sh next --notes "New Collective layout"
+#   scripts/release/bump-version.sh 9 --notes-file notes.txt --ticket LCA-T12
+#
+# Versions are whole numbers (6, 7, 8, ...); versionCode is a separate, strictly increasing integer.
+# The argument is 'next' (the default) or a whole number greater than the current one; an old X.Y.Z
+# versionName counts as its major (6.2.0 -> next is 7). 'major' is still accepted as an alias of 'next'
+# for one transition release; 'minor' and 'patch' are rejected.
 #
 # What it does:
 #   1. version.properties: versionCode + 1, versionName = the new version
@@ -20,11 +25,14 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-usage() { sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-1}"; }
-[ $# -ge 1 ] || usage
-case "$1" in -h|--help) usage 0;; esac
+usage() { sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-1}"; }
 
-BUMP="$1"; shift
+BUMP="next"
+case "${1:-}" in
+  -h|--help) usage 0;;
+  ""|--*) ;;
+  *) BUMP="$1"; shift;;
+esac
 NOTES=""; NOTES_FILE=""; TICKET=""; COMMIT=1
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -39,13 +47,16 @@ done
 
 prop() { grep "^$1=" version.properties | cut -d= -f2 | tr -d '\r'; }
 OLD_NAME="$(prop versionName)"; OLD_CODE="$(prop versionCode)"
-IFS=. read -r MAJ MIN PAT <<<"${OLD_NAME%%-*}"
+# Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
+CURRENT="${OLD_NAME%%[!0-9]*}"
+[ -n "$CURRENT" ] || { echo "versionName '$OLD_NAME' in version.properties does not start with a number" >&2; exit 1; }
+CURRENT=$((10#$CURRENT))
 case "$BUMP" in
-  major) NEW_NAME="$((MAJ + 1)).0.0";;
-  minor) NEW_NAME="$MAJ.$((MIN + 1)).0";;
-  patch) NEW_NAME="$MAJ.$MIN.$((PAT + 1))";;
-  [0-9]*.[0-9]*.[0-9]*) NEW_NAME="$BUMP";;
-  *) echo "First argument must be major, minor, patch or X.Y.Z" >&2; exit 1;;
+  next|major) NEW_NAME="$((CURRENT + 1))";;
+  minor|patch) echo "There are no minor/patch versions any more: versions are whole numbers. Use 'next' (or no argument) for $((CURRENT + 1)), or a whole number greater than $CURRENT." >&2; exit 1;;
+  *[!0-9]*) echo "First argument must be 'next' or a whole number greater than $CURRENT (got '$BUMP')." >&2; exit 1;;
+  *) if [ "$((10#$BUMP))" -le "$CURRENT" ]; then echo "Version $BUMP must be greater than the current version $CURRENT." >&2; exit 1; fi
+     NEW_NAME="$((10#$BUMP))";;
 esac
 NEW_CODE=$((OLD_CODE + 1))
 TAG="v$NEW_NAME"

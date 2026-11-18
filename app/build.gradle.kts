@@ -129,15 +129,4 @@ dependencies {
     androidTestImplementation(libs.truth)
 }
 
-// Copies every built APK/AAB into dist/ with a descriptive name, e.g. dist/TREKUI-6.2.0-production-release.apk
-val distDir = rootProject.layout.projectDirectory.dir("dist")
-tasks.register<Copy>("dist") {
-    group = "distribution"
-    description = "Builds all variants and copies APKs/AABs into dist/."
-    dependsOn("assembleDevelopDebug", "assembleProductionRelease", "bundleProductionRelease")
-    from(layout.buildDirectory.dir("outputs/apk")) { include("**/*.apk") }
-    from(layout.buildDirectory.dir("outputs/bundle")) { include("**/*.aab") }
-    into(distDir)
-    eachFile { path = name.replace("app-", "TrekUI-${versionProps.getProperty("versionName")}-") }
-    includeEmptyDirs = false
-}
+// dist/ for every app (this one included) is the root project's `dist` task (build.gradle.kts).

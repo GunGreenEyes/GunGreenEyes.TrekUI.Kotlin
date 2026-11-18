@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 # Ships the whole TrekUI suite (launcher, messages, keyboard, lockscreen) to Google Play in one command.
 #
-#   scripts/release/ship.sh                       patch bump, internal track
-#   scripts/release/ship.sh minor --track beta
-#   scripts/release/ship.sh patch --track production --rollout 0.1
+#   scripts/release/ship.sh                       next whole number (e.g. 6 -> 7), internal track
+#   scripts/release/ship.sh --track beta
+#   scripts/release/ship.sh 9 --track production --rollout 0.1
 #   scripts/release/ship.sh --dry-run             print what would happen; writes, commits and pushes nothing
 #
 # In order:
-#   1. bump major|minor|patch (default patch) with scripts/release/bump-version.sh: one shared
-#      versionCode/versionName for every app in version.properties, plus fastlane/release-history.json
+#   1. bump to the next whole-number version (or the given one, which must be greater) with
+#      scripts/release/bump-version.sh: one shared versionCode (always +1) and versionName for every app
+#      in version.properties, plus fastlane/release-history.json. Versions are whole numbers (6, 7, 8, ...);
+#      versionCode is a separate, strictly increasing integer.
 #   2. changelog from the commits since the last v* tag: a new section at the top of CHANGELOG.md and a
 #      Play "What's new" text per app in fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt
 #      (500 characters at most; each app lists the commits that touched it or :core)
@@ -30,13 +32,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-usage() { sed -n '2,29p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-1}"; }
+usage() { sed -n '2,31p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-1}"; }
 
-BUMP="patch"; TRACK="internal"; ROLLOUT="0.1"; STATUS="completed"; PLAY="true"; LISTING="false"
+VERSION="next"; TRACK="internal"; ROLLOUT="0.1"; STATUS="completed"; PLAY="true"; LISTING="false"
 TICKET=""; DISPATCH=1; DRY=0; REMOTE="origin"
 while [ $# -gt 0 ]; do
   case "$1" in
-    major|minor|patch) BUMP="$1"; shift;;
+    next|major|minor|patch|[0-9]*) VERSION="$1"; shift;;
     --track) TRACK="$2"; shift 2;;
     --rollout) ROLLOUT="$2"; shift 2;;
     --status) STATUS="$2"; shift 2;;
@@ -77,11 +79,16 @@ fi
 # --- 1. version ------------------------------------------------------------------------------------------
 prop() { grep "^$1=" version.properties | cut -d= -f2 | tr -d '\r'; }
 OLD_NAME="$(prop versionName)"; OLD_CODE="$(prop versionCode)"
-IFS=. read -r MAJ MIN PAT <<<"${OLD_NAME%%-*}"
-case "$BUMP" in
-  major) NEW_NAME="$((MAJ + 1)).0.0";;
-  minor) NEW_NAME="$MAJ.$((MIN + 1)).0";;
-  patch) NEW_NAME="$MAJ.$MIN.$((PAT + 1))";;
+# Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
+CURRENT="${OLD_NAME%%[!0-9]*}"
+[ -n "$CURRENT" ] || { echo "versionName '$OLD_NAME' in version.properties does not start with a number" >&2; exit 1; }
+CURRENT=$((10#$CURRENT))
+case "$VERSION" in
+  next|major) NEW_NAME="$((CURRENT + 1))";;
+  minor|patch) echo "There are no minor/patch versions any more: versions are whole numbers. Leave the version out (next: $((CURRENT + 1))) or give a whole number greater than $CURRENT." >&2; exit 1;;
+  *[!0-9]*) echo "The version must be a whole number greater than $CURRENT, or left out for the next one (got '$VERSION')." >&2; exit 1;;
+  *) if [ "$((10#$VERSION))" -le "$CURRENT" ]; then echo "Version $VERSION must be greater than the current version $CURRENT." >&2; exit 1; fi
+     NEW_NAME="$((10#$VERSION))";;
 esac
 NEW_CODE=$((OLD_CODE + 1))
 TAG="v$NEW_NAME"

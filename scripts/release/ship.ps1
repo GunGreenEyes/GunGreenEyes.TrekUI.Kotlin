@@ -3,15 +3,17 @@
   Ships the whole TrekUI suite (launcher, messages, keyboard, lockscreen) to Google Play in one command.
 
 .EXAMPLE
-  .\scripts\release\ship.ps1                          # patch bump, internal track
-  .\scripts\release\ship.ps1 minor -Track beta
-  .\scripts\release\ship.ps1 patch -Track production -Rollout 0.1
+  .\scripts\release\ship.ps1                          # next whole number (e.g. 6 -> 7), internal track
+  .\scripts\release\ship.ps1 -Track beta
+  .\scripts\release\ship.ps1 9 -Track production -Rollout 0.1
   .\scripts\release\ship.ps1 -DryRun                  # print what would happen; change nothing
 
 .DESCRIPTION
   In order:
-  1. bump major|minor|patch (default patch) with scripts/release/bump-version.ps1: one shared
-     versionCode/versionName for every app in version.properties, plus fastlane/release-history.json
+  1. bump to the next whole-number version (or the given one, which must be greater) with
+     scripts/release/bump-version.ps1: one shared versionCode (always +1) and versionName for every app
+     in version.properties, plus fastlane/release-history.json. Versions are whole numbers (6, 7, 8, ...);
+     versionCode is a separate, strictly increasing integer.
   2. changelog from the commits since the last v* tag: a new section at the top of CHANGELOG.md and a
      Play "What's new" text per app in fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt
      (500 characters at most; each app lists the commits that touched it or :core)
@@ -25,7 +27,7 @@
   Same behaviour as ship.sh.
 #>
 param(
-  [Parameter(Position = 0)][ValidateSet('major', 'minor', 'patch')][string]$Bump = 'patch',
+  [Parameter(Position = 0)][string]$Version = 'next',
   [ValidateSet('internal', 'alpha', 'beta', 'production')][string]$Track = 'internal',
   [double]$Rollout = 0.1,
   [ValidateSet('completed', 'draft')][string]$Status = 'completed',
@@ -78,12 +80,17 @@ if (-not $NoDispatch -and -not $DryRun) {
 $props = [System.IO.File]::ReadAllLines((Join-Path $Root 'version.properties'))
 $oldName = (($props | Where-Object { $_ -match '^versionName=' }) -replace '^versionName=', '').Trim()
 $oldCode = [int]((($props | Where-Object { $_ -match '^versionCode=' }) -replace '^versionCode=', '').Trim())
-$parts = ($oldName -split '-')[0] -split '\.'
-$maj = [int]$parts[0]; $min = [int]$parts[1]; $pat = [int]$parts[2]
-switch ($Bump) {
-  'major' { $newName = "$($maj + 1).0.0" }
-  'minor' { $newName = "$maj.$($min + 1).0" }
-  'patch' { $newName = "$maj.$min.$($pat + 1)" }
+# Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
+if ($oldName -notmatch '^(\d+)') { throw "versionName '$oldName' in version.properties does not start with a number" }
+$current = [int]$Matches[1]
+switch -Regex ($Version) {
+  '^(next|major)?$' { $newName = "$($current + 1)"; break }
+  '^(minor|patch)$' { throw "There are no minor/patch versions any more: versions are whole numbers. Leave the version out (next: $($current + 1)) or give a whole number greater than $current." }
+  '^\d+$' {
+    if ([int]$Version -le $current) { throw "Version $Version must be greater than the current version $current." }
+    $newName = "$([int]$Version)"; break
+  }
+  default { throw "The version must be a whole number greater than $current, or left out for the next one (got '$Version')." }
 }
 $newCode = $oldCode + 1
 $tag = "v$newName"

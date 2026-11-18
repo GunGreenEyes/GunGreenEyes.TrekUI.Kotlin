@@ -63,21 +63,22 @@ Variants: `developDebug`, `developRelease`, `productionDebug`, `productionReleas
 ./gradlew installDevelopDebug                  # install on the connected device/emulator
 ./gradlew assembleProductionRelease            # APK: app/build/outputs/apk/production/release/
 ./gradlew bundleProductionRelease              # AAB: app/build/outputs/bundle/productionRelease/
-./gradlew :app:dist                            # all of the above, copied to dist/
+./gradlew dist                                 # all of the above for all four apps, copied to dist/
 ./gradlew testDevelopDebugUnitTest             # JVM + Robolectric tests (see TESTING.md)
 ./gradlew lintDevelopDebug                     # lint report: app/build/reports/
 ```
 
 On Windows use `gradlew.bat` (or `./gradlew.bat` from Git Bash).
 
-### `:app:dist`
+### `dist`
 
-Builds `assembleDevelopDebug`, `assembleProductionRelease` and `bundleProductionRelease`, then copies every APK and AAB into `dist/` at the repository root. Each file is renamed from `app-…` to `TrekUI-<versionName>-…`, for example:
+The root project's `dist` task builds `assembleDevelopDebug`, `assembleProductionRelease` and `bundleProductionRelease` for every app (`:app`, `:messages`, `:keyboard`, `:lockscreen`), then copies the APKs and AABs into `dist/` at the repository root, each named `<App>-<versionName>-<flavor>-<buildType>` so the four apps never collide:
 
 ```
-dist/TrekUI-6.2.0-develop-debug.apk
-dist/TrekUI-6.2.0-production-release.apk
-dist/TrekUI-6.2.0-production-release.aab
+dist/TrekUI-6-develop-debug.apk               dist/TrekUI-Messages-6-develop-debug.apk
+dist/TrekUI-6-production-release.apk          dist/TrekUI-Messages-6-production-release.apk
+dist/TrekUI-6-production-release.aab          dist/TrekUI-Messages-6-production-release.aab
+dist/TrekUI-Keyboard-6-…                      dist/TrekUI-LockScreen-6-…   (same three each)
 ```
 
 `dist/` is gitignored.
@@ -85,14 +86,14 @@ dist/TrekUI-6.2.0-production-release.aab
 ## Versioning: `version.properties`
 
 ```properties
-versionCode=41
-versionName=6.2.0
+versionCode=42
+versionName=6
 ```
 
-Both values are read by `app/build.gradle.kts`. This file is the single source of the version.
+Both values are read by every app module's `build.gradle.kts`. This file is the single source of the version.
 
 - **`versionCode`:** an integer that must go up for every build uploaded to Google Play. Never reuse one.
-- **`versionName`:** semantic `MAJOR.MINOR.PATCH`. The release workflow refuses a tag `vX.Y.Z` that does not match it.
+- **`versionName`:** a whole number (6, 7, 8, ...), one higher each release; no minor or patch part. The release workflow refuses a tag `v<N>` that does not match it.
 - **Release notes:** put the Play release notes for each build and app in `fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt` (`<app>` is `launcher`, `messages`, `keyboard` or `lockscreen`; 500 characters at most). `scripts/release/ship.*` writes them.
 
 See [RELEASE.md](RELEASE.md) for the bump, tag and publish steps.

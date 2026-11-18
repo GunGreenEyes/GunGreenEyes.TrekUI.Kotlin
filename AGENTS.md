@@ -47,7 +47,7 @@ When the owner says **"release"** or **"ship it"**, run the ship script with the
 scripts/release/ship.sh --track internal          # Windows: .\scripts\release\ship.ps1 -Track internal
 ```
 
-- It bumps the patch version (say `minor` / `major` only if the owner asks), writes `CHANGELOG.md` and each app's Play notes, commits and tags `v<versionName>`, pushes, starts `release.yml` and prints the Actions run URL. Report that URL.
+- It bumps to the next whole-number version (versionName 6, 7, 8, ...; versionCode is a separate integer, +1 each release; give an explicit higher number only if the owner asks), writes `CHANGELOG.md` and each app's Play notes, commits and tags `v<versionName>`, pushes, starts `release.yml` and prints the Actions run URL. Report that URL.
 - Use `--track production` (with `--rollout`, default `0.1`) **only when the owner explicitly says production**. Production then waits for the owner's approval in the `google-play` environment.
 - Run `--dry-run` first when unsure; it changes nothing.
 - One run ships all four apps (launcher, messages, keyboard, lockscreen) with one shared version.

@@ -167,7 +167,7 @@ Then:
 ```sh
 ./gradlew assembleDevelopDebug          # app/build/outputs/apk/develop/debug/
 ./gradlew testDevelopDebugUnitTest      # JVM + Robolectric tests
-./gradlew :app:dist                     # every APK/AAB copied to dist/
+./gradlew dist                          # every app's APKs/AABs copied to dist/
 ```
 
 More detail is in [docs/BUILD.md](docs/BUILD.md), [docs/TESTING.md](docs/TESTING.md) and [docs/RELEASE.md](docs/RELEASE.md). The code structure is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

@@ -3,11 +3,16 @@
   Bumps the app version, writes the Play changelog and creates the release tag (does NOT push).
 
 .EXAMPLE
-  .\scripts\release\bump-version.ps1 patch
-  .\scripts\release\bump-version.ps1 minor -Notes "New Collective layout"
-  .\scripts\release\bump-version.ps1 7.0.0 -NotesFile notes.txt -Ticket LCA-T12
+  .\scripts\release\bump-version.ps1                       # next whole number, e.g. 6 -> 7
+  .\scripts\release\bump-version.ps1 next -Notes "New Collective layout"
+  .\scripts\release\bump-version.ps1 9 -NotesFile notes.txt -Ticket LCA-T12
 
 .DESCRIPTION
+  Versions are whole numbers (6, 7, 8, ...); versionCode is a separate, strictly increasing integer.
+  The argument is 'next' (the default) or an explicit whole number greater than the current one. An old
+  X.Y.Z versionName counts as its major (6.2.0 -> next is 7). 'major' is still accepted as an alias of
+  'next' for one transition release; 'minor' and 'patch' are rejected.
+
   1. version.properties: versionCode + 1, versionName = the new version
   2. fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt for every app (launcher, messages,
      keyboard, lockscreen): release notes (max 500 chars, Play's limit). Without -Notes/-NotesFile they are
@@ -17,7 +22,7 @@
   Then push and start the release with scripts/release/ship.ps1 (which runs this script for you).
 #>
 param(
-  [Parameter(Mandatory = $true, Position = 0)][string]$Bump,
+  [Parameter(Position = 0)][string]$Bump = 'next',
   [string]$Notes = "",
   [string]$NotesFile = "",
   [string]$Ticket = "",
@@ -32,15 +37,18 @@ $propsPath = Join-Path $Root "version.properties"
 $props = [System.IO.File]::ReadAllLines($propsPath)
 $oldName = (($props | Where-Object { $_ -match '^versionName=' }) -replace '^versionName=', '').Trim()
 $oldCode = [int]((($props | Where-Object { $_ -match '^versionCode=' }) -replace '^versionCode=', '').Trim())
-$parts = ($oldName -split '-')[0] -split '\.'
-$maj = [int]$parts[0]; $min = [int]$parts[1]; $pat = [int]$parts[2]
+# Whole-number versions; an old X.Y.Z name counts as its major (6.2.0 -> 6).
+if ($oldName -notmatch '^(\d+)') { throw "versionName '$oldName' in version.properties does not start with a number" }
+$current = [int]$Matches[1]
 
 switch -Regex ($Bump) {
-  '^major$' { $newName = "$($maj + 1).0.0"; break }
-  '^minor$' { $newName = "$maj.$($min + 1).0"; break }
-  '^patch$' { $newName = "$maj.$min.$($pat + 1)"; break }
-  '^\d+\.\d+\.\d+$' { $newName = $Bump; break }
-  default { throw "First argument must be major, minor, patch or X.Y.Z" }
+  '^(next|major)?$' { $newName = "$($current + 1)"; break }
+  '^(minor|patch)$' { throw "There are no minor/patch versions any more: versions are whole numbers. Use 'next' (or no argument) for $($current + 1), or a whole number greater than $current." }
+  '^\d+$' {
+    if ([int]$Bump -le $current) { throw "Version $Bump must be greater than the current version $current." }
+    $newName = "$([int]$Bump)"; break
+  }
+  default { throw "First argument must be 'next' or a whole number greater than $current (got '$Bump')." }
 }
 $newCode = $oldCode + 1
 $tag = "v$newName"

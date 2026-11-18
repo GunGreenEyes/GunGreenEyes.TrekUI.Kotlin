@@ -34,6 +34,8 @@ This is what makes phone-only development possible ([REMOTE_DEVELOPMENT.md](REMO
 
 All four apps share one `versionCode` / `versionName` (`version.properties`) and one upload key, and ship together in every run.
 
+**Version scheme:** `versionName` is a whole number (6, 7, 8, ...), one higher each release, tagged `v<N>`; `versionCode` is a separate integer that goes up by one every release.
+
 | App | Module | Package | Release files | Listing and notes |
 |---|---|---|---|---|
 | TrekUI Launcher | `:app` | `com.gungreeneyes.trekui` | `TrekUI-<ver>.apk` / `.aab` / `-mapping.txt` | `fastlane/metadata/launcher/android/en-US/` |
@@ -81,21 +83,21 @@ The four apps must be signed with the **same** key: the suite permission is sign
 ### Shipping a release (one command)
 
 ```powershell
-.\scripts\release\ship.ps1                    # patch bump, internal track
-.\scripts\release\ship.ps1 minor -Track beta
+.\scripts\release\ship.ps1                    # next whole number (6 -> 7), internal track
+.\scripts\release\ship.ps1 -Track beta
 .\scripts\release\ship.ps1 -DryRun            # show the version, notes and commands; change nothing
 ```
 
 ```sh
-scripts/release/ship.sh                       # patch bump, internal track
-scripts/release/ship.sh minor --track beta
-scripts/release/ship.sh patch --track production --rollout 0.1
+scripts/release/ship.sh                       # next whole number (6 -> 7), internal track
+scripts/release/ship.sh --track beta
+scripts/release/ship.sh 9 --track production --rollout 0.1
 scripts/release/ship.sh --dry-run
 ```
 
 The ship script, in order:
 
-1. **Bumps** `major`, `minor` or `patch` (default `patch`) through `bump-version.*`: `versionCode` + 1 and the new `versionName` in `version.properties`, and a row in `fastlane/release-history.json`. `versionCode` must be higher than any build ever uploaded to Play; `versionName` follows semver.
+1. **Bumps** the version through `bump-version.*`: the next whole number (or the one given, which must be higher), `versionCode` + 1, both in `version.properties`, and a row in `fastlane/release-history.json`. `versionCode` must be higher than any build ever uploaded to Play. There is no minor or patch version; `major` is still accepted as an alias of `next` for one transition release, `minor` / `patch` are refused.
 2. **Writes the changelog** from the commit subjects since the last `v*` tag:
    - a new section at the top of `CHANGELOG.md` (full subjects, ticket IDs kept);
    - a Play "What's new" per app in `fastlane/metadata/<app>/android/en-US/changelogs/<versionCode>.txt`, 500 characters at most, from the commits that touched that app or `:core`. Ticket IDs and maintenance commits (docs, logs, tests) are left out. Check them with `--dry-run` first; you can still edit them in Play Console afterwards.
@@ -106,7 +108,7 @@ Options (bash / PowerShell):
 
 | Option | Default | Use |
 |---|---|---|
-| `major` / `minor` / `patch` | `patch` | the version bump |
+| `N` (whole number) | next | the new version; must be higher than the current one |
 | `--track` / `-Track` | `internal` | `internal`, `alpha`, `beta` or `production` |
 | `--rollout` / `-Rollout` | `0.1` | production rollout fraction |
 | `--status` / `-Status` | `completed` | `draft` until an app's first release is published |
@@ -124,7 +126,7 @@ A tag push on its own does not start a release; the ship script (or **Run workfl
 
 GitHub mobile app › the repository › **Actions** › **Release** › **Run workflow**:
 
-1. Leave the branch on **main** and set `bump` to `patch` (or `minor` / `major`). The `prepare` job runs `ship.sh --no-dispatch` on the runner (bump, changelogs, commit, tag, push), and the same run builds and uploads that commit.
+1. Leave the branch on **main** and set `bump` to `next`. The `prepare` job runs `ship.sh --no-dispatch` on the runner (bump, changelogs, commit, tag, push), and the same run builds and uploads that commit.
 2. Pick the `track` (and, for production, the `rollout`), then **Run workflow**.
 3. For production, approve the `google-play` deployment from the run page when it asks.
 
@@ -151,7 +153,7 @@ From Claude Code on the phone or the web, "ship it" runs the ship script instead
 | `status` | `completed`, `draft` | `completed` | `draft` until an app's first release is published |
 | `upload-to-play` | on / off | on | off: build and create the GitHub Release only |
 | `update-listing` | on / off | off | also push every app's store listing |
-| `bump` | `none`, `patch`, `minor`, `major` | `none` | phone-only releases: bump on the runner first |
+| `bump` | `none`, `next` | `none` | phone-only releases: bump to the next whole number on the runner first |
 
 Raise or halt a staged production rollout in Play Console (Release › Production › Manage rollout), or promote a tested internal or closed release there instead of uploading to production directly.
 
@@ -166,7 +168,7 @@ Raise or halt a staged production rollout in Play Console (Release › Productio
 
 ## Hotfix
 
-1. Fix on `main`, then ship (patch bump, internal track).
+1. Fix on `main`, then ship (next whole number, internal track).
 2. After a quick look on the internal track, promote it in Play Console, or ship again with `--track production --rollout 0.2`.
 
 If a bad build is already in production, **halt the rollout** in Play Console, because a build cannot be pulled back. Then ship the fix with a higher `versionCode`.

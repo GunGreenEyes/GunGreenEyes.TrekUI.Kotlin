@@ -86,7 +86,7 @@ Step 'Play Console (only you can do these; answers are in docs/PLAY_STORE.md)'
       download its JSON key, then:  .\scripts\release\setup-owner.ps1 -ServiceAccountJson <that file>
    4. For EACH app (com.gungreeneyes.trekui, .messages, .keyboard, .lockscreen):
         a. Create app: Free, English (US).
-        b. First build (once, for all four):  .\scripts\release\ship.ps1 minor -NoPlay   (check first with -DryRun).
+        b. First build (once, for all four):  .\scripts\release\ship.ps1 -NoPlay   (check first with -DryRun).
            Download each AAB from the GitHub Release it creates and upload it by hand under
            Testing > Internal testing; accept Play App Signing. Later releases upload automatically.
         c. Monetize > In-app products: trekui_unlock, one-time, US$0.99, Active.

@@ -6,7 +6,8 @@
 #   keyboard         com.gungreeneyes.trekui.keyboard     TrekUI-Keyboard-<ver>.apk / .aab
 #   lockscreen       com.gungreeneyes.trekui.lockscreen   TrekUI-LockScreen-<ver>.apk / .aab
 #
-#   prepare   - optional version bump on the runner (input `bump`), for phone-only releases
+#   prepare   - optional bump to the next whole-number version on the runner (input `bump`: none|next),
+#               for phone-only releases
 #   build     - checks a tag ref matches version.properties, runs all unit tests, builds every app's
 #               production release AAB + APK signed with the Play upload key, verifies every signature
 #               is the same non-debug key
@@ -51,9 +52,9 @@ on:
         type: boolean
         default: false
       bump:
-        description: Bump the version first (phone-only release; ship.* already bumps, so leave none there)
+        description: Bump to the next whole-number version first (phone-only release; ship.* already bumps, so leave none there)
         type: choice
-        options: [none, patch, minor, major]
+        options: [none, next]
         default: none
 
 concurrency:
