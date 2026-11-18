@@ -188,12 +188,13 @@ public class HomeScenarios extends AppScenario {
 
     /** Makes {@code pkg} the home app from the shell (API 29+: role; older: preferred activity). */
     private void setHomeByShell(String pkg, ComponentName component) {
+        String c = component != null ? component.flattenToString() : homeComponentOf(pkg);
         if (Build.VERSION.SDK_INT >= 29) {
             Log.i(TAG, media.shell("cmd role add-role-holder android.app.role.HOME " + pkg + " 0"));
-        } else {
-            String c = component != null ? component.flattenToString() : homeComponentOf(pkg);
-            if (c != null) Log.i(TAG, media.shell("cmd package set-home-activity " + c));
         }
+        // Also set the package manager's preferred home directly: on some API 33+ tablet images the role
+        // changes but the Home key keeps following the old preferred activity.
+        if (c != null) Log.i(TAG, media.shell("cmd package set-home-activity " + c));
         SystemClock.sleep(800);
     }
 
