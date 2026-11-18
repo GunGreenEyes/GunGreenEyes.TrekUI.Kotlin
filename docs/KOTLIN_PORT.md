@@ -21,7 +21,7 @@ matrices are unchanged from the Java edition.
 | 4. `:app` to Kotlin, unit tests and instrumented scenarios included | done | TUK-T8 |
 | 5. Compose | not started | TUK-T9 |
 | 6. Settings on DataStore, with the upgrade test | not started | TUK-T10 |
-| 7. Parity and release | not started | TUK-T11 |
+| 7. Parity and release | in progress: version 44 merged from Java; 614 unit tests and CI 9/9 pass; `v44` test pre-release with APKs; the local 24-device matrix is running | TUK-T11 |
 
 Next: phase 1 (the build foundation), then phase 5 (Compose), phase 6 (DataStore) and phase 7 (parity and
 release, shipped as the next whole-number version, 44 or later, over the Java edition).
