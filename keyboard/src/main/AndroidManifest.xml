@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TrekUI Keyboard: an input method drawn in the TrekUI interfaces. No INTERNET permission and no
+     backup: what is typed and the locally learned words never leave the device. See docs/KEYBOARD.md. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Play Billing pulls in Google's datatransport (library telemetry), which requests network access.
+         A keyboard must not be able to send anything: strip both. Purchases still work, because Billing
+         talks to the Play Store app over IPC, not over the network. -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
+
+    <queries>
+        <!-- Other keyboards: the emoji long-press and the voice key hand over to an installed one. -->
+        <intent>
+            <action android:name="android.view.InputMethod" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".KeyboardApp"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/KeyboardTheme"
+        android:enableOnBackInvokedCallback="true">
+
+        <!-- The input method itself. -->
+        <service
+            android:name=".TrekKeyboardService"
+            android:exported="true"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- Setup (enable + select) and settings; the app's launcher entry. Licensing runs here. -->
+        <activity
+            android:name=".KeyboardSettingsActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:resizeableActivity="true"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Suite provider: tells sibling TrekUI apps (same signing key only) whether this copy is unlocked
+             and which interface / sub-theme it shows. -->
+        <provider
+            android:name="com.gungreeneyes.trekui.core.SuiteProvider"
+            android:authorities="${applicationId}.suite"
+            android:exported="true"
+            android:readPermission="${trekuiSuitePermission}"
+            android:writePermission="${trekuiSuitePermission}" />
+
+        <!-- Purchase / unlock screen from :core. -->
+        <activity
+            android:name="com.gungreeneyes.trekui.licensing.PurchaseActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+    </application>
+</manifest>

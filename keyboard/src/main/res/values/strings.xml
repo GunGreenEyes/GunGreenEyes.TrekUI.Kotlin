@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_name comes from the build flavor (resValue). -->
+    <string name="ime_name">TrekUI Keyboard</string>
+
+    <!-- Subtypes (method.xml) -->
+    <string name="subtype_en">English (US) · QWERTY</string>
+    <string name="subtype_de">Deutsch · QWERTZ</string>
+    <string name="subtype_fr">Français · AZERTY</string>
+    <string name="subtype_es">Español · QWERTY</string>
+
+    <!-- Short language labels drawn on the space bar -->
+    <string name="lang_short_en">ENGLISH</string>
+    <string name="lang_short_de">DEUTSCH</string>
+    <string name="lang_short_fr">FRANÇAIS</string>
+    <string name="lang_short_es">ESPAÑOL</string>
+
+    <!-- Key labels -->
+    <string name="key_symbols">\?123</string>
+    <string name="key_symbols_more">=\\&lt;</string>
+    <string name="key_letters">ABC</string>
+    <string name="enter_go">GO</string>
+    <string name="enter_search">SEARCH</string>
+    <string name="enter_send">SEND</string>
+    <string name="enter_next">NEXT</string>
+    <string name="enter_done">DONE</string>
+    <string name="enter_previous">PREV</string>
+    <string name="unlock_chip">UNLOCK</string>
+
+    <!-- Key content descriptions (accessibility) -->
+    <string name="cd_shift">Shift</string>
+    <string name="cd_caps">Caps lock</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_enter">Enter</string>
+    <string name="cd_space">Space</string>
+    <string name="cd_globe">Next language</string>
+    <string name="cd_emoji">Emoji</string>
+    <string name="cd_voice">Voice input</string>
+    <string name="cd_symbols">Symbols</string>
+    <string name="cd_letters">Letters</string>
+    <string name="cd_unlock">Unlock TrekUI Keyboard</string>
+
+    <!-- Settings -->
+    <string name="settings_title">KEYBOARD CONFIG</string>
+    <string name="settings_footer">TREKUI KEYBOARD %1$s</string>
+    <string name="section_setup">SETUP</string>
+    <string name="section_look">INTERFACE</string>
+    <string name="section_languages">LANGUAGES</string>
+    <string name="section_layout">SIZE &amp; LAYOUT</string>
+    <string name="section_feedback">SOUND &amp; FEEL</string>
+    <string name="section_text">SUGGESTIONS</string>
+    <string name="section_license">LICENSE</string>
+    <string name="section_privacy">PRIVACY</string>
+    <string name="side_setup">SETUP</string>
+    <string name="side_look">LOOK</string>
+    <string name="side_lang">LANG</string>
+    <string name="side_size">SIZE</string>
+    <string name="side_sound">SOUND</string>
+    <string name="side_words">WORDS</string>
+    <string name="side_license">LICENSE</string>
+
+    <string name="setup_step1">STEP 1 · ENABLE TREKUI KEYBOARD</string>
+    <string name="setup_step1_note">Opens Android\'s keyboard list. Switch TrekUI Keyboard on. Android shows a standard notice that any keyboard can see what you type: this one has no internet access, so nothing typed can leave the device.</string>
+    <string name="setup_step2">STEP 2 · SELECT IT AS YOUR KEYBOARD</string>
+    <string name="setup_step2_note">Opens Android\'s keyboard picker. Choose TrekUI Keyboard.</string>
+    <string name="setup_enable">ENABLE</string>
+    <string name="setup_select">SELECT</string>
+    <string name="setup_done">READY</string>
+    <string name="setup_all_done">TrekUI Keyboard is enabled and selected. Try it below.</string>
+    <string name="setup_try_hint">Type here to try the keyboard</string>
+
+    <string name="look_following">Following the TrekUI launcher\'s interface and colour theme. Change it in the launcher\'s CONFIG › INTERFACE.</string>
+    <string name="look_interface">INTERFACE</string>
+    <string name="look_subtheme">COLOUR THEME</string>
+    <string name="look_choose">CHOOSE</string>
+
+    <string name="languages_note">The globe key and a long press on the space bar switch between the languages turned on here. Long-press the globe key for Android\'s keyboard picker.</string>
+    <string name="lang_en">ENGLISH · QWERTY</string>
+    <string name="lang_de">DEUTSCH · QWERTZ</string>
+    <string name="lang_fr">FRANÇAIS · AZERTY</string>
+    <string name="lang_es">ESPAÑOL · QWERTY + Ñ</string>
+
+    <string name="size_portrait">KEY HEIGHT · PORTRAIT</string>
+    <string name="size_landscape">KEY HEIGHT · LANDSCAPE</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="size_xl">XL</string>
+    <string name="one_handed">ONE-HANDED MODE</string>
+    <string name="one_handed_off">OFF</string>
+    <string name="one_handed_left">LEFT</string>
+    <string name="one_handed_right">RIGHT</string>
+    <string name="digit_row">NUMBER ROW</string>
+    <string name="digit_row_note">A row of digits above the letters.</string>
+
+    <string name="sound_keys">KEY SOUNDS</string>
+    <string name="sound_keys_note">Synthesized key clicks. Silent when Android\'s touch sounds are off, in Silent or Vibrate mode, and during calls.</string>
+    <string name="sound_volume">KEY SOUND VOLUME</string>
+    <string name="haptics">VIBRATE ON KEYPRESS</string>
+    <string name="haptics_note">Follows Android\'s touch-feedback setting.</string>
+
+    <string name="suggestions">SUGGESTION STRIP</string>
+    <string name="suggestions_note">Word completions from your personal dictionary and from words you typed on this keyboard.</string>
+    <string name="learn_words">REMEMBER TYPED WORDS</string>
+    <string name="learn_words_note">Words are stored only on this device. Never in password fields or when an app asks for incognito typing.</string>
+    <string name="clear_words">FORGET LEARNED WORDS</string>
+    <string name="clear_words_done">Learned words deleted.</string>
+
+    <string name="license_unlocked">Unlocked. One purchase unlocks every TrekUI app.</string>
+    <string name="license_trial">Trial session. Typing always keeps working; when a session ends an UNLOCK chip appears in the suggestion strip. One purchase unlocks every TrekUI app.</string>
+    <string name="license_unlock">UNLOCK</string>
+
+    <string name="privacy_note">TrekUI Keyboard has no internet permission and sends nothing anywhere. Keystrokes are not logged. Learned words stay in this app\'s private storage, are excluded from backups, and are deleted with FORGET LEARNED WORDS or by uninstalling.</string>
+
+    <string name="toggle_on">ONLINE</string>
+    <string name="toggle_off">OFFLINE</string>
+</resources>

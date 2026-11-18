@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TrekUI Keyboard input method: one keyboard subtype per language layout. The system's language
+     switcher (and the keyboard's globe key) moves between the subtypes the user enabled. -->
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.gungreeneyes.trekui.keyboard.KeyboardSettingsActivity"
+    android:supportsSwitchingToNextInputMethod="true">
+
+    <subtype
+        android:label="@string/subtype_en"
+        android:languageTag="en-US"
+        android:imeSubtypeLocale="en_US"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="KeyboardLayoutSet=qwerty,AsciiCapable"
+        android:isAsciiCapable="true"
+        android:subtypeId="0x54524b01" />
+    <subtype
+        android:label="@string/subtype_de"
+        android:languageTag="de-DE"
+        android:imeSubtypeLocale="de_DE"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="KeyboardLayoutSet=qwertz,AsciiCapable"
+        android:isAsciiCapable="true"
+        android:subtypeId="0x54524b02" />
+    <subtype
+        android:label="@string/subtype_fr"
+        android:languageTag="fr-FR"
+        android:imeSubtypeLocale="fr_FR"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="KeyboardLayoutSet=azerty,AsciiCapable"
+        android:isAsciiCapable="true"
+        android:subtypeId="0x54524b03" />
+    <subtype
+        android:label="@string/subtype_es"
+        android:languageTag="es-ES"
+        android:imeSubtypeLocale="es_ES"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="KeyboardLayoutSet=spanish,AsciiCapable"
+        android:isAsciiCapable="true"
+        android:subtypeId="0x54524b04" />
+</input-method>

@@ -9,3 +9,4 @@ rootProject.name = "TrekUI"
 include(":core")
 include(":app")
 include(":messages")
+include(":keyboard")

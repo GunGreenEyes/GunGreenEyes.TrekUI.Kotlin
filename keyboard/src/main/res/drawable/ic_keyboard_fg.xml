@@ -1,0 +1,13 @@
+<!-- Original TrekUI Keyboard icon: a console elbow over three rows of key blocks. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#EA9C72"
+        android:pathData="M26,60 L26,38 A12,12 0 0 1 38,26 L82,26 L82,34 L44,34 A6,6 0 0 0 38,40 L38,60 Z" />
+    <path android:fillColor="#8899FF" android:pathData="M26,63 h12 v10 h-12 z" />
+    <!-- key rows -->
+    <path android:fillColor="#BAA4E5" android:pathData="M44,42 h8 v7 h-8 z M55,42 h8 v7 h-8 z M66,42 h8 v7 h-8 z M77,42 h5 v7 h-5 z" />
+    <path android:fillColor="#BAA4E5" android:pathData="M47,52 h8 v7 h-8 z M58,52 h8 v7 h-8 z M69,52 h8 v7 h-8 z" />
+    <path android:fillColor="#EDB378" android:pathData="M48,63 h28 a3.5,3.5 0 0 1 0,7 h-28 a3.5,3.5 0 0 1 0,-7 z" />
+    <path android:fillColor="#CF4F4F" android:pathData="M26,76 h12 v6 h-12 z" />
+</vector>
