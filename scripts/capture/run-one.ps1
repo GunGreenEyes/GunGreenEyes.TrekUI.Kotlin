@@ -119,7 +119,11 @@ try {
                                  'settings put system screen_off_timeout 1800000', 'settings put secure immersive_mode_confirmations confirmed',
                                  'settings put secure show_ime_with_hard_keyboard 0', 'input keyevent 224', 'wm dismiss-keyguard',
                                  'input keyevent 82', 'am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS',
-                                 'rm -rf /sdcard/trekui-test', 'mkdir -p /sdcard/trekui-test')) {
+                                 'rm -rf /sdcard/trekui-test', 'mkdir -p /sdcard/trekui-test',
+                                 # Offline: a freshly wiped google_apis image spends its first ~10 min downloading and
+                                 # applying Play-services modules and flag syncs, which froze API 34-36 guests mid-run.
+                                 # No scenario needs the network.
+                                 'svc wifi disable', 'svc data disable')) {
                     Shell $c | Out-Null
                 }
                 return
