@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn match.py's match_report.json into the app asset app/src/main/assets/sounds/manifest.json.
+"""Turn match.py's match_report.json into the app asset core/src/main/assets/sounds/manifest.json.
 
 For every app sound id: the best-matching public original (preferring the file the 5.x notes name
 when it scores within 0.03 of the best), its page / direct URL / SHA-256 / size, identical copies on
@@ -11,8 +11,11 @@ With --verify, every recipe is re-rendered in Python exactly as the app does it 
 gain, fades) from the downloaded original and compared with the 5.2 reference clip; the result
 goes to verify_report.json next to match_report.json (not into the asset).
 
-    python -I tools/sounds/build_manifest.py --report <dir>/match_report.json --java <java dir> \
-        --crawl <crawl dir> --ref <ref dir> --out app/src/main/assets/sounds/manifest.json [--verify]
+    python -I tools/sounds/build_manifest.py --report <dir>/match_report.json [--src <kotlin dir>] \
+        --crawl <crawl dir> --ref <ref dir> --out core/src/main/assets/sounds/manifest.json [--verify]
+
+--src names the Kotlin source folder(s) holding Sfx.kt, Stations.kt and BootSequence.kt (repeatable;
+default the core and app src/main/kotlin/com/gungreeneyes/trekui packages); --java is an alias.
 """
 import argparse
 import datetime
@@ -21,6 +24,10 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # python -I leaves the script folder off sys.path
+import kt_source  # noqa: E402
+
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HIGH, MEDIUM = 0.90, 0.75
 PREFER_NAMED_WITHIN = 0.03
 SITE_PAGE = {
@@ -37,37 +44,33 @@ NOTICE = ('The app ships no recordings. These are third-party sound effects that
           'use on their own device. See docs/SOUNDS.md.')
 
 
-def java_strings(block):
-    return re.findall(r'"((?:[^"\\]|\\.)*)"', block)
-
-
-def defaults(java_dir):
+def defaults(src_dirs):
     """id -> ['command:navigation', ...] from Sfx.FACTION_DEFAULT; plus station / startup uses."""
-    src = open(os.path.join(java_dir, 'Sfx.java'), encoding='utf-8').read()
+    kt = kt_source.load(src_dirs, 'Sfx.kt')
     out = {}
 
     def add(i, tag):
         out.setdefault(i, []).append(tag)
 
-    # DEFAULT_RES starts with the TAP_SET constant (not a string literal), so it is re-added here.
-    cmd = java_strings(re.search(r'DEFAULT_RES\s*=\s*\{(.*?)\};', src, re.S).group(1))
-    fac = re.search(r'FACTION_DEFAULT\s*=\s*\{(.*?)\};', src, re.S).group(1)
-    arrays = re.findall(r'new String\[\]\s*\{(.*?)\}', fac)
-    profiles = [('command', ['#taps'] + cmd)] + [(n, java_strings(a)) for n, a in zip(('imperial', 'collective'), arrays)]
-    taps = java_strings(re.search(r'TAP_SET_CLIPS\s*=\s*\{(.*?)\};', src, re.S).group(1))
+    # FACTION_DEFAULT = arrayOf(DEFAULT_RES, IMPERIAL_DEFAULT, COLLECTIVE_DEFAULT, DEFAULT_RES, ...):
+    # its first three rows are the Command, Imperial and Collective interface defaults.
+    fac = kt.get('FACTION_DEFAULT')
+    profiles = list(zip(('command', 'imperial', 'collective'), fac))
+    tap_set = kt.get('TAP_SET')
+    taps = kt.strings('TAP_SET_CLIPS')
     for name, arr in profiles:
         for e, i in enumerate(arr[:8]):
-            if i == '#taps':
+            if i == tap_set:
                 for t in taps:
                     add(t, name + ':button')
-            elif i != 'none':
+            elif i != 'none' and not i.startswith('#'):  # '#synthtaps_kl' etc: synthesized rotations, no clip id
                 add(i, name + ':' + EVENT_KEYS[e])
-    stations = os.path.join(java_dir, 'Stations.java')
-    if os.path.isfile(stations):
+    stations = kt_source.find_source(src_dirs, 'Stations.kt')
+    if stations:
         for i in set(re.findall(r'"((?:tk|alt|voice|ui|comms|alert|tng|system)_[a-z0-9_]+)"', open(stations, encoding='utf-8').read())):
             add(i, 'stations')
-    boot = os.path.join(java_dir, 'BootSequence.java')
-    if os.path.isfile(boot):
+    boot = kt_source.find_source(src_dirs, 'BootSequence.kt')
+    if boot:
         for i in set(re.findall(r'"(voice_[a-z0-9_]+|tk_[a-z0-9_]+)"', open(boot, encoding='utf-8').read())):
             add(i, 'startup')
     return {k: sorted(set(v)) for k, v in out.items()}
@@ -88,10 +91,10 @@ def choose(results):
     return best
 
 
-def build(report_path, java_dir):
+def build(report_path, src_dirs):
     data = json.load(open(report_path, encoding='utf-8'))
     ref, rep, cands = data['ref'], data['report'], data['cands']
-    uses = defaults(java_dir)
+    uses = defaults(src_dirs)
     sounds, table = [], []
     for rid in sorted(ref):
         r = ref[rid]
@@ -187,13 +190,14 @@ def verify(manifest, crawl_dir, ref_dir, out_path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--report', required=True)
-    ap.add_argument('--java', required=True)
+    ap.add_argument('--src', '--java', dest='src', action='append',
+                    help='Kotlin source folder with Sfx.kt / Stations.kt / BootSequence.kt (repeatable; default: core and app trekui packages)')
     ap.add_argument('--out', required=True)
     ap.add_argument('--crawl')
     ap.add_argument('--ref')
     ap.add_argument('--verify', action='store_true')
     o = ap.parse_args()
-    manifest, table = build(o.report, o.java)
+    manifest, table = build(o.report, o.src or kt_source.default_src_dirs(REPO))
     os.makedirs(os.path.dirname(os.path.abspath(o.out)), exist_ok=True)
     with open(o.out, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(manifest, f, indent=1, ensure_ascii=False)

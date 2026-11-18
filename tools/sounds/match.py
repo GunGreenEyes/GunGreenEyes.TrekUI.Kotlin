@@ -5,8 +5,9 @@ Inputs
   --ref      folder of the processed app clips as built into 5.2 (<id>.ogg, i.e. the personal
              res/raw folder). Local reference only; never committed.
   --crawl    output folder of crawl.py (one sub-folder + catalog.json per site).
-  --java     app/src/main/java/com/gungreeneyes/trekui (Sfx.java / SourceSoundLibrary.java give ids,
-             labels and the original file names).
+  --src      Kotlin source folder(s) holding Sfx.kt and SourceSoundLibrary.kt (they give the ids,
+             labels and the original file names). Repeatable; default core/ and app/
+             src/main/kotlin/com/gungreeneyes/trekui. --java is accepted as an alias.
   --history  _sources/history-docs/SOUND_MANIFEST-5.x.md (local only; gives SHA-256 prefixes of the source originals).
   --out      writes match_report.json (every candidate score) and manifest.json (the app asset).
 
@@ -25,7 +26,7 @@ Method
   5. Confidence = waveform correlation at the best lag (1.0 = identical). >= 0.90 is "high",
      >= 0.75 "medium", else the sound is marked unavailable.
 
-    python -I tools/sounds/match.py --ref <dir> --crawl <dir> --java <dir> --history <md> --out <dir>
+    python -I tools/sounds/match.py --ref <dir> --crawl <dir> [--src <dir>] --history <md> --out <dir>
 """
 import argparse
 import hashlib
@@ -37,6 +38,11 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # python -I leaves the script folder off sys.path
+import kt_source  # noqa: E402
+
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 SR = 22050
 FINE_SR = 48000  # the 5.x pipeline decoded every original with ffmpeg -ar 48000
@@ -119,17 +125,12 @@ def xcorr_valid(a, b):
 
 # ---------------------------------------------------------------- reference (the app's own sounds)
 
-def java_array(src, name):
-    m = re.search(r'\b%s\s*=\s*\{(.*?)\};' % re.escape(name), src, re.S)
-    return re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1)) if m else []
-
-
-def build_reference(java_dir, history_md):
-    sfx = open(os.path.join(java_dir, 'Sfx.java'), encoding='utf-8').read()
-    tk = open(os.path.join(java_dir, 'SourceSoundLibrary.java'), encoding='utf-8').read()
-    ids = java_array(sfx, 'BASE_LIBRARY')  # first element is the TAP_SET constant, not a literal
-    labels = java_array(sfx, 'BASE_LABELS')[1:]
-    origs = java_array(sfx, 'BASE_ORIGINAL')[1:]
+def build_reference(src_dirs, history_md):
+    kt = kt_source.load(src_dirs, 'Sfx.kt', 'SourceSoundLibrary.kt')
+    # The first entry of the BASE_ tables is the TAP_SET rotation row (no clip of its own): dropped.
+    ids = kt.strings('BASE_LIBRARY')[1:]
+    labels = kt.strings('BASE_LABELS')[1:]
+    origs = kt.strings('BASE_ORIGINAL')[1:]
     ref = {}
     for i, lab, o in zip(ids, labels, origs):
         ref[i] = {'id': i, 'label': lab, 'group': 'LAUNCHER', 'hint': [o.split(' ')[0]]}
@@ -138,7 +139,7 @@ def build_reference(java_dir, history_md):
     for k, s in tap_src.items():
         ref['tap_rot_%d' % k] = {'id': 'tap_rot_%d' % k, 'label': 'TAP BEEP %d' % k, 'group': 'LAUNCHER', 'hint': [s],
                                  'cut': True}
-    for i, lab, o in zip(java_array(tk, 'NAMES'), java_array(tk, 'LABELS'), java_array(tk, 'ORIGINALS')):
+    for i, lab, o in zip(kt.strings('NAMES'), kt.strings('LABELS'), kt.strings('ORIGINALS')):
         ref[i] = {'id': i, 'label': lab, 'group': lab.split(': ')[0], 'hint': [o.split(' ')[0]]}
     # history table: | `tk_x` | LABEL | src path | a -> b s | ch | gain | `sha…` |
     for line in open(history_md, encoding='utf-8'):
@@ -276,13 +277,14 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--ref', required=True)
     ap.add_argument('--crawl', required=True)
-    ap.add_argument('--java', required=True)
+    ap.add_argument('--src', '--java', dest='src', action='append',
+                    help='Kotlin source folder with Sfx.kt / SourceSoundLibrary.kt (repeatable; default: core and app trekui packages)')
     ap.add_argument('--history', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--only', help='comma-separated ids to (re)match, for debugging')
     o = ap.parse_args()
 
-    ref = build_reference(o.java, o.history)
+    ref = build_reference(o.src or kt_source.default_src_dirs(REPO), o.history)
     if o.only:
         ref = {k: v for k, v in ref.items() if k in o.only.split(',')}
     cand = load_candidates(o.crawl)

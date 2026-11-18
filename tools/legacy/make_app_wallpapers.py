@@ -15,7 +15,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from make_quickpanel_art import PALETTES, rgb  # noqa: E402  (same palettes as Palette.java)
+from make_quickpanel_art import PALETTES, rgb  # noqa: E402  (same palettes as core/src/main/kotlin/com/gungreeneyes/trekui/Palette.kt)
 
 W, H = 1440, 3120
 SS = 2

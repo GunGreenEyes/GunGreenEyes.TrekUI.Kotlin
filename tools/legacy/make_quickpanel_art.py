@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """console art for Samsung Good Lock › QuickStar › "Edit panel style" (One UI 9).
 
-Renders one set per launcher colour theme (same palettes as Palette.java):
+Renders one set per launcher colour theme (same palettes as core/src/main/kotlin/com/gungreeneyes/trekui/Palette.kt):
   qp_button_1..8.png   square quick-settings buttons (black centre keeps the system icon legible)
   qp_button_wide.png   2x1 button
   qp_button_box.png    console frame for the button box
@@ -15,7 +15,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-PALETTES = [  # name, accents c0..c5, textHi  (mirror of Palette.java)
+PALETTES = [  # name, accents c0..c5, textHi  (mirror of core/src/main/kotlin/com/gungreeneyes/trekui/Palette.kt)
     ("CLASSIC", ["#EA9C72", "#8899FF", "#D29B7F", "#CF4F4F", "#EDB378", "#BAA4E5"], "#FFFFFF"),
     ("MIDNIGHT BLUE", ["#5588FF", "#99CCFF", "#3D6BCC", "#CCDDFF", "#FFAA33", "#7788CC"], "#E2EEFF"),
     ("RED ALERT", ["#E03030", "#FF7766", "#B04040", "#FFAA99", "#FF5A1F", "#CC5566"], "#FFE0D8"),

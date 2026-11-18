@@ -5,8 +5,8 @@ width) plus a few solid marks (class "f"). Every drawing here is original. glyph
 renders them as a bold "trekui" stroke set into the glyphs/ assets folder; the plain TrekUI set
 for the core 28 comes from the older Pillow script (tools/legacy/make_glyphs.py).
 
-The app's keyword table (Pictograms.java) maps package names and labels onto these names, and
-Pictograms.ALL must list every name defined here.
+The app's keyword table (app/src/main/kotlin/com/gungreeneyes/trekui/Pictograms.kt) maps package
+names and labels onto these names, and Pictograms.ALL must list every name defined here.
 """
 
 E = {}

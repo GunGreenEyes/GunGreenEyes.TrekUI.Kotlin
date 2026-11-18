@@ -1,13 +1,17 @@
-# CodeQL static analysis for the Java sources (build-mode none: no Gradle build needed).
+# CodeQL static analysis for the Kotlin sources. The java-kotlin language covers Kotlin, but CodeQL
+# extracts Kotlin only by watching the compiler, so it needs build-mode manual and a real compile
+# (build-mode none reads Java files only, and the codebase has none left since the Kotlin port).
+# --no-daemon / --no-build-cache / --rerun-tasks make sure every module is actually compiled under
+# the CodeQL tracer instead of being restored from the Gradle cache.
 name: CodeQL
 
 on:
   push:
     branches: [main]
-    paths: ['app/src/**', '.github/workflows/codeql.yml']
+    paths: ['*/src/**', '.github/workflows/codeql.yml']
   pull_request:
     branches: [main]
-    paths: ['app/src/**']
+    paths: ['*/src/**']
   schedule:
     - cron: '23 4 * * 1'
   workflow_dispatch:
@@ -22,7 +26,7 @@ permissions:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: read
       security-events: write
@@ -30,11 +34,27 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0'
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: true
+
       - uses: github/codeql-action/init@v4
         with:
           languages: java-kotlin
-          build-mode: none
+          build-mode: manual
           queries: security-and-quality
+
+      - name: Compile every module (traced by CodeQL)
+        run: ./gradlew --console=plain --no-daemon --no-build-cache --rerun-tasks assembleDevelopDebug
 
       - uses: github/codeql-action/analyze@v4
         with:
