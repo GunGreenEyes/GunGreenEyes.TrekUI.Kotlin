@@ -23,3 +23,12 @@ _Nothing recorded yet._
 |---|---|---|---|---|---|
 | TUK-T1 | 2026-11-18 | docs | closed | Start the permanent ticket log in the ticket database | — |
 | TUK-T2 | 2026-11-18 | chore | open | Kotlin edition, phase 0: seed from TrekUI.Java 43, point repo/site/release links at TrekUI.Kotlin, re-enable CI and Pages, write the port plan (docs/KOTLIN_PORT.md) | owner goal 2026-11-18 |
+| TUK-T3 | 2026-11-18 | chore | open | Phase 1 build foundation: Kotlin 2 + Compose plugins, build-logic convention plugins for all five modules, ktlint + detekt in CI; Java code still builds and every test passes | docs/KOTLIN_PORT.md |
+| TUK-T4 | 2026-11-18 | feature | open | Phase 2: convert :core to Kotlin (palettes, sub-themes, skins, drawing helpers, ScreenMetrics, sounds, licensing, suite contract) with its tests ported; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T5 | 2026-11-18 | feature | open | Phase 3a: convert :messages to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T6 | 2026-11-18 | feature | open | Phase 3b: convert :keyboard to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T7 | 2026-11-18 | feature | open | Phase 3c: convert :lockscreen to Kotlin with its tests; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T8 | 2026-11-18 | feature | open | Phase 4: convert :app (the launcher, ~28k lines) to Kotlin package by package, unit tests and instrumented scenarios ported; no behaviour change | docs/KOTLIN_PORT.md |
+| TUK-T9 | 2026-11-18 | feature | open | Phase 5: Compose console design system in :core (frames, cards, keys, dialogs, sub-themes) and the screens moved to Compose (companions first, then launcher interfaces), guarded by scenarios + Roborazzi screenshots | docs/KOTLIN_PORT.md |
+| TUK-T10 | 2026-11-18 | feature | open | Phase 6: settings on DataStore with a one-time migration from the Java edition's trekui SharedPreferences, plus an upgrade test (Java build data -> Kotlin build) | docs/KOTLIN_PORT.md |
+| TUK-T11 | 2026-11-18 | chore | open | Phase 7 parity + release: full unit suite, CI matrix, local 24-device matrix and device report, docs rewritten for Kotlin, shipped as the next whole-number version over the Java edition | docs/KOTLIN_PORT.md |
