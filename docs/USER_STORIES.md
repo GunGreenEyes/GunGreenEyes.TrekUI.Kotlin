@@ -72,3 +72,4 @@ _Nothing recorded yet._
 | LCA-T49 | 2026-11-17 | chore | closed | One version number: this release is 42 (versionName == versionCode), next 43; bump/ship scripts keep the two equal | owner: make everything version 42 |
 | LCA-T50 | 2026-11-17 | fix | closed | Release lint errors to zero: Fragment 1.3+ for Messages' ActivityResult APIs; mark the launcher's pre-33 onBackPressed and hidden statusbar service as intentional | lintProductionRelease: 0 errors in all four apps |
 | LCA-T51 | 2026-11-17 | docs | closed | Full README for TrekUI 42: the four apps, supported devices (every phone 2022+, every resolution/aspect ratio) and how it's tested, test-device install from dist/, build, release | owner request |
+| LCA-T52 | 2026-11-17 | chore | closed | Release 43: version 43 for all four apps, tag v43, dist/ APKs and a GitHub pre-release with the test APKs (Play upload waits for the signing secrets from setup-owner.ps1) | owner: deploy everything to v43 |
