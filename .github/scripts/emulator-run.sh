@@ -181,4 +181,8 @@ echo "Captured into $OUT_DIR:"; ls -la "$OUT_DIR"
 timeout 20 adb emu kill >/dev/null 2>&1 || true
 sleep 5
 pkill -9 -f qemu-system >/dev/null 2>&1 || true
+# The `emulator` launcher process can hang on its own after qemu is gone; the runner action waits on it.
+pkill -9 -x emulator >/dev/null 2>&1 || true
+pkill -9 -f 'emulator/emulator' >/dev/null 2>&1 || true
+pkill -9 -f crashpad_handler >/dev/null 2>&1 || true
 exit $TEST_RC
