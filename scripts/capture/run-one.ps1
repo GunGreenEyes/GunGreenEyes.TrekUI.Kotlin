@@ -26,7 +26,7 @@ param(
     [string]$Orientation = 'natural',
     [int]$Port = 5580,
     [string]$SdkRoot = $(if ($env:ANDROID_SDK_ROOT) { $env:ANDROID_SDK_ROOT } else { 'D:\Android\Sdk' }),
-    [string]$Gpu = 'swiftshader_indirect',
+    [string]$Gpu = 'auto',   # host GPU when present; software SwiftShader froze API 35/36 guests on heavy screens
     [string]$MetaFile = '',
     [string]$TestFilter = '',
     [int]$BootTimeoutSec = 900,
