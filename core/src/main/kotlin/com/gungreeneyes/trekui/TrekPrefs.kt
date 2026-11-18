@@ -145,15 +145,11 @@ open class TrekPrefs protected constructor(c: Context) {
 
         /**
          * The shared instance (created on first use from the application context, so no Activity leaks).
-         * Locks `TrekPrefs.class`, the monitor of the Java edition's `static synchronized`.
-         *
-         * `open` is load-bearing although Kotlin calls it a no-op in an object: it keeps the generated
-         * static `TrekPrefs.get` non-final, so the launcher's Java `Prefs.get(Context)` may still hide it
-         * (javac refuses to hide a `static final` method).
+         * Locks `TrekPrefs.class`, the monitor of the Java edition's `static synchronized`. The launcher's
+         * `Prefs` has its own `Prefs.get` returning the launcher instance.
          */
-        @Suppress("NON_FINAL_MEMBER_IN_OBJECT")
         @JvmStatic
-        open fun get(c: Context): TrekPrefs = synchronized(TrekPrefs::class.java) {
+        fun get(c: Context): TrekPrefs = synchronized(TrekPrefs::class.java) {
             instance ?: TrekPrefs(c).also { instance = it }
         }
 

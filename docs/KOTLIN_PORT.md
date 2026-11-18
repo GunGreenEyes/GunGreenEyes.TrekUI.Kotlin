@@ -63,8 +63,6 @@ Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a mo
   visibility and `internal` is per module, so converted declarations that other modules or their tests use
   are `public`. Tighten them to `internal` only once every user is in the same module.
 - Constants in an interface become `companion object` `const val`s; Java callers keep `TimeSource.UNKNOWN_BOOT`.
-- `TrekPrefs.get` is `@JvmStatic` and `open` only because Java `Prefs` in `:app` hides it with its own static
-  `get` (javac refuses to hide a final static). Remove that workaround when `Prefs` becomes Kotlin (phase 4).
 
 ## Rules
 
