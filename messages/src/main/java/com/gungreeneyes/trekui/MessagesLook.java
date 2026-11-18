@@ -59,8 +59,6 @@ public final class MessagesLook {
     public static int ink() { return Skin.ink(); }
     /** {@code color} with alpha {@code a} (0..1). */
     public static int alpha(int color, float a) { return Ui.alpha(color, a); }
-    /** True for the pipe-lounge interfaces (warm paper/wood looks). */
-    public static boolean pipe() { return Skin.pipe(); }
 
     // ---- sizes and type -----------------------------------------------------------------------
 
@@ -149,8 +147,11 @@ public final class MessagesLook {
 
     // ---- the app's own interface choice (used only while the launcher is not installed) --------
 
-    /** Display names of every interface, by faction id. */
-    public static String[] interfaceNames() { return Skin.NAMES.clone(); }
+    /** Names of the offered interfaces, in picker order (see {@link #interfaceAt}). */
+    public static String[] interfaceNames() { return Skin.interfaceNames(); }
+
+    /** The interface id at picker position {@code which} of {@link #interfaceNames}. */
+    public static int interfaceAt(int which) { return Skin.INTERFACES[which]; }
 
     /** Display names of the sub-themes {@link SubThemes} offers for {@code faction}. */
     public static String[] subThemeNames(int faction) {

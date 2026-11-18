@@ -36,8 +36,8 @@ import java.util.concurrent.ExecutorService;
  * swaps each app's raw icon for the pack's drawing.
  *
  * <p>The swap happens inside {@link AppRepo}'s background load ({@link #apply}), so every interface
- * that shows {@link AppInfo#rawIcon} (FRAMED and NATIVE icon styles, dock, tiles, shade, pipe
- * interfaces) gets pack icons with no further changes, while the PICTOGRAM / console style keeps
+ * that shows {@link AppInfo#rawIcon} (FRAMED and NATIVE icon styles, dock, tiles, shade)
+ * gets pack icons with no further changes, while the PICTOGRAM / console style keeps
  * drawing our pictograms. Apps the pack doesn't cover get the pack's backplate / mask / overlay
  * when it defines them ({@link #compose}). Parsed packs and their {@link Resources} are cached for
  * the life of the process; nothing here runs on the main thread except the {@link #async} hand-off.

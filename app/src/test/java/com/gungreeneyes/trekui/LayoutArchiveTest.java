@@ -120,8 +120,8 @@ public class LayoutArchiveTest {
         assertThrows(LayoutArchive.InvalidLayoutException.class, () -> LayoutArchive.parse("not json"));
         assertThrows(LayoutArchive.InvalidLayoutException.class, () -> LayoutArchive.parse("{\"format\":\"other\",\"schema\":1}"));
         assertThrows(LayoutArchive.InvalidLayoutException.class, () -> LayoutArchive.parse("{\"format\":\"trekui-layout\",\"schema\":1}"));
-        // a pipe collection export has a schema but isn't a layout
-        assertThrows(LayoutArchive.InvalidLayoutException.class, () -> LayoutArchive.parse("{\"schema\":1,\"pipes\":[]}"));
+        // another export with a schema but no layout format isn't a layout
+        assertThrows(LayoutArchive.InvalidLayoutException.class, () -> LayoutArchive.parse("{\"schema\":1,\"items\":[]}"));
         // newer schema
         assertThrows(LayoutArchive.InvalidLayoutException.class,
                 () -> LayoutArchive.parse("{\"format\":\"trekui-layout\",\"schema\":99,\"prefs\":{}}"));

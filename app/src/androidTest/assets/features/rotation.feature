@@ -13,7 +13,7 @@ Feature: Rotation, landscape and resizing
 
   Scenario: landscapeHomeFits - home screens fit in landscape
     Given the device is in landscape
-    When I show the COMMAND, COLLECTIVE_HUB, PIPE_LOUNGE and PIPE_MIDNIGHT interfaces in turn
+    When I show the COMMAND, IMPERIAL, COLLECTIVE_HUB and NEXT_CONSOLE interfaces in turn
     Then each fits the landscape screen
 
   Scenario: resizeDoesNotCrash - resizing the window does not crash

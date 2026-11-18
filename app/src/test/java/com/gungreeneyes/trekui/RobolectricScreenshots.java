@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Fast emulator-free screenshots: renders the home screen of every interface (14, incl. CLASSIC/NEXT CONSOLE) at a table of screen
+ * Fast emulator-free screenshots: renders the home screen of every interface (8 variants, incl. CLASSIC/NEXT CONSOLE) at a table of screen
  * sizes, aspect ratios, orientations and densities with Robolectric native graphics, and writes PNGs
  * to {@code assets/robolectric/<interface>/<config>.png} plus {@code assets/robolectric/manifest.json}.
  *
- * <p>Opt-in, because it writes ~130 images: run with the environment variable
+ * <p>Opt-in, because it writes ~90 images: run with the environment variable
  * {@code TREKUI_SCREENSHOTS=1}, e.g.
  * {@code TREKUI_SCREENSHOTS=1 ./gradlew :app:testDevelopDebugUnitTest --tests '*RobolectricScreenshots*'}.
  * Without it every case is skipped. {@code TREKUI_ASSETS_DIR} overrides the output root.</p>
@@ -70,8 +70,6 @@ public class RobolectricScreenshots {
             {"command", 0, null, 0}, {"command_reveal", 0, "layout", 1},
             {"imperial", 1, null, 0}, {"imperial_reveal", 1, "layout", 1},
             {"collective", 2, null, 0}, {"collective_hub", 2, "layout", 1},
-            {"pipe_tobacconist", 3, null, 0}, {"pipe_lounge", 4, null, 0}, {"pipe_journal", 5, null, 0},
-            {"pipe_briar", 6, null, 0}, {"pipe_ledger", 7, null, 0}, {"pipe_midnight", 8, null, 0},
             {"classic_console", 9, null, 0}, {"next_console", 10, null, 0},
     };
 

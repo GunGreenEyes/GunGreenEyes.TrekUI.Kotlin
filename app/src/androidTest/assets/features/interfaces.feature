@@ -1,8 +1,7 @@
 # Instrumented by com.gungreeneyes.trekui.InterfaceScenarios (one run per interface).
 Feature: Every interface renders and fits the screen
   The launcher ships three console factions (COMMAND, IMPERIAL, COLLECTIVE), their alternative
-  layouts (COMMAND reveal, IMPERIAL reveal, COLLECTIVE hub), six Pipe Lounge interfaces
-  (Tobacconist, Lounge, Journal, Briar, Ledger, Midnight) and the CLASSIC CONSOLE and
+  layouts (COMMAND reveal, IMPERIAL reveal, COLLECTIVE hub) and the CLASSIC CONSOLE and
   NEXT CONSOLE eras.
 
   Scenario Outline: interfaceRenders - <interface> renders its home screen
@@ -29,11 +28,5 @@ Feature: Every interface renders and fits the screen
       | IMPERIAL_REVEAL    |
       | COLLECTIVE         |
       | COLLECTIVE_HUB     |
-      | PIPE_TOBACCONIST   |
-      | PIPE_LOUNGE        |
-      | PIPE_JOURNAL       |
-      | PIPE_BRIAR         |
-      | PIPE_LEDGER        |
-      | PIPE_MIDNIGHT      |
       | CLASSIC_CONSOLE    |
       | NEXT_CONSOLE       |

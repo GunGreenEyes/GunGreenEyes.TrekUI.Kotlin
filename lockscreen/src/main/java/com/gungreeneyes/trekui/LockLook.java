@@ -28,7 +28,7 @@ public final class LockLook {
     public static final float MIN_TOUCH_DP = Ui.MIN_TOUCH_DP;
 
     /** Geometry families the wake screen draws its frame in. */
-    public static final int GEOMETRY_ROUND = 0, GEOMETRY_CHAMFER = 1, GEOMETRY_SQUARE = 2, GEOMETRY_PAPER = 3;
+    public static final int GEOMETRY_ROUND = 0, GEOMETRY_CHAMFER = 1, GEOMETRY_SQUARE = 2;
 
     /** Option pick callback for {@link #options} and {@link #message}. */
     public interface Pick { void pick(int which); }
@@ -66,10 +66,9 @@ public final class LockLook {
 
     /**
      * The frame geometry of the active interface: rounded console rails (Command and the eras), chamfered
-     * plates (Imperial), square lattice (Collective) or soft paper cards (Pipe Lounge).
+     * plates (Imperial) or square lattice (Collective).
      */
     public static int geometry() {
-        if (Skin.pipe()) return GEOMETRY_PAPER;
         if (Skin.imperial()) return GEOMETRY_CHAMFER;
         if (Skin.collective()) return GEOMETRY_SQUARE;
         return GEOMETRY_ROUND;
@@ -149,8 +148,14 @@ public final class LockLook {
 
     // ---- the app's own interface choice (used only while the launcher is not installed) --------
 
-    /** Display names of every interface, by faction id. */
-    public static String[] interfaceNames() { return Skin.NAMES.clone(); }
+    /** Names of the offered interfaces, in picker order (see {@link #interfaceAt}). */
+    public static String[] interfaceNames() { return Skin.interfaceNames(); }
+
+    /** The interface id at picker position {@code which} of {@link #interfaceNames}. */
+    public static int interfaceAt(int which) { return Skin.INTERFACES[which]; }
+
+    /** Picker position of interface {@code faction} in {@link #interfaceNames}. */
+    public static int interfaceIndex(int faction) { return Skin.interfaceIndex(faction); }
 
     /** Display names of the sub-themes {@link SubThemes} offers for {@code faction}. */
     public static String[] subThemeNames(int faction) {

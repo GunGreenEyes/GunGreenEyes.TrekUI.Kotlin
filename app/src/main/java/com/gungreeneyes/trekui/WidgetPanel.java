@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * A home panel that hosts any installed Android app widget (the owner's competitor research, gap A4). The widget
  * sits inside the usual {@link ConsoleCard}, so it gets the active interface's bracket (console "[",
- * Imperial bevel, Collective trace or Pipe material) and title strip, plus an outlined widget area.
+ * Imperial bevel or Collective trace) and title strip, plus an outlined widget area.
  *
  * <p>Each panel is one slot of {@link WidgetSlots} with panel id {@code "appwidget<slot>"}; MainActivity
  * creates it from {@link MainActivity#createPanel} like the built-in panels, so it takes part in the

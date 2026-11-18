@@ -340,16 +340,12 @@ final class Ui {
     }
 
     /**
-     * Classic console button: a solid colour block with the label bottom-right. Pipe interfaces centre the
-     * label and lift its colour on dark/translucent plates (except Ember Lounge, which letters in gold).
+     * Classic console button: a solid colour block with the label bottom-right.
      */
     static TextView button(Context c, String label, int color, int kind, View.OnClickListener l) {
         TextView t = bold(c, label.toUpperCase(Locale.getDefault()), 16, ink());
         t.setGravity(Gravity.BOTTOM | Gravity.END);
-        if (Skin.pipe()) {
-            t.setGravity(Gravity.CENTER);
-            t.setPadding(dp(c, 10), dp(c, 4), dp(c, 10), dp(c, 4));
-        } else if (Skin.imperial()) {
+        if (Skin.imperial()) {
             t.setPadding(dp(c, 12), dp(c, 6), dp(c, 20), dp(c, 10)); // clear of the octagon's corner cuts
         } else if (Skin.era23()) {
             // console keys letter in the middle, clear of the indicator lamp on the left
@@ -361,9 +357,6 @@ final class Ui {
             t.setPadding(dp(c, 12), dp(c, 6), dp(c, 14), dp(c, 7));
         }
         t.setBackground(touch(shape(c, color, kind, 20)));
-        if (Skin.pipe() && color != Color.WHITE && (Color.alpha(color) <= 0x80 || PipeDraw.dim(color)) && !Skin.mLounge()) {
-            t.setTextColor(PipeDraw.lifted(color));
-        }
         t.setMinHeight(dp(c, MIN_TOUCH_DP));
         t.setSingleLine(true);
         t.setEllipsize(TextUtils.TruncateAt.END);

@@ -193,7 +193,8 @@ public final class SuiteContract {
 
     /**
      * Reads a {@code theme} row into a {@link SuiteTheme}, or null when the row is missing, of an
-     * unsupported version, or out of range. Sub-themes are clamped into the faction's theme list; an
+     * unsupported version, or out of range. A retired interface (ids 3-8) reads as Command at sub-theme
+     * 0. Sub-themes are clamped into the faction's theme list; an
      * unknown sound set reads as "not chosen" (null).
      */
     public static SuiteTheme parseTheme(Map<String, String> row) {
@@ -202,6 +203,11 @@ public final class SuiteContract {
         Integer sub = parseInt(row.get(COL_SUB_THEME));
         Integer lettering = parseInt(row.get(COL_LETTERING));
         if (faction == null || faction < 0 || faction > TrekPrefs.MAX_FACTION) return null;
+        // a launcher still on a retired interface (ids 3-8) is followed as Command at its first sub-theme
+        if (TrekPrefs.retiredFaction(faction)) {
+            faction = TrekPrefs.clampFaction(faction);
+            sub = 0;
+        }
         int s = TrekPrefs.clampSubTheme(faction, sub == null ? 0 : sub);
         int l = lettering == null || lettering < 0 || lettering > MAX_LETTERING ? 0 : lettering;
         String set = row.get(COL_SOUND_SET);

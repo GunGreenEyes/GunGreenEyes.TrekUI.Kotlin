@@ -53,13 +53,13 @@ public class RotationScenarios extends AppScenario {
         instrumentation.runOnMainSync(() -> AppHooks.closeDrawer(home));
     }
 
-    /** Scenario: the home screen in landscape fits for every console and Pipe family. */
+    /** Scenario: the home screen in landscape fits for every console family. */
     @Test
     public void landscapeHomeFits() throws Exception {
         scenario.given("the device is in landscape");
         device.setOrientationLandscape();
         SystemClock.sleep(800);
-        for (Interface iface : new Interface[]{Interface.COMMAND, Interface.COLLECTIVE_HUB, Interface.PIPE_LOUNGE, Interface.PIPE_MIDNIGHT}) {
+        for (Interface iface : new Interface[]{Interface.COMMAND, Interface.IMPERIAL, Interface.COLLECTIVE_HUB, Interface.NEXT_CONSOLE}) {
             scenario.when("I show the " + iface + " interface");
             MainActivity home = launchHome(iface);
             media.screenshot(iface.slug() + "-landscape");

@@ -37,7 +37,6 @@
 
     <!-- Home screen: customise hint under the panels -->
     <string name="hint_customize_console">LONG-PRESS ANY CONSOLE BLOCK, ELBOW, TITLE, TILE OR PANEL TO CUSTOMIZE</string>
-    <string name="hint_customize_pipe">LONG-PRESS ANY PLATE, STUD, CORNER, TILE OR PANEL TO CUSTOMIZE</string>
 
     <!-- Configuration screen: common toasts -->
     <string name="toast_not_available">NOT AVAILABLE ON THIS DEVICE</string>
@@ -102,7 +101,6 @@
     <string name="qs_red_alert_on">ON ALERT</string>
     <!-- LCA-T16: first-run tour (Onboarding). %1$s = drawer key, %2$s = config key, %3$s = interface name -->
     <string name="tour_title_console">ORIENTATION</string>
-    <string name="tour_title_pipe">A GUIDED TOUR</string>
     <string name="tour_next">NEXT</string>
     <string name="tour_back">BACK</string>
     <string name="tour_skip">SKIP TOUR</string>
@@ -110,7 +108,7 @@
     <string name="tour_welcome_heading">WELCOME</string>
     <string name="tour_welcome_body">You are on %3$s, one of nine interfaces. Seven short stops show you how to make it yours.\n\nSkip whenever you like. The tour is in %2$s › DEFAULT HOME › REPLAY TOUR.</string>
     <string name="tour_assign_heading">LONG-PRESS TO ASSIGN</string>
-    <string name="tour_assign_body">Long-press any tile, dock slot, block, elbow or title (plates and studs on the pipe interfaces) to ASSIGN an app or a launcher function to it, rename it, recolor it or give it its own sound.</string>
+    <string name="tour_assign_body">Long-press any tile, dock slot, block, elbow or title to ASSIGN an app or a launcher function to it, rename it, recolor it or give it its own sound.</string>
     <string name="tour_drawer_heading">THE APP DRAWER</string>
     <string name="tour_drawer_body">Swipe up, or tap %1$s, to see every app. Long-press an app in the drawer for more options, such as hiding it or adding it to the home screen.</string>
     <string name="tour_shade_heading">THE SHADE</string>
@@ -118,7 +116,7 @@
     <string name="tour_config_heading">CONFIGURATION</string>
     <string name="tour_config_body">Tap %2$s to change everything else: tiles and dock, panels, the clock, the drawer, sounds, weather and smart devices.</string>
     <string name="tour_interfaces_heading">SWITCH INTERFACES</string>
-    <string name="tour_interfaces_body">%2$s › INTERFACE switches between the Command, Imperial and Collective consoles and the pipe lounges. Each one keeps its own layout, and a snapshot is saved before every switch.</string>
+    <string name="tour_interfaces_body">%2$s › INTERFACE switches between the Command, Imperial, Collective, Classic and Next consoles. Each one keeps its own layout, and a snapshot is saved before every switch.</string>
     <string name="tour_backup_heading">YOUR LAYOUT IS SAFE</string>
     <string name="tour_backup_body">%2$s › BACKUP exports your layout to a file for a new phone. Snapshots are saved automatically before updates, imports, resets and interface switches. UNDO LAST CHANGE puts the previous layout back.</string>
     <string name="tour_home_heading">SET AS DEFAULT HOME</string>

@@ -97,13 +97,13 @@ final class Sfx {
     static final String SYNTH_BOOT = "synth_boot";
 
     // Interface-specific synthesized families (same event layout, different character):
-    // Imperial = harsh / metallic / low, Collective = cold digital / drone, pipe interfaces = warm analogue
-    // (wood knock, brass click, page rustle, match strike, chime, thud, bell). Four tap beeps each.
-    /** Synthesized tap rotations of the Imperial, Collective and pipe families. */
-    static final String SYNTH_KL_TAPS = "#synthtaps_kl", SYNTH_BG_TAPS = "#synthtaps_bg", SYNTH_PP_TAPS = "#synthtaps_pp";
+    // Imperial = harsh / metallic / low, Collective = cold digital / drone. Four tap beeps each.
+    /** Synthesized tap rotations of the Imperial and Collective families. */
+    static final String SYNTH_KL_TAPS = "#synthtaps_kl", SYNTH_BG_TAPS = "#synthtaps_bg";
     static final String[] SYNTH_KL_EVENT = family("kl", SYNTH_KL_TAPS);
     static final String[] SYNTH_BG_EVENT = family("bg", SYNTH_BG_TAPS);
-    static final String[] SYNTH_PP_EVENT = family("pp", SYNTH_PP_TAPS);
+    /** Prefix of the synthesized family of the retired interfaces (ids 3-8); its clips are no longer shipped. */
+    private static final String RETIRED_FAMILY = "pp";
     private static final int FAMILY_TAPS = 4;
 
     /** {taps, synth_<fam>_nav, …, synth_<fam>_red_alert} in event order. */
@@ -125,7 +125,7 @@ final class Sfx {
         String[] commandLabels = {"SYNTHESIZED: TAP ROTATION (6 SOUNDS)", "SYNTHESIZED: TAP 1", "SYNTHESIZED: TAP 2", "SYNTHESIZED: TAP 3", "SYNTHESIZED: TAP 4", "SYNTHESIZED: TAP 5", "SYNTHESIZED: TAP 6", "SYNTHESIZED: NAVIGATION CHIRP", "SYNTHESIZED: LAUNCH ARPEGGIO", "SYNTHESIZED: CONFIRM CHIME", "SYNTHESIZED: ERROR BUZZ", "SYNTHESIZED: COMMS HAIL", "SYNTHESIZED: DIAGNOSTIC BLIPS", "SYNTHESIZED: RED ALERT KLAXON", "SYNTHESIZED: POWER-UP SWEEP"};
         ids.addAll(java.util.Arrays.asList(commandIds));
         labels.addAll(java.util.Arrays.asList(commandLabels));
-        String[][] fams = {{"kl", "SYNTHESIZED IMPERIAL", SYNTH_KL_TAPS}, {"bg", "SYNTHESIZED COLLECTIVE", SYNTH_BG_TAPS}, {"pp", "SYNTHESIZED LOUNGE", SYNTH_PP_TAPS}};
+        String[][] fams = {{"kl", "SYNTHESIZED IMPERIAL", SYNTH_KL_TAPS}, {"bg", "SYNTHESIZED COLLECTIVE", SYNTH_BG_TAPS}};
         String[] parts = {"nav", "launch", "confirm", "error", "comms", "diag", "red_alert", "boot"};
         String[] partNames = {"NAVIGATION", "LAUNCH", "CONFIRM", "ERROR", "COMMS", "DIAGNOSTICS", "RED ALERT LOOP", "START-UP"};
         for (String[] f : fams) {
@@ -161,21 +161,30 @@ final class Sfx {
     static final String[] LIBRARY_ORIGINAL = join(join(BASE_ORIGINAL, SourceSoundLibrary.ORIGINALS), SYNTH_ORIGINAL);
     /** Command defaults per event. */
     static final String[] DEFAULT_RES = {TAP_SET, "ui_panel_open", "ui_screen_open", "alert_general_short", "ui_denied", "comms_hailing_open", "ui_screen_close", "alert_red_tng"};
-    /** The pipe interfaces use their own warm synthesized set (no starship sounds). Any event can still be set to SILENT. */
-    static final String[] PIPE_DEFAULT = SYNTH_PP_EVENT;
     /** Imperial defaults: a few library clips where the 5.x bundle chose them, the harsh synthesized set elsewhere. */
     static final String[] IMPERIAL_DEFAULT = {SYNTH_KL_TAPS, "ui_screen_open", SYNTH_KL_EVENT[E_LAUNCH], SYNTH_KL_EVENT[E_CONFIRM], "ui_denied", SYNTH_KL_EVENT[E_COMMS], "ui_screen_close", "alert_warning"};
     /** Collective defaults: the Collective computer and a few library clips, the cold synthesized set elsewhere. */
     static final String[] COLLECTIVE_DEFAULT = {SYNTH_BG_TAPS, SYNTH_BG_EVENT[E_NAV], SYNTH_BG_EVENT[E_LAUNCH], "alt_borg_computer", "ui_denied", SYNTH_BG_EVENT[E_COMMS], "ui_screen_close", SYNTH_BG_EVENT[E_RED]};
-    /** Defaults per interface (Skin.faction): Command, Imperial, Collective, the six pipe interfaces, then the 23rd/25th-century eras (Command sounds). */
-    static final String[][] FACTION_DEFAULT = {DEFAULT_RES, IMPERIAL_DEFAULT, COLLECTIVE_DEFAULT, PIPE_DEFAULT, PIPE_DEFAULT, PIPE_DEFAULT, PIPE_DEFAULT, PIPE_DEFAULT, PIPE_DEFAULT, DEFAULT_RES, DEFAULT_RES};
+    /**
+     * Defaults per interface id (Skin.faction): Command, Imperial, Collective, the retired ids 3-8
+     * (Command sounds; such a choice reads as Command anyway), then the 23rd/25th-century eras
+     * (Command sounds).
+     */
+    static final String[][] FACTION_DEFAULT = {DEFAULT_RES, IMPERIAL_DEFAULT, COLLECTIVE_DEFAULT, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES, DEFAULT_RES};
 
-    /** The synthesized family of an interface: Imperial, Collective, pipe, else the console set. */
+    /** The synthesized family of an interface: Imperial, Collective, else the console set. */
     static String[] synthEventFor(int faction) {
         if (faction == Skin.IMPERIAL) return SYNTH_KL_EVENT;
         if (faction == Skin.COLLECTIVE) return SYNTH_BG_EVENT;
-        if (faction >= Skin.FIRST_PIPE && faction <= Skin.LAST_PIPE) return SYNTH_PP_EVENT;
         return SYNTH_EVENT;
+    }
+
+    /**
+     * True for a stored per-event choice from the retired interfaces' synthesized family (its tap
+     * rotation or one of its clips): those files are gone, so the choice reads as the interface default.
+     */
+    static boolean retiredClip(String id) {
+        return id != null && (id.equals(SYNTH_TAPS + "_" + RETIRED_FAMILY) || id.startsWith("synth_" + RETIRED_FAMILY + "_"));
     }
 
     /** The synthesized start-up sound of an interface (BootSequence's fallback). */
@@ -337,7 +346,7 @@ final class Sfx {
     static String builtinFor(Context context, int event) {
         Skin.faction = TrekPrefs.get(context).faction();
         String s = TrekPrefs.get(context).s(builtinKey(event), null);
-        return s != null ? s : defaultFor(event);
+        return s != null && !retiredClip(s) ? s : defaultFor(event);
     }
 
     static String libraryLabel(String id) {

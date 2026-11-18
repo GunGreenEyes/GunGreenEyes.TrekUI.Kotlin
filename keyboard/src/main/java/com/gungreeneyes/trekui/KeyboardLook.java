@@ -56,8 +56,6 @@ public final class KeyboardLook {
     public static int ink() { return Skin.ink(); }
     /** True for the Command family (flat solid keys with dark lettering). */
     public static boolean command() { return Skin.command(); }
-    /** True for the pipe-lounge interfaces. */
-    public static boolean pipe() { return Skin.pipe(); }
     /** {@code color} with alpha {@code a} (0..1). */
     public static int alpha(int color, float a) { return Ui.alpha(color, a); }
     /** {@code color} darkened by {@code f} (0..1). */
@@ -78,7 +76,7 @@ public final class KeyboardLook {
 
     // ---- shapes and controls ----------------------------------------------------------------------
 
-    /** A key / control background in the interface's geometry (Command, Imperial, Collective, Pipe, eras). */
+    /** A key / control background in the interface's geometry (Command, Imperial, Collective, eras). */
     public static Drawable cell(Context c, int color, int kind, float radiusDp) { return Ui.shape(c, color, kind, radiusDp); }
     /** A filled cell wrapped in a ripple. */
     public static Drawable touchCell(Context c, int color, int kind, float radiusDp) {
@@ -113,8 +111,14 @@ public final class KeyboardLook {
 
     // ---- the app's own interface choice (used only while the launcher is not installed) -----------
 
-    /** Display names of every interface, by faction id. */
-    public static String[] interfaceNames() { return Skin.NAMES.clone(); }
+    /** Names of the offered interfaces, in picker order (see {@link #interfaceAt}). */
+    public static String[] interfaceNames() { return Skin.interfaceNames(); }
+
+    /** The interface id at picker position {@code which} of {@link #interfaceNames}. */
+    public static int interfaceAt(int which) { return Skin.INTERFACES[which]; }
+
+    /** Picker position of interface {@code faction} in {@link #interfaceNames}. */
+    public static int interfaceIndex(int faction) { return Skin.interfaceIndex(faction); }
 
     /** Display names of the sub-themes (colour themes) offered for {@code faction}. */
     public static String[] subThemeNames(int faction) {

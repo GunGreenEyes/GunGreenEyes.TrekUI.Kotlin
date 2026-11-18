@@ -86,16 +86,15 @@ import java.util.Set;
  *                dock              (left cap, dock icons, right cap)
  *     DrawerView, ShadeView, DialerView   (full-screen overlays, hidden until opened)
  * </pre>
- * The pipe interfaces build their own home through {@link PipeHome} / {@link PipeScene}, which reach
- * back into this class's package-visible fields and helpers (slotColor, bindSlot, tiles, …), so those
- * names are part of the internal API and must not be renamed casually.
+ * Panels and overlays reach back into this class's package-visible fields and helpers (slotColor,
+ * bindSlot, tiles, …), so those names are part of the internal API and must not be renamed casually.
  *
  * <p><b>Layout.</b> Sizes adapt through {@link ScreenMetrics}: wide landscape windows (landscape phones,
  * landscape tablets, unfolded foldables, large multi-window panes) put the header and main frames side by
  * side, and wider windows give the tile grid more columns. The window is edge-to-edge on every API level; system-bar and
  * display-cutout insets are applied as padding (see {@link #applyInsets()}).
  *
- * <p><b>Back.</b> Home never finishes on back: back closes the topmost overlay (pipe page, hub panel,
+ * <p><b>Back.</b> Home never finishes on back: back closes the topmost overlay (group panel, hub panel,
  * dialer, shade, drawer) or scrolls home to the top. On API 33+ this is an
  * {@link OnBackInvokedCallback} (predictive back is enabled in the manifest); below, {@link #onBackPressed()}.
  *
@@ -105,15 +104,15 @@ import java.util.Set;
  * {@code withTagValue}) can find them in every interface:
  * <pre>
  *   home_root          the GestureRoot (whole home window)            all interfaces
- *   home_header        header ConsoleFrame                               console + material pipe homes
- *   home_main          main ConsoleFrame                                 console + material pipe homes
+ *   home_header        header ConsoleFrame                               all interfaces
+ *   home_main          main ConsoleFrame                                 all interfaces
  *   home_tiles         tile container (grid or reveal hub)             console homes
  *   home_dock          dock row                                        when dock slots &gt; 0
  *   home_clock         clock row (slot "clock")                        all interfaces
  *   home_date          date line (slot "date")                         all interfaces
- *   drawer_button      sidebar APPS (slot "nav0")                      console + material pipe homes
- *   search_button      sidebar SEARCH (slot "nav1")                    console + material pipe homes
- *   settings_button    sidebar CONFIG (slot "nav2")                    console + material pipe homes
+ *   drawer_button      sidebar APPS (slot "nav0")                      all interfaces
+ *   search_button      sidebar SEARCH (slot "nav1")                    all interfaces
+ *   settings_button    sidebar CONFIG (slot "nav2")                    all interfaces
  *   dock_apps_button   dock left cap (slot "capL", opens all apps)     when dock slots &gt; 0
  *   drawer_view / shade_view / dialer_view   the overlays (GONE until opened)
  *   hub_panel_overlay  reveal-layout panel overlay                     reveal layouts
@@ -173,7 +172,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
     static boolean startupPlayed;
 
-    // ---- views and state used by PipeHome / PipeScene / panels (package-private API) -----------------
+    // ---- views and state used by panels (package-private API) -----------------------------------
     TextView ampmView;
     View clockRowView;
     TextView clockView;
@@ -289,6 +288,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         super.onCreate(savedInstanceState);
         Licensing.init(this); // HOOK(licensing): trial clock / purchase screen
         prefs = Prefs.get(this);
+        prefs.dropRetiredData(this); // the interfaces removed in 44 leave records and keys behind
         LayoutSnapshots.checkUpgrade(this); // LCA-T16: snapshot the layout when the versionCode changed
         repo = AppRepo.get(this);
         widgetHost = new WidgetHost(this);
@@ -410,7 +410,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
             openDialog.dismiss();
         }
         if (GroupPanel.close(this)) return; // LCA-T20
-        if (PipePages.close(this) || closeHubPanel()) return;
+        if (closeHubPanel()) return;
         if (dialer != null && dialer.isOpen()) {
             dialer.close(resumed);
         } else if (shade != null && shade.isOpen()) {
@@ -446,7 +446,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
     /** Closes the topmost home overlay, or scrolls the home screen back to the top. */
     private void handleBack() {
         if (GroupPanel.close(this)) return; // LCA-T20
-        if (PipePages.close(this) || closeHubPanel()) return;
+        if (closeHubPanel()) return;
         if (dialer != null && dialer.isOpen()) {
             dialer.back();
         } else if (shade != null && shade.isOpen()) {
@@ -461,7 +461,6 @@ public class MainActivity extends Activity implements AppRepo.Listener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (PipePages.onResult(this, requestCode, resultCode, data)) return;
         if (requestCode == REQ_HOME_ROLE && isDefaultHome(this)) {
             Sfx.play(this, Sfx.STATUS_OK);
         }
@@ -569,28 +568,20 @@ public class MainActivity extends Activity implements AppRepo.Listener {
      * cleared too) as home padding and to each overlay, which draw their own backgrounds behind the bars.
      */
     private void applyInsets() {
-        if (Skin.scene()) {
-            home.setPadding(insetLeft, insetTop, insetRight, insetBottom);
-        } else {
-            int side = metrics.isTwoPane() ? Ui.rawDp(this, metrics.marginDp) : Ui.dp(this, 8f);
-            home.setPadding(insetLeft + side, insetTop + Ui.dp(this, 4f), insetRight + side, insetBottom + Ui.dp(this, 6f));
-        }
+        int side = metrics.isTwoPane() ? Ui.rawDp(this, metrics.marginDp) : Ui.dp(this, 8f);
+        home.setPadding(insetLeft + side, insetTop + Ui.dp(this, 4f), insetRight + side, insetBottom + Ui.dp(this, 6f));
         drawer.setInsets(insetLeft, insetTop, insetRight, insetBottom, insetIme);
         shade.setInsets(insetLeft, insetTop, insetRight, insetBottom);
         dialer.setInsets(insetLeft, insetTop, insetRight, insetBottom, insetIme);
     }
 
     /**
-     * Sets the window/root background: black, the interface's pattern (starfield, pipe materials) or the
+     * Sets the window/root background: black, the interface's pattern (starfield, grid, network) or the
      * system wallpaper dimmed by the "dim" preference.
      */
     void applyBackground() {
         Window window = getWindow();
         int bgMode = prefs.bgMode();
-        if (Skin.pipe() && bgMode != BG_WALLPAPER) {
-            // Pipe interfaces list their material first: 0 is the material, 1 is plain dark.
-            bgMode = bgMode == BG_BLACK ? BG_PATTERN : BG_BLACK;
-        }
         if (bgMode == BG_WALLPAPER) {
             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -716,24 +707,19 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         }
         for (int i = 0; i < root.getChildCount(); i++) {
             View child = root.getChildAt(i);
-            if (child instanceof BootSequence || child instanceof PipeBoot) return true;
+            if (child instanceof BootSequence) return true;
         }
         Runnable reveal = () -> {
             if (headerFrame != null) headerFrame.reveal();
             if (mainFrame != null) mainFrame.reveal();
         };
-        View sequence = Skin.pipe()
-                ? new PipeBoot(this, pal, prefs.headerText(), reveal)
-                : new BootSequence(this, pal, prefs.headerText(), reveal);
+        View sequence = new BootSequence(this, pal, prefs.headerText(), reveal);
         root.addView(sequence, matchParent());
         return true;
     }
 
-    /** Builds the home column for the current interface (console here; pipe homes delegate). */
+    /** Builds the home column for the current interface. */
     LinearLayout buildHome() {
-        if (Skin.scene()) return PipeScene.build(this);
-        if (Skin.pipe()) return PipeHome.build(this);
-
         LinearLayout column = new LinearLayout(this);
         column.setOrientation(LinearLayout.VERTICAL);
         column.setClipToPadding(false);
@@ -747,11 +733,10 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
     /**
      * On wide windows (landscape phones, tablets, unfolded foldables) moves the header and main frames
-     * side by side, header on the left. Works for both the console and the material pipe homes because it
-     * only re-parents {@link #headerFrame} and {@link #mainFrame}; painted scenes are left alone.
+     * side by side, header on the left. It only re-parents {@link #headerFrame} and {@link #mainFrame}.
      */
     private void arrangePanes(LinearLayout column) {
-        if (Skin.scene() || headerFrame == null || mainFrame == null) return;
+        if (headerFrame == null || mainFrame == null) return;
         // Portrait tablets keep the stacked layout (and get more tile columns instead).
         if (metrics.widthDp < TWO_PANE_MIN_WIDTH_DP || !metrics.isLandscape()) return;
         if (headerFrame.getParent() != column || mainFrame.getParent() != column) return;
@@ -945,7 +930,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
                 glyph = (capSlot == null || capSlot.action == null) ? "apps" : HomeLogic.actionGlyph(capSlot.action);
             }
             capIcon.setImageBitmap(IconFactory.glyph(this, glyph));
-            capIcon.setColorFilter(Skin.pipe() ? Skin.tileInk() : Ui.ink(), PorterDuff.Mode.SRC_IN);
+            capIcon.setColorFilter(Ui.ink(), PorterDuff.Mode.SRC_IN);
         }
         int capIconSize = Ui.dp(this, 30f);
         leftCap.addView(capIcon, new FrameLayout.LayoutParams(capIconSize, capIconSize, Gravity.CENTER));
@@ -955,9 +940,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
         dockIcons = new LinearLayout(this);
         dockIcons.setGravity(Gravity.CENTER_VERTICAL);
-        dockIcons.setBackground(Skin.pipe()
-                ? PipeDraw.tray(this, pal.c(1), prefs.dockCount())
-                : Ui.outline(this, Ui.alpha(pal.panel, 0.85f), Ui.alpha(pal.c(1), 0.5f), Skin.trayRadius(4f), 1.5f));
+        dockIcons.setBackground(Ui.outline(this, Ui.alpha(pal.panel, 0.85f), Ui.alpha(pal.c(1), 0.5f), Skin.trayRadius(4f), 1.5f));
         LinearLayout.LayoutParams iconsParams = new LinearLayout.LayoutParams(0, rowHeight, 1.0f);
         iconsParams.leftMargin = Ui.dp(this, 6f);
         iconsParams.rightMargin = Ui.dp(this, 6f);
@@ -1091,8 +1074,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
     /**
      * Wires a view as an assignable slot: tap runs the assignment (or {@code defaultAction}), long-press
-     * opens the slot editor. Known navigation slots also get their test IDs here, which covers the pipe
-     * homes too.
+     * opens the slot editor. Known navigation slots also get their test IDs here.
      */
     void bindSlot(View view, final String slot, final Runnable defaultAction) {
         switch (slot) {
@@ -1396,7 +1378,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
             params.topMargin = Ui.dp(this, 16f);
             column.addView(createPanelView(panel), params);
         }
-        TextView hint = Ui.text(this, getString(Skin.pipe() ? R.string.hint_customize_pipe : R.string.hint_customize_console),
+        TextView hint = Ui.text(this, getString(R.string.hint_customize_console),
                 11f, Ui.alpha(pal.textLo, 0.6f));
         hint.setGravity(Gravity.CENTER);
         hint.setPadding(0, Ui.dp(this, 16f), 0, Ui.dp(this, 8f));
@@ -1629,14 +1611,12 @@ public class MainActivity extends Activity implements AppRepo.Listener {
 
     /** Tile columns on a 360dp phone for the current interface. */
     private static int baseTileColumns() {
-        if (Skin.pipe()) return Skin.tob() ? 3 : 2;
         if (Skin.command()) return 3;
         return Skin.imperial() ? 2 : 1;
     }
 
     /** Tile row height in dp for the current interface. */
     private static int tileRowHeightDp() {
-        if (Skin.pipe()) return Skin.tob() ? 88 : Skin.lounge() ? 100 : 62;
         if (Skin.command()) return 78;
         return Skin.imperial() ? 62 : 50;
     }
@@ -1646,7 +1626,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         float gridWidthDp = metrics.widthDp;
         if (isSideBySide()) gridWidthDp *= MAIN_PANE_WEIGHT / (HEADER_PANE_WEIGHT + MAIN_PANE_WEIGHT);
         int columns = HomeLogic.tileColumns(baseTileColumns(), gridWidthDp);
-        int gap = Ui.dp(this, Skin.pipe() ? 8f : 6f);
+        int gap = Ui.dp(this, 6f);
         boolean animate = Ui.animate(this);
         LinearLayout row = null;
         for (int i = 0; i < tileCount; i++) {
@@ -1682,9 +1662,8 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         }
     }
 
-    /** One shortcut tile for the grid layouts (pipe interfaces draw their own). */
+    /** One shortcut tile for the grid layouts. */
     private View tileView(int position) {
-        if (Skin.pipe()) return PipeHome.tile(this, position);
         Tile tile = tiles.get(position);
         int color = tileColor(tile, position);
         FrameLayout frame = new FrameLayout(this);
@@ -1918,17 +1897,8 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         return view;
     }
 
-    /** Legacy short name of {@link HomeLogic#actionGlyph} kept for PipeHome / PipeScene. */
-    static String A(String action) {
-        return HomeLogic.actionGlyph(action);
-    }
-
-    /** Fills the dock icons (painted scenes put them on their own keys). */
+    /** Fills the dock icons. */
     void refreshDock() {
-        if (Skin.scene()) {
-            PipeScene.refreshDock(this);
-            return;
-        }
         if (dockIcons == null || dock == null) return;
         dockIcons.removeAllViews();
         int dockCount = prefs.dockCount();
@@ -2323,7 +2293,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         }
     }
 
-    /** Updates the clock, AM/PM and date views (console and pipe homes alike). */
+    /** Updates the clock, AM/PM and date views. */
     private void updateClock() {
         if (clockView == null) return;
         Date now = new Date();
@@ -2353,7 +2323,7 @@ public class MainActivity extends Activity implements AppRepo.Listener {
         if (Ui.cloak) {
             sb.append("CLOAKED ").append(Math.max(1L, (Cloak.remainingMs(this) + 59_999) / 60_000)).append(" MIN").append(separator);
         }
-        if (prefs.stardate() && !Skin.pipe()) {
+        if (prefs.stardate()) {
             sb.append("STARDATE ").append(stardate(Calendar.getInstance()));
         }
         if (lastBattery != null) {

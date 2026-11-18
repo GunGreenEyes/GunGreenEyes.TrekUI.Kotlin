@@ -27,9 +27,20 @@ public class SuiteContractTest {
         assertThat(roundTrip(0, 11).subTheme).isEqualTo(0);   // Command has 11 themes
         assertThat(roundTrip(1, 5).subTheme).isEqualTo(0);    // Imperial has 5
         assertThat(roundTrip(2, -2).subTheme).isEqualTo(0);
-        assertThat(roundTrip(4, 1).subTheme).isEqualTo(0);    // a pipe interface has one fixed theme
         assertThat(roundTrip(9, 2).subTheme).isEqualTo(2);    // eras keep their three
         assertThat(roundTrip(9, 3).subTheme).isEqualTo(0);
+    }
+
+    @Test
+    public void theme_retiredInterfaceIsFollowedAsCommandAtItsFirstSubTheme() {
+        // a launcher row still naming one of the retired interfaces (ids 3-8)
+        for (int f = 3; f <= 8; f++) {
+            assertThat(roundTrip(f, 0)).isEqualTo(new SuiteTheme(0, 0, 0, "synth"));
+            assertThat(roundTrip(f, 4)).isEqualTo(new SuiteTheme(0, 0, 0, "synth"));
+        }
+        // the remaining interfaces are untouched
+        assertThat(roundTrip(9, 1)).isEqualTo(new SuiteTheme(9, 1, 0, "synth"));
+        assertThat(roundTrip(10, 0)).isEqualTo(new SuiteTheme(10, 0, 0, "synth"));
     }
 
     @Test

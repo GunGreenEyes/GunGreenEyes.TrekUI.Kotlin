@@ -14,8 +14,7 @@ import android.widget.TextView;
  * The container for every home-screen widget panel ({@link Panel#create()}): a bracket down the left
  * side, a title strip (title, accent rule, status text) and a vertical {@link #body} the panel fills.
  * The bracket is drawn in the current interface's style (console "[", Imperial bevel, Collective trace, the
- * 23rd/25th-century brackets from {@link EraDraw#bracket} or a pipe-material bracket from
- * {@link PipeDraw#cardBracket}).
+ * 23rd/25th-century brackets from {@link EraDraw#bracket}).
  */
 class ConsoleCard extends LinearLayout {
     /** Width of the side bracket, design dp. */
@@ -85,10 +84,6 @@ class ConsoleCard extends LinearLayout {
                 paint.setStyle(Paint.Style.FILL);
             }
             path.reset();
-            if (Skin.pipe()) {
-                PipeDraw.cardBracket(cv, getContext(), w, h, paint.getColor());
-                return;
-            }
             if (Skin.era()) {
                 EraDraw.bracket(cv, d, w, h, paint.getColor(), Ui.cloak);
                 return;

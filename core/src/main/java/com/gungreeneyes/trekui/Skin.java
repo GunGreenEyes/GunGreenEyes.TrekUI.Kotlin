@@ -20,17 +20,10 @@ import android.graphics.drawable.Drawable;
  *  COMMAND (0)  console: curved elbows, pill keys, solid colour segments, Antonio.
  *  IMPERIAL    (1)  Imperial tactical: chamfered/oblique plates, hex targeting optics, diamond
  *                  markers, copper hairlines, Oxanium / Warrior Blade. Never an console curve.
- *  COLLECTIVE       (2)  Collective: square smoked-acrylic modules with a backlit edge bar, conduit lines,
+ *  COLLECTIVE       (2)  Collective: square tinted-acrylic modules with a backlit edge bar, conduit lines,
  *                  circular node glyphs, telemetry dots, Share Tech. Never an elbow or a hex.
- *  Pipe Lounge (6.0, drawn by {@link PipeDraw}):
- *  TOBACCONIST (3) Victorian cabinet: walnut, brass and oxblood.
- *  LOUNGE      (4) Art Deco smoking room: lacquer, gold and ember.
- *  JOURNAL     (5) Tobacco-barn ledger: leather, kraft and red ink.
- *  Painted scenes (6.1, home drawn by {@link PipeScene}, every other screen borrows a material
- *  family through {@link #mat()}):
- *  BRIAR    (6)  Ember &amp; Briar fireside study      → walnut/brass (3)
- *  LEDGER   (7)  The Tobacconist's Ledger folio     → leather/kraft (5)
- *  MIDNIGHT (8)  Midnight Ember Art Deco lounge     → lacquer/gilt (4)
+ *  (ids 3-8 are retired: they belonged to interfaces since removed; {@link TrekPrefs#clampFaction}
+ *  reads a saved one as COMMAND.)
  *  More Command eras (6.3, drawn by {@link EraDraw}; {@link #command()} is true for them, so every
  *  Command layout, cascade and sound profile applies, only geometry, type and colour differ):
  *  ERA23    (9)  23rd-century console: chunky square keys, primary colours, blinking lamps, Josefin Sans.
@@ -43,22 +36,41 @@ import android.graphics.drawable.Drawable;
  */
 final class Skin {
     static final int COMMAND = 0, IMPERIAL = 1, COLLECTIVE = 2;
-    static final int TOBACCONIST = 3, LOUNGE = 4, JOURNAL = 5;
-    static final int BRIAR = 6, LEDGER = 7, MIDNIGHT = 8;
     /** The extra Command eras (see {@link Era}). */
     static final int ERA23 = 9, ERA25 = 10;
-    /** First and last pipe-lounge faction ids. */
-    static final int FIRST_PIPE = TOBACCONIST, LAST_PIPE = MIDNIGHT;
+    /** First and last retired faction id (saved values in this range read as COMMAND). */
+    static final int FIRST_RETIRED = 3, LAST_RETIRED = 8;
 
-    static final String[] NAMES = {"COMMAND", "IMPERIAL", "COLLECTIVE", "THE TOBACCONIST", "EMBER LOUNGE", "BLEND JOURNAL",
-            "EMBER & BRIAR", "TOBACCONIST'S LEDGER", "MIDNIGHT EMBER", "CLASSIC CONSOLE", "NEXT CONSOLE"};
+    /**
+     * The interfaces that exist, in picker order. Ids are stored in preferences, so they never change;
+     * {@link #NAMES} and {@link #SUBTITLES} are indexed by id and hold null for the retired ids.
+     */
+    static final int[] INTERFACES = {COMMAND, IMPERIAL, COLLECTIVE, ERA23, ERA25};
+
+    static final String[] NAMES = {"COMMAND", "IMPERIAL", "COLLECTIVE", null, null, null,
+            null, null, null, "CLASSIC CONSOLE", "NEXT CONSOLE"};
     static final String[] SUBTITLES = {"COMMAND • CURVED CONTROL RAILS", "IMPERIAL TACTICAL • CHAMFERED PLATES, HEX OPTICS",
-            "COLLECTIVE • NETWORKED CELLS, NODE GLYPHS",
-            "VICTORIAN CABINET • WALNUT, BRASS AND OXBLOOD", "ART DECO SMOKING ROOM • LACQUER, GOLD AND EMBER",
-            "TOBACCO BARN LEDGER • LEATHER, KRAFT AND RED INK",
-            "PAINTED SCENE • THE FIRESIDE SMOKING STUDY", "PAINTED SCENE • THE MERCHANT'S BOUND FOLIO",
-            "PAINTED SCENE • THE ART DECO NIGHT LOUNGE",
+            "COLLECTIVE • NETWORKED CELLS, NODE GLYPHS", null, null, null, null, null, null,
             "23RD-CENTURY STYLE • SQUARE KEYS, PRIMARY LAMPS", "25TH-CENTURY STYLE • FINE LINES, LAYERED GLASS"};
+
+    /** True for an interface that exists (one of {@link #INTERFACES}); false for retired or unknown ids. */
+    static boolean exists(int f) {
+        for (int i : INTERFACES) if (i == f) return true;
+        return false;
+    }
+
+    /** The names of {@link #INTERFACES}, in picker order (picker position n is interface INTERFACES[n]). */
+    static String[] interfaceNames() {
+        String[] out = new String[INTERFACES.length];
+        for (int n = 0; n < out.length; n++) out[n] = NAMES[INTERFACES[n]];
+        return out;
+    }
+
+    /** Picker position of interface {@code f} in {@link #INTERFACES} (0, Command, when it is not offered). */
+    static int interfaceIndex(int f) {
+        for (int n = 0; n < INTERFACES.length; n++) if (INTERFACES[n] == f) return n;
+        return 0;
+    }
 
     /** Current faction (set from prefs whenever a screen is built). */
     static int faction = COMMAND;
@@ -81,95 +93,26 @@ final class Skin {
     static boolean imperial() { return faction == IMPERIAL; }
     static boolean collective() { return faction == COLLECTIVE; }
 
-    /** One of the pipe-lounge interfaces (3-8). */
-    static boolean pipe() { return pipeFaction(faction); }
-    static boolean tob() { return faction == TOBACCONIST; }
-    static boolean lounge() { return faction == LOUNGE; }
-    static boolean journal() { return faction == JOURNAL; }
-
-    /** The three painted-scene interfaces (6-8): artwork homes with live overlays. */
-    static boolean scene() { return faction >= BRIAR && faction <= MIDNIGHT; }
-
-    /** Material family used for every screen apart from the home: 3 walnut/brass, 4 lacquer/gilt, 5 leather/kraft. */
-    static int mat() { return mat(faction); }
-
-    /**
-     * Maps a faction to the material family its non-home screens use: scenes borrow a 6.0 family
-     * (Briar → Tobacconist, Ledger → Journal, Midnight → Lounge); every other faction is itself.
-     */
-    static int mat(int f) {
-        return f == BRIAR ? TOBACCONIST : f == LEDGER ? JOURNAL : f == MIDNIGHT ? LOUNGE : f;
-    }
-
-    static boolean mTob() { return mat() == TOBACCONIST; }
-    static boolean mLounge() { return mat() == LOUNGE; }
-    static boolean mJournal() { return mat() == JOURNAL; }
-
-    /** True for the pipe-lounge factions (3-8), false for the starship interfaces (0-2, 9-10). */
-    static boolean pipeFaction(int f) { return f >= FIRST_PIPE && f <= LAST_PIPE; }
-
-    /** Palette of a pipe faction (anything above LEDGER falls through to Midnight). */
-    static Palette pipePalette(int f) {
-        return f == TOBACCONIST ? TOB_PALETTE : f == LOUNGE ? LOUNGE_PALETTE : f == JOURNAL ? JOURNAL_PALETTE
-                : f == BRIAR ? BRIAR_PALETTE : f == LEDGER ? LEDGER_PALETTE : MIDNIGHT_PALETTE;
-    }
-
-    /** Glyph style folder for the pipe interfaces (engraved, deco, rubber stamp); plain glyphs otherwise. */
-    static String glyphFolder() {
-        return mTob() ? "pipe/glyphs/engraved/" : mLounge() ? "pipe/glyphs/deco/" : mJournal() ? "pipe/glyphs/stamp/" : "glyphs/";
-    }
-
-    /** Asset folder holding the faction's tile/badge art. */
+    /** Asset folder holding the faction's tile/badge art (Imperial or Collective). */
     static String artFolder() {
-        if (faction == BRIAR) return "pipe/art/briar/";
-        if (faction == LEDGER) return "pipe/art/ledger/";
-        if (faction == MIDNIGHT) return "pipe/art/midnight/";
-        if (tob()) return "pipe/art/tobacconist/";
-        if (lounge()) return "pipe/art/lounge/";
-        if (journal()) return "pipe/art/journal/";
         return imperial() ? "faction/imperial/" : "faction/collective/";
     }
 
-    /** Ink for pictograms sitting on a tile: dark engraving on parchment, gold on lacquer, red stamp on kraft. */
+    /** Ink for the lettering on a Collective group key. */
     static int tileInk() {
-        if (Ui.cloak) return mTob() ? 0xB3C9A04E : mLounge() ? 0xB3D4AF37 : 0xB3C9A063;
-        return mTob() ? 0xFF2A170C : mLounge() ? 0xFFE9CF7F : 0xFFA8322A;
+        return Ui.cloak ? 0xB3C9A063 : 0xFFA8322A;
     }
 
     /** Navigation names on the home screen: 0 apps, 1 search, 2 config. */
     static String nav(int i) {
-        if (faction == BRIAR) return new String[]{"CABINET", "SEEK", "STUDY"}[i];
-        if (faction == LEDGER) return new String[]{"INDEX", "SEARCH", "SETTINGS"}[i];
-        if (faction == MIDNIGHT) return new String[]{"DIRECTORY", "SEEK", "CONCIERGE"}[i];
-        if (tob()) return new String[]{"CABINET", "INQUIRE", "WORKSHOP"}[i];
-        if (lounge()) return new String[]{"THE MENU", "SEEK", "CONCIERGE"}[i];
-        if (journal()) return new String[]{"CELLAR", "FIND", "TOOLS"}[i];
         return new String[]{"APPS", "SEARCH", "CONFIG"}[i];
     }
 
     /** Title of the app drawer. */
-    static String drawerTitle() {
-        if (scene()) return faction == BRIAR ? "THE STUDY CABINET" : faction == LEDGER ? "THE INDEX" : "THE DIRECTORY";
-        return tob() ? "THE CABINET" : lounge() ? "THE MENU" : journal() ? "THE CELLAR" : "APPLICATIONS";
-    }
+    static String drawerTitle() { return "APPLICATIONS"; }
 
     // ---- colours ---------------------------------------------------------------------------------
 
-    static final Palette BRIAR_PALETTE = new Palette("EMBER & BRIAR",
-            new String[]{"#D8A658", "#D9967A", "#F0DDB4", "#C08A52", "#E8B86A", "#CDAA80"}, "#F9DEAE", "#D9BC93", "#E8613A", "#33150F");
-    static final Palette LEDGER_PALETTE = new Palette("TOBACCONIST'S LEDGER",
-            new String[]{"#E9D3A6", "#D49A78", "#D9AA55", "#C9A063", "#C29A66", "#E2CFA6"}, "#F7E6C4", "#D2B07E", "#E04A2A", "#3A1D12");
-    static final Palette MIDNIGHT_PALETTE = new Palette("MIDNIGHT EMBER",
-            new String[]{"#D8A658", "#C8352E", "#B07D45", "#F0D08A", "#E2572B", "#E6D3AE"}, "#F9DEAE", "#C9A35A", "#FF5A36", "#25191A");
-    /** Tobacconist: brass, copper-rose, parchment, bronze, pale gold, tan. Light metals and papers carry dark engraved ink. */
-    static final Palette TOB_PALETTE = new Palette("THE TOBACCONIST",
-            new String[]{"#C9A04E", "#C98466", "#DCC6A0", "#B07A45", "#E3C67C", "#C2A27A"}, "#F1E3C2", "#C9A87A", "#E0573A", "#20130C");
-    /** Ember Lounge: gilt, lacquer red, bronze, pale gold, ember, cream; gold lettering on black lacquer. */
-    static final Palette LOUNGE_PALETTE = new Palette("EMBER LOUNGE",
-            new String[]{"#D4AF37", "#C8352E", "#B07D45", "#EBD28B", "#E2572B", "#E6D3AE"}, "#F3E2B4", "#C9A35A", "#FF5A36", "#120A08");
-    /** Blend Journal: kraft, cream, Virginia gold, rosy tan, bronze tan, light tan; dark ink on paper. */
-    static final Palette JOURNAL_PALETTE = new Palette("BLEND JOURNAL",
-            new String[]{"#C9A063", "#E2CFA6", "#D9AA55", "#C88A5E", "#B8905C", "#D7B98A"}, "#F0DDB4", "#C7A372", "#E04A2A", "#24160D");
     /**
      * Imperial Tactical, after the Imperial screens: blood red, orange, warning yellow, deep red,
      * red-orange, amber (brighter and redder than the first artwork bundle).
@@ -214,41 +157,30 @@ final class Skin {
 
     /** Screen background behind everything. */
     static int bg() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? 0xFF140C0B : faction == LEDGER ? 0xFF1C0E08 : 0xFF100A0B;
-            return mTob() ? 0xFF120A06 : mLounge() ? 0xFF0A0605 : 0xFF170E08;
-        }
         if (era()) return era23() ? Era.ERA23_BG : Era.ERA25_BG;
         return imperial() ? imperialTheme.bg : collective() ? collectiveTheme.bg : Color.BLACK;
     }
 
     /** Tray / dialog / card surface. */
     static int surface() {
-        if (pipe()) return mTob() ? 0xFF1E120B : mLounge() ? 0xFF140C0A : 0xFF22150C;
         if (era()) return era23() ? 0xFF17130E : 0xFF0B121A;
         return imperial() ? imperialTheme.surface : collective() ? collectiveTheme.surface : 0xFF0E0C16;
     }
 
     /** Grid and hairline colour. */
     static int grid() {
-        if (pipe()) return mTob() ? 0xFF342317 : mLounge() ? 0xFF2A1A12 : 0xFF33261A;
         if (era()) return era23() ? 0xFF2A2620 : 0xFF1E2C3A;
         return imperial() ? imperialTheme.grid : collective() ? collectiveTheme.grid : 0xFF1A1826;
     }
 
     /** Secondary detail colour (ticks, inactive marks). */
     static int detail() {
-        if (pipe()) return mTob() ? 0xFF4F3420 : mLounge() ? 0xFF5E3A17 : 0xFF57381D;
         if (era()) return era23() ? 0xFF3A342A : 0xFF2A3C4E;
         return imperial() ? imperialTheme.detail : collective() ? collectiveTheme.detail : 0xFF2A2840;
     }
 
     /** Lettering on a control: black on Command's solid colour; light on the factions' dark plates. */
     static int ink() {
-        if (pipe()) {
-            if (Ui.cloak) return mTob() ? 0xE6C9A04E : mLounge() ? 0xE6D4AF37 : 0xE6C9A063;
-            return mTob() ? 0xFF2A170C : mLounge() ? 0xFFEED9A0 : 0xFF2E1A0E;
-        }
         if (Ui.cloak) {
             if (command()) return Ui.CLOAK_INK;
             return 0xE6000000 | ((imperial() ? imperialTheme.c[1] : collectiveTheme.c[0]) & 0x00FFFFFF);
@@ -269,10 +201,6 @@ final class Skin {
 
     /** Asset path of the heavy typeface, or null for Command's Antonio. */
     static String fontHeavy() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? "fonts/IMFellEnglishSC.ttf" : faction == LEDGER ? "fonts/CormorantGaramond-Bold.ttf" : "fonts/Federo-Regular.ttf";
-            return tob() ? "fonts/Cinzel-SemiBold.ttf" : lounge() ? "fonts/Limelight-Regular.ttf" : "fonts/Rye-Regular.ttf";
-        }
         if (imperial()) return lettering == PLAIN ? "fonts/Oxanium-Bold.ttf" : "fonts/WarriorBlade-Bold.ttf";
         if (era23()) return "fonts/JosefinSans-SemiBold.ttf";
         return collective() ? "fonts/ShareTech-Regular.ttf" : null;
@@ -280,10 +208,6 @@ final class Skin {
 
     /** Asset path of the regular typeface, or null for Command's Antonio. */
     static String fontRegular() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? "fonts/IMFellEnglish-Regular.ttf" : faction == LEDGER ? "fonts/CormorantGaramond-SemiBold.ttf" : "fonts/JosefinSans-Regular.ttf";
-            return tob() ? "fonts/IMFellEnglish-Regular.ttf" : lounge() ? "fonts/JosefinSans-SemiBold.ttf" : "fonts/SpecialElite-Regular.ttf";
-        }
         if (imperial()) return lettering == BLADE_ALL ? "fonts/WarriorBlade-Regular.ttf" : "fonts/Oxanium-SemiBold.ttf";
         if (era23()) return "fonts/JosefinSans-Regular.ttf";
         return collective() ? "fonts/ShareTech-Regular.ttf" : null;
@@ -299,10 +223,6 @@ final class Skin {
 
     /** The faction typefaces are wider than condensed Antonio: scale text so layouts still fit. */
     static float textScale() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? 0.86f : faction == LEDGER ? 0.94f : 0.84f;
-            return tob() ? 0.80f : lounge() ? 0.78f : 0.76f;
-        }
         // Warrior Blade runs ~12% narrower than Oxanium at the same height, so it can be set larger
         if (imperial()) return lettering == PLAIN ? 0.80f : lettering == BLADE_ALL ? 0.90f : 0.84f;
         if (era23()) return 0.80f;
@@ -311,10 +231,6 @@ final class Skin {
 
     /** Letter spacing (em) for the faction's lettering. */
     static float letterSpacing() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? 0.03f : faction == LEDGER ? 0.02f : 0.08f;
-            return tob() ? 0.04f : lounge() ? 0.10f : 0.01f;
-        }
         if (era()) return era23() ? 0.05f : 0.09f;
         return imperial() ? 0.02f : collective() ? 0.06f : 0.03f;
     }
@@ -323,24 +239,18 @@ final class Skin {
 
     /** Home title block. */
     static String title() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? "EMBER & BRIAR" : faction == LEDGER ? "THE TOBACCONIST'S LEDGER" : "MIDNIGHT EMBER";
-            return tob() ? "THE TOBACCONIST" : lounge() ? "EMBER LOUNGE" : "BLEND JOURNAL";
-        }
         if (era()) return "CONSOLE";
         return imperial() ? "TACTICAL" : collective() ? "NODE CLUSTER 01" : "TREKUI";
     }
 
     /** Heading above the home tiles. */
     static String ops() {
-        if (pipe()) return tob() ? "THE CABINET" : lounge() ? "HOUSE SELECTIONS" : "TODAY'S ROTATION";
         if (era23()) return "BRIDGE FUNCTIONS";
         return imperial() ? "COMMAND FUNCTIONS" : collective() ? "LOCAL INTERFACE NODES" : "OPERATIONS";
     }
 
     /** Footer line of the home frame. */
     static String foot() {
-        if (pipe()) return tob() ? "PURVEYOR OF FINE BRIAR" : lounge() ? "MEMBERS ONLY • EST. 1928" : "CURED • AGED • SAVORED";
         if (era()) return era23() ? "PRIMARY CONTROL STATION" : "FLEET ACCESS TERMINAL";
         return imperial() ? "IMPERIAL TERMINAL" : collective() ? "COLLECTIVE LINK" : "PERSONAL ACCESS TERMINAL";
     }
@@ -349,27 +259,18 @@ final class Skin {
     static String ship(String command) {
         if (faction == COMMAND) return command;
         if (era()) return era23() ? "BRIDGE STATION 01 • DECK 1" : "FLEET OPERATIONS • SECTOR 7";
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? "THE GENTLEMAN'S SMOKING STUDY" : faction == LEDGER ? "RECORDS • CATALOGS • INVENTORY • BLENDS" : "THE SMOKING LOUNGE";
-            return tob() ? "FINE TOBACCOS & BRIAR PIPES" : lounge() ? "SMOKING ROOM • NUMBER FOURTEEN" : "A LOG OF BLENDS & BOWLS";
-        }
         return imperial() ? "WARRIOR CONTROL / MOBILE TERMINAL" : "COLLECTIVE / NODE ACCESS";
     }
 
     /** Sub-heading used on library/reveal screens. */
     static String library() {
-        if (pipe()) {
-            if (scene()) return faction == BRIAR ? "BY THE FIRE, WITH BRIAR AND LEAF" : faction == LEDGER ? "RECORDS, CATALOGS AND SPECIMENS" : "AFTER HOURS • PRIVATE LOUNGE";
-            return tob() ? "CABINET OF BRIAR, LEAF AND BRASS" : lounge() ? "LACQUER, GOLD AND THE EVENING EMBER" : "FILL • TAMP • CHAR • LIGHT • SAVOR";
-        }
         if (era()) return era23() ? "COMPUTER ACCESS / BRIDGE STATION" : "LIBRARY ACCESS / FLEET NETWORK";
         return imperial() ? "IMPERIAL TACTICAL / WARRIOR CONTROL" : collective() ? "COLLECTIVE / NODE ACCESS / NETWORK LINK"
                 : "CENTRAL COMPUTER ACCESS / CONTROL SYSTEM";
     }
 
-    /** Asset folder of the faction's bundled wallpapers (none for Command and the pipe interfaces). */
+    /** Asset folder of the faction's bundled wallpapers (none for Command and the eras). */
     static String wallpaperFolder() {
-        if (pipe()) return null;
         return imperial() ? "faction/imperial/" : collective() ? "faction/collective/" : null;
     }
 
@@ -403,10 +304,10 @@ final class Skin {
     /**
      * Edge/glyph version of a palette colour: the darker faction tones (Collective matrix and conduit
      * greens, Imperial bronze) are lifted toward the faction's light text colour so outlines and
-     * pictograms stay readable. Fills keep the original tone. Command and pipe colours pass through.
+     * pictograms stay readable. Fills keep the original tone. Command colours pass through.
      */
     static int glow(int color) {
-        if (command() || pipe()) return color;
+        if (command()) return color;
         return glowToward(color, glowColor());
     }
 
@@ -414,7 +315,6 @@ final class Skin {
 
     /** Background for a control in the current faction (Command keeps the plain GradientDrawable). */
     static Drawable cell(Context c, int color, int kind, float radiusDp) {
-        if (pipe()) return PipeDraw.cell(c, color, kind);
         if (imperial()) return new Chamfer(c, color, kind);
         return new NodeCell(c, color, kind);
     }
@@ -581,9 +481,8 @@ final class Skin {
         }
     }
 
-    /** A divider/header rule: solid bar for Command and Imperial, a trace for Collective, a material rule for pipe. */
+    /** A divider/header rule: solid bar for Command and Imperial, a trace for Collective, a thin rule for the eras. */
     static Drawable rule(Context c, int color) {
-        if (pipe()) return PipeDraw.rule(c, color);
         if (era()) return EraDraw.rule(c, color);
         if (!collective()) return new ColorDrawable(color);
         return new NodeCell(c, color, Ui.PILL);
@@ -596,23 +495,19 @@ final class Skin {
     static float trayRadius(float command) { return trayRadiusFor(faction, command); }
 
     /**
-     * Pure form of {@link #trayRadius}: pipe families 4 (walnut) / 1 (lacquer) / 14 (leather),
-     * Imperial 1, Collective 22, 23rd century at most {@link #ERA23_RADIUS}, 25th century 0 (its corners are
-     * cut by {@link EraDraw} instead), Command the caller's radius.
+     * Pure form of {@link #trayRadius}: Imperial 1, Collective 22, 23rd century at most
+     * {@link #ERA23_RADIUS}, 25th century 0 (its corners are cut by {@link EraDraw} instead), Command
+     * the caller's radius.
      */
     static float trayRadiusFor(int f, float command) {
-        if (pipeFaction(f)) {
-            int m = mat(f);
-            return m == TOBACCONIST ? 4 : m == LOUNGE ? 1 : 14;
-        }
         if (f == ERA23) return Math.min(command, ERA23_RADIUS);
         if (f == ERA25) return 0;
         return f == IMPERIAL ? 1 : f == COLLECTIVE ? 22 : command;
     }
 
-    /** Frame behind a tile icon: Imperial hexagon optic; none for Command, Collective (the node is the frame) and pipe. */
+    /** Frame behind a tile icon: Imperial hexagon optic; none for Command, Collective (the node is the frame) and the eras. */
     static Drawable iconFrame(Context c, final int color) {
-        if (command() || collective() || pipe()) return null;
+        if (command() || collective()) return null;
         final float dd = Ui.density(c);
         final boolean k = imperial();
         return new Drawable() {
@@ -653,12 +548,10 @@ final class Skin {
     }
 
     /**
-     * Backdrop for the "pattern" background option: Imperial tactical grid, Collective conduit matrix, the
-     * pipe material backdrop. The Collective network is generated deterministically from cell indices so it
-     * never shifts between frames; it simply tiles further on larger screens.
+     * Backdrop for the "pattern" background option: Imperial tactical grid, Collective conduit matrix. The
+     * Collective network is generated deterministically from cell indices so it never shifts between frames; it simply tiles further on larger screens.
      */
     static Drawable backdrop(Context c) {
-        if (pipe()) return PipeDraw.backdrop(c);
         final float dd = Ui.density(c);
         final boolean k = imperial();
         return new Drawable() {
@@ -701,10 +594,6 @@ final class Skin {
 
     /** Name of the "pattern" background option in CONFIG. */
     static String patternName() {
-        if (pipe()) {
-            if (scene()) return "PAINTED SCENE";
-            return tob() ? "WALNUT PANELS" : lounge() ? "LACQUER & GILT" : "LEATHER & LEAF";
-        }
         return imperial() ? "TRIANGLE GRID" : collective() ? "TRACE NETWORK" : "STARFIELD";
     }
 
@@ -712,7 +601,6 @@ final class Skin {
 
     /** Ornament behind the home clock (23rd-century lamp bank, 25th-century reticle), or null for Command. */
     static Drawable headerOrnament(Context c, Palette p) {
-        if (pipe()) return PipeDraw.ornament(c, p);
         if (era()) return EraDraw.ornament(c, p);
         if (imperial()) return new TacticalDisplay(c, p);
         if (collective()) return new NodeNet(c, p);

@@ -379,11 +379,12 @@ public final class ConversationListActivity extends BaseScreen {
 
     private void pickInterface() {
         String[] names = MessagesLook.interfaceNames();
-        MessagesLook.options(this, getString(R.string.config_interface), names, f -> {
+        MessagesLook.options(this, getString(R.string.config_interface), names, which -> {
             TrekPrefs prefs = TrekPrefs.get(this);
+            int f = MessagesLook.interfaceAt(which);
             prefs.setFaction(f);
             if (MessagesLook.hasSubThemes(f)) {
-                MessagesLook.options(this, names[f], MessagesLook.subThemeNames(f), s -> {
+                MessagesLook.options(this, names[which], MessagesLook.subThemeNames(f), s -> {
                     prefs.setSubTheme(f, s);
                     rebuild();
                 });

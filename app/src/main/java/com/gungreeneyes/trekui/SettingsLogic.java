@@ -12,8 +12,6 @@ final class SettingsLogic {
 
     private SettingsLogic() {}
 
-    /** Interface family indexes: starship interfaces are 0..2 plus the eras 9..10, pipe interfaces 3..8. */
-    static final int FIRST_PIPE_FACTION = 3, LAST_PIPE_FACTION = 8, LAST_STARSHIP_FACTION = 2;
     /** The starship interfaces in CONFIG order: Command, its 23rd- and 25th-century eras, Imperial, Collective. */
     static final int[] STARSHIP_FACTIONS = {Skin.COMMAND, Skin.ERA23, Skin.ERA25, Skin.IMPERIAL, Skin.COLLECTIVE};
 
@@ -75,17 +73,6 @@ final class SettingsLogic {
             case 1: return WALLPAPER_LOCK;
             default: return WALLPAPER_HOME | WALLPAPER_LOCK;
         }
-    }
-
-    /**
-     * Faction to switch to when the INTERFACE FAMILY changes: the last one used in that family, or its
-     * first interface when the remembered value is out of range.
-     */
-    static int familyTarget(boolean toPipe, int lastPipe, int lastStarship) {
-        if (toPipe) {
-            return lastPipe < FIRST_PIPE_FACTION || lastPipe > LAST_PIPE_FACTION ? FIRST_PIPE_FACTION : lastPipe;
-        }
-        return isStarshipFaction(lastStarship) ? lastStarship : 0;
     }
 
     /** True for a dotted IPv4 address such as 192.168.1.42 (each part 0..255). */

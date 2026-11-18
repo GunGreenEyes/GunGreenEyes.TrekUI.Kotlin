@@ -15,7 +15,6 @@ package com.gungreeneyes.trekui;
  *  CLASSIC / NEXT CONSOLE (eras)   their own three themes each ({@link Era}).
  *  IMPERIAL       5 themes, COLLECTIVE 5 themes: original palettes that also carry the interface's
  *                 chrome tones (background, surface, grid, detail, control lettering).
- *  Pipe Lounge    one fixed theme each: the colours are the materials and paintings.
  * </pre>
  *
  * Spec layout: {@link Era}'s eleven entries (name, six accents, text high, text low, alert, panel),
@@ -119,8 +118,8 @@ public final class SubThemes {
     private static final String[][] NONE = new String[0][];
 
     /**
-     * Theme specs offered for {@code faction}; empty for a Pipe Lounge interface (its single theme is
-     * its material palette, see {@link #count}).
+     * Theme specs offered for {@code faction}; empty for an id that names no interface (see
+     * {@link #count}).
      */
     static String[][] specs(int faction) {
         if (faction == Skin.COMMAND) return COMMAND;

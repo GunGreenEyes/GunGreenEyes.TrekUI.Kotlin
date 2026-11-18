@@ -5,9 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RadialGradient;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
  *   <li>Command console: a red console frame (top and bottom bars joined by a left sidebar through
  *       rounded elbows) with the RED ALERT caption in a notch of the top bar;</li>
  *   <li>Imperial: angular blades in the corners and chamfered bars in Imperial red;</li>
- *   <li>Collective: red corner brackets and a threat grid along the edges;</li>
- *   <li>Pipe Lounge interfaces: a warm ember vignette with fine rules top and bottom.</li>
+ *   <li>Collective: red corner brackets and a threat grid along the edges.</li>
  * </ul>
  * Everything pulses (unless animations are off) and the whole screen gets a faint red wash. The view
  * never blocks the phone: it is not clickable, so touches fall through to the home screen below; only
@@ -46,7 +43,6 @@ final class RedAlertOverlay extends FrameLayout implements RedAlert.Listener {
     /** Alarm colours per interface family. */
     private static final int COMMAND_RED = 0xFFE03030;
     private static final int COLLECTIVE_RED = 0xFFFF3B30;
-    private static final int PIPE_EMBER = 0xFFC2412D;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint text = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -129,7 +125,6 @@ final class RedAlertOverlay extends FrameLayout implements RedAlert.Listener {
     private static int alarmColor() {
         if (Skin.imperial()) return ImperialDraw.RED;
         if (Skin.collective()) return COLLECTIVE_RED;
-        if (Skin.pipe()) return PIPE_EMBER;
         return COMMAND_RED;
     }
 
@@ -143,7 +138,7 @@ final class RedAlertOverlay extends FrameLayout implements RedAlert.Listener {
     }
 
     private int barThickness() {
-        return Ui.dp(getContext(), Skin.pipe() ? 6 : 18);
+        return Ui.dp(getContext(), 18);
     }
 
     @Override
@@ -201,7 +196,6 @@ final class RedAlertOverlay extends FrameLayout implements RedAlert.Listener {
         canvas.drawColor(Ui.alpha(color, WASH_ALPHA * pulse));
         if (Skin.imperial()) drawImperial(canvas, w, h, color, pulse);
         else if (Skin.collective()) drawCollective(canvas, w, h, color, pulse);
-        else if (Skin.pipe()) drawPipe(canvas, w, h, color, pulse);
         else drawConsole(canvas, w, h, color, pulse);
         drawCaption(canvas, w, color, pulse, s.remainingMs(now));
     }
@@ -306,22 +300,6 @@ final class RedAlertOverlay extends FrameLayout implements RedAlert.Listener {
         cv.drawLine(rect.right, rect.bottom, rect.right - arm, rect.bottom, paint);
         cv.drawLine(rect.right, rect.bottom, rect.right, rect.bottom - arm, paint);
         paint.setStyle(Paint.Style.FILL);
-    }
-
-    /** Pipe Lounge: a warm ember vignette with fine rules top and bottom. */
-    private void drawPipe(Canvas cv, int w, int h, int color, float pulse) {
-        float radius = (float) Math.hypot(w / 2f, h / 2f);
-        if (radius <= 0) return;
-        paint.setStyle(Paint.Style.FILL);
-        paint.setShader(new RadialGradient(w / 2f, h / 2f, radius,
-                new int[]{Color.TRANSPARENT, Color.TRANSPARENT, Ui.alpha(color, 0.55f * pulse)},
-                new float[]{0f, 0.6f, 1f}, Shader.TileMode.CLAMP));
-        cv.drawRect(0, 0, w, h, paint);
-        paint.setShader(null);
-        float rule = barThickness();
-        paint.setColor(Ui.alpha(color, pulse));
-        cv.drawRect(insetLeft, insetTop, w - insetRight, insetTop + rule, paint);
-        cv.drawRect(insetLeft, h - insetBottom - rule, w - insetRight, h - insetBottom, paint);
     }
 
     /** "RED ALERT • 1:45" (Collective: "THREAT DETECTED") in a black notch under the top edge. */

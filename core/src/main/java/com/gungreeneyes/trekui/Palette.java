@@ -4,7 +4,7 @@ package com.gungreeneyes.trekui;
  * A colour theme: six accent colours used in rotation for frames, tiles and data, plus text, alert
  * and panel colours. {@link #ALL} holds the Command themes, {@link #ERA23} / {@link #ERA25} the two
  * extra Command eras (specs in {@link Era}), {@link #IMPERIAL} / {@link #COLLECTIVE} the faction
- * sub-themes (specs in {@link SubThemes}); pipe palettes live in Skin. {@link #themesFor} is the one
+ * sub-themes (specs in {@link SubThemes}). {@link #themesFor} is the one
  * lookup every screen uses.
  *
  * <p>Colours are parsed with the pure {@link Era#rgb} (not {@code android.graphics.Color}), so the
@@ -90,14 +90,13 @@ final class Palette {
 
     /**
      * Colour themes offered for a faction, indexed by stored sub-theme: the Command list, the era
-     * sets, the Imperial / Collective sub-themes, or the single material palette of a pipe interface.
+     * sets, or the Imperial / Collective sub-themes (Command's list for any other id).
      */
     static Palette[] themesFor(int faction) {
         if (faction == Skin.ERA23) return ERA23;
         if (faction == Skin.ERA25) return ERA25;
         if (faction == Skin.IMPERIAL) return IMPERIAL;
         if (faction == Skin.COLLECTIVE) return COLLECTIVE;
-        if (Skin.pipeFaction(faction)) return new Palette[]{Skin.pipePalette(faction)};
         return ALL;
     }
 

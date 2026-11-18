@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * Feature: every interface renders and fits the screen ({@code features/interfaces.feature}).
  *
- * <p>Runs once per {@link Interface}: the three console factions, their alternative layouts and the six
- * Pipe Lounge interfaces.</p>
+ * <p>Runs once per {@link Interface}: the three console factions, their alternative layouts and the
+ * CLASSIC CONSOLE and NEXT CONSOLE eras.</p>
  */
 @RunWith(Parameterized.class)
 public class InterfaceScenarios extends AppScenario {

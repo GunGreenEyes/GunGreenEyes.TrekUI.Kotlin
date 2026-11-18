@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * Unread-notification counts drawn as badges on home tiles, reveal-hub nodes and dock keys, in
- * every interface (console pill, Imperial blade, Collective block, pipe wax seal).
+ * every interface (console pill, Imperial blade, Collective block).
  *
  * <p>Counts come from {@link MediaListener} (the notification listener the owner grants in
  * Android's "notification access"); without that grant there are simply no badges. They are held
@@ -226,17 +226,14 @@ final class NotificationBadges {
             this.descriptionFormat = c.getString(R.string.badge_cd);
             this.density = c.getResources().getDisplayMetrics().density * Ui.zoom(c);
             Palette pal = Prefs.get(c).palette();
-            if (Skin.pipe()) {
-                fill = PipeDraw.RED_INK;
-                ink = 0xFFF6E7C8;
-            } else if (Skin.collective()) {
+            if (Skin.collective()) {
                 fill = pal.c(0);
                 ink = Color.BLACK;
             } else {
                 fill = pal.alert;
                 ink = Color.BLACK;
             }
-            edge = Skin.pipe() ? Ui.darken(PipeDraw.RED_INK, 0.6f) : Color.BLACK;
+            edge = Color.BLACK;
             paint.setTypeface(Ui.font(c, true));
             paint.setTextSize(TEXT_SP * density * Skin.textScale());
             paint.setTextAlign(Paint.Align.CENTER);
@@ -308,8 +305,6 @@ final class NotificationBadges {
                 path.close();
             } else if (Skin.collective()) {
                 path.addRect(r, Path.Direction.CW);
-            } else if (Skin.pipe()) {
-                path.addRoundRect(r, h * 0.5f, h * 0.5f, Path.Direction.CW);
             } else {
                 path.addRoundRect(r, h / 2, h / 2, Path.Direction.CW); // console pill
             }

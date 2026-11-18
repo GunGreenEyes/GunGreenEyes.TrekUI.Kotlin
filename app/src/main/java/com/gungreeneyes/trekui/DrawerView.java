@@ -69,8 +69,6 @@ class DrawerView extends FrameLayout {
     private static final int[] CATEGORY_COLORS = {0, 1, 3, 2, 4, 5};
     /** Brightness of unselected category buttons. */
     private static final float UNSELECTED_DARKEN = 0.45f;
-    /** Opacity of unselected category plates on the pipe interfaces. */
-    private static final float PIPE_UNSELECTED_ALPHA = 0.45f;
 
     private final MainActivity a;
     private final Palette pal;
@@ -92,7 +90,7 @@ class DrawerView extends FrameLayout {
         a = act;
         prefs = Prefs.get(act);
         pal = prefs.palette();
-        // Opaque: at 96% the bright home labels (Pipe Journal, Imperial) ghosted through the app list.
+        // Opaque: at 96% the bright home labels (Imperial) ghosted through the app list.
         setBackgroundColor(Ui.alpha(Skin.bg(), 1f));
         setClickable(true);
 
@@ -361,12 +359,6 @@ class DrawerView extends FrameLayout {
             if (!sel) b.setTextColor(Ui.ink());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, Ui.dp(getContext(), 54));
             if (cats.getChildCount() > 0) lp.topMargin = Ui.dp(getContext(), Ui.GUTTER);
-            if (Skin.pipe()) {
-                // pipe materials: translucent plates for unselected categories, lettering in the plate colour
-                b.setBackground(Ui.touch(Ui.shape(getContext(), sel ? color : Ui.alpha(color, PIPE_UNSELECTED_ALPHA), Ui.SQUARE, 0)));
-                b.setTextColor(sel ? Ui.ink() : color);
-                b.setGravity(Gravity.CENTER);
-            }
             cats.addView(b, lp);
         }
     }

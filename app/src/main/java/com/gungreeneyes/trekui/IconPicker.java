@@ -24,7 +24,7 @@ import java.util.Locale;
  * CHANGE ICON (LCA-T22): the per-app icon picker opened from the drawer's long-press menu.
  *
  * <p>Three ways to restyle one app: a grid of every pictogram in the current interface's style
- * ({@link IconFactory#glyph} picks the plain console or pipe set), any drawable from an installed icon
+ * ({@link IconFactory#glyph}), any drawable from an installed icon
  * pack (searchable, loaded off the main thread in pages of {@link #PACK_PAGE}), the app's own icon,
  * or AUTOMATIC to forget the choice. Choices are stored as {@code appIcon.<key>} preferences (see
  * {@link IconPacks}) and applied by reloading {@link AppRepo}, so the drawer, dock and tiles all

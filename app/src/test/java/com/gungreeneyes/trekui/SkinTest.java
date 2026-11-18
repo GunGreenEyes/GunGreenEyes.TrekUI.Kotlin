@@ -5,7 +5,7 @@ import static com.google.common.truth.Truth.assertThat;
 import org.junit.After;
 import org.junit.Test;
 
-/** Pure rules in {@link Skin}: faction families, colour mixing, glow lifting and tray radii. */
+/** Pure rules in {@link Skin}: the interface list, faction families, colour mixing, glow lifting and tray radii. */
 public class SkinTest {
 
     @After
@@ -14,38 +14,54 @@ public class SkinTest {
     }
 
     @Test
-    public void materialFamilies_scenesBorrowA60Family() {
-        assertThat(Skin.mat(Skin.BRIAR)).isEqualTo(Skin.TOBACCONIST);
-        assertThat(Skin.mat(Skin.LEDGER)).isEqualTo(Skin.JOURNAL);
-        assertThat(Skin.mat(Skin.MIDNIGHT)).isEqualTo(Skin.LOUNGE);
-        for (int f = Skin.COMMAND; f <= Skin.JOURNAL; f++) assertThat(Skin.mat(f)).isEqualTo(f);
+    public void interfaces_areTheFiveStarshipConsolesWithStableIds() {
+        assertThat(Skin.INTERFACES).asList()
+                .containsExactly(Skin.COMMAND, Skin.IMPERIAL, Skin.COLLECTIVE, Skin.ERA23, Skin.ERA25).inOrder();
+        assertThat(Skin.COMMAND).isEqualTo(0);
+        assertThat(Skin.IMPERIAL).isEqualTo(1);
+        assertThat(Skin.COLLECTIVE).isEqualTo(2);
+        assertThat(Skin.ERA23).isEqualTo(9);
+        assertThat(Skin.ERA25).isEqualTo(10);
     }
 
     @Test
-    public void pipeFaction_coversThreeToEight() {
-        for (int f = 0; f < Skin.NAMES.length; f++) assertThat(Skin.pipeFaction(f)).isEqualTo(f >= 3 && f <= 8);
-        assertThat(Skin.pipeFaction(9)).isFalse();
-        assertThat(Skin.pipeFaction(-1)).isFalse();
+    public void exists_onlyForTheOfferedInterfaces() {
+        for (int f = -1; f <= Skin.NAMES.length; f++) {
+            boolean offered = f == Skin.COMMAND || f == Skin.IMPERIAL || f == Skin.COLLECTIVE || f == Skin.ERA23 || f == Skin.ERA25;
+            assertThat(Skin.exists(f)).isEqualTo(offered);
+        }
+        for (int f = Skin.FIRST_RETIRED; f <= Skin.LAST_RETIRED; f++) assertThat(Skin.exists(f)).isFalse();
     }
 
     @Test
     public void namesAndSubtitlesCoverEveryFaction() {
         assertThat(Skin.SUBTITLES).hasLength(Skin.NAMES.length);
         assertThat(Skin.NAMES).hasLength(Skin.ERA25 + 1);
+        for (int f : Skin.INTERFACES) {
+            assertThat(Skin.NAMES[f]).isNotEmpty();
+            assertThat(Skin.SUBTITLES[f]).isNotEmpty();
+        }
+    }
+
+    @Test
+    public void interfaceNames_followPickerOrder() {
+        String[] names = Skin.interfaceNames();
+        assertThat(names).hasLength(Skin.INTERFACES.length);
+        for (int n = 0; n < names.length; n++) {
+            assertThat(names[n]).isEqualTo(Skin.NAMES[Skin.INTERFACES[n]]);
+            assertThat(Skin.interfaceIndex(Skin.INTERFACES[n])).isEqualTo(n);
+        }
+        assertThat(Skin.interfaceIndex(5)).isEqualTo(0);
     }
 
     @Test
     public void factionPredicates() {
-        Skin.faction = Skin.LEDGER;
-        assertThat(Skin.pipe()).isTrue();
-        assertThat(Skin.scene()).isTrue();
-        assertThat(Skin.mJournal()).isTrue();
-        assertThat(Skin.journal()).isFalse();
-        Skin.faction = Skin.LOUNGE;
-        assertThat(Skin.scene()).isFalse();
-        assertThat(Skin.mLounge()).isTrue();
+        Skin.faction = Skin.ERA23;
+        assertThat(Skin.command()).isTrue();
+        assertThat(Skin.era()).isTrue();
         Skin.faction = Skin.COLLECTIVE;
-        assertThat(Skin.pipe()).isFalse();
+        assertThat(Skin.collective()).isTrue();
+        assertThat(Skin.command()).isFalse();
     }
 
     @Test
@@ -84,10 +100,10 @@ public class SkinTest {
     }
 
     @Test
-    public void glow_passesThroughForCommandAndPipe() {
+    public void glow_passesThroughForTheCommandFamily() {
         Skin.faction = Skin.COMMAND;
         assertThat(Skin.glow(0xFF101010)).isEqualTo(0xFF101010);
-        Skin.faction = Skin.MIDNIGHT;
+        Skin.faction = Skin.ERA25;
         assertThat(Skin.glow(0xFF101010)).isEqualTo(0xFF101010);
         Skin.faction = Skin.IMPERIAL;
         assertThat(Skin.glow(0xFF101010)).isEqualTo(Skin.glowToward(0xFF101010, Skin.IMPERIAL_GLOW));
@@ -98,12 +114,6 @@ public class SkinTest {
         assertThat(Skin.trayRadiusFor(Skin.COMMAND, 26f)).isEqualTo(26f);
         assertThat(Skin.trayRadiusFor(Skin.IMPERIAL, 26f)).isEqualTo(1f);
         assertThat(Skin.trayRadiusFor(Skin.COLLECTIVE, 26f)).isEqualTo(22f);
-        assertThat(Skin.trayRadiusFor(Skin.TOBACCONIST, 26f)).isEqualTo(4f);
-        assertThat(Skin.trayRadiusFor(Skin.BRIAR, 26f)).isEqualTo(4f);
-        assertThat(Skin.trayRadiusFor(Skin.LOUNGE, 26f)).isEqualTo(1f);
-        assertThat(Skin.trayRadiusFor(Skin.MIDNIGHT, 26f)).isEqualTo(1f);
-        assertThat(Skin.trayRadiusFor(Skin.JOURNAL, 26f)).isEqualTo(14f);
-        assertThat(Skin.trayRadiusFor(Skin.LEDGER, 26f)).isEqualTo(14f);
         assertThat(Skin.trayRadiusFor(Skin.ERA23, 26f)).isEqualTo(Skin.ERA23_RADIUS);
         assertThat(Skin.trayRadiusFor(Skin.ERA23, 1f)).isEqualTo(1f);
         assertThat(Skin.trayRadiusFor(Skin.ERA25, 26f)).isEqualTo(0f);
@@ -111,7 +121,7 @@ public class SkinTest {
 
     @Test
     public void textScaleNeverGrowsText() {
-        for (int f = 0; f < Skin.NAMES.length; f++) {
+        for (int f : Skin.INTERFACES) {
             Skin.faction = f;
             assertThat(Skin.textScale()).isAtMost(1f);
             assertThat(Skin.textScale()).isGreaterThan(0.7f);
@@ -120,7 +130,7 @@ public class SkinTest {
 
     @Test
     public void navLabelsExistForEveryFaction() {
-        for (int f = 0; f < Skin.NAMES.length; f++) {
+        for (int f : Skin.INTERFACES) {
             Skin.faction = f;
             for (int i = 0; i < 3; i++) assertThat(Skin.nav(i)).isNotEmpty();
         }

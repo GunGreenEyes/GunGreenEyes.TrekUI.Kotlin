@@ -90,16 +90,32 @@ public class SfxTest {
     public void families_pickTheInterfaceSet_andUserSilenceWins() {
         assertThat(Sfx.synthEventFor(Skin.IMPERIAL)[Sfx.E_ERROR]).isEqualTo("synth_kl_error");
         assertThat(Sfx.synthEventFor(Skin.COLLECTIVE)[Sfx.E_RED]).isEqualTo("synth_bg_red_alert");
-        assertThat(Sfx.synthEventFor(Skin.LOUNGE)[Sfx.E_LAUNCH]).isEqualTo("synth_pp_launch");
         assertThat(Sfx.synthEventFor(Skin.ERA23)).isEqualTo(Sfx.SYNTH_EVENT);
         assertThat(Sfx.synthBootFor(Skin.COLLECTIVE)).isEqualTo("synth_bg_boot");
         assertThat(Sfx.synthBootFor(Skin.COMMAND)).isEqualTo(Sfx.SYNTH_BOOT);
-        assertThat(Sfx.clipsOf(Sfx.SYNTH_PP_TAPS)).asList().containsExactly("synth_pp_tap_1", "synth_pp_tap_2", "synth_pp_tap_3", "synth_pp_tap_4").inOrder();
+        assertThat(Sfx.clipsOf(Sfx.SYNTH_KL_TAPS)).asList().containsExactly("synth_kl_tap_1", "synth_kl_tap_2", "synth_kl_tap_3", "synth_kl_tap_4").inOrder();
         assertThat(Sfx.isRotation(Sfx.SYNTH_KL_TAPS)).isTrue();
         // in SYNTHESIZED mode a library default becomes the interface's synth clip
         assertThat(Sfx.eventClip(Sfx.SET_SYNTH, "ui_denied", Sfx.E_ERROR, true, Sfx.SYNTH_KL_EVENT)).isEqualTo("synth_kl_error");
         // the user can always silence an event
-        assertThat(Sfx.eventClip(Sfx.SET_LIBRARY, "none", Sfx.E_ERROR, false, Sfx.SYNTH_PP_EVENT)).isEqualTo("none");
+        assertThat(Sfx.eventClip(Sfx.SET_LIBRARY, "none", Sfx.E_ERROR, false, Sfx.SYNTH_BG_EVENT)).isEqualTo("none");
+    }
+
+    @Test
+    public void retiredFamily_isGoneAndOldPicksReadAsDefault() {
+        // the retired interfaces' synthesized family is no longer shipped or offered
+        for (String id : Sfx.LIBRARY) assertThat(id.startsWith("synth_pp_") || id.equals("#synthtaps_pp")).isFalse();
+        for (int f = Skin.FIRST_RETIRED; f <= Skin.LAST_RETIRED; f++) {
+            assertThat(Sfx.synthEventFor(f)).isEqualTo(Sfx.SYNTH_EVENT);
+            assertThat(Sfx.FACTION_DEFAULT[f]).isEqualTo(Sfx.DEFAULT_RES);
+        }
+        // a stored pick from that family is ignored (the event falls back to the interface default)
+        assertThat(Sfx.retiredClip("synth_pp_launch")).isTrue();
+        assertThat(Sfx.retiredClip("#synthtaps_pp")).isTrue();
+        assertThat(Sfx.retiredClip("synth_kl_launch")).isFalse();
+        assertThat(Sfx.retiredClip("#synthtaps_kl")).isFalse();
+        assertThat(Sfx.retiredClip("synth_launch")).isFalse();
+        assertThat(Sfx.retiredClip(null)).isFalse();
     }
 
     @Test

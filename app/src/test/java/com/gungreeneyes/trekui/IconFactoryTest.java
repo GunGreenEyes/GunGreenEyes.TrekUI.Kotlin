@@ -43,10 +43,8 @@ public class IconFactoryTest {
     }
 
     @Test
-    public void glyphPaths_pipeFolderFirstThenPlain() {
-        assertThat(IconFactory.glyphPaths("pipe/glyphs/deco/", "phone"))
-                .asList().containsExactly("pipe/glyphs/deco/phone.png", "glyphs/phone.png").inOrder();
-        assertThat(IconFactory.glyphPaths(null, "phone")).asList().containsExactly("glyphs/phone.png");
+    public void glyphPath_isThePlainConsoleSet() {
+        assertThat(IconFactory.glyphPath("phone")).isEqualTo("glyphs/phone.png");
     }
 
     @Test
