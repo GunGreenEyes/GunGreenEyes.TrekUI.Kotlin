@@ -22,16 +22,16 @@ _Nothing recorded yet._
 | ID | Date | Type | Status | Summary | Ref |
 |---|---|---|---|---|---|
 | LCA-T1 | 2026-11-17 | docs | closed | Start the permanent ticket log in USER_STORIES.md | — |
-| LCA-T2 | 2026-11-17 | chore | open | Toolchain: Android SDK, system images API 26-36 phone/tablet/foldable, Gradle wrapper, AVD matrix | — |
-| LCA-T3 | 2026-11-17 | feature | open | Modern Gradle project: merge 5.2 source + 6.1 Pipe overlay; KTS, version catalog, latest AGP, targetSdk 36, Java 17, develop/production flavors, APK/AAB to dist/ | — |
+| LCA-T2 | 2026-11-17 | chore | closed | Toolchain: Android SDK, system images API 26-36 phone/tablet/foldable, Gradle wrapper, AVD matrix | toolchain in place (SDK D:\Android\Sdk, AVD matrix scripts/avd) |
+| LCA-T3 | 2026-11-17 | feature | closed | Modern Gradle project: merge 5.2 source + 6.1 Pipe overlay; KTS, version catalog, latest AGP, targetSdk 36, Java 17, develop/production flavors, APK/AAB to dist/ | Gradle 9.9.1 / AGP 9.5.1, KTS + version catalog, flavors |
 | LCA-T4 | 2026-11-17 | chore | closed | Code cleanup and comments: fix decompiler artifacts, modernize APIs, document every class/method | — |
-| LCA-T5 | 2026-11-17 | feature | open | Responsive layout: sizes/padding/gutters from window size, density, aspect ratio, cutouts, foldables; edge-to-edge; phone to tablet | — |
+| LCA-T5 | 2026-11-17 | feature | closed | Responsive layout: sizes/padding/gutters from window size, density, aspect ratio, cutouts, foldables; edge-to-edge; phone to tablet | ScreenMetrics responsive layout; CI emulator matrix green |
 | LCA-T6 | 2026-11-17 | feature | closed | Tests: unit tests for logic; instrumented tests, screenshots and video across emulator matrix (API 26-36, phone/tablet/foldable, resolutions, aspect ratios) | — |
-| LCA-T7 | 2026-11-17 | feature | open | CI/CD: GitHub Actions develop + production pipelines, signed AAB, Play upload, screenshots auto-published to GitHub Pages every release | — |
+| LCA-T7 | 2026-11-17 | feature | closed | CI/CD: GitHub Actions develop + production pipelines, signed AAB, Play upload, screenshots auto-published to GitHub Pages every release | develop/emulator/pages/release workflows; LCA-T37 one-command release |
 | LCA-T8 | 2026-11-17 | feature | closed | Sound manifest: ship no copyrighted audio; catalogue every sound with public source URL + checksum; user downloads in-app | — |
 | LCA-T9 | 2026-11-17 | feature | closed | Monetization: free with session timeout (default 24h) + purchase screen; one-time 0.99 USD Play Billing unlock; no ads; research other launchers | — |
 | LCA-T10 | 2026-11-17 | docs | closed | Documentation: README, architecture, build, test, release, Play listing/data safety/privacy policy, editing from Claude Code and phone | — |
-| LCA-T11 | 2026-11-17 | chore | open | Freeze finished+tested Java version and rename project to GunGreenEyes.LCARS.Java | — |
+| LCA-T11 | 2026-11-17 | chore | closed | Freeze finished+tested Java version and rename project to GunGreenEyes.LCARS.Java | renamed to TrekUI.Java (LCA-T38); Java finished to shippable |
 | LCA-T12 | 2026-11-17 | feature | open | Recreate the entire app in Kotlin as GunGreenEyes.LCARS.Kotlin | — |
 | LCA-T13 | 2026-11-17 | feature | open | Investigate and build a web-browser version of the launcher | — |
 | LCA-T14 | 2026-11-17 | feature | open | Competitive parity: match and exceed NSTEnterprises TREK LCARS4 (Total Launcher theme) and other LCARS launchers; feature matrix + gap tickets | — |
@@ -54,9 +54,9 @@ _Nothing recorded yet._
 | LCA-T31 | 2026-11-17 | feature | closed | TrekUI Messages: standalone default-SMS app (SMS/MMS, threads, compose, notifications, quick reply, blocking) in TrekUI styles; free, unlocked by launcher purchase | build: messages assemble |
 | LCA-T32 | 2026-11-17 | feature | closed | TrekUI Keyboard: standalone IME in TrekUI styles with synthesized key sounds, themes, sizes, languages; free, unlocked by launcher purchase | build: keyboard assemble |
 | LCA-T33 | 2026-11-17 | feature | closed | TrekUI Lock Screen: standalone show-when-locked wake screen (clock, notifications, media, quick actions) that hands off to the system keyguard; free, unlocked by launcher purchase | build: lockscreen assemble |
-| LCA-T34 | 2026-11-17 | feature | open | Shared unlock: launcher exposes signature-protected unlock-status provider; companions query it; same Play signing key across the 4 apps; docs | — |
+| LCA-T34 | 2026-11-17 | feature | closed | Shared unlock: launcher exposes signature-protected unlock-status provider; companions query it; same Play signing key across the 4 apps; docs | SuiteProvider/SuiteClient signature-protected suite contract (LCA-T30) |
 | LCA-T35 | 2026-11-17 | feature | closed | Sub-themes for every interface family (COMMAND: CLASSIC, DEEP BLUE, SUNSET DECK, NIGHT PADD, STELLAR SILVER, MODERN GRAY; original sets for IMPERIAL and COLLECTIVE); Messages/Keyboard/Lock Screen follow the chosen interface+sub-theme; launcher SUITE controls + home-screen widget/QS tiles to switch Messages/Keyboard/Lock Screen on and off | build: core+app assemble |
-| LCA-T36 | 2026-11-17 | feature | open | Suite licensing: every TrekUI app sells the same $0.99 trekui_unlock and works standalone; entitlement shared + cached across siblings; one purchase unlocks all | — |
+| LCA-T36 | 2026-11-17 | feature | closed | Suite licensing: every TrekUI app sells the same $0.99 trekui_unlock and works standalone; entitlement shared + cached across siblings; one purchase unlocks all | trekui_unlock in all four apps, sibling entitlement cached (LCA-T30/T31-T33) |
 | LCA-T37 | 2026-11-17 | feature | closed | One-command release: ship script + release workflow builds, signs and uploads all four apps to Play (track/rollout/approval inputs), runnable from GitHub mobile and Claude Code | yaml+script validation, ship --dry-run |
 | LCA-T38 | 2026-11-17 | chore | closed | Rename the GitHub repos to TrekUI.Java and TrekUI.Kotlin (the owner's names) and point every clone, Pages, issue and release link at TrekUI.Java | owner request 2026-11-17 |
 | LCA-T39 | 2026-11-17 | feature | open | Suite follow-ups from LCA-T35: Quick Settings tiles + home-screen widget to switch Keyboard/Lock Screen/Messages on and off; app-theme and Quick Panel art for the six new COMMAND sub-themes (exports reuse the nearest original art today) | LCA-T35 report |
