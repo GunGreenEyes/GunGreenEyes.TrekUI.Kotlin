@@ -120,7 +120,7 @@ internal class WidgetHost(c: Context) {
             }
         }
 
-        /** API 26–30 size report: min and max both set to the actual size (portrait and landscape alike). */
+        /** API 23–30 size report: min and max both set to the actual size (portrait and landscape alike). */
         @Suppress("DEPRECATION")
         private fun updateSizeLegacy(view: AppWidgetHostView, widthDp: Int, heightDp: Int) {
             view.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp)
@@ -152,11 +152,13 @@ internal class WidgetHost(c: Context) {
         /**
          * Deletes widget ids this host still owns that no slot uses (an add flow killed half-way, or a
          * panel removed while the system was unreachable). Needs `AppWidgetHost.getAppWidgetIds`
-         * (API 26, our minimum). Only called when no add flow is in progress (a fresh
+         * (API 26); on Android 6.0-7.1 it does nothing and a leftover id just stays allocated to this host,
+         * unused and invisible. Only called when no add flow is in progress (a fresh
          * [WidgetPickActivity]), so every unreferenced id is safe to delete.
          */
         @JvmStatic
         fun deleteOrphans(c: Context) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
             val prefs = Prefs.get(c)
             try {
                 val h = AppWidgetHost(c.applicationContext, HOST_ID)

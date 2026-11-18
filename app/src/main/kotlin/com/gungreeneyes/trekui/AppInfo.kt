@@ -3,6 +3,7 @@ package com.gungreeneyes.trekui
 import android.content.ComponentName
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.UserHandle
 import java.util.Locale
 
@@ -99,7 +100,11 @@ internal class AppInfo(
             val p = pkg.lowercase(Locale.US)
             val l = label?.lowercase(Locale.getDefault()) ?: ""
             if (ai != null) {
-                if ((ai.flags and ApplicationInfo.FLAG_IS_GAME) != 0 || ai.category == ApplicationInfo.CATEGORY_GAME) return CAT_GAMES
+                val flagged = (ai.flags and ApplicationInfo.FLAG_IS_GAME) != 0
+                // declared categories are API 26; Android 6.0-7.1 apps never declare one
+                val declared =
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ai.category == ApplicationInfo.CATEGORY_GAME
+                if (flagged || declared) return CAT_GAMES
             }
             if (any(
                     p, "dialer", "messag", ".mms", "contacts", ".email", "android.gm", "whatsapp", "telegram", "thoughtcrime",
@@ -111,7 +116,7 @@ internal class AppInfo(
                 return CAT_COMM
             }
             if (any(p, "maps", "waze", "uber", "lyft", "transit", "navigation", "gps", "airbnb", "expedia", "tripadvisor")) return CAT_NAV
-            if (ai != null) {
+            if (ai != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 when (ai.category) {
                     ApplicationInfo.CATEGORY_SOCIAL -> return CAT_COMM
                     ApplicationInfo.CATEGORY_AUDIO, ApplicationInfo.CATEGORY_VIDEO, ApplicationInfo.CATEGORY_IMAGE -> return CAT_MEDIA

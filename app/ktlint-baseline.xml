@@ -26,16 +26,15 @@
         <error line="3" column="1" source="standard:import-ordering" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/AppInfo.kt">
-        <error line="102" column="121" source="standard:max-line-length" />
-        <error line="105" column="121" source="standard:max-line-length" />
-        <error line="106" column="121" source="standard:max-line-length" />
-        <error line="107" column="121" source="standard:max-line-length" />
-        <error line="113" column="121" source="standard:max-line-length" />
-        <error line="117" column="121" source="standard:max-line-length" />
-        <error line="132" column="121" source="standard:max-line-length" />
-        <error line="133" column="121" source="standard:max-line-length" />
-        <error line="134" column="121" source="standard:max-line-length" />
-        <error line="141" column="121" source="standard:max-line-length" />
+        <error line="110" column="121" source="standard:max-line-length" />
+        <error line="111" column="121" source="standard:max-line-length" />
+        <error line="112" column="121" source="standard:max-line-length" />
+        <error line="118" column="121" source="standard:max-line-length" />
+        <error line="122" column="121" source="standard:max-line-length" />
+        <error line="137" column="121" source="standard:max-line-length" />
+        <error line="138" column="121" source="standard:max-line-length" />
+        <error line="139" column="121" source="standard:max-line-length" />
+        <error line="146" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/AppRepo.kt">
         <error line="62" column="120" source="standard:max-line-length" />
@@ -109,22 +108,22 @@
         <error line="265" column="121" source="standard:max-line-length" />
         <error line="273" column="121" source="standard:max-line-length" />
         <error line="529" column="121" source="standard:max-line-length" />
-        <error line="562" column="121" source="standard:max-line-length" />
-        <error line="582" column="121" source="standard:max-line-length" />
-        <error line="634" column="121" source="standard:max-line-length" />
-        <error line="685" column="121" source="standard:max-line-length" />
-        <error line="687" column="121" source="standard:max-line-length" />
-        <error line="740" column="121" source="standard:max-line-length" />
-        <error line="770" column="121" source="standard:max-line-length" />
-        <error line="858" column="121" source="standard:max-line-length" />
-        <error line="971" column="121" source="standard:max-line-length" />
-        <error line="996" column="121" source="standard:max-line-length" />
-        <error line="1015" column="23" source="standard:property-wrapping" />
-        <error line="1015" column="121" source="standard:max-line-length" />
+        <error line="563" column="121" source="standard:max-line-length" />
+        <error line="583" column="121" source="standard:max-line-length" />
+        <error line="635" column="121" source="standard:max-line-length" />
+        <error line="686" column="121" source="standard:max-line-length" />
+        <error line="688" column="121" source="standard:max-line-length" />
+        <error line="741" column="121" source="standard:max-line-length" />
+        <error line="771" column="121" source="standard:max-line-length" />
+        <error line="859" column="121" source="standard:max-line-length" />
+        <error line="972" column="121" source="standard:max-line-length" />
+        <error line="997" column="121" source="standard:max-line-length" />
+        <error line="1016" column="23" source="standard:property-wrapping" />
+        <error line="1016" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/DrawerView.kt">
-        <error line="415" column="121" source="standard:max-line-length" />
-        <error line="514" column="121" source="standard:max-line-length" />
+        <error line="417" column="121" source="standard:max-line-length" />
+        <error line="516" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/EraBoot.kt">
         <error line="97" column="121" source="standard:max-line-length" />
@@ -175,13 +174,13 @@
         <error line="663" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/HomeAssistantDialog.kt">
-        <error line="121" column="121" source="standard:max-line-length" />
-        <error line="150" column="121" source="standard:max-line-length" />
-        <error line="194" column="121" source="standard:max-line-length" />
-        <error line="296" column="121" source="standard:max-line-length" />
-        <error line="344" column="121" source="standard:max-line-length" />
-        <error line="366" column="121" source="standard:max-line-length" />
-        <error line="394" column="121" source="standard:max-line-length" />
+        <error line="122" column="121" source="standard:max-line-length" />
+        <error line="151" column="121" source="standard:max-line-length" />
+        <error line="195" column="121" source="standard:max-line-length" />
+        <error line="297" column="121" source="standard:max-line-length" />
+        <error line="345" column="121" source="standard:max-line-length" />
+        <error line="370" column="121" source="standard:max-line-length" />
+        <error line="398" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/HomeGestureDetector.kt">
         <error line="100" column="121" source="standard:max-line-length" />
@@ -237,43 +236,43 @@
         <error line="3" column="1" source="standard:import-ordering" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/MainActivity.kt">
-        <error line="713" column="121" source="standard:max-line-length" />
-        <error line="756" column="121" source="standard:max-line-length" />
-        <error line="825" column="121" source="standard:max-line-length" />
-        <error line="880" column="121" source="standard:max-line-length" />
-        <error line="942" column="120" source="standard:max-line-length" />
-        <error line="968" column="121" source="standard:max-line-length" />
-        <error line="1331" column="121" source="standard:max-line-length" />
-        <error line="1355" column="121" source="standard:max-line-length" />
-        <error line="1362" column="121" source="standard:max-line-length" />
-        <error line="1509" column="121" source="standard:max-line-length" />
-        <error line="1532" column="121" source="standard:max-line-length" />
-        <error line="1578" column="121" source="standard:max-line-length" />
-        <error line="1590" column="121" source="standard:max-line-length" />
-        <error line="1602" column="121" source="standard:max-line-length" />
-        <error line="1618" column="121" source="standard:max-line-length" />
+        <error line="718" column="121" source="standard:max-line-length" />
+        <error line="761" column="121" source="standard:max-line-length" />
+        <error line="830" column="121" source="standard:max-line-length" />
+        <error line="885" column="121" source="standard:max-line-length" />
+        <error line="947" column="120" source="standard:max-line-length" />
+        <error line="973" column="121" source="standard:max-line-length" />
+        <error line="1336" column="121" source="standard:max-line-length" />
+        <error line="1360" column="121" source="standard:max-line-length" />
+        <error line="1367" column="121" source="standard:max-line-length" />
+        <error line="1514" column="121" source="standard:max-line-length" />
+        <error line="1537" column="121" source="standard:max-line-length" />
+        <error line="1583" column="121" source="standard:max-line-length" />
+        <error line="1595" column="121" source="standard:max-line-length" />
+        <error line="1607" column="121" source="standard:max-line-length" />
         <error line="1623" column="121" source="standard:max-line-length" />
-        <error line="1724" column="121" source="standard:max-line-length" />
-        <error line="1749" column="121" source="standard:max-line-length" />
-        <error line="1773" column="121" source="standard:max-line-length" />
-        <error line="1800" column="121" source="standard:max-line-length" />
-        <error line="1942" column="121" source="standard:max-line-length" />
-        <error line="2013" column="121" source="standard:max-line-length" />
-        <error line="2075" column="57" source="standard:function-expression-body" />
-        <error line="2078" column="121" source="standard:max-line-length" />
-        <error line="2196" column="121" source="standard:max-line-length" />
-        <error line="2209" column="121" source="standard:max-line-length" />
-        <error line="2223" column="121" source="standard:max-line-length" />
-        <error line="2243" column="121" source="standard:max-line-length" />
-        <error line="2416" column="121" source="standard:max-line-length" />
-        <error line="2426" column="121" source="standard:max-line-length" />
-        <error line="2459" column="9" source="standard:spacing-between-declarations-with-comments" />
-        <error line="2497" column="9" source="standard:spacing-between-declarations-with-comments" />
-        <error line="2612" column="121" source="standard:max-line-length" />
-        <error line="2626" column="23" source="standard:property-wrapping" />
-        <error line="2626" column="121" source="standard:max-line-length" />
-        <error line="2640" column="121" source="standard:max-line-length" />
-        <error line="2642" column="121" source="standard:max-line-length" />
+        <error line="1628" column="121" source="standard:max-line-length" />
+        <error line="1729" column="121" source="standard:max-line-length" />
+        <error line="1754" column="121" source="standard:max-line-length" />
+        <error line="1778" column="121" source="standard:max-line-length" />
+        <error line="1805" column="121" source="standard:max-line-length" />
+        <error line="1947" column="121" source="standard:max-line-length" />
+        <error line="2018" column="121" source="standard:max-line-length" />
+        <error line="2080" column="57" source="standard:function-expression-body" />
+        <error line="2083" column="121" source="standard:max-line-length" />
+        <error line="2201" column="121" source="standard:max-line-length" />
+        <error line="2214" column="121" source="standard:max-line-length" />
+        <error line="2228" column="121" source="standard:max-line-length" />
+        <error line="2248" column="121" source="standard:max-line-length" />
+        <error line="2421" column="121" source="standard:max-line-length" />
+        <error line="2431" column="121" source="standard:max-line-length" />
+        <error line="2464" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="2502" column="9" source="standard:spacing-between-declarations-with-comments" />
+        <error line="2617" column="121" source="standard:max-line-length" />
+        <error line="2631" column="23" source="standard:property-wrapping" />
+        <error line="2631" column="121" source="standard:max-line-length" />
+        <error line="2645" column="121" source="standard:max-line-length" />
+        <error line="2647" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/MediaPanel.kt">
         <error line="141" column="121" source="standard:max-line-length" />
@@ -308,7 +307,7 @@
         <error line="211" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/NotificationBadges.kt">
-        <error line="263" column="120" source="standard:max-line-length" />
+        <error line="268" column="120" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/Onboarding.kt">
         <error line="142" column="121" source="standard:max-line-length" />
@@ -379,8 +378,8 @@
         <error line="150" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/Prefs.kt">
-        <error line="94" column="121" source="standard:max-line-length" />
-        <error line="188" column="121" source="standard:max-line-length" />
+        <error line="95" column="121" source="standard:max-line-length" />
+        <error line="189" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/QuickWidget.kt">
         <error line="40" column="121" source="standard:max-line-length" />
@@ -434,109 +433,108 @@
         <error line="712" column="121" source="standard:max-line-length" />
         <error line="731" column="121" source="standard:max-line-length" />
         <error line="761" column="121" source="standard:max-line-length" />
-        <error line="795" column="121" source="standard:max-line-length" />
-        <error line="809" column="121" source="standard:max-line-length" />
-        <error line="828" column="121" source="standard:max-line-length" />
-        <error line="834" column="121" source="standard:max-line-length" />
-        <error line="838" column="121" source="standard:max-line-length" />
-        <error line="843" column="121" source="standard:max-line-length" />
-        <error line="849" column="121" source="standard:max-line-length" />
-        <error line="859" column="121" source="standard:max-line-length" />
+        <error line="802" column="121" source="standard:max-line-length" />
+        <error line="845" column="121" source="standard:max-line-length" />
+        <error line="851" column="121" source="standard:max-line-length" />
+        <error line="855" column="121" source="standard:max-line-length" />
+        <error line="860" column="121" source="standard:max-line-length" />
         <error line="866" column="121" source="standard:max-line-length" />
-        <error line="901" column="121" source="standard:max-line-length" />
-        <error line="905" column="121" source="standard:max-line-length" />
-        <error line="909" column="121" source="standard:max-line-length" />
-        <error line="917" column="121" source="standard:max-line-length" />
-        <error line="929" column="121" source="standard:max-line-length" />
-        <error line="940" column="121" source="standard:max-line-length" />
-        <error line="958" column="121" source="standard:max-line-length" />
-        <error line="965" column="121" source="standard:max-line-length" />
-        <error line="987" column="121" source="standard:max-line-length" />
-        <error line="1006" column="121" source="standard:max-line-length" />
-        <error line="1102" column="121" source="standard:max-line-length" />
-        <error line="1103" column="121" source="standard:max-line-length" />
-        <error line="1110" column="121" source="standard:max-line-length" />
-        <error line="1132" column="121" source="standard:max-line-length" />
-        <error line="1133" column="121" source="standard:max-line-length" />
-        <error line="1165" column="121" source="standard:max-line-length" />
-        <error line="1196" column="121" source="standard:max-line-length" />
-        <error line="1201" column="121" source="standard:max-line-length" />
+        <error line="876" column="121" source="standard:max-line-length" />
+        <error line="883" column="121" source="standard:max-line-length" />
+        <error line="918" column="121" source="standard:max-line-length" />
+        <error line="922" column="121" source="standard:max-line-length" />
+        <error line="926" column="121" source="standard:max-line-length" />
+        <error line="934" column="121" source="standard:max-line-length" />
+        <error line="946" column="121" source="standard:max-line-length" />
+        <error line="957" column="121" source="standard:max-line-length" />
+        <error line="975" column="121" source="standard:max-line-length" />
+        <error line="982" column="121" source="standard:max-line-length" />
+        <error line="1004" column="121" source="standard:max-line-length" />
+        <error line="1023" column="121" source="standard:max-line-length" />
+        <error line="1119" column="121" source="standard:max-line-length" />
+        <error line="1120" column="121" source="standard:max-line-length" />
+        <error line="1127" column="121" source="standard:max-line-length" />
+        <error line="1149" column="121" source="standard:max-line-length" />
+        <error line="1150" column="121" source="standard:max-line-length" />
+        <error line="1182" column="121" source="standard:max-line-length" />
         <error line="1213" column="121" source="standard:max-line-length" />
-        <error line="1307" column="121" source="standard:max-line-length" />
-        <error line="1308" column="121" source="standard:max-line-length" />
-        <error line="1315" column="121" source="standard:max-line-length" />
-        <error line="1317" column="121" source="standard:max-line-length" />
-        <error line="1322" column="121" source="standard:max-line-length" />
-        <error line="1340" column="121" source="standard:max-line-length" />
-        <error line="1342" column="121" source="standard:max-line-length" />
-        <error line="1382" column="121" source="standard:max-line-length" />
-        <error line="1401" column="121" source="standard:max-line-length" />
-        <error line="1440" column="121" source="standard:max-line-length" />
-        <error line="1469" column="121" source="standard:max-line-length" />
-        <error line="1471" column="121" source="standard:max-line-length" />
-        <error line="1475" column="121" source="standard:max-line-length" />
-        <error line="1477" column="121" source="standard:max-line-length" />
-        <error line="1478" column="121" source="standard:max-line-length" />
-        <error line="1489" column="121" source="standard:max-line-length" />
-        <error line="1498" column="121" source="standard:max-line-length" />
-        <error line="1507" column="121" source="standard:max-line-length" />
+        <error line="1218" column="121" source="standard:max-line-length" />
+        <error line="1230" column="121" source="standard:max-line-length" />
+        <error line="1324" column="121" source="standard:max-line-length" />
+        <error line="1325" column="121" source="standard:max-line-length" />
+        <error line="1332" column="121" source="standard:max-line-length" />
+        <error line="1334" column="121" source="standard:max-line-length" />
+        <error line="1339" column="121" source="standard:max-line-length" />
+        <error line="1357" column="121" source="standard:max-line-length" />
+        <error line="1359" column="121" source="standard:max-line-length" />
+        <error line="1399" column="121" source="standard:max-line-length" />
+        <error line="1418" column="121" source="standard:max-line-length" />
+        <error line="1457" column="121" source="standard:max-line-length" />
+        <error line="1486" column="121" source="standard:max-line-length" />
+        <error line="1488" column="121" source="standard:max-line-length" />
+        <error line="1492" column="121" source="standard:max-line-length" />
+        <error line="1494" column="121" source="standard:max-line-length" />
+        <error line="1495" column="121" source="standard:max-line-length" />
+        <error line="1506" column="121" source="standard:max-line-length" />
         <error line="1515" column="121" source="standard:max-line-length" />
-        <error line="1526" column="121" source="standard:max-line-length" />
-        <error line="1562" column="121" source="standard:max-line-length" />
-        <error line="1566" column="121" source="standard:max-line-length" />
-        <error line="1570" column="121" source="standard:max-line-length" />
-        <error line="1582" column="121" source="standard:max-line-length" />
-        <error line="1584" column="121" source="standard:max-line-length" />
-        <error line="1585" column="121" source="standard:max-line-length" />
-        <error line="1586" column="121" source="standard:max-line-length" />
-        <error line="1592" column="121" source="standard:max-line-length" />
-        <error line="1690" column="121" source="standard:max-line-length" />
-        <error line="1699" column="121" source="standard:max-line-length" />
-        <error line="1726" column="121" source="standard:max-line-length" />
-        <error line="1753" column="121" source="standard:max-line-length" />
-        <error line="1787" column="121" source="standard:max-line-length" />
-        <error line="1788" column="121" source="standard:max-line-length" />
-        <error line="1792" column="121" source="standard:max-line-length" />
-        <error line="1793" column="121" source="standard:max-line-length" />
-        <error line="1820" column="121" source="standard:max-line-length" />
-        <error line="1841" column="121" source="standard:max-line-length" />
-        <error line="1863" column="121" source="standard:max-line-length" />
-        <error line="1879" column="121" source="standard:max-line-length" />
-        <error line="1890" column="121" source="standard:max-line-length" />
-        <error line="1929" column="121" source="standard:max-line-length" />
-        <error line="1948" column="121" source="standard:max-line-length" />
-        <error line="1974" column="121" source="standard:max-line-length" />
-        <error line="1985" column="121" source="standard:max-line-length" />
-        <error line="1986" column="121" source="standard:max-line-length" />
-        <error line="2030" column="121" source="standard:max-line-length" />
-        <error line="2099" column="121" source="standard:max-line-length" />
-        <error line="2113" column="121" source="standard:max-line-length" />
-        <error line="2124" column="121" source="standard:max-line-length" />
-        <error line="2133" column="121" source="standard:max-line-length" />
-        <error line="2138" column="121" source="standard:max-line-length" />
-        <error line="2156" column="121" source="standard:max-line-length" />
-        <error line="2158" column="121" source="standard:max-line-length" />
-        <error line="2162" column="121" source="standard:max-line-length" />
+        <error line="1524" column="121" source="standard:max-line-length" />
+        <error line="1532" column="121" source="standard:max-line-length" />
+        <error line="1543" column="121" source="standard:max-line-length" />
+        <error line="1579" column="121" source="standard:max-line-length" />
+        <error line="1583" column="121" source="standard:max-line-length" />
+        <error line="1587" column="121" source="standard:max-line-length" />
+        <error line="1599" column="121" source="standard:max-line-length" />
+        <error line="1601" column="121" source="standard:max-line-length" />
+        <error line="1602" column="121" source="standard:max-line-length" />
+        <error line="1603" column="121" source="standard:max-line-length" />
+        <error line="1609" column="121" source="standard:max-line-length" />
+        <error line="1707" column="121" source="standard:max-line-length" />
+        <error line="1716" column="121" source="standard:max-line-length" />
+        <error line="1743" column="121" source="standard:max-line-length" />
+        <error line="1770" column="121" source="standard:max-line-length" />
+        <error line="1804" column="121" source="standard:max-line-length" />
+        <error line="1805" column="121" source="standard:max-line-length" />
+        <error line="1809" column="121" source="standard:max-line-length" />
+        <error line="1810" column="121" source="standard:max-line-length" />
+        <error line="1837" column="121" source="standard:max-line-length" />
+        <error line="1858" column="121" source="standard:max-line-length" />
+        <error line="1880" column="121" source="standard:max-line-length" />
+        <error line="1896" column="121" source="standard:max-line-length" />
+        <error line="1907" column="121" source="standard:max-line-length" />
+        <error line="1946" column="121" source="standard:max-line-length" />
+        <error line="1965" column="121" source="standard:max-line-length" />
+        <error line="1991" column="121" source="standard:max-line-length" />
+        <error line="2002" column="121" source="standard:max-line-length" />
+        <error line="2003" column="121" source="standard:max-line-length" />
+        <error line="2047" column="121" source="standard:max-line-length" />
+        <error line="2116" column="121" source="standard:max-line-length" />
+        <error line="2130" column="121" source="standard:max-line-length" />
+        <error line="2141" column="121" source="standard:max-line-length" />
+        <error line="2150" column="121" source="standard:max-line-length" />
+        <error line="2155" column="121" source="standard:max-line-length" />
+        <error line="2173" column="121" source="standard:max-line-length" />
         <error line="2175" column="121" source="standard:max-line-length" />
-        <error line="2177" column="121" source="standard:max-line-length" />
-        <error line="2196" column="121" source="standard:max-line-length" />
-        <error line="2216" column="23" source="standard:property-wrapping" />
-        <error line="2216" column="121" source="standard:max-line-length" />
-        <error line="2217" column="121" source="standard:max-line-length" />
-        <error line="2221" column="121" source="standard:max-line-length" />
-        <error line="2237" column="121" source="standard:max-line-length" />
-        <error line="2240" column="121" source="standard:max-line-length" />
-        <error line="2271" column="121" source="standard:max-line-length" />
-        <error line="2285" column="121" source="standard:max-line-length" />
-        <error line="2305" column="121" source="standard:max-line-length" />
-        <error line="2336" column="121" source="standard:max-line-length" />
-        <error line="2347" column="121" source="standard:max-line-length" />
-        <error line="2434" column="121" source="standard:max-line-length" />
-        <error line="2437" column="121" source="standard:max-line-length" />
-        <error line="2545" column="120" source="standard:max-line-length" />
-        <error line="2548" column="121" source="standard:max-line-length" />
-        <error line="2624" column="121" source="standard:max-line-length" />
-        <error line="2626" column="121" source="standard:max-line-length" />
+        <error line="2179" column="121" source="standard:max-line-length" />
+        <error line="2192" column="121" source="standard:max-line-length" />
+        <error line="2194" column="121" source="standard:max-line-length" />
+        <error line="2213" column="121" source="standard:max-line-length" />
+        <error line="2233" column="23" source="standard:property-wrapping" />
+        <error line="2233" column="121" source="standard:max-line-length" />
+        <error line="2234" column="121" source="standard:max-line-length" />
+        <error line="2238" column="121" source="standard:max-line-length" />
+        <error line="2254" column="121" source="standard:max-line-length" />
+        <error line="2257" column="121" source="standard:max-line-length" />
+        <error line="2288" column="121" source="standard:max-line-length" />
+        <error line="2302" column="121" source="standard:max-line-length" />
+        <error line="2322" column="121" source="standard:max-line-length" />
+        <error line="2353" column="121" source="standard:max-line-length" />
+        <error line="2364" column="121" source="standard:max-line-length" />
+        <error line="2451" column="121" source="standard:max-line-length" />
+        <error line="2454" column="121" source="standard:max-line-length" />
+        <error line="2562" column="120" source="standard:max-line-length" />
+        <error line="2565" column="121" source="standard:max-line-length" />
+        <error line="2641" column="121" source="standard:max-line-length" />
+        <error line="2643" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/ShadeView.kt">
         <error line="180" column="121" source="standard:max-line-length" />
@@ -589,7 +587,7 @@
     <file name="src/main/kotlin/com/gungreeneyes/trekui/SystemsPanel.kt">
         <error line="159" column="121" source="standard:max-line-length" />
         <error line="168" column="121" source="standard:max-line-length" />
-        <error line="443" column="121" source="standard:max-line-length" />
+        <error line="446" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/ThermostatDialog.kt">
         <error line="172" column="121" source="standard:max-line-length" />
@@ -600,18 +598,17 @@
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/Tile.kt">
         <error line="3" column="1" source="standard:import-ordering" />
-        <error line="251" column="121" source="standard:max-line-length" />
         <error line="252" column="121" source="standard:max-line-length" />
         <error line="253" column="121" source="standard:max-line-length" />
         <error line="254" column="121" source="standard:max-line-length" />
         <error line="255" column="121" source="standard:max-line-length" />
-        <error line="257" column="121" source="standard:max-line-length" />
+        <error line="256" column="121" source="standard:max-line-length" />
         <error line="258" column="121" source="standard:max-line-length" />
         <error line="259" column="121" source="standard:max-line-length" />
-        <error line="261" column="121" source="standard:max-line-length" />
-        <error line="274" column="121" source="standard:max-line-length" />
-        <error line="279" column="121" source="standard:max-line-length" />
-        <error line="283" column="121" source="standard:max-line-length" />
+        <error line="260" column="121" source="standard:max-line-length" />
+        <error line="281" column="121" source="standard:max-line-length" />
+        <error line="286" column="121" source="standard:max-line-length" />
+        <error line="290" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/Weather.kt">
         <error line="3" column="1" source="standard:import-ordering" />
@@ -626,7 +623,7 @@
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/WidgetHost.kt">
         <error line="80" column="121" source="standard:max-line-length" />
-        <error line="163" column="121" source="standard:max-line-length" />
+        <error line="165" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/WidgetPanel.kt">
         <error line="81" column="121" source="standard:max-line-length" />

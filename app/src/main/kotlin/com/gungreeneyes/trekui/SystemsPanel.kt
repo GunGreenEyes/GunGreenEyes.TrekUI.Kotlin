@@ -436,7 +436,10 @@ internal class SystemsPanel(a: MainActivity, accent: Int) : Panel(a, accent) {
         val up = SystemClock.elapsedRealtime() / 60000
         var name: String? = null
         try {
-            name = Settings.Global.getString(a.contentResolver, Settings.Global.DEVICE_NAME)
+            // DEVICE_NAME is API 25; below it the model name is shown
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                name = Settings.Global.getString(a.contentResolver, Settings.Global.DEVICE_NAME)
+            }
         } catch (ignored: RuntimeException) {
         }
         if (name.isNullOrEmpty()) name = Build.MODEL

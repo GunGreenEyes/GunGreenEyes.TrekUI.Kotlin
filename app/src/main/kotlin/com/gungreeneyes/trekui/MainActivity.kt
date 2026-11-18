@@ -425,7 +425,7 @@ internal class MainActivity : Activity(), AppRepo.Listener {
     }
 
     /**
-     * Requests one runtime permission with the full modern flow (API 26–37): if it is already granted the
+     * Requests one runtime permission with the full modern flow (API 23–37): if it is already granted the
      * result is delivered straight away; if Android will no longer show the dialog (denied with "don't ask
      * again", or twice on API 30+) the app's permission settings are opened instead; otherwise the system
      * dialog is shown. The result arrives in [onRequestPermissionsResult] with `requestCode`.
@@ -609,7 +609,12 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         val root = root ?: return false
         if (!force) {
             if (!prefs.b(KEY_BOOT_SEQUENCE, true) || !prefs.animations()) return false
-            val bootCount = Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+            // BOOT_COUNT is API 24; on Android 6.0 the uptime window below decides
+            val bootCount = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+            } else {
+                -1
+            }
             if (bootCount >= 0) {
                 if (bootCount == prefs.i(KEY_BOOT_SEEN, -1)) return false
                 prefs.put(KEY_BOOT_SEEN, bootCount)

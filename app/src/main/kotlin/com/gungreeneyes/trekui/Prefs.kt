@@ -2,6 +2,7 @@ package com.gungreeneyes.trekui
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import java.util.Locale
 
 /**
@@ -205,7 +206,17 @@ internal class Prefs private constructor(c: Context) : TrekPrefs(c) {
                 }
             }
             if (any) e.apply()
-            c.applicationContext.deleteSharedPreferences(RETIRED_FILE)
+            dropRetiredFile(c.applicationContext)
+        }
+
+        /** Deletes [RETIRED_FILE]; Android 6.0 has no deleteSharedPreferences (API 24), so it empties it instead. */
+        private fun dropRetiredFile(app: Context) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                app.deleteSharedPreferences(RETIRED_FILE)
+            } else {
+                val records = app.getSharedPreferences(RETIRED_FILE, Context.MODE_PRIVATE)
+                if (records.all.isNotEmpty()) records.edit().clear().apply()
+            }
         }
 
         /** Pref key of the header line for `faction`. */

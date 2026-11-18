@@ -8,11 +8,14 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.annotation.RequiresApi
 
 /**
  * The launcher's Quick Settings tiles ([CloakTileService], [RedAlertTileService]): shared
  * helpers to refresh them when their state changes elsewhere, to paint a tile, and to offer adding a
- * tile to the panel from CONFIG (API 33+ [StatusBarManager.requestAddTileService]).
+ * tile to the panel from CONFIG (API 33+ [StatusBarManager.requestAddTileService]). Tiles exist from Android 7.0
+ * (API 24); on 6.0 there is no Quick Settings tile API, so [refresh] does nothing and the tiles never appear.
  */
 internal object QsTiles {
 
@@ -24,10 +27,12 @@ internal object QsTiles {
     /** Asks the system to re-read both tiles (no-op when no tile is in the panel). */
     @JvmStatic
     fun refresh(c: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
         request(c, CloakTileService::class.java)
         request(c, RedAlertTileService::class.java)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun request(c: Context, service: Class<out TileService>) {
         try {
             TileService.requestListeningState(c, ComponentName(c, service))
@@ -37,6 +42,7 @@ internal object QsTiles {
     }
 
     /** Paints a tile: on/off state, label and (API 29+) a subtitle. */
+    @RequiresApi(Build.VERSION_CODES.N)
     @JvmStatic
     fun paint(tile: Tile?, on: Boolean, label: CharSequence?, subtitle: CharSequence?) {
         if (tile == null) return
@@ -48,6 +54,7 @@ internal object QsTiles {
     }
 
     /** True when the system can prompt to add a tile (Android 13+). */
+    @ChecksSdkIntAtLeast(api = 33)
     @JvmStatic
     fun canRequestAdd(): Boolean = Build.VERSION.SDK_INT >= 33
 

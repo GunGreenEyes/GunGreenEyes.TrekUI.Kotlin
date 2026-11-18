@@ -87,9 +87,9 @@ internal class IconPackParser {
                 val drawable = clean(attrs["drawable"]) ?: return
                 result.drawables.add(drawable)
                 if (comp == null) return
-                result.byComponent.putIfAbsent(comp, drawable)
+                result.byComponent.getOrPut(comp) { drawable }
                 val pkg = comp.substring(0, comp.indexOf('/'))
-                result.byPackage.putIfAbsent(pkg, drawable)
+                result.byPackage.getOrPut(pkg) { drawable }
             }
             "calendar" -> {
                 val comp = component(attrs["component"])

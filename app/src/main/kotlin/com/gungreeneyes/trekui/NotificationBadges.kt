@@ -10,6 +10,7 @@ import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.view.View
@@ -153,7 +154,11 @@ internal object NotificationBadges {
         if (active != null) {
             for (s in active) {
                 val n = s.notification ?: continue
-                val canBadge = map == null || !map.getRanking(s.key, ranking) || ranking.canShowBadge()
+                val canBadge = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    true // per-app badge settings (Ranking.canShowBadge) are API 26; before it every app may badge
+                } else {
+                    map == null || !map.getRanking(s.key, ranking) || ranking.canShowBadge()
+                }
                 entries.add(
                     Entry(
                         s.packageName, n.group, (n.flags and Notification.FLAG_GROUP_SUMMARY) != 0,

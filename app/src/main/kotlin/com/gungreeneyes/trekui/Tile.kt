@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.AlarmClock
 import android.provider.MediaStore
 import android.provider.Telephony
@@ -258,7 +259,13 @@ internal class Tile {
             l.add(app(r, "CALCULATOR", resolve(c, category(Intent.CATEGORY_APP_CALCULATOR)), "com.sec.android.app.popupcalculator", "com.google.android.calculator"))
             l.add(app(r, "CONTACTS", resolve(c, category(Intent.CATEGORY_APP_CONTACTS)), "com.samsung.android.app.contacts", "com.google.android.contacts"))
             l.add(app(r, "STORE", "com.android.vending", "com.sec.android.app.samsungapps"))
-            l.add(app(r, "FILES", resolve(c, category(Intent.CATEGORY_APP_FILES)), "com.sec.android.app.myfiles", "com.google.android.apps.nbu.files"))
+            // CATEGORY_APP_FILES is API 29; below it only the known file managers are looked for
+            val files = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                resolve(c, category(Intent.CATEGORY_APP_FILES))
+            } else {
+                null
+            }
+            l.add(app(r, "FILES", files, "com.sec.android.app.myfiles", "com.google.android.apps.nbu.files"))
             l.add(Tile().apply {
                 label = "CONFIG"
                 action = A_CONFIG

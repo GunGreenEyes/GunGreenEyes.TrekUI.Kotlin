@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Weather (Open-Meteo, HTTPS only) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Govee LAN discovery (UDP multicast on the local Wi-Fi) -->
@@ -211,13 +212,14 @@
         <receiver android:name=".Cloak$Receiver" android:exported="false" />
         <!-- stands RED ALERT down when its timeout passes (backup for the in-process timer) -->
         <receiver android:name=".RedAlert$Receiver" android:exported="false" />
-        <!-- Quick Settings tiles: CLOAK and RED ALERT -->
+        <!-- Quick Settings tiles: CLOAK and RED ALERT (Android 7.0+: the system never binds them on 6.0) -->
         <service
             android:name=".CloakTileService"
             android:exported="true"
             android:icon="@drawable/ic_qs_cloak"
             android:label="@string/qs_cloak"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            tools:targetApi="24">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
@@ -227,7 +229,8 @@
             android:exported="true"
             android:icon="@drawable/ic_qs_red_alert"
             android:label="@string/qs_red_alert"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            tools:targetApi="24">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>

@@ -117,9 +117,17 @@ internal object SuiteSettings {
         return defaultAppsIntent()
     }
 
-    /** The system's default-apps screen (the user picks the SMS app there). */
+    /**
+     * The system's default-apps screen (the user picks the SMS app there). It has its own action from Android 7.0
+     * (API 24); on 6.0 it is the Apps settings screen, which lists Default apps.
+     */
     @JvmStatic
-    fun defaultAppsIntent(): Intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+    fun defaultAppsIntent(): Intent =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+        } else {
+            Intent(Settings.ACTION_APPLICATION_SETTINGS)
+        }
 
     /** Android 9 and older: the system "change SMS app?" dialog for `pkg`. */
     @Suppress("DEPRECATION")

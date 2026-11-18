@@ -5,7 +5,6 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.nio.file.Files
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -172,7 +171,7 @@ internal object LayoutSnapshots {
     /** Reads a snapshot document, or null when unreadable. Worker thread. */
     @JvmStatic
     fun readDoc(f: File): JSONObject? = try {
-        JSONObject(String(Files.readAllBytes(f.toPath()), Charsets.UTF_8))
+        JSONObject(f.readText(Charsets.UTF_8))
     } catch (e: Exception) {
         null
     }

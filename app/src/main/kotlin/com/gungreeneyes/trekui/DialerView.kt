@@ -545,7 +545,8 @@ internal class DialerView(act: MainActivity) : FrameLayout(act) {
     /** One call: direction, who, when and duration; tap calls back, long-press for more. */
     private fun recentRow(r: Recent, i: Int): View {
         val c = context
-        val missed = r.type == CallLog.Calls.MISSED_TYPE || r.type == CallLog.Calls.REJECTED_TYPE
+        val missed = r.type == CallLog.Calls.MISSED_TYPE ||
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && r.type == CallLog.Calls.REJECTED_TYPE) // API 24
         val dir = when {
             r.type == CallLog.Calls.OUTGOING_TYPE -> "↗ OUT"
             missed -> "✕ MISSED"

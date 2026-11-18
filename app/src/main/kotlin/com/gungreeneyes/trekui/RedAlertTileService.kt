@@ -1,12 +1,15 @@
 package com.gungreeneyes.trekui
 
+import android.os.Build
 import android.service.quicksettings.TileService
+import androidx.annotation.RequiresApi
 
 /**
  * Quick Settings tile for RED ALERT: tap to go to red alert or stand down ([RedAlert.toggle]).
  * Active while on alert, with MUTED or the configured timeout as subtitle. The home screen frame
  * follows instantly through [RedAlert.Listener].
  */
+@RequiresApi(Build.VERSION_CODES.N) // Quick Settings tiles exist from Android 7.0; 6.0 never binds it
 class RedAlertTileService : TileService() {
 
     override fun onStartListening() {

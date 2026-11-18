@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -409,7 +410,8 @@ internal class DrawerView(act: MainActivity) : FrameLayout(act) {
         val acts = ArrayList<Runnable>()
         val la: LauncherApps = AppRepo.get(context).launcherApps()
         try {
-            if (la.hasShortcutHostPermission()) {
+            // App shortcuts exist from Android 7.1 (API 25); below it the menu starts with ADD TO HOME TILES.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && la.hasShortcutHostPermission()) {
                 val q = LauncherApps.ShortcutQuery()
                 q.setPackage(app.pkg)
                 q.setQueryFlags(LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST)

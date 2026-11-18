@@ -790,24 +790,41 @@ class SettingsActivity : Activity() {
         return image
     }
 
-    /** Asks where to apply wallpaper [index], then sets it on a worker thread. */
+    /**
+     * Asks where to apply wallpaper [index], then sets it on a worker thread. Android 6.0 has one wallpaper for
+     * home and lock screen (separate lock wallpapers arrived in 7.0, API 24), so there it is set without asking.
+     */
     private fun applyWallpaper(index: Int) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            setWallpaper(index, SettingsLogic.wallpaperTarget(2))
+            return
+        }
         ConsoleDialog.options(this, "APPLY " + WALLPAPER_NAMES[index], arrayOf("HOME SCREEN", "LOCK SCREEN", "HOME + LOCK")) { which ->
-            val target = SettingsLogic.wallpaperTarget(which)
-            toast(getString(R.string.toast_applying), false)
-            background("wallpaper") {
-                val applied = try {
-                    assets.open("wallpapers/" + WALLPAPERS[index] + ".png").use { input ->
-                        WallpaperManager.getInstance(applicationContext).setStream(input, null, true, target)
+            setWallpaper(index, SettingsLogic.wallpaperTarget(which))
+        }
+    }
+
+    /** Sets wallpaper [index] on [target] (WallpaperManager FLAG_SYSTEM / FLAG_LOCK bits; API 24+ only). */
+    private fun setWallpaper(index: Int, target: Int) {
+        toast(getString(R.string.toast_applying), false)
+        background("wallpaper") {
+            val applied = try {
+                assets.open("wallpapers/" + WALLPAPERS[index] + ".png").use { input ->
+                    val wm = WallpaperManager.getInstance(applicationContext)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        wm.setStream(input, null, true, target)
+                    } else {
+                        wm.setStream(input)
                     }
-                    true
-                } catch (e: Exception) {
-                    false
                 }
-                runOnUiIfAlive {
-                    Sfx.play(this, if (applied) Sfx.CONFIRM else Sfx.ERROR)
-                    toast(getString(if (applied) R.string.toast_wallpaper_applied else R.string.toast_wallpaper_failed), false)
-                }
+                true
+            } catch (e: Exception) {
+                false
+            }
+            runOnUiIfAlive {
+                Sfx.play(this, if (applied) Sfx.CONFIRM else Sfx.ERROR)
+                val message = if (applied) R.string.toast_wallpaper_applied else R.string.toast_wallpaper_failed
+                toast(getString(message), false)
             }
         }
     }

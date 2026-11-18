@@ -3,6 +3,7 @@ package com.gungreeneyes.trekui
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
@@ -357,7 +358,10 @@ internal class HomeAssistantDialog private constructor(
                 }
             e.inputType = InputType.TYPE_CLASS_TEXT or variation
             e.imeOptions = EditorInfo.IME_ACTION_DONE
-            e.importantForAutofill = if (secret) View.IMPORTANT_FOR_AUTOFILL_NO else View.IMPORTANT_FOR_AUTOFILL_AUTO
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // no autofill framework before Android 8.0
+                e.importantForAutofill =
+                    if (secret) View.IMPORTANT_FOR_AUTOFILL_NO else View.IMPORTANT_FOR_AUTOFILL_AUTO
+            }
             e.setTextColor(p.textHi)
             e.setHintTextColor(Ui.alpha(p.textLo, 0.6f))
             e.typeface = Ui.font(c, false)
