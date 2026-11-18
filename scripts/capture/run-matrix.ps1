@@ -55,7 +55,11 @@ if ($FromCommit) {
     $tar = Join-Path ([IO.Path]::GetTempPath()) 'trekui-head.tar'
     & git -C $repo archive --format=tar -o $tar $FromCommit
     if ($LASTEXITCODE -ne 0) { throw "git archive $FromCommit failed" }
-    & tar -xf $tar -C $src
+    # Windows' own bsdtar: Git's GNU tar (often first on PATH) reads "R:\..." as a remote host:path.
+    $tarExe = Join-Path $env:SystemRoot 'System32\tar.exe'
+    if (-not $env:SystemRoot -or -not (Test-Path $tarExe)) { $tarExe = 'tar' }
+    & $tarExe -xf $tar -C $src
+    if ($LASTEXITCODE -ne 0) { throw "extracting $tar failed" }
     Remove-Item $tar -Force
     foreach ($f in @('local.properties', 'signing')) {
         if (Test-Path (Join-Path $repo $f)) { Copy-Item -Recurse -Force (Join-Path $repo $f) $src }
