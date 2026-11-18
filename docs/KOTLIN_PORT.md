@@ -1,13 +1,15 @@
 # TrekUI Kotlin edition: port plan
 
 TrekUI.Kotlin rebuilds the TrekUI suite (Launcher, Messages, Keyboard, Lock Screen and the shared `:core`)
-in modern Kotlin and Jetpack Compose, starting from TrekUI.Java version 43. When it reaches parity it
+in modern Kotlin and Jetpack Compose, starting from the final TrekUI.Java release (44: the five starship
+interfaces only, the Pipe Lounge interfaces removed). When it reaches parity it
 replaces the Java edition on Google Play as an ordinary update: **same application IDs, same signing key,
 same `trekui_unlock` product**, so users keep their settings and purchase.
 
 ## The bar (definition of done)
 
-- Every feature of TrekUI.Java 43 works the same or better. Nothing is dropped silently.
+- Every feature of the final TrekUI.Java release works the same or better: the five starship interfaces
+  (COMMAND, IMPERIAL, COLLECTIVE, CLASSIC CONSOLE, NEXT CONSOLE) with their sub-themes, and the three companions. Nothing is dropped silently.
 - **Every phone from 2022 onward**, every resolution and aspect ratio: `minSdk 26`, latest `targetSdk`,
   phones, tall phones, foldables (inner and outer), tablets in both orientations, large font and display size.
 - **The same level of testing or higher**: every Java unit test has a Kotlin equivalent; the instrumented
@@ -35,7 +37,9 @@ same `trekui_unlock` product**, so users keep their settings and purchase.
 Each phase is one or more tickets (code `TUK`). CI stays green after every commit. During the
 Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a module while it converts.
 
-0. **Seed** (TUK-T2): copy of TrekUI.Java 43, links point here, CI and Pages on, this plan.
+0. **Seed** (TUK-T2): copy of TrekUI.Java 43, links point here, CI and Pages on, this plan. **Before phase 1,
+   merge the final TrekUI.Java `main` into this repo** (it adds the Pipe Lounge removal, LCA-T58, and the test
+   fixes from the device matrix), resolving only the link and ticket-view files this repo changed.
 1. **Build foundation**: Kotlin and Compose plugins, `build-logic` convention plugins, ktlint/detekt, CI updated.
 2. **`:core` to Kotlin**: palettes, skins, drawing helpers, sounds, licensing and the suite contract; tests ported.
 3. **Companions to Kotlin** (in parallel): `:messages`, `:keyboard`, `:lockscreen`, with their tests.
@@ -49,6 +53,10 @@ Java-to-Kotlin phases behaviour does not change; Kotlin and Java coexist in a mo
    docs rewritten for the Kotlin code; shipped as the next whole-number version over the Java edition.
 8. **After parity**: the browser demo with Compose Multiplatform (wasm), and the Kotlin-only items moved from
    the Java edition (LCA-T12/T13/T14/T18/T24/T27/T28/T29/T39).
+
+## Not tonight
+
+The owner asked for the plan only for now. Implementation starts when the owner says so, phase by phase.
 
 ## Rules
 
