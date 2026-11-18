@@ -47,8 +47,9 @@ object SoundCache {
         else -> NONE
     }
 
+    /** The download cache folder; its first use renames clips cached under pre-rename ids ([SoundIdMigration]). */
     @JvmStatic
-    fun dir(c: Context): File = File(c.filesDir, DIR)
+    fun dir(c: Context): File = File(c.filesDir, DIR).also { SoundIdMigration.migrateCacheOnce(it) }
 
     /** The cached clip file for an id (it may not exist). Invalid ids map to a name that never exists. */
     @JvmStatic
@@ -97,11 +98,16 @@ object SoundCache {
     @JvmStatic
     fun available(c: Context, id: String?): Boolean = where(c, id) != NONE
 
-    /** res/raw identifier for the id, or 0 (this lookup is by name: only personal builds have any). */
+    /**
+     * res/raw identifier for the id, or 0 (this lookup is by name: only personal builds have any). A renamed
+     * id also finds a clip still named by its old id ([SoundIdMigration.previous]).
+     */
     @JvmStatic
     fun rawId(c: Context, id: String?): Int {
         if (!SoundCatalog.isValidId(id)) return 0
-        return c.resources.getIdentifier(id, "raw", c.packageName)
+        val res = c.resources.getIdentifier(id, "raw", c.packageName)
+        val old = if (res == 0) SoundIdMigration.previous(id) else null
+        return if (old == null) res else c.resources.getIdentifier(old, "raw", c.packageName)
     }
 
     /** A playable Uri for MediaPlayer previews: the cached file, the raw resource, or null. */

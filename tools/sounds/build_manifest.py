@@ -26,6 +26,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # python -I leaves the script folder off sys.path
 import kt_source  # noqa: E402
+import naming  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HIGH, MEDIUM = 0.90, 0.75
@@ -78,7 +79,7 @@ def defaults(src_dirs):
 
 def host_entry(h, sha):
     return {'url': h['url'], 'page': h.get('page') or SITE_PAGE.get(h['site'], ''), 'site': h['site'],
-            'sha256': sha, 'bytes': h.get('bytes') or -1, 'title': h.get('label') or ''}
+            'sha256': sha, 'bytes': h.get('bytes') or -1, 'title': naming.title(h.get('label') or '')}
 
 
 def choose(results):
@@ -162,7 +163,7 @@ def verify(manifest, crawl_dir, ref_dir, out_path):
         if not s['available']:
             continue
         x = M.decode(by_url[s['source']['url']], sr, 1 if s['mono'] else 2)
-        y = M.decode(os.path.join(ref_dir, s['id'] + '.ogg'), sr, 1 if s['mono'] else 2)
+        y = M.decode(naming.ref_clip(ref_dir, s['id']), sr, 1 if s['mono'] else 2)
         a, b = int(round(s['start'] * sr)), int(round(s['end'] * sr))
         z = x[a:b].astype(np.float64) * 10 ** (s['gain_db'] / 20)
         fi, fo = int(sr * s['fade_in_ms'] / 1000), int(sr * s['fade_out_ms'] / 1000)

@@ -116,7 +116,7 @@
    "fade_out_ms": 4
   },
   {
-   "id": "alt_borg_computer",
+   "id": "alt_collective_computer",
    "label": "COLLECTIVE COMPUTER",
    "group": "LAUNCHER",
    "events": [
@@ -133,7 +133,7 @@
     "site": "trekcore",
     "sha256": "141500cc37f94c5ee4c38579a5b5c492b564b0714d44beb37484a97691763f2e",
     "bytes": 16000,
-    "title": "Borg Computer Beep"
+    "title": "Collective Computer Beep"
    },
    "alternates": [
     {
@@ -142,13 +142,49 @@
      "site": "github_sound_pack",
      "sha256": "141500cc37f94c5ee4c38579a5b5c492b564b0714d44beb37484a97691763f2e",
      "bytes": 16000,
-     "title": "borg_computer_beep.mp3"
+     "title": "(source file)"
     }
    ],
    "start": 0.12,
    "end": 1.32,
    "gain_db": 1.52,
    "mono": true,
+   "fade_in_ms": 4,
+   "fade_out_ms": 4
+  },
+  {
+   "id": "alt_empire_transporter",
+   "label": "IMPERIAL TRANSPORTER (LONG)",
+   "group": "LAUNCHER",
+   "events": [
+    "stations"
+   ],
+   "core": true,
+   "available": true,
+   "confidence": 0.978,
+   "match": "high",
+   "source": {
+    "url": "https://www.trekcore.com/audio/aliensounds/klingon_transporter_clean.mp3",
+    "page": "https://www.trekcore.com/audio/",
+    "site": "trekcore",
+    "sha256": "4ce17bbbe784c6d24c03a37897bea600c6c333b162221526e6c78f14a78aec32",
+    "bytes": 277888,
+    "title": "Empire Transporter"
+   },
+   "alternates": [
+    {
+     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/klingon_transporter_clean.mp3",
+     "page": "https://github.com/wofsonofmoag/lcars-sounds",
+     "site": "github_sound_pack",
+     "sha256": "4ce17bbbe784c6d24c03a37897bea600c6c333b162221526e6c78f14a78aec32",
+     "bytes": 277888,
+     "title": "(source file)"
+    }
+   ],
+   "start": 0.44,
+   "end": 12.4,
+   "gain_db": 3.66,
+   "mono": false,
    "fade_in_ms": 4,
    "fade_out_ms": 4
   },
@@ -184,42 +220,6 @@
    "start": 0.14,
    "end": 1.057,
    "gain_db": 1.37,
-   "mono": false,
-   "fade_in_ms": 4,
-   "fade_out_ms": 4
-  },
-  {
-   "id": "alt_klingon_transporter",
-   "label": "IMPERIAL TRANSPORTER (LONG)",
-   "group": "LAUNCHER",
-   "events": [
-    "stations"
-   ],
-   "core": true,
-   "available": true,
-   "confidence": 0.978,
-   "match": "high",
-   "source": {
-    "url": "https://www.trekcore.com/audio/aliensounds/klingon_transporter_clean.mp3",
-    "page": "https://www.trekcore.com/audio/",
-    "site": "trekcore",
-    "sha256": "4ce17bbbe784c6d24c03a37897bea600c6c333b162221526e6c78f14a78aec32",
-    "bytes": 277888,
-    "title": "Klingon Transporter"
-   },
-   "alternates": [
-    {
-     "url": "https://raw.githubusercontent.com/wofsonofmoag/lcars-sounds/main/klingon_transporter_clean.mp3",
-     "page": "https://github.com/wofsonofmoag/lcars-sounds",
-     "site": "github_sound_pack",
-     "sha256": "4ce17bbbe784c6d24c03a37897bea600c6c333b162221526e6c78f14a78aec32",
-     "bytes": 277888,
-     "title": "klingon_transporter_clean.mp3"
-    }
-   ],
-   "start": 0.44,
-   "end": 12.4,
-   "gain_db": 3.66,
    "mono": false,
    "fade_in_ms": 4,
    "fade_out_ms": 4
@@ -7463,7 +7463,7 @@
    "fade_out_ms": 4
   },
   {
-   "id": "tk_cvox_priority_one_message_from_starfleet",
+   "id": "tk_cvox_priority_one_message_from_federation",
    "label": "COMPUTER: PRIORITY ONE MESSAGE FROM COMMAND...",
    "group": "COMPUTER",
    "events": [],
@@ -7477,7 +7477,7 @@
     "site": "trekcore",
     "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
     "bytes": 73856,
-    "title": "Priority One Message from Starfleet..."
+    "title": "Priority One Message from the Federation..."
    },
    "alternates": [
     {
@@ -7486,7 +7486,7 @@
      "site": "github_sound_pack",
      "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
      "bytes": 73856,
-     "title": "priorityonemessagefromstarfleet_ep.mp3"
+     "title": "(source file)"
     }
    ],
    "start": 0.12,
@@ -10308,7 +10308,7 @@
     "site": "trekcore",
     "sha256": "acaec2cf618db2a80e31ca6d600f8591c5f39466dc1bc73d2c7d2a139e1ca17b",
     "bytes": 24993,
-    "title": "Klingon Disruptor 1"
+    "title": "Empire Disruptor 1"
    },
    "alternates": [
     {
@@ -11435,7 +11435,7 @@
     "site": "trekcore",
     "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
     "bytes": 73856,
-    "title": "Priority One Message from Starfleet..."
+    "title": "Priority One Message from the Federation..."
    },
    "alternates": [
     {
@@ -11444,7 +11444,7 @@
      "site": "github_sound_pack",
      "sha256": "a4444cadd3fa412232fc8468146e6d18271bda84053787c6972fbc447f98863b",
      "bytes": 73856,
-     "title": "priorityonemessagefromstarfleet_ep.mp3"
+     "title": "(source file)"
     }
    ],
    "start": 0.12,

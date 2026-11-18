@@ -93,9 +93,9 @@ object Sfx {
     val TAP_SET_CLIPS = arrayOf("ui_button_tap", "tap_rot_1", "tap_rot_2", "tap_rot_3", "tap_rot_4", "tap_rot_5", "tap_rot_6")
     /** Library id meaning "the tap rotation". */
     const val TAP_SET = "#taps"
-    private val BASE_LIBRARY = arrayOf(TAP_SET, "ui_button_tap", "ui_panel_open", "ui_screen_open", "ui_screen_close", "alert_general_short", "ui_denied", "comms_hail", "comms_hailing_open", "comms_incoming_transmission", "alert_warning", "alert_red_tng", "tng_transporter", "system_transfer_complete", "voice_accessing_library", "voice_affirmative", "voice_unable_to_comply", "voice_command_codes_verified", "voice_command_functions_offline", "voice_autodefense", "voice_decoupling_sequence", "voice_priority_one_message", "alt_borg_computer", "alt_forcefield_touch", "alt_klingon_transporter")
+    private val BASE_LIBRARY = arrayOf(TAP_SET, "ui_button_tap", "ui_panel_open", "ui_screen_open", "ui_screen_close", "alert_general_short", "ui_denied", "comms_hail", "comms_hailing_open", "comms_incoming_transmission", "alert_warning", "alert_red_tng", "tng_transporter", "system_transfer_complete", "voice_accessing_library", "voice_affirmative", "voice_unable_to_comply", "voice_command_codes_verified", "voice_command_functions_offline", "voice_autodefense", "voice_decoupling_sequence", "voice_priority_one_message", "alt_collective_computer", "alt_forcefield_touch", "alt_empire_transporter")
     private val BASE_LABELS = arrayOf("TAP ROTATION (7 SOUNDS)", "CLASSIC CHIRP", "PANEL DATA BURST", "VIEWSCREEN-ON SEQUENCE", "VIEWSCREEN-OFF SEQUENCE", "SHORT ALERT TONE", "DENY BEEP", "HAIL BEEP", "HAILING FREQUENCIES OPEN", "INCOMING TRANSMISSION", "WARNING ALARM", "RED ALERT", "TRANSPORTER", "TRANSFER COMPLETE", "VOICE: ACCESSING LIBRARY COMPUTER DATA", "VOICE: AFFIRMATIVE", "VOICE: UNABLE TO COMPLY", "VOICE: COMMAND CODES VERIFIED", "VOICE: COMMAND FUNCTIONS OFFLINE", "VOICE: AUTO-DEFENSE", "VOICE: DECOUPLING SEQUENCE", "VOICE: PRIORITY ONE MESSAGE", "COLLECTIVE COMPUTER", "FORCEFIELD TOUCH", "IMPERIAL TRANSPORTER (LONG)")
-    private val BASE_ORIGINAL = arrayOf("tng_chirp_clean + 6 beeps cut from scrshow / tng_viewscreen_on / tng_viewscreen_off", "tng_chirp_clean.mp3", "scrshow.mp3", "tng_viewscreen_on.mp3", "tng_viewscreen_off.mp3", "alarm03.mp3", "denybeep3.mp3", "hailbeep_clean.mp3", "hailingfrequencies_open3.mp3 (trekcore)", "incomingtransmission_clean.mp3", "alert04.mp3", "tng_red_alert3.mp3", "tng_transporter1.mp3", "transfercomplete_clean.mp3", "accessinglibrarycomputerdata_clean.mp3", "affirmative1_ep.mp3", "unabletocomply1_ep.mp3", "commandcodesverified_ep.mp3", "commandfunctionsoffline_ep.mp3", "autodefense_ep.mp3", "initiatingdecouplingsequence_ep.mp3", "priorityonemessagefromstarfleet_ep.mp3", "borg_computer_beep.mp3", "forcefield_touch.mp3", "imperial transporter (faction bundle)")
+    private val BASE_ORIGINAL = arrayOf("tng_chirp_clean + 6 beeps cut from scrshow / tng_viewscreen_on / tng_viewscreen_off", "tng_chirp_clean.mp3", "scrshow.mp3", "tng_viewscreen_on.mp3", "tng_viewscreen_off.mp3", "alarm03.mp3", "denybeep3.mp3", "hailbeep_clean.mp3", "hailingfrequencies_open3.mp3 (trekcore)", "incomingtransmission_clean.mp3", "alert04.mp3", "tng_red_alert3.mp3", "tng_transporter1.mp3", "transfercomplete_clean.mp3", "accessinglibrarycomputerdata_clean.mp3", "affirmative1_ep.mp3", "unabletocomply1_ep.mp3", "commandcodesverified_ep.mp3", "commandfunctionsoffline_ep.mp3", "autodefense_ep.mp3", "initiatingdecouplingsequence_ep.mp3", "(source file)", "(source file)", "forcefield_touch.mp3", "imperial transporter (faction bundle)")
 
     // ---- the launcher's own synthesized set (assets/sounds/synth, in every build) --------------
     /** Six synthesized console beeps that rotate for button presses. */
@@ -185,7 +185,7 @@ object Sfx {
     val IMPERIAL_DEFAULT = arrayOf(SYNTH_KL_TAPS, "ui_screen_open", SYNTH_KL_EVENT[E_LAUNCH], SYNTH_KL_EVENT[E_CONFIRM], "ui_denied", SYNTH_KL_EVENT[E_COMMS], "ui_screen_close", "alert_warning")
     /** Collective defaults: the Collective computer and a few library clips, the cold synthesized set elsewhere. */
     @JvmField
-    val COLLECTIVE_DEFAULT = arrayOf(SYNTH_BG_TAPS, SYNTH_BG_EVENT[E_NAV], SYNTH_BG_EVENT[E_LAUNCH], "alt_borg_computer", "ui_denied", SYNTH_BG_EVENT[E_COMMS], "ui_screen_close", SYNTH_BG_EVENT[E_RED])
+    val COLLECTIVE_DEFAULT = arrayOf(SYNTH_BG_TAPS, SYNTH_BG_EVENT[E_NAV], SYNTH_BG_EVENT[E_LAUNCH], "alt_collective_computer", "ui_denied", SYNTH_BG_EVENT[E_COMMS], "ui_screen_close", SYNTH_BG_EVENT[E_RED])
     /**
      * Defaults per interface id (Skin.faction): Command, Imperial, Collective, the retired ids 3-8
      * (Command sounds; such a choice reads as Command anyway), then the 23rd/25th-century eras
@@ -366,7 +366,7 @@ object Sfx {
     @JvmStatic
     fun builtinFor(context: Context, event: Int): String {
         Skin.faction = TrekPrefs.get(context).faction()
-        val s: String? = TrekPrefs.get(context).s(builtinKey(event), null)
+        val s: String? = SoundIdMigration.current(TrekPrefs.get(context).s(builtinKey(event), null))
         return if (s != null && !retiredClip(s)) s else defaultFor(event)
     }
 
@@ -503,7 +503,7 @@ object Sfx {
     /** Clips over ~5 s play through MediaPlayer instead of SoundPool. */
     @JvmStatic
     fun isLong(context: Context, id: String): Boolean {
-        if (SourceSoundLibrary.LONG.contains(id) || "alt_klingon_transporter" == id) return true
+        if (SourceSoundLibrary.LONG.contains(id) || "alt_empire_transporter" == id) return true
         val f = when {
             id.startsWith(SoundLibrary.PREFIX) -> SoundLibrary.file(context, id)
             SoundCache.isCached(context, id) -> SoundCache.file(context, id)

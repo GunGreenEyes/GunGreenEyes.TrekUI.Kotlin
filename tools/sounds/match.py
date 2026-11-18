@@ -41,6 +41,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # python -I leaves the script folder off sys.path
 import kt_source  # noqa: E402
+import naming  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -141,6 +142,12 @@ def build_reference(src_dirs, history_md):
                                  'cut': True}
     for i, lab, o in zip(kt.strings('NAMES'), kt.strings('LABELS'), kt.strings('ORIGINALS')):
         ref[i] = {'id': i, 'label': lab, 'group': lab.split(': ')[0], 'hint': [o.split(' ')[0]]}
+    # Where the sources name the original only as '(source file)' (see naming.py), the committed
+    # manifest's current source file is the name hint.
+    named = naming.manifest_hints(naming.MANIFEST)
+    for i, r in ref.items():
+        if r['hint'][0] == '(source' and i in named:
+            r['hint'][0] = named[i]
     # history table: | `tk_x` | LABEL | src path | a -> b s | ch | gain | `sha…` |
     for line in open(history_md, encoding='utf-8'):
         m = re.match(r'\|\s*`(tk_[a-z0-9_]+)`\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*([\d.]+)\s*→\s*([\d.]+)\s*s\s*\|\s*(\w+)\s*\|'
@@ -304,7 +311,7 @@ def main():
     report = {}
     hi_cache = {}
     for n, (rid, r) in enumerate(sorted(ref.items()), 1):
-        path = os.path.join(o.ref, rid + '.ogg')
+        path = naming.ref_clip(o.ref, rid)
         if not os.path.isfile(path):
             report[rid] = {'error': 'no reference clip'}
             continue

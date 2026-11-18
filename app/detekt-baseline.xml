@@ -1960,7 +1960,7 @@
     <ID>MaxLineLength:SoundCatalogTest.kt$SoundCatalogTest.Companion$"\"source\":{\"url\":\"https://example.org/"</ID>
     <ID>MaxLineLength:SoundCatalogTest.kt$SoundCatalogTest.Companion$"{\"id\":\"" + id + "\",\"label\":\"" + id.uppercase(Locale.ROOT) + "\",\"group\":\"LAUNCHER\",\"events\":[\"button\"],"</ID>
     <ID>MaxLineLength:Stations.kt$Stations$"authorize" -&gt; arrayOf(if (b) "tk_cvox_command_codes_verified" else "tk_cvox_security_authorization_accepted")</ID>
-    <ID>MaxLineLength:Stations.kt$Stations$"transporter" -&gt; arrayOf(if (k) "alt_klingon_transporter" else if (b) "tk_trn_transporter_2" else "tk_trn_transporter_5")</ID>
+    <ID>MaxLineLength:Stations.kt$Stations$"transporter" -&gt; arrayOf(if (k) "alt_empire_transporter" else if (b) "tk_trn_transporter_2" else "tk_trn_transporter_5")</ID>
     <ID>MaxLineLength:Stations.kt$Stations$// ---- MEDICAL: scan bed ---------------------------------------------------------------------------------------------</ID>
     <ID>MaxLineLength:Stations.kt$Stations$if (k) "tk_ccomm_hail_alert_1" else if (b) "tk_ccomm_communications_star_trransmission" else "tk_ccomm_hailing_frequencies_open_1"</ID>
     <ID>MaxLineLength:Stations.kt$Stations$out.add(Station(n("ENGINEERING", "ENGINEERING", "POWER NODES"), "settings", p.c(2), Console(c, p, host, Engineering(c, p))))</ID>

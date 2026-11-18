@@ -192,9 +192,9 @@ Interface (launcher) clips:
 | `alert_general_short` | alarm03.mp3 | 0.020–0.525 s | -4.8 dB | 1.000 |
 | `alert_red_tng` | tng_red_alert3.mp3 | 0.020–1.005 s | -7.2 dB | 0.999 |
 | `alert_warning` | alert04.mp3 | 0.069–1.536 s | -3.6 dB | 0.998 |
-| `alt_borg_computer` | borg_computer_beep.mp3 | 0.120–1.320 s | +1.5 dB | 0.987 |
+| `alt_collective_computer` | (source file) | 0.120–1.320 s | +1.5 dB | 0.987 |
+| `alt_empire_transporter` | (source file) | 0.440–12.400 s | +3.7 dB | 0.978 |
 | `alt_forcefield_touch` | forcefield_touch.mp3 | 0.140–1.057 s | +1.4 dB | 0.997 |
-| `alt_klingon_transporter` | klingon_transporter_clean.mp3 | 0.440–12.400 s | +3.7 dB | 0.978 |
 | `comms_hail` | hailbeep_clean.mp3 | 0.020–0.309 s | -11.9 dB | 1.000 |
 | `comms_hailing_open` | hailingfrequencies_open3.mp3 | 0.020–1.180 s | +7.8 dB | 0.999 |
 | `comms_incoming_transmission` | incomingtransmission_clean.mp3 | 0.020–2.208 s | -3.1 dB | 0.999 |
@@ -217,7 +217,7 @@ Interface (launcher) clips:
 | `voice_command_codes_verified` | commandcodesverified_ep.mp3 | 0.020–2.232 s | -8.2 dB | 0.998 |
 | `voice_command_functions_offline` | commandfunctionsoffline_ep.mp3 | 0.020–2.400 s | -4.1 dB | 0.997 |
 | `voice_decoupling_sequence` | initiatingdecouplingsequence_ep.mp3 | 0.020–4.752 s | -9.3 dB | 0.998 |
-| `voice_priority_one_message` | priorityonemessagefromstarfleet_ep.mp3 | 0.120–4.500 s | -6.5 dB | 0.999 |
+| `voice_priority_one_message` | (source file) | 0.120–4.500 s | -6.5 dB | 0.999 |
 | `voice_unable_to_comply` | unabletocomply1_ep.mp3 | 0.060–4.520 s | -8.8 dB | 0.998 |
 
 Lowest scores: `tap_rot_6` (0.910). It is a 94 ms beep, and Vorbis pre-echo on the 5.2 reference

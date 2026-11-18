@@ -146,21 +146,21 @@ internal object Stations {
             "shields" -> "alt_forcefield_touch"
             "red_alert" -> "alert_red_tng"
             "alert" -> "alert_warning"
-            "warp" -> if (b) "alt_borg_computer" else "ui_screen_open"
+            "warp" -> if (b) "alt_collective_computer" else "ui_screen_open"
             "impulse" -> "ui_panel_open"
             "all_stop" -> "ui_screen_close"
-            "scan", "scanner" -> if (b) "alt_borg_computer" else "system_transfer_complete"
+            "scan", "scanner" -> if (b) "alt_collective_computer" else "system_transfer_complete"
             "eject" -> "voice_decoupling_sequence"
             "authorize" -> "voice_command_codes_verified"
-            "transporter" -> if (k) "alt_klingon_transporter" else "tng_transporter"
+            "transporter" -> if (k) "alt_empire_transporter" else "tng_transporter"
             "hail" -> "comms_hailing_open"
             "beam", "torpedo", "probe" -> "alert_general_short"
             "injector", "reroute", "course", "core" -> "ui_button_tap"
-            "boot_start" -> if (b) "alt_borg_computer" else "ui_screen_open"
+            "boot_start" -> if (b) "alt_collective_computer" else "ui_screen_open"
             "boot_mid" -> "none"
-            "tractor", "warp9" -> if (b) "alt_borg_computer" else "ui_screen_open"
+            "tractor", "warp9" -> if (b) "alt_collective_computer" else "ui_screen_open"
             "cloak" -> "ui_screen_close"
-            "regen" -> "alt_borg_computer"
+            "regen" -> "alt_collective_computer"
             "comm" -> "ui_button_tap"
             "boot_ready" -> if (b) "system_transfer_complete" else "alert_general_short"
             else -> "ui_button_tap"
@@ -195,12 +195,12 @@ internal object Stations {
             "core" -> arrayOf("tk_misc_engineering_device_3")
             "authorize" -> arrayOf(if (b) "tk_cvox_command_codes_verified" else "tk_cvox_security_authorization_accepted")
             "reroute" -> arrayOf("tk_cui_input_ok_1")
-            "transporter" -> arrayOf(if (k) "alt_klingon_transporter" else if (b) "tk_trn_transporter_2" else "tk_trn_transporter_5")
+            "transporter" -> arrayOf(if (k) "alt_empire_transporter" else if (b) "tk_trn_transporter_2" else "tk_trn_transporter_5")
             "hail" -> arrayOf(
                 if (k) "tk_ccomm_hail_alert_1" else if (b) "tk_ccomm_communications_star_trransmission" else "tk_ccomm_hailing_frequencies_open_1",
             )
             "comm" -> arrayOf(if (b) "tk_ccomm_incoming_transmission" else "tk_comm_chirp_1")
-            "alert" -> arrayOf(if (b) "alt_borg_computer" else "tk_calrt_damage_alarm")
+            "alert" -> arrayOf(if (b) "alt_collective_computer" else "tk_calrt_damage_alarm")
             "boot_start" -> arrayOf(if (k) "tk_wpn_disruptor" else "tk_misc_powering_up")
             "boot_mid" -> arrayOf(if (k) "tk_misc_powering_up" else "tk_cui_computer_beep_sequence_1")
             "boot_ready" -> arrayOf(if (k) "tk_wpn_weapons_2" else "tk_cvox_regeneration_cycle_complete")
