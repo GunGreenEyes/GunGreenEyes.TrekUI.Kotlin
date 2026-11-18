@@ -55,7 +55,7 @@ import kotlin.math.max
  * Java interop: MainActivity creates it with `new DialerView(this)` and calls [setInsets], [isOpen],
  * [open], [close], [back] and [onPermission].
  */
-class DialerView(act: MainActivity) : FrameLayout(act) {
+internal class DialerView(act: MainActivity) : FrameLayout(act) {
 
     private val a: MainActivity = act
     private val pal: Palette = Prefs.get(act).palette()

@@ -23,7 +23,7 @@ import java.util.Locale
  * pure functions ([compareEntries], [matches]) unit-tested in `AppRepoTest`.
  */
 internal class AppRepo private constructor(c: Context) {
-    /** Told on the main thread whenever [apps] has a new list (implemented by the Java `MainActivity`). */
+    /** Told on the main thread whenever [apps] has a new list (implemented by [MainActivity]). */
     interface Listener {
         fun onAppsChanged()
     }
