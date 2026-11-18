@@ -185,6 +185,12 @@ $common
 $started = @()
 foreach ($dir in $RepoDirs) {
     $name = Split-Path $dir -Leaf
+    # A retired edition (archived on GitHub, e.g. TrekUI.Java once TrekUI.Kotlin replaced it) gets no
+    # upgrade tickets, even while its folder stays on disk for reference.
+    if (Get-Command gh -ErrorAction SilentlyContinue) {
+        $archived = gh repo view "GunGreenEyes/$name" --json isArchived --jq .isArchived 2>$null
+        if ($archived -eq 'true') { Write-Host "${name}: archived on GitHub, skipped"; continue }
+    }
     if (-not $state.ContainsKey($name)) { $state[$name] = @{ kotlin = $null; tickets = @{} } }
     $st = $state[$name]
     $have = Get-RepoVersions $dir
