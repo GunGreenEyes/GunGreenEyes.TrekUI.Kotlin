@@ -32,3 +32,4 @@ _Nothing recorded yet._
 | TUK-T9 | 2026-11-18 | feature | open | Phase 5: Compose console design system in :core (frames, cards, keys, dialogs, sub-themes) and the screens moved to Compose (companions first, then launcher interfaces), guarded by scenarios + Roborazzi screenshots | docs/KOTLIN_PORT.md |
 | TUK-T10 | 2026-11-18 | feature | open | Phase 6: settings on DataStore with a one-time migration from the Java edition's trekui SharedPreferences, plus an upgrade test (Java build data -> Kotlin build) | docs/KOTLIN_PORT.md |
 | TUK-T11 | 2026-11-18 | chore | open | Phase 7 parity + release: full unit suite, CI matrix, local 24-device matrix and device report, docs rewritten for Kotlin, shipped as the next whole-number version over the Java edition | docs/KOTLIN_PORT.md |
+| TUK-T12 | 2026-11-18 | docs | closed | Docs describe the Kotlin codebase (README, ARCHITECTURE, BUILD, TESTING, CONTRIBUTING, agent guides, port status) | TUK-T4..T8 done |

@@ -4,9 +4,9 @@ This guide is for Claude Code (terminal, web or phone app), Cowork, Codex and an
 
 ## What this is
 
-TrekUI Launcher is an Android **home-screen launcher**, package `com.gungreeneyes.trekui`.
+This is the **Kotlin edition** of the TrekUI suite: TrekUI Launcher, an Android **home-screen launcher** (package `com.gungreeneyes.trekui`), plus Messages, Keyboard and Lock Screen on a shared `:core`. It was converted from [TrekUI.Java](https://github.com/GunGreenEyes/TrekUI.Java) with no behaviour change, keeps the same application IDs and signing, and will replace the Java edition on Play as a normal update. Plan and status: [docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md).
 
-- **Code style:** pure Java (Java 17 language level). All views are custom and drawn on a Canvas. There are **no XML layouts**.
+- **Code style:** idiomatic Kotlin 2 (AGP 9's built-in Kotlin, JVM target 17), all sources in `<module>/src/main/kotlin/`; no Java sources. All views are custom and drawn on a Canvas. There are **no XML layouts** and no Compose yet (phase 5). ktlint and detekt are planned for phase 1 and not in the build yet.
 - **Five interfaces**, all starship consoles, chosen by `Skin.faction`: Command 0, Imperial 1, Collective 2, Classic Console 9 and Next Console 10.
   - Ids 3–8 are retired; a saved choice of one reads as Command (sub-theme 0).
 - **Entry points:** `MainActivity` (the HOME activity) builds everything. `SettingsActivity` is CONFIG.
@@ -21,7 +21,7 @@ You need JDK 21 and an Android SDK with platform 37 and build-tools 37. On a fre
 ./gradlew testDevelopDebugUnitTest             # JVM + Robolectric tests
 ./gradlew lintDevelopDebug
 ./gradlew connectedDevelopDebugAndroidTest     # instrumented scenarios (needs emulator/device)
-./gradlew :app:dist                            # all APKs/AABs -> dist/
+./gradlew dist                                 # all APKs/AABs -> dist/
 ```
 
 On Windows, use `gradlew.bat` and set `JAVA_HOME` to the JDK 21. If Gradle waits on a lock, another build is running in the same checkout, so wait for it.
@@ -58,13 +58,15 @@ scripts/release/ship.sh --track internal          # Windows: .\scripts\release\s
    - Handle window insets (system bars, cutouts) so layouts stay edge-to-edge.
 2. **No copyrighted audio, ever.**
    - Never add `*.mp3`, `*.ogg` or `*.wav` files, anything under `personal_sounds/`, or recordings in `res/raw`.
-   - Sounds are downloaded by the user at runtime, from the catalogue in `app/src/main/assets/sounds/manifest.json` (see `docs/SOUNDS.md`).
+   - Sounds are downloaded by the user at runtime, from the catalogue in `core/src/main/assets/sounds/manifest.json` (see `docs/SOUNDS.md`).
    - The production build ships no recordings.
 3. **No secrets.** Never commit keystores, `signing/*`, passwords, `play-service-account*.json`, `_sources/` or zips. Don't weaken `.gitignore`.
 4. **Network:** go through `Http` (HTTPS only), never on the main thread. Panels do work only between `resume()` and `pause()`.
 5. **Code quality.**
-   - Put Javadoc on every class and on non-trivial methods.
-   - Use meaningful names (the 6.1 classes came from a decompiler, so rename leftovers like `i2` and `f3` when you touch them).
+   - Write idiomatic Kotlin: `val` over `var`, null-safety instead of `!!` where you can, `object`s for stateless helpers, `internal` for what only one module uses.
+   - Keep `@JvmStatic` / `@JvmField` and the names of members the instrumented tests reach by reflection (`AppHooks`, `AppScenario`; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#kotlin-conventions-in-this-codebase)).
+   - Put KDoc on every class and on non-trivial methods.
+   - Use meaningful names (some old classes came from a decompiler, so rename leftovers like `i2` and `f3` when you touch them).
    - Use named constants, such as `TypedValue.COMPLEX_UNIT_SP` instead of `2`.
    - Avoid deprecated APIs; guard newer ones with `Build.VERSION`.
    - Don't keep Activity contexts in static fields.
@@ -73,8 +75,8 @@ scripts/release/ship.sh --track internal          # Windows: .\scripts\release\s
 
 ## Tickets and commits
 
-- **Ticket log.** Tickets use the prefix **`LCA-T<n>`**, logged at the end of `docs/USER_STORIES.md`. Rows are append-only: change only Status and Ref.
-- **Commit messages** start with the ticket ID, for example `LCA-T12: …`.
+- **Ticket log.** Tickets use the prefix **`TUK-T<n>`**, logged at the end of `docs/USER_STORIES.md`. Rows are append-only: change only Status and Ref. `LCA-T<n>` IDs in the history come from the Java edition.
+- **Commit messages** end with the ticket ID, for example `… (TUK-T12)`.
 - **Staging.** Stage explicit paths (`git add <paths>`), not `git add -A`, because other sessions may have work in progress in the same checkout.
 - **History.** Prefer new commits over amending. Don't force-push `main`.
 
@@ -82,10 +84,13 @@ scripts/release/ship.sh --track internal          # Windows: .\scripts\release\s
 
 | What | Where |
 |---|---|
-| App code | `app/src/main/java/com/gungreeneyes/trekui/`; licensing in `…/licensing/` |
-| Bundled app assets (fonts, glyphs, sound manifest) | `app/src/main/assets/` |
-| Unit tests (`<Class>Test.java`, same package) | `app/src/test/java/com/gungreeneyes/trekui/` |
-| Instrumented scenarios | `app/src/androidTest/java/…` (`*Scenarios`); Gherkin text in `app/src/androidTest/assets/features/*.feature` |
+| Launcher code | `app/src/main/kotlin/com/gungreeneyes/trekui/` |
+| Shared code (look, sounds, suite contract, licensing in `…/licensing/`) | `core/src/main/kotlin/com/gungreeneyes/trekui/` |
+| Companion code | `messages/`, `keyboard/`, `lockscreen/` `src/main/kotlin/com/gungreeneyes/trekui/…` |
+| Bundled shared assets (fonts, glyphs, sound manifest) | `core/src/main/assets/` |
+| Launcher assets (badges, quick-panel and app-theme art, wallpapers) | `app/src/main/assets/` |
+| Unit tests (`<Class>Test.kt`, same package) | `<module>/src/test/kotlin/…`; launcher: `app/src/test/kotlin/com/gungreeneyes/trekui/` |
+| Instrumented scenarios | `app/src/androidTest/kotlin/…` (`*Scenarios`); Gherkin text in `app/src/androidTest/assets/features/*.feature` |
 | Generated screenshots, videos and test media | **root `assets/`** (`assets/robolectric/`, `assets/<device>-api<N>/`). Gitignored, published to GitHub Pages by CI |
 | Emulator matrix | `scripts/avd/matrix.csv`, `scripts/avd/*.ps1`, `scripts/capture/` |
 | Play listing text and images | `fastlane/metadata/<app>/android/en-US/` (`launcher`, `messages`, `keyboard`, `lockscreen`) |

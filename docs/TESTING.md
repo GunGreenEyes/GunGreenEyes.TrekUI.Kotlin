@@ -4,15 +4,18 @@ There are three layers of tests, from fastest to slowest:
 
 | Layer | Where | Runs on | Command |
 |---|---|---|---|
-| Unit tests (pure Java logic) | `app/src/test/java/…` | JVM | `./gradlew testDevelopDebugUnitTest` |
-| Robolectric view and screenshot tests | `app/src/test/java/…` | JVM with Robolectric | same task |
-| Instrumented scenarios with screen capture | `app/src/androidTest/java/…` | emulator or device | `./gradlew connectedDevelopDebugAndroidTest` |
+| Unit tests (pure Kotlin logic) | `<module>/src/test/kotlin/…` | JVM | `./gradlew testDevelopDebugUnitTest` |
+| Robolectric view and screenshot tests | `app/src/test/kotlin/…` | JVM with Robolectric | same task |
+| Instrumented scenarios with screen capture | `app/src/androidTest/kotlin/…` | emulator or device | `./gradlew connectedDevelopDebugAndroidTest` |
+
+Every test is Kotlin. The tests were converted from the Java edition together with the code they cover, with the same assertions, steps, waits and timeouts. Unit tests live in each module: `app/src/test/kotlin/` (the launcher, plus `:core` classes it exercises, such as `SkinTest`), `messages/src/test/kotlin/`, `keyboard/src/test/kotlin/` and `lockscreen/src/test/kotlin/`.
 
 CI runs all three: unit tests on every push and PR, and the emulator matrix on every push to `main`, PR and release (see [RELEASE.md](RELEASE.md)).
 
 ## Unit tests
 
-- **Naming.** Name a test after the class it covers, `<Class>Test.java`, in the same package. Examples: `SkinTest`, `SoundProcessorTest`, `licensing/TrialClockTest`.
+- **Naming.** Name a test after the class it covers, `<Class>Test.kt`, in the same package. Examples: `SkinTest`, `SoundProcessorTest`, `licensing/TrialClockTest`.
+- **Visibility.** A test sees `internal` declarations of its own module only. `:core` declarations that `:app` tests use are public (see [ARCHITECTURE.md](ARCHITECTURE.md#kotlin-conventions-in-this-codebase)).
 - **Who writes them.** Anyone changing a class adds or updates its test.
 - **Keep decisions pure.** Keep logic in pure functions or small state holders that do not touch Android, so it runs on the plain JVM without Robolectric. Examples: `HomeLogic`, `ScreenMetrics.compute`, `SoundProcessor`, `licensing/TrialClock` with a fake `TimeSource` and `KeyValueStore`.
 - **Frameworks.** JUnit 4 and Google Truth.
@@ -56,7 +59,7 @@ The supporting classes are:
 
 Cucumber is not used on purpose. Plain JUnit 4 keeps the toolchain small and runs on every API level from 26 up.
 
-To add a scenario, write it in the right `.feature` file, then add a method with the scenario's name to the matching `*Scenarios` class and call `Gherkin` for each step.
+To add a scenario, write it in the right `.feature` file, then add a method with the scenario's name to the matching `*Scenarios` class in `app/src/androidTest/kotlin/com/gungreeneyes/trekui/` and call `Gherkin` for each step. The scenarios reach into the launcher through `AppHooks`, which uses reflection; keep the members it names (`MainActivity.openConfig`, `requestDefaultHome`, `Skin.faction`, `AppRepo.get`, …) static and un-renamed, or update `AppHooks` with them.
 
 ```sh
 ./gradlew connectedDevelopDebugAndroidTest                                    # every connected device

@@ -6,16 +6,16 @@ The project guide for agents is [AGENTS.md](AGENTS.md), imported here so Claude 
 
 ## In short (if the import above was not loaded)
 
-- **Project.** TrekUI Launcher is an Android home launcher (`com.gungreeneyes.trekui`): pure Java, Canvas-drawn views, no XML layouts, five interfaces (`Skin.faction` 0–2, 9 and 10).
+- **Project.** The Kotlin edition of TrekUI: an Android home launcher (`com.gungreeneyes.trekui`) plus Messages, Keyboard and Lock Screen on a shared `:core`. Idiomatic Kotlin (AGP 9's built-in Kotlin, JVM target 17), no Java sources, Canvas-drawn views, no XML layouts, five interfaces (`Skin.faction` 0–2, 9 and 10). ktlint/detekt and Compose are planned, not present ([docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md)).
 - **Build.**
-  - `./gradlew assembleDevelopDebug` builds the app, `testDevelopDebugUnitTest` runs the tests, and `:app:dist` copies every APK and AAB to `dist/`.
+  - `./gradlew assembleDevelopDebug` builds the apps, `testDevelopDebugUnitTest` runs the tests, and `dist` copies every APK and AAB to `dist/`.
   - It needs JDK 21 and SDK 37. Set them up with `scripts/setup.ps1` or `scripts/setup.sh`.
 - **Flavors.** `develop` (`.dev`, 5-minute trial) for all dev work; `production` for Play.
 - **Sizing.** Size everything with `ScreenMetrics`. Every screen must work in portrait and landscape, from phones to tablets and foldables.
 - **Never commit:** copyrighted audio (`*.mp3`, `*.ogg`, `*.wav`), keystores, secrets or `_sources/`.
-- **Tickets.** Use the `LCA-T<n>` prefix (log in `docs/USER_STORIES.md`); commit messages start with the ticket ID.
+- **Tickets.** Use the `TUK-T<n>` prefix (log in `docs/USER_STORIES.md`); commit messages end with the ticket ID.
 - **Release / "ship it".** Run `scripts/release/ship.sh --track internal` (Windows: `.\scripts\release\ship.ps1 -Track internal`): it bumps to the next whole-number version (42, 43, 44, ...; one number is both versionName and versionCode), writes the changelogs, commits, tags, pushes and starts the release of all four apps, then prints the run URL. Use `--track production` only when the owner explicitly says production ([docs/RELEASE.md](docs/RELEASE.md)).
-- **Tests and media.** Unit tests go in `app/src/test/java/com/gungreeneyes/trekui/<Class>Test.java`. Generated screenshots and videos go to the root `assets/` folder, which is gitignored.
+- **Tests and media.** Unit tests go in `<module>/src/test/kotlin/…/<Class>Test.kt` (launcher: `app/src/test/kotlin/com/gungreeneyes/trekui/`); instrumented scenarios in `app/src/androidTest/kotlin/`. Generated screenshots and videos go to the root `assets/` folder, which is gitignored.
 
 ## Working from Claude Code on the web, the phone app, or Cowork
 

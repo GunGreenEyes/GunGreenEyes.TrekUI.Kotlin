@@ -12,7 +12,7 @@ Two pipelines in `.github/workflows/` build the TrekUI suite: the launcher (`:ap
 
 Other workflows:
 
-- **`codeql.yml`:** static analysis of the Java code, run on pushes, PRs and weekly.
+- **`codeql.yml`:** static analysis of the Kotlin code (CodeQL's `java-kotlin` language), run on pushes, PRs and weekly.
 - **`pages.yml`:** rebuilds the product site (`site/`) when the site, `PRIVACY.md` or the listing changes.
 - **Dependabot:** opens PRs for version bumps.
 

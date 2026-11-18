@@ -8,7 +8,7 @@ downloads them. With nothing present at all, the events are silent and nothing b
 ## Out of the box: the synthesized set (LCA-T15)
 
 Every build, including the Play build, ships the launcher's **own synthesized console-style sounds**
-in `app/src/main/assets/sounds/synth/`. `tools/sounds/synth/make_synth.py` computes them from
+in `core/src/main/assets/sounds/synth/`. `tools/sounds/synth/make_synth.py` computes them from
 sine/FM oscillators, odd-harmonic waveshaping and seeded low-passed noise. No recording, sample or
 third-party audio is involved, so committing them is allowed. `.gitignore` has a narrow exception
 for exactly that folder.
@@ -28,7 +28,7 @@ for exactly that folder.
 The processing follows the 5.x notes: mono, 48 kHz, 4 ms edge fades (none on the loop), RMS
 toward −18 dBFS within ±9 dB, peak ≤ −1 dBFS, Ogg Vorbis q6. The fixed seeds and ffmpeg's bit-exact
 flags make the output reproducible:
-`python -I tools/sounds/synth/make_synth.py app/src/main/assets/sounds/synth`.
+`python -I tools/sounds/synth/make_synth.py core/src/main/assets/sounds/synth`.
 
 **SOUND SET** (CONFIG › AUDIO) chooses what the events play when they have no imported file:
 
@@ -60,7 +60,7 @@ ringtone. Start-up (BootSequence / Stations `boot_start`) falls back to the inte
 1. **SETTINGS › AUDIO › DOWNLOAD SOUND LIBRARY** (or **DOWNLOAD CORE SOUNDS** for only the clips the
    interfaces use by default). The dialog states the download size, the sources and the copyright
    notice before anything is fetched.
-2. `SoundDownloader` reads `app/src/main/assets/sounds/manifest.json` (`SoundCatalog`). On one
+2. `SoundDownloader` reads `core/src/main/assets/sounds/manifest.json` (`SoundCatalog`). On one
    background thread it downloads each original once over HTTPS (15 s connect / 30 s read timeouts,
    40 MB cap, generic User-Agent, no personal data). It then checks the file's SHA-256 against the
    manifest. On a mismatch or error it tries the listed alternates, which are byte-identical copies

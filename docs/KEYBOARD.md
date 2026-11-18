@@ -91,10 +91,10 @@ people out of their phone, so this is deliberate.
 | `KeyIcons` | Line-art glyphs for shift, delete, return, globe, emoji, microphone |
 | `KeyboardSettingsActivity` | Setup steps and settings in the console frame (CONFIG vocabulary) |
 | `KeyboardPrefs`, `KeyboardTheme`, `WordStore`, `KeyboardApp` | Settings (`kb.*` keys in the app's `trekui` prefs), following the launcher's theme, learned words + dictionary, `CoreConfig.Provider` |
-| `com.gungreeneyes.trekui.KeyboardLook` | Public facade over `:core`'s package-private look and sound helpers (like `MessagesLook`) |
+| `com.gungreeneyes.trekui.KeyboardLook` | `internal object` facade over `:core`'s look and sound helpers (like `MessagesLook`) |
 | `logic.*` | Pure, unit-tested: `Layouts` (tables), `Key` / `KeyLayout`, `Language`, `Alternates`, `ShiftState`, `FieldRules` (input type → page, enter action, incognito rule), `Suggestions` (ranking, learnable words), `WordEdit` (current word, delete-word), `Sizing` (presets, language cycle) |
 
-Unit tests: `keyboard/src/test/java/com/gungreeneyes/trekui/keyboard/logic/`.
+Unit tests: `keyboard/src/test/kotlin/com/gungreeneyes/trekui/keyboard/logic/`.
 
 ## Not yet done
 

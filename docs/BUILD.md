@@ -4,8 +4,9 @@
 
 | | Version | Where it is set |
 |---|---|---|
-| JDK (to run Gradle) | 21 | your machine (`JAVA_HOME`) |
-| Java source/target level | 17 | `app/build.gradle.kts` `compileOptions` |
+| JDK (to run Gradle) | 21 | your machine (`JAVA_HOME`); CI uses Temurin 21 |
+| Language | Kotlin 2 (K2), through AGP 9's built-in Kotlin support | no `org.jetbrains.kotlin.android` plugin is applied (it would conflict with AGP's) |
+| JVM target (bytecode level) | 17 | each module's `build.gradle.kts` `compileOptions` |
 | Gradle | wrapper (9.x) | `gradle/wrapper/gradle-wrapper.properties` |
 | Android Gradle Plugin | see catalog | `gradle/libs.versions.toml` (`agp`) |
 | compileSdk / targetSdk | 37 | `app/build.gradle.kts` |
@@ -13,6 +14,10 @@
 | SDK packages | `platforms;android-37.0`, `build-tools;37.0.0`, `platform-tools` | installed by `scripts/setup.*` |
 
 All dependency versions live in the version catalog `gradle/libs.versions.toml`. Bump them there only; Dependabot opens PRs for updates.
+
+### Source layout
+
+Every module (`:core`, `:app`, `:messages`, `:keyboard`, `:lockscreen`) keeps its Kotlin in `src/main/kotlin/`, its unit tests in `src/test/kotlin/`, and the launcher's instrumented scenarios in `app/src/androidTest/kotlin/`. There are no Java sources. Each module still has its own `build.gradle.kts`; the shared `build-logic/` convention plugins, ktlint and detekt are planned for phase 1 of [KOTLIN_PORT.md](KOTLIN_PORT.md) and are not in the build yet.
 
 ### Fresh machine
 
@@ -75,10 +80,10 @@ On Windows use `gradlew.bat` (or `./gradlew.bat` from Git Bash).
 The root project's `dist` task builds `assembleDevelopDebug`, `assembleProductionRelease` and `bundleProductionRelease` for every app (`:app`, `:messages`, `:keyboard`, `:lockscreen`), then copies the APKs and AABs into `dist/` at the repository root, each named `<App>-<versionName>-<flavor>-<buildType>` so the four apps never collide:
 
 ```
-dist/TrekUI-42-develop-debug.apk               dist/TrekUI-Messages-42-develop-debug.apk
-dist/TrekUI-42-production-release.apk          dist/TrekUI-Messages-42-production-release.apk
-dist/TrekUI-42-production-release.aab          dist/TrekUI-Messages-42-production-release.aab
-dist/TrekUI-Keyboard-42-…                      dist/TrekUI-LockScreen-42-…   (same three each)
+dist/TrekUI-43-develop-debug.apk               dist/TrekUI-Messages-43-develop-debug.apk
+dist/TrekUI-43-production-release.apk          dist/TrekUI-Messages-43-production-release.apk
+dist/TrekUI-43-production-release.aab          dist/TrekUI-Messages-43-production-release.aab
+dist/TrekUI-Keyboard-43-…                      dist/TrekUI-LockScreen-43-…   (same three each)
 ```
 
 `dist/` is gitignored.
@@ -86,8 +91,8 @@ dist/TrekUI-Keyboard-42-…                      dist/TrekUI-LockScreen-42-…  
 ## Versioning: `version.properties`
 
 ```properties
-versionCode=42
-versionName=6
+versionCode=43
+versionName=43
 ```
 
 Both values are read by every app module's `build.gradle.kts`. This file is the single source of the version.
@@ -117,7 +122,7 @@ Never commit keystores, passwords or `play-service-account*.json`. `.gitignore` 
 
 ## Assets and generators
 
-Generated art is committed under `app/src/main/assets/`, so a build needs no Python or Node. To regenerate it:
+Generated art is committed under `core/src/main/assets/` (fonts, glyphs, sounds) and `app/src/main/assets/` (badges, quick-panel and app-theme art, wallpapers), so a build needs no Python or Node. To regenerate it:
 
 | Tool | Output |
 |---|---|

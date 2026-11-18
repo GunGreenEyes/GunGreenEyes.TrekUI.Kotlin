@@ -12,7 +12,7 @@ It is **a look, not a lock**. It never replaces, bypasses or weakens the system 
 | Wake screen | `WakeActivity` + `WakeView` | `setShowWhenLocked(true)` / `setTurnScreenOn(true)` on API 27+, and the equivalent window flags on API 26. `singleTask`, its own task affinity, excluded from recents. `WakeView` draws everything on a Canvas and exposes its controls to TalkBack as virtual views (`AccessibilityNodeProvider`). |
 | Settings / setup | `SettingsActivity` (launcher icon) | WAKE SCREEN switch, NOTIFICATION ACCESS setup (a prominent disclosure first), DISPLAY OVER OTHER APPS (Android 10+), SENSITIVE CONTENT, INTERFACE / COLOR THEME (only when the launcher is absent), PREVIEW and the licence. Licensing runs only here. |
 | Theme | `LockTheme` | Follows the launcher via `SuiteClient.launcherTheme` → `TrekPrefs.setThemeOverride`, with the last answer cached for a cold start. This is the same model as Messages and Keyboard. |
-| Look | `com.gungreeneyes.trekui.LockLook` | A public facade over `:core`'s package-private `Skin`, `Palette`, `Ui`, `ConsoleFrame` and `ConsoleDialog`, the same pattern as `MessagesLook`. |
+| Look | `com.gungreeneyes.trekui.LockLook` | An `internal object` facade over `:core`'s `Skin`, `Palette`, `Ui`, `ConsoleFrame` and `ConsoleDialog`, the same pattern as `MessagesLook`. |
 | Pure rules (JVM-tested) | `logic/DecimalDate`, `Redaction`, `EnableRule`, `WakeTrigger` | The formula, privacy, switch resolution and debounce. |
 
 ### When it shows

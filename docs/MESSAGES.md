@@ -56,7 +56,7 @@ Android only offers the SMS role to an app that declares all of these (see the m
 
 MMS PDUs reach the platform MMS service through `MmsFileProvider` (not exported, per-call URI grants).
 
-## Code map (`messages/src/main/java/com/gungreeneyes/trekui/messages/`)
+## Code map (`messages/src/main/kotlin/com/gungreeneyes/trekui/messages/`)
 
 | Class | Role |
 |---|---|
@@ -68,7 +68,7 @@ MMS PDUs reach the platform MMS service through `MmsFileProvider` (not exported,
 | `Blocking`, `Sims`, `SmsRole`, `Contacts`, `Images`, `MessagesSettings` | Block list, dual SIM, role, names, images, settings |
 | `BaseScreen`, `ConversationListActivity`, `ThreadActivity`, `BlockedActivity`, `ConversationRowView`, `BubbleView` | Canvas-drawn UI |
 | `MessagesTheme` | Follows the launcher's interface/sub-theme |
-| `com.gungreeneyes.trekui.MessagesLook` | Public facade over `:core`'s package-private look classes (Ui, Skin, Palette, ConsoleFrame, ConsoleDialog) |
+| `com.gungreeneyes.trekui.MessagesLook` | `internal object` facade over `:core`'s look classes (Ui, Skin, Palette, ConsoleFrame, ConsoleDialog) |
 
 ## Known limits / follow-ups
 

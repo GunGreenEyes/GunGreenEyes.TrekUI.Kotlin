@@ -2,6 +2,12 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
+## Unreleased (Kotlin edition)
+
+- The whole suite is now Kotlin: `:core` (TUK-T4), Messages (TUK-T5), Keyboard (TUK-T6), Lock Screen (TUK-T7) and the launcher (TUK-T8) were converted from TrekUI.Java with no behaviour change, and every unit test and instrumented scenario was converted with them. No Java sources remain. The application IDs, signing, `trekui_unlock` product, stored settings and version numbering are the same, so the Kotlin edition will install over the Java edition as a normal update.
+- A zero-sized or NaN-scaled Collective hub no longer draws invalid geometry (TUK-T8).
+- The docs describe the Kotlin codebase: README, ARCHITECTURE, BUILD, TESTING, CONTRIBUTING, the agent guides and the port status in KOTLIN_PORT (TUK-T12).
+
 ## 44 (Unreleased)
 
 - Removed the Pipe Lounge interfaces: TrekUI is now starship consoles only; a saved Pipe Lounge choice switches to COMMAND. (LCA-T58)

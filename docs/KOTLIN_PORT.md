@@ -6,6 +6,26 @@ interfaces only, the Pipe Lounge interfaces removed). When it reaches parity it
 replaces the Java edition on Google Play as an ordinary update: **same application IDs, same signing key,
 same `trekui_unlock` product**, so users keep their settings and purchase.
 
+## Status
+
+The Java-to-Kotlin conversion is done: every source, unit test and instrumented scenario in all five modules
+is Kotlin, and no Java sources remain. Behaviour, application IDs, signing, versioning, CI and the device
+matrices are unchanged from the Java edition.
+
+| Phase | State | Tickets |
+|---|---|---|
+| 0. Seed | done (TrekUI.Java 43 copied, links and CI/Pages pointed here, the final TrekUI.Java `main` merged in) | TUK-T2 |
+| 1. Build foundation (`build-logic`, ktlint, detekt, Compose plugin) | **not started; next** | TUK-T3 |
+| 2. `:core` to Kotlin | done | TUK-T4 |
+| 3. Companions to Kotlin (`:messages`, `:keyboard`, `:lockscreen`) | done | TUK-T5, TUK-T6, TUK-T7 |
+| 4. `:app` to Kotlin, unit tests and instrumented scenarios included | done | TUK-T8 |
+| 5. Compose | not started | TUK-T9 |
+| 6. Settings on DataStore, with the upgrade test | not started | TUK-T10 |
+| 7. Parity and release | not started | TUK-T11 |
+
+Next: phase 1 (the build foundation), then phase 5 (Compose), phase 6 (DataStore) and phase 7 (parity and
+release, shipped as the next whole-number version, 44 or later, over the Java edition).
+
 ## The bar (definition of done)
 
 - Every feature of the final TrekUI.Java release works the same or better: the five starship interfaces
