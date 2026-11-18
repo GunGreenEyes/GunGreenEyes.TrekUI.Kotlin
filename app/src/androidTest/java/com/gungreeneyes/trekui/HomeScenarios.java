@@ -73,7 +73,13 @@ public class HomeScenarios extends AppScenario {
             scenario.then("it holds the home role");
             assertTrue(scenario.lastStep() + ": still not default home, current " + currentHomePackage(), awaitDefaultHome(20000));
             // The role flag flips before Android re-routes the Home key; on a loaded device that takes many seconds.
-            awaitHomeResolvesHere(30000);
+            if (!awaitHomeResolvesHere(30000)) {
+                // Some Pixel emulator images (API 33/34) keep routing Home to Pixel Launcher after a dialog grant,
+                // although the role is held; re-applying the role through the shell makes them re-route.
+                Log.i(TAG, "role held but HOME still resolves to " + currentHomePackage() + "; re-applying by shell");
+                setHomeByShell(context.getPackageName(), new ComponentName(context, MainActivity.class));
+                awaitHomeResolvesHere(30000);
+            }
             scenario.and("pressing Home shows the TrekUI home screen");
             device.pressHome();
             boolean shown = device.wait(Until.hasObject(By.pkg(context.getPackageName()).depth(0)), 10000);
