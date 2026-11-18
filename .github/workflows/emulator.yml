@@ -105,7 +105,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api }}-${{ matrix.profile }}-google_apis-x86_64-v1
+          key: avd-${{ matrix.api }}-${{ matrix.profile }}-google_apis-x86_64-v2
 
       - name: Create AVD snapshot
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -116,6 +116,9 @@ jobs:
           arch: x86_64
           profile: ${{ matrix.profile }}
           disk-size: 6000M
+          ram-size: 4096M
+          heap-size: 576M
+          cores: 4
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
@@ -129,6 +132,9 @@ jobs:
           arch: x86_64
           profile: ${{ matrix.profile }}
           disk-size: 6000M
+          ram-size: 4096M
+          heap-size: 576M
+          cores: 4
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true

@@ -95,7 +95,7 @@ for dir in /sdcard/trekui-test /sdcard/Pictures/trekui /sdcard/Pictures/screensh
            "/sdcard/Android/media/${APP_ID}" "/sdcard/Android/media/${APP_ID}.test"; do
   if adb shell "[ -d '$dir' ]" >/dev/null 2>&1 && [ -n "$(adb shell ls "$dir" 2>/dev/null)" ]; then
     mkdir -p "$WORK/pull"
-    adb pull "$dir" "$WORK/pull/" >/dev/null 2>&1 || true
+    timeout 300 adb pull "$dir" "$WORK/pull/" >/dev/null 2>&1 || true
   fi
 done
 if [ -d "$WORK/pull" ]; then
@@ -133,7 +133,7 @@ endlog
 # ---- video: pull + stitch ---------------------------------------------------------------------------
 log "Collecting video"
 mkdir -p "$WORK/rec"
-adb pull /sdcard/trekui-rec "$WORK/rec/" >/dev/null 2>&1 || true
+timeout 300 adb pull /sdcard/trekui-rec "$WORK/rec/" >/dev/null 2>&1 || true
 mapfile -t parts < <(find "$WORK/rec" -name 'part-*.mp4' -size +10k | sort)
 if [ ${#parts[@]} -gt 0 ]; then
   if command -v ffmpeg >/dev/null 2>&1; then
@@ -148,7 +148,8 @@ fi
 endlog
 
 # ---- logcat for failures ----------------------------------------------------------------------------
-adb logcat -d -v time > "$WORK/logcat.txt" 2>/dev/null || true
+# timeout: with the emulator gone, adb logcat waits for a device forever (hung CI jobs to the 60 min limit)
+timeout 60 adb logcat -d -v time > "$WORK/logcat.txt" 2>/dev/null || true
 mkdir -p build/ci-logs && cp "$WORK/logcat.txt" "build/ci-logs/logcat-${RUN_ID}.txt" 2>/dev/null || true
 
 # ---- meta.json ------------------------------------------------------------------------------------------
