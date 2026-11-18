@@ -175,4 +175,10 @@ python3 .github/scripts/emulator-meta.py \
   --results app/build/outputs/androidTest-results/connected
 
 echo "Captured into $OUT_DIR:"; ls -la "$OUT_DIR"
+
+# Stop the emulator here: on some images its own shutdown hangs after "removeAll" and the runner action
+# waits for it until the job limit, even though every result is already saved.
+timeout 20 adb emu kill >/dev/null 2>&1 || true
+sleep 5
+pkill -9 -f qemu-system >/dev/null 2>&1 || true
 exit $TEST_RC
