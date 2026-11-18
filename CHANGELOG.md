@@ -4,6 +4,8 @@ This file records the notable changes to TrekUI Launcher. From 6 on, versions ar
 
 ## 44 (versionCode 44, 2026-11-18)
 
+**Highlights:** removed the Pipe Lounge interfaces, so TrekUI is starship consoles only, and a saved Pipe Lounge choice switches to COMMAND (LCA-T58). CONFIG now opens at once instead of freezing on slow phones (LCA-T60). Every one of the 24 local test devices and the 9 CI devices pass.
+
 - Log release 44 (LCA-T64)
 - Render the local emulator matrix on the host GPU by default: SwiftShader software rendering froze API 35/36 guests on the heaviest screens, and with the GPU the same devices pass every scenario (LCA-T63)
 - Run CI emulators offline too: the same Play-services post-boot churn that froze local API 34-36 guests also takes hosted emulators offline, and no scenario needs the network (LCA-T63)
@@ -28,10 +30,6 @@ This file records the notable changes to TrekUI Launcher. From 6 on, versions ar
 - Feed the project site from the newest release even when it is a pre-release, so the v43 screenshots and videos actually appear on the page (LCA-T53)
 - Let site visitors switch the page between the app's six COMMAND colour themes, remembered per visitor, so the site shows off the same looks the launcher offers (LCA-T53)
 - Point the README at version 43 and its ready-built release APKs, and give each app player-facing Play notes for 43 instead of commit subjects (LCA-T52)
-
-## 44 (Unreleased)
-
-- Removed the Pipe Lounge interfaces: TrekUI is now starship consoles only; a saved Pipe Lounge choice switches to COMMAND. (LCA-T58)
 
 ## 43 (versionCode 43, 2026-11-17)
 

@@ -1,1 +1,3 @@
-• Remove the Pipe Lounge interfaces from the code: TrekUI is a starship-console launcher only
+• Follows the launcher's starship interfaces and colour themes
+• Stability improvements
+• One purchase unlocks every TrekUI app
