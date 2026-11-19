@@ -1,6 +1,6 @@
 ---
 codex: 1
-project: TrekUI.Kotlin
+project: TrekUI
 code: TUK
 layer: stories
 status: living
@@ -8,7 +8,7 @@ updated: 2026-11-18
 ---
 <!-- GENERATED from MindAttic.Tickets/data/Tickets.db by `tickets db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the tickets CLI. -->
 
-# TrekUI.Kotlin — User Stories
+# TrekUI — User Stories
 > ✅ done (shipped & tested) · 🟡 partial · ⬜ planned. Every ✅ cites the test.
 
 ## Priority backlog
@@ -55,3 +55,4 @@ _Nothing recorded yet._
 | TUK-T32 | 2026-11-19 | feature | open | Suite follow-ups from LCA-T35: Quick Settings tiles + home-screen widget to switch Keyboard/Lock Screen/Messages on and off; app-theme and Quick Panel art for the six new COMMAND sub-themes (exports reuse the nearest original art today) | carried over from LCA-T39 (TrekUI.Java archived 2026-11-19) |
 | TUK-T33 | 2026-11-19 | fix | closed | Messages: tapping or long-pressing a conversation row does nothing, so threads can't be opened from the list (found while capturing Play screenshots on Android 16) | Android 16 emulator: tap opens ThreadActivity, long-press shows BLOCK/DELETE/MARK READ |
 | TUK-T34 | 2026-11-19 | chore | closed | Release 46: 12-hour trial in every build, Messages conversation rows open again, Play screenshots for all four apps; GitHub release, dist/46 | v46 published (15 assets), dist/46 committed |
+| TUK-T35 | 2026-11-19 | chore | closed | Rename TrekUI.Kotlin to TrekUI everywhere: GitHub repo, local folder, docs, Pages (with redirects), scripts, tickets and tooling | gh repo rename; gungreeneyes.github.io redirects |
