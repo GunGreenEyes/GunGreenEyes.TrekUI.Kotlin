@@ -23,7 +23,7 @@
         <error line="264" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/ConversationRowView.kt">
-        <error line="101" column="121" source="standard:max-line-length" />
+        <error line="103" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/messages/Images.kt">
         <error line="59" column="68" source="standard:statement-wrapping" />

@@ -59,7 +59,9 @@ internal class ConversationRowView(c: Context) : View(c) {
         avatarPaint.textSize = MessagesLook.px(c, 18f)
         avatarPaint.textAlign = Paint.Align.CENTER
         background = MessagesLook.touchArea(c, 8f)
-        isFocusable = true
+        // Not focusable: a focusable ListView row swallows the touch, so the list's item click and long
+        // click never fired and threads could not be opened (TUK-T33). The ListView itself handles key and
+        // accessibility focus for its rows.
     }
 
     fun bind(r: Row) {
