@@ -1,8 +1,12 @@
 # Builds the product site in site/ (node site/build.mjs -> site/_out) and deploys it to GitHub Pages.
 #
-# Media (screenshots, videos, test results) comes from:
+# Media (screenshots, videos, test results) comes from, first match wins:
 #   - called from release.yml: that run's capture-* artifacts (use-run-artifacts: true)
-#   - push to main / manual run: site-media.zip attached to the latest GitHub Release
+#   - manual run with release-media ticked: site-media.zip attached to the latest GitHub Release
+#   - otherwise (push to main, plain manual run): the hosted gallery. site/build.mjs reads
+#     <SITE_GFX_URL>/index.json (default https://mindattic.com/gungreeneyes/trekui/gfx; repository
+#     variable SITE_GFX_URL overrides it) and links the hosted screenshots. If that index cannot be
+#     fetched the build still succeeds and the gallery says it is unavailable.
 # Repository settings > Pages > Source must be "GitHub Actions".
 name: Pages
 
@@ -23,6 +27,11 @@ on:
       - 'fastlane/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
+    inputs:
+      release-media:
+        description: Use site-media.zip from the latest release instead of the hosted gallery
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -45,6 +54,7 @@ jobs:
           node-version: '22'
 
       - name: ffmpeg (thumbnails, video posters)
+        if: ${{ inputs.use-run-artifacts || inputs.release-media }}
         run: command -v ffmpeg >/dev/null || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
 
       - name: Media from this run
@@ -54,8 +64,8 @@ jobs:
           pattern: capture-*
           path: _capture
 
-      - name: Media from the latest release
-        if: ${{ !inputs.use-run-artifacts }}
+      - name: Media from the latest release (optional)
+        if: ${{ !inputs.use-run-artifacts && inputs.release-media }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -65,7 +75,7 @@ jobs:
           if [ -n "$tag" ] && gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern site-media.zip --dir _release 2>/dev/null; then
             unzip -q -o _release/site-media.zip -d assets
           else
-            echo "No release with site-media.zip yet; building with the media in the repository."
+            echo "No release with site-media.zip; building from the hosted gallery."
           fi
 
       - name: Arrange media into assets/
@@ -82,6 +92,7 @@ jobs:
       - name: Build site
         env:
           SITE_RELEASE_TAG: ${{ inputs.release-tag }}
+          SITE_GFX_URL: ${{ vars.SITE_GFX_URL }}
         run: node site/build.mjs
 
       - uses: actions/configure-pages@v6

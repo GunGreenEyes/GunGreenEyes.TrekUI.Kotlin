@@ -12,10 +12,31 @@ This repository is the Kotlin edition of [TrekUI.Java](https://github.com/GunGre
 
 TrekUI.Java's final release is **45**; after it the Java repository will be archived and kept for reference only. The remaining phases of the plan (Compose, DataStore, parity and release) are in [docs/KOTLIN_PORT.md](docs/KOTLIN_PORT.md).
 
+## Screenshots
+
+The launcher's five interfaces on a Pixel 7 phone, then a Pixel Fold (unfolded) and a Pixel Tablet, all on Android 17. Every screen is captured by the instrumented test suite.
+
+<table>
+  <tr>
+    <td align="center"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-COMMAND-command-home__pixel_7__api37__portrait.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-COMMAND-command-home__pixel_7__api37__portrait.webp" width="150" alt="Command home screen on a Pixel 7, Android 17 (portrait)"></a><br><sub>Command</sub></td>
+    <td align="center"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-IMPERIAL-imperial-home__pixel_7__api37__portrait.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-IMPERIAL-imperial-home__pixel_7__api37__portrait.webp" width="150" alt="Imperial home screen on a Pixel 7, Android 17 (portrait)"></a><br><sub>Imperial</sub></td>
+    <td align="center"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-COLLECTIVE-collective-home__pixel_7__api37__portrait.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-COLLECTIVE-collective-home__pixel_7__api37__portrait.webp" width="150" alt="Collective home screen on a Pixel 7, Android 17 (portrait)"></a><br><sub>Collective</sub></td>
+    <td align="center"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-CLASSIC_CONSOLE-classic_console-home__pixel_7__api37__portrait.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-CLASSIC_CONSOLE-classic_console-home__pixel_7__api37__portrait.webp" width="150" alt="Classic Console home screen on a Pixel 7, Android 17 (portrait)"></a><br><sub>Classic Console</sub></td>
+    <td align="center"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-NEXT_CONSOLE-next_console-home__pixel_7__api37__portrait.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_7-api37.0/InterfaceScenarios_interfaceRenders-NEXT_CONSOLE-next_console-home__pixel_7__api37__portrait.webp" width="150" alt="Next Console home screen on a Pixel 7, Android 17 (portrait)"></a><br><sub>Next Console</sub></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_fold-api37.0/InterfaceScenarios_interfaceRenders-COMMAND-command-home__pixel_fold__api37__landscape.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_fold-api37.0/InterfaceScenarios_interfaceRenders-COMMAND-command-home__pixel_fold__api37__landscape.webp" width="330" alt="Command home screen on an unfolded Pixel Fold, Android 17 (landscape)"></a><br><sub>Pixel Fold · Command</sub></td>
+    <td align="center" colspan="3"><a href="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_tablet-api37.0/InterfaceScenarios_interfaceRenders-IMPERIAL-imperial-home__pixel_tablet__api37__landscape.webp"><img src="https://mindattic.com/gungreeneyes/trekui/gfx/devices/pixel_tablet-api37.0/InterfaceScenarios_interfaceRenders-IMPERIAL-imperial-home__pixel_tablet__api37__landscape.webp" width="460" alt="Imperial home screen on a Pixel Tablet, Android 17 (landscape)"></a><br><sub>Pixel Tablet · Imperial</sub></td>
+  </tr>
+</table>
+
+More on the [project site's gallery](https://gungreeneyes.github.io/TrekUI.Kotlin/#gallery): every scenario on 27 emulators from Android 6.0 to 17. The full list of hosted screenshots is in the [gallery index](https://mindattic.com/gungreeneyes/trekui/gfx/index.json).
+
 ---
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [The four apps](#the-four-apps)
 - [Supported devices](#supported-devices)
 - [Install on a test device](#install-on-a-test-device)

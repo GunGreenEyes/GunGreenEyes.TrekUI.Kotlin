@@ -19,6 +19,15 @@
 //   fastlane/metadata/launcher/android/en-US/changelogs/<versionCode>.txt + fastlane/release-history.json
 //   version.properties, app/src/main/assets/fonts/Antonio.ttf, app/src/main/res/drawable/ic_launcher_fg.xml
 //
+//
+// Hosted gallery (remote mode): the device screenshots and store art are hosted at SITE_GFX_URL
+// (default https://mindattic.com/gungreeneyes/trekui/gfx; "off" disables it). The build reads
+// <SITE_GFX_URL>/index.json ({devices:[{folder, device, form, android, api, resolution, tests, files}],
+// store:{...}}) and, when assets/ holds no screenshots or videos, builds the gallery from it with
+// <img> tags pointing at the hosted files. Local media (CI captures, site-media.zip) still wins when
+// present. If the index cannot be fetched the build still succeeds and the gallery says so.
+// SITE_GFX_INDEX=<file> reads the index from a local file instead (URLs still use SITE_GFX_URL).
+//
 // Output: site/_out/{index,privacy,changelog,404}.html, style.css, app.js, fonts/, media/, data/index.json
 import fs from "node:fs";
 import path from "node:path";
@@ -38,6 +47,11 @@ const REPO_URL = `https://github.com/${REPO}`;
 const PACKAGE = "com.gungreeneyes.trekui";
 const PLAY_URL = `https://play.google.com/store/apps/details?id=${PACKAGE}`;
 const RELEASES_URL = `${REPO_URL}/releases/latest`;
+
+const GFX_DEFAULT = "https://mindattic.com/gungreeneyes/trekui/gfx";
+const GFX_URL = /^(off|none|false|0)$/i.test(process.env.SITE_GFX_URL || "")
+  ? null : (process.env.SITE_GFX_URL || GFX_DEFAULT).replace(/\/+$/, "");
+const GFX_TIMEOUT_MS = Number(process.env.SITE_GFX_TIMEOUT_MS) || 20000;
 
 const IMAGE_EXT = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 const VIDEO_EXT = new Set([".mp4", ".webm"]);
@@ -73,6 +87,12 @@ function imageSize(file) {
     const n = fs.readSync(fd, buf, 0, buf.length, 0);
     fs.closeSync(fd);
     if (buf.readUInt32BE(0) === 0x89504e47) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+    if (buf.toString("ascii", 0, 4) === "RIFF" && buf.toString("ascii", 8, 12) === "WEBP") {
+      const chunk = buf.toString("ascii", 12, 16);
+      if (chunk === "VP8X") return { w: 1 + buf.readUIntLE(24, 3), h: 1 + buf.readUIntLE(27, 3) };
+      if (chunk === "VP8L") { const v = buf.readUInt32LE(21); return { w: (v & 0x3fff) + 1, h: ((v >>> 14) & 0x3fff) + 1 }; }
+      if (chunk === "VP8 ") return { w: buf.readUInt16LE(26) & 0x3fff, h: buf.readUInt16LE(28) & 0x3fff };
+    }
     if (buf[0] === 0xff && buf[1] === 0xd8) {
       let i = 2;
       while (i < n - 9) {
@@ -225,12 +245,29 @@ function familyOf(device) {
   return "other";
 }
 
+/**
+ * Readable title for a capture scenario: "InterfaceScenarios_interfaceRenders-COMMAND-command-home" becomes
+ * "Command home", "HomeScenarios_launcherStartsAndShowsHome-home" becomes "Home"; a scenario without a step
+ * uses its test name ("Launcher starts and shows home").
+ */
+function scenarioTitle(scenario) {
+  const m = /^[A-Za-z0-9]+Scenarios?_([A-Za-z0-9]+)(?:-(.+))?$/.exec(scenario);
+  if (!m) return humanize(scenario);
+  const words = m[2]
+    ? m[2].split(/[-_\s]+/)
+    : m[1].replace(/([a-z0-9])([A-Z])/g, "$1 $2").split(/\s+/);
+  const seen = new Set();
+  const out = words.map((w) => w.toLowerCase()).filter((w) => w && !seen.has(w) && seen.add(w));
+  const text = out.join(" ");
+  return text ? text[0].toUpperCase() + text.slice(1) : humanize(scenario);
+}
+
 /** "<scenario>[-<step>]__<device>__api<N>__<orientation>.png" (MediaCapture) or any other name. */
 function parseShotName(file) {
   const base = file.replace(/\.[^.]+$/, "");
   const parts = base.split("__");
   if (parts.length >= 4 && /^api\d+$/.test(parts[parts.length - 2])) {
-    return { title: humanize(parts.slice(0, parts.length - 3).join(" ")), orientation: parts[parts.length - 1] };
+    return { title: scenarioTitle(parts.slice(0, parts.length - 3).join("__")), orientation: parts[parts.length - 1] };
   }
   const o = /(^|[-_])(landscape|portrait|land|port)([-_]|$)/i.exec(base);
   return { title: humanize(base), orientation: o ? (o[2].toLowerCase().startsWith("land") ? "landscape" : "portrait") : null };
@@ -329,10 +366,90 @@ function walk(dir) {
   return out;
 }
 
-function runLabel(r) {
+// -------------------------------------------------------------------------------- hosted gallery
+/** The hosted index.json (SITE_GFX_INDEX file or <GFX_URL>/index.json), or null with a reason. */
+async function loadGfxIndex() {
+  if (!GFX_URL) return { idx: null, error: "disabled (SITE_GFX_URL=off)" };
+  const where = process.env.SITE_GFX_INDEX ? path.resolve(process.env.SITE_GFX_INDEX) : `${GFX_URL}/index.json`;
+  try {
+    let idx;
+    if (process.env.SITE_GFX_INDEX) idx = JSON.parse(fs.readFileSync(where, "utf8"));
+    else {
+      const res = await fetch(where, { signal: AbortSignal.timeout(GFX_TIMEOUT_MS), headers: { accept: "application/json" } });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      idx = await res.json();
+    }
+    if (Array.isArray(idx)) idx = { devices: idx };
+    if (!idx || !Array.isArray(idx.devices)) throw new Error("no devices list");
+    if (!idx.devices.some((d) => d && Array.isArray(d.files) && d.files.length)) throw new Error("the index lists no screenshot files");
+    return { idx, error: null };
+  } catch (e) {
+    return { idx: null, error: `${where}: ${e.message || e}` };
+  }
+}
+
+const gfxUrl = (...parts) => `${GFX_URL}/${urlPath(...parts)}`;
+
+function prettyDevice(name) {
+  return String(name || "").replace(/_/g, " ").trim().split(/\s+/)
+    .map((w) => (/^xl$/i.test(w) ? "XL" : w ? w[0].toUpperCase() + w.slice(1) : w)).join(" ");
+}
+
+/** Pixel size of a hosted screenshot from the device resolution, its orientation and any resize step. */
+function remoteShotSize(file, resolution, orientation) {
+  const resize = /-resize-(\d+)x(\d+)__/.exec(file);
+  if (resize) return { w: Number(resize[1]), h: Number(resize[2]) };
+  const r = /^(\d+)x(\d+)$/.exec(String(resolution || ""));
+  if (!r) return null;
+  const [a, b] = [Number(r[1]), Number(r[2])];
+  const [lo, hi] = a < b ? [a, b] : [b, a];
+  return orientation === "landscape" ? { w: hi, h: lo } : { w: lo, h: hi };
+}
+
+/** Gallery runs built from the hosted index; every image URL points at the hosted files. */
+function remoteRuns(idx) {
+  const runs = [];
+  for (const d of idx.devices) {
+    if (!d || !d.folder || !Array.isArray(d.files)) continue;
+    const id = String(d.folder).replace(/^devices\//, "");
+    const m = /^(.*?)-api(\d+(?:\.\d+)?)(?:-(portrait|landscape))?$/.exec(id);
+    const api = d.api !== undefined && d.api !== "" ? Number.parseFloat(d.api) : m ? Number.parseFloat(m[2]) : null;
+    const family = familyOf(`${d.form || ""} ${d.device || id}`);
+    const deviceName = prettyDevice(d.device || (m ? m[1] : id));
+    const shots = d.files.filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase())).map((f) => {
+      const parsed = parseShotName(f);
+      const orientation = parsed.orientation === "landscape" ? "landscape" : "portrait";
+      const url = gfxUrl(d.folder, f);
+      return {
+        remote: true, rel: f, title: parsed.title, orientation, url, thumb: url,
+        size: remoteShotSize(f, d.resolution, orientation),
+      };
+    }).sort((a, b) => a.rel.localeCompare(b.rel, "en", { numeric: true }));
+    let tests = null;
+    const t = /^(\d+)\s*\/\s*(\d+)$/.exec(String(d.tests || ""));
+    if (t) tests = { total: Number(t[2]), passed: Number(t[1]), failed: Number(t[2]) - Number(t[1]), skipped: 0 };
+    const portraits = shots.filter((s) => s.orientation === "portrait").length;
+    runs.push({
+      id, device: String(d.device || id), api, family,
+      label: deviceName,
+      android: d.android ? String(d.android) : null,
+      orientation: (m && m[3]) || (portraits * 2 >= shots.length ? "portrait" : "landscape"),
+      profile: [d.resolution, d.density ? `${d.density} dpi` : "", d.aspect].filter(Boolean).join(" · "),
+      status: tests ? (tests.failed ? "failed" : "passed") : null, tests, cases: [],
+      generated: null, shots, videos: [],
+    });
+  }
+  const order = { phone: 0, foldable: 1, tablet: 2, other: 3, robolectric: 4 };
+  runs.sort((a, b) => (order[a.family] - order[b.family]) || ((a.api || 0) - (b.api || 0)) || a.id.localeCompare(b.id));
+  return runs;
+}
+
+function runLabel(r, orientation = r.orientation) {
+  r = { ...r, orientation };
   const fam = FAMILY_LABEL[r.family] || r.device;
   const parts = [fam];
   if (r.label) parts.push(r.label);
+  if (r.android) parts.push(`Android ${r.android}`);
   if (r.api) parts.push(`API ${r.api}`);
   if (r.family !== "robolectric") parts.push(r.orientation);
   return parts.join(" · ");
@@ -395,8 +512,11 @@ function themePicker() {
   return `<div class="themes" role="group" aria-label="Colour theme"><span class="label">Theme</span>${buttons}</div>`;
 }
 
+// Set by build(): which gallery source is in use, whether there are videos, and the hosted store art.
+const STATE = { gallery: "local", gfxError: null, hasVideo: true, storeIcon: null, storeFeatured: null };
+
 function page({ file, title, description, body, version }) {
-  const nav = NAV.map(([href, label, k]) => {
+  const nav = NAV.filter(([href]) => STATE.hasVideo || href !== "index.html#video").map(([href, label, k]) => {
     const current = href === file ? ' aria-current="page"' : "";
     const h = file === "index.html" && href.startsWith("index.html#") ? href.slice("index.html".length) : href;
     return `<a class="${k}" href="${h}"${current}>${label}</a>`;
@@ -413,7 +533,10 @@ function page({ file, title, description, body, version }) {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
-<link rel="icon" href="${favicon}">
+${STATE.storeIcon ? `<meta property="og:image" content="${esc(STATE.storeIcon)}">
+<meta name="twitter:card" content="summary">
+<link rel="apple-touch-icon" href="${esc(STATE.storeIcon)}">
+` : ""}<link rel="icon" href="${favicon}">
 <link rel="preload" href="fonts/Antonio.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="style.css">
 <script>try{var t=localStorage.getItem("trekui-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
@@ -492,6 +615,10 @@ const FEATURES = [
 
 function galleryHtml(runs) {
   const withShots = runs.filter((r) => r.shots.length);
+  if (!withShots.length && STATE.gallery === "unavailable") {
+    return `<p class="empty">The screenshot gallery is unavailable right now: the hosted screenshots could not be
+    loaded when this page was built. It returns with the next site build.</p>`;
+  }
   if (!withShots.length) {
     return `<p class="empty">No screenshots yet. Every release runs the launcher on emulators from Android 6 to the latest
     (phones, a tablet and a foldable, portrait and landscape) and publishes the captures here.</p>`;
@@ -509,7 +636,7 @@ function galleryHtml(runs) {
     const land = r.shots.every((s) => s.orientation === "landscape");
     const items = r.shots.map((s) => {
       const ar = s.size ? `--ar: ${s.size.w} / ${s.size.h}` : "";
-      const caption = `${s.title} — ${runLabel(r)}`;
+      const caption = `${s.title} — ${runLabel(r, s.orientation)}`;
       return `<li data-orient="${s.orientation}"><a href="${s.url}" data-full="${s.url}" data-caption="${esc(caption)}">` +
         `<img src="${s.thumb}" alt="${esc(caption)}" loading="lazy" decoding="async" style="${ar}"` +
         `${s.size ? ` width="${s.size.w}" height="${s.size.h}"` : ""}><span class="cap">${esc(s.title)}</span></a></li>`;
@@ -599,11 +726,21 @@ ${body}
 </tbody></table></div></details>`;
 }
 
+/** " from Android 6.0 to 17" over the runs that carry an Android version, or "". */
+function androidRange(runs) {
+  const v = runs.filter((r) => r.android && r.api).sort((a, b) => a.api - b.api);
+  if (!v.length) return "";
+  const lo = v[0].android, hi = v[v.length - 1].android;
+  return lo === hi ? ` running Android ${esc(lo)}` : ` from Android ${esc(lo)} to ${esc(hi)}`;
+}
+
 function indexPage(ctx) {
   const { runs, version } = ctx;
   const heroShots = runs.filter((r) => r.family === "phone").flatMap((r) => r.shots).filter((s) => s.orientation === "portrait");
   const pick = [...heroShots.filter((s) => /home/i.test(s.title)), ...heroShots].slice(0, 2);
-  const art = pick.length
+  const art = STATE.storeFeatured
+    ? `<img class="featured" src="${esc(STATE.storeFeatured)}" alt="TrekUI feature graphic: curved orange, lavender and blue console panels framing a starship schematic" width="1774" height="887" fetchpriority="high">`
+    : pick.length
     ? pick.map((s) => `<img src="${s.thumb}" alt="${esc(s.title)} screenshot" width="${s.size?.w || ""}" height="${s.size?.h || ""}">`).join("")
     : iconSvg("hero-icon", "TrekUI Launcher: an orange elbow frame with lavender, pink and blue data readouts");
   const families = FAMILIES.map((f) => `<div class="family">
@@ -643,11 +780,13 @@ ${section("features", "Systems", "blue", "47-1138", `<ul class="features">
 ${FEATURES.map(([h, t]) => `  <li><strong>${esc(h)}</strong>${esc(t)}</li>`).join("\n")}
 </ul>`)}
 
-${section("gallery", "Gallery", "lavender", apis.length ? `API ${apis[0]}–${apis[apis.length - 1]}` : "", `<p class="lede">Captured automatically by CI on Android emulators for every release, grouped by device, Android version and orientation. Select a screenshot to enlarge it; use the arrow keys or swipe to move through them.</p>
+${section("gallery", "Gallery", "lavender", apis.length ? `API ${apis[0]}–${apis[apis.length - 1]}` : "", `<p class="lede">${STATE.gallery === "remote"
+    ? `Captured by the instrumented test suite on ${runs.filter((r) => r.shots.length).length} Android emulators${androidRange(runs)}: phones, tablets and foldables, grouped by device, Android version and orientation.`
+    : "Captured automatically by CI on Android emulators for every release, grouped by device, Android version and orientation."} Select a screenshot to enlarge it; use the arrow keys or swipe to move through them.</p>
 ${galleryHtml(runs)}`)}
-
+${STATE.hasVideo ? `
 ${section("video", "Video", "pink", "", `<p class="lede">Screen recordings of the instrumented test runs.</p>
-${videoHtml(runs)}`)}
+${videoHtml(runs)}`)}` : ""}
 
 ${section("diagnostics", "Diagnostics", "green", "", `<p class="lede">Results of the instrumented test suite on each emulator in the release matrix.</p>
 ${diagnosticsHtml(runs)}`)}
@@ -711,13 +850,36 @@ function notFoundPage(ctx) {
 }
 
 // ------------------------------------------------------------------------------------------- build
-function build() {
+async function build() {
   const t0 = Date.now();
   rmrf(OUT);
   mkdirp(OUT);
   const version = properties(readText(path.join(ROOT, "version.properties")));
-  const { runs, rawIndex } = collectRuns();
-  publishMedia(runs);
+  const local = collectRuns();
+  const localMedia = local.runs.some((r) => r.shots.length || r.videos.length);
+  // The hosted index supplies the store art always and the gallery when there is no local media.
+  const { idx: gfx, error: gfxError } = await loadGfxIndex();
+  if (gfx) {
+    const store = gfx.store || {};
+    if ("icon.png" in store) STATE.storeIcon = gfxUrl("store", "icon.png");
+    if ("featured.png" in store) STATE.storeFeatured = gfxUrl("store", "featured.png");
+  }
+  let runs, rawIndex;
+  if (localMedia) {
+    ({ runs, rawIndex } = local);
+    publishMedia(runs);
+    STATE.gallery = "local";
+  } else if (gfx) {
+    runs = remoteRuns(gfx);
+    rawIndex = gfx;
+    STATE.gallery = "remote";
+  } else {
+    ({ runs, rawIndex } = local);
+    STATE.gallery = GFX_URL ? "unavailable" : "local";
+  }
+  STATE.gfxError = gfxError;
+  STATE.hasVideo = STATE.gallery === "local" ? true : runs.some((r) => r.videos.length);
+  if (gfxError) console.warn(`Hosted gallery unavailable (${gfxError})${localMedia ? "; using local media" : "; the gallery says so"}.`);
   const ctx = { runs, version };
 
   fs.writeFileSync(path.join(OUT, "index.html"), indexPage(ctx));
@@ -736,8 +898,10 @@ function build() {
     version: version.versionName || null,
     versionCode: Number(version.versionCode) || null,
     release: process.env.SITE_RELEASE_TAG || null,
+    gallery: STATE.gallery,
+    gfx: GFX_URL,
     runs: runs.map((r) => ({
-      id: r.id, device: r.device, family: r.family, api: r.api, orientation: r.orientation, profile: r.profile,
+      id: r.id, device: r.device, family: r.family, api: r.api, android: r.android || null, orientation: r.orientation, profile: r.profile,
       status: r.status, tests: r.tests, cases: r.cases,
       screenshots: r.shots.map((s) => ({ url: s.url, thumb: s.thumb, title: s.title, orientation: s.orientation, width: s.size?.w, height: s.size?.h })),
       videos: r.videos.map((v) => ({ url: v.url, poster: v.poster, title: v.title })),
@@ -749,7 +913,7 @@ function build() {
 
   const shots = runs.reduce((a, r) => a + r.shots.length, 0);
   const vids = runs.reduce((a, r) => a + r.videos.length, 0);
-  console.log(`site/_out: ${runs.length} runs, ${shots} screenshots, ${vids} videos` +
+  console.log(`site/_out (${STATE.gallery === "remote" ? `hosted gallery ${GFX_URL}` : STATE.gallery === "unavailable" ? "gallery unavailable" : "local media"}): ${runs.length} runs, ${shots} screenshots, ${vids} videos` +
     ` (thumbnails: ${tools.ffmpeg ? "ffmpeg" : tools.magick ? "ImageMagick" : "none, full-size images"}) in ${Date.now() - t0} ms`);
 }
 
@@ -769,5 +933,5 @@ function serve(port = 8080) {
   }).listen(port, "127.0.0.1", () => console.log(`Serving site/_out on http://localhost:${port}/ (Ctrl+C to stop)`));
 }
 
-build();
+await build();
 if (process.argv.includes("--serve")) serve(Number(process.env.PORT) || 8080);
