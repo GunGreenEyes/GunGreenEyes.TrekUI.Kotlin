@@ -110,7 +110,7 @@ manifest and one sound and checks their SHA-256. On HTTP 403 it adds a minimal `
 access, `AddType audio/ogg .ogg`, `application/json .json`). The site's Apache serves the folder as it
 is, so none has been needed so far.
 
-Both editions (TrekUI.Kotlin and TrekUI.Java) read the same channel and bundle the same synthesized set, so one
+Both editions (TrekUI and TrekUI.Java) read the same channel and bundle the same synthesized set, so one
 publish from either repo serves both; the script is identical in each.
 
 **Hot-fix a sound:** regenerate or replace the file (for a synthesized sound, edit `make_synth.py` and

@@ -8,7 +8,7 @@ This is a step-by-step list for publishing **TrekUI Launcher** (`com.gungreeneye
 
 If any of those change, re-check the matching section here.
 
-> **From release 45 on, Play uploads come from this repository**, replacing TrekUI.Java with the same application IDs and signing key, so they install over the Java edition as ordinary updates. The privacy policy URL is <https://gungreeneyes.github.io/TrekUI.Kotlin/privacy.html>, and `scripts/release/setup-owner.ps1` is run here.
+> **From release 45 on, Play uploads come from this repository**, replacing TrekUI.Java with the same application IDs and signing key, so they install over the Java edition as ordinary updates. The privacy policy URL is <https://gungreeneyes.github.io/TrekUI/privacy.html>, and `scripts/release/setup-owner.ps1` is run here.
 
 > Play Console wording moves around. The section names below were current when this was written. If a question isn't covered here, answer it from what the app does: it keeps everything on the device, and its only network traffic is the requests the user turns on.
 
@@ -65,7 +65,7 @@ Also:
 
 ### Privacy policy
 
-- [ ] URL: **<https://gungreeneyes.github.io/TrekUI.Kotlin/privacy.html>**, published by `pages.yml` from [PRIVACY.md](../PRIVACY.md). Check that the link works before you submit. If the site has not published it yet, the GitHub URL of `PRIVACY.md` also works: <https://github.com/GunGreenEyes/TrekUI.Kotlin/blob/main/PRIVACY.md>.
+- [ ] URL: **<https://gungreeneyes.github.io/TrekUI/privacy.html>**, published by `pages.yml` from [PRIVACY.md](../PRIVACY.md). Check that the link works before you submit. If the site has not published it yet, the GitHub URL of `PRIVACY.md` also works: <https://github.com/GunGreenEyes/TrekUI/blob/main/PRIVACY.md>.
 
 ### Ads
 
@@ -225,7 +225,7 @@ The listing text lives in `fastlane/metadata/<app>/android/en-US/` (the launcher
 | Category | **Personalization** |
 | Tags | Launcher, Home screen, Theme, Customization |
 | Contact email | a project email, required and shown publicly |
-| Website | <https://gungreeneyes.github.io/TrekUI.Kotlin/> |
+| Website | <https://gungreeneyes.github.io/TrekUI/> |
 
 ## 6. Pricing and distribution
 

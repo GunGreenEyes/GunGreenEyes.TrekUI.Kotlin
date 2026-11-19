@@ -19,7 +19,7 @@
 $ErrorActionPreference = "Stop"
 $Root = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Set-Location $Root
-$Repo = "GunGreenEyes/TrekUI.Kotlin"
+$Repo = "GunGreenEyes/TrekUI"
 $Alias = "trekui-upload"
 $StoreRel = "signing/trekui-upload.jks"
 $Store = Join-Path $Root $StoreRel

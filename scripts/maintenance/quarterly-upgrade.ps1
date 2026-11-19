@@ -49,7 +49,7 @@ if (-not $DryRun) { try { Start-Transcript -Path $logPath -Append | Out-Null } c
 
 if (-not $RepoDirs -or $RepoDirs.Count -eq 0) {
     $parent = Split-Path (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path -Parent
-    $RepoDirs = @('TrekUI.Java', 'TrekUI.Kotlin') | ForEach-Object { Join-Path $parent $_ } | Where-Object { Test-Path (Join-Path $_ 'settings.gradle.kts') }
+    $RepoDirs = @('TrekUI.Java', 'TrekUI') | ForEach-Object { Join-Path $parent $_ } | Where-Object { Test-Path (Join-Path $_ 'settings.gradle.kts') }
 }
 
 # ---- newest stable releases ----------------------------------------------------------------------
@@ -185,7 +185,7 @@ $common
 $started = @()
 foreach ($dir in $RepoDirs) {
     $name = Split-Path $dir -Leaf
-    # A retired edition (archived on GitHub, e.g. TrekUI.Java once TrekUI.Kotlin replaced it) gets no
+    # A retired edition (archived on GitHub, e.g. TrekUI.Java once TrekUI replaced it) gets no
     # upgrade tickets, even while its folder stays on disk for reference.
     if (Get-Command gh -ErrorAction SilentlyContinue) {
         $archived = gh repo view "GunGreenEyes/$name" --json isArchived --jq .isArchived 2>$null

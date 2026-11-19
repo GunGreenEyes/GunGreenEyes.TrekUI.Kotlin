@@ -32,7 +32,7 @@ $xml = @"
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Quarterly: checks the TrekUI editions (TrekUI.Kotlin; TrekUI.Java until it is archived) against the newest stable Android API, Kotlin, AGP and Gradle; files upgrade tickets and starts a CLI to implement them (scripts/maintenance/quarterly-upgrade.ps1).</Description>
+    <Description>Quarterly: checks the TrekUI editions (TrekUI; TrekUI.Java until it is archived) against the newest stable Android API, Kotlin, AGP and Gradle; files upgrade tickets and starts a CLI to implement them (scripts/maintenance/quarterly-upgrade.ps1).</Description>
   </RegistrationInfo>
   <Triggers>
     <CalendarTrigger>

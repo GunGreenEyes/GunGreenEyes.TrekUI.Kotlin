@@ -133,7 +133,7 @@ assets/
   <device>-api<N>/             one folder per emulator run: PNGs, MP4, meta.json
 ```
 
-The root `assets/` folder is gitignored, apart from its index file. CI uploads the media as artifacts, bundles it into `site-media.zip` on each GitHub Release, and the Pages workflow publishes it at <https://gungreeneyes.github.io/TrekUI.Kotlin/>.
+The root `assets/` folder is gitignored, apart from its index file. CI uploads the media as artifacts, bundles it into `site-media.zip` on each GitHub Release, and the Pages workflow publishes it at <https://gungreeneyes.github.io/TrekUI/>.
 
 ## Manual checklist before a release
 

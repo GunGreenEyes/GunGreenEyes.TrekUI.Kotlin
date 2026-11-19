@@ -40,7 +40,7 @@ Each item is queued once; re-running is harmless. To run the watch now: **Action
 On top of the weekly watch, a Windows scheduled task, **TrekUI quarterly upgrade**, makes sure upgrades actually get done. It runs on the **1st of January, April, July and October at 03:00**, wakes the PC if needed, and runs at the next chance if the PC was off. It runs `scripts/maintenance/quarterly-upgrade.ps1`, which:
 
 1. reads the newest stable releases: Android API level (Google's SDK repository, minor releases such as `android-37.2` count as their API level, betas and canaries don't), Kotlin (Maven Central), AGP (Google Maven) and Gradle (services.gradle.org);
-2. reads what TrekUI.Java and TrekUI.Kotlin are on (compileSdk, `agp` in the version catalog, the Gradle wrapper, and for Kotlin sources the Kotlin version: the catalog pin, or the release last checked when the build uses AGP's built-in Kotlin);
+2. reads what TrekUI.Java and TrekUI are on (compileSdk, `agp` in the version catalog, the Gradle wrapper, and for Kotlin sources the Kotlin version: the catalog pin, or the release last checked when the build uses AGP's built-in Kotlin);
 3. files one ticket per newer release and repo, with the upgrade steps in its note (filed once; state in `%LOCALAPPDATA%\TrekUI\quarterly-upgrade.json`);
 4. opens a CLI in each repo that got tickets (`orchestrator start <repo> --prompt ...`) to implement them on main, with lint and unit tests as the check. When Orchestrator isn't there the tickets wait for `/allocate`.
 
@@ -49,14 +49,14 @@ An edition whose repository is archived on GitHub is skipped, so TrekUI.Java get
 minSdk is never changed by the job: it stays at 23.
 
 ```powershell
-scripts/maintenance/register-quarterly-task.ps1            # register once per machine, from TrekUI.Kotlin
+scripts/maintenance/register-quarterly-task.ps1            # register once per machine, from TrekUI
 scripts/maintenance/quarterly-upgrade.ps1 -DryRun          # what would be filed, nothing written
 Start-ScheduledTask -TaskName 'TrekUI quarterly upgrade'   # run it now
 ```
 
 The log is `%LOCALAPPDATA%\TrekUI\quarterly-upgrade.log`.
 
-Both scheduled tasks, **TrekUI quarterly upgrade** and the weekly **TrekUI upgrade queue** (`register-upgrade-task.ps1`), are registered from the TrekUI.Kotlin repository.
+Both scheduled tasks, **TrekUI quarterly upgrade** and the weekly **TrekUI upgrade queue** (`register-upgrade-task.ps1`), are registered from the TrekUI repository.
 
 ## Doing an Android API upgrade
 

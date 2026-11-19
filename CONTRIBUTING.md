@@ -5,7 +5,7 @@ Thanks for helping with TrekUI, the Kotlin edition of the TrekUI suite (see [REA
 ## Getting set up
 
 ```sh
-git clone https://github.com/GunGreenEyes/TrekUI.Kotlin && cd TrekUI.Kotlin
+git clone https://github.com/GunGreenEyes/TrekUI && cd TrekUI
 powershell -ExecutionPolicy Bypass -File scripts\setup.ps1     # Windows
 bash scripts/setup.sh                                         # macOS / Linux / Termux
 ```

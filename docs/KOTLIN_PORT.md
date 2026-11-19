@@ -1,6 +1,6 @@
-# TrekUI Kotlin edition: port plan
+# TrekUI (the Kotlin edition): port plan
 
-TrekUI.Kotlin rebuilds the TrekUI suite (Launcher, Messages, Keyboard, Lock Screen and the shared `:core`)
+TrekUI (this repository, named TrekUI.Kotlin until 2026-11-19) rebuilds the TrekUI suite (Launcher, Messages, Keyboard, Lock Screen and the shared `:core`)
 in modern Kotlin and Jetpack Compose, starting from TrekUI.Java (the five starship interfaces only; the retired painted-scene
 interfaces removed in 44). From release 45 it is the maintained edition and
 replaces the Java edition on Google Play as an ordinary update; TrekUI.Java's final release is 45, after which it is archived: **same application IDs, same signing key,
