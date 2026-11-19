@@ -428,5 +428,7 @@ jobs:
       id-token: write
     uses: ./.github/workflows/pages.yml
     with:
-      use-run-artifacts: true
+      # The site's gallery is the owner-hosted 27-device set on mindattic.com (gfx/index.json); this run's
+      # 11-device CI captures would replace it, so a release only refreshes the version on the site.
+      use-run-artifacts: false
       release-tag: ${{ needs.build.outputs.tag }}
