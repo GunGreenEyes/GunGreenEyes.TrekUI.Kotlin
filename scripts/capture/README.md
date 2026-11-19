@@ -27,7 +27,7 @@ powershell -ExecutionPolicy Bypass -File scripts/capture/run-matrix.ps1 -Only '^
 ```
 
 Per row (`run-one.ps1`): cold boot headless (`-no-window -no-audio -no-boot-anim -no-snapshot
--wipe-data -gpu auto`, i.e. the host GPU when there is one; pass `-Gpu swiftshader_indirect` to force software rendering) -> wait for boot -> animations off, stay awake, Wi-Fi and mobile data off -> install the
+-wipe-data -gpu host`, i.e. the host GPU when there is one; pass `-Gpu swiftshader_indirect` to force software rendering) -> wait for boot -> animations off, stay awake, Wi-Fi and mobile data off -> install the
 develop debug APK + androidTest APK -> `am instrument` per test class and per interface (a crash only
 loses that slice) -> pull `/sdcard/trekui-test` -> logcat + crash buffer -> `junit.xml`, `result.json`
 -> `emu kill` and delete the AVD's user data. Finally `build-index.ps1` writes `assets/index.json`.

@@ -25,7 +25,7 @@ param(
     [int]$Parallel = 3,
     [switch]$SkipBuild,
     [string]$TestFilter = '',
-    [string]$Gpu = 'auto',   # host GPU when present; software SwiftShader froze API 35/36 guests on heavy screens
+    [string]$Gpu = 'host',   # the real GPU, forced: 'auto' can fall back to software SwiftShader (seen under Remote Desktop), which froze API 33-36 guests on the COLLECTIVE screens
     [string]$SdkRoot = $(if ($env:ANDROID_SDK_ROOT) { $env:ANDROID_SDK_ROOT } else { 'D:\Android\Sdk' }),
     [string]$Matrix = '',
     [string]$AssetsDir = '',
