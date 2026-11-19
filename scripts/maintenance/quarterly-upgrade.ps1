@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Quarterly platform check for both TrekUI editions: finds newer stable Android API levels, Kotlin,
+  Quarterly platform check for TrekUI: finds newer stable Android API levels, Kotlin,
   Android Gradle Plugin and Gradle releases, files one upgrade ticket per repo and finding, and starts
   a CLI on each repo that got new tickets to implement them.
 
@@ -49,7 +49,7 @@ if (-not $DryRun) { try { Start-Transcript -Path $logPath -Append | Out-Null } c
 
 if (-not $RepoDirs -or $RepoDirs.Count -eq 0) {
     $parent = Split-Path (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path -Parent
-    $RepoDirs = @('TrekUI.Java', 'TrekUI') | ForEach-Object { Join-Path $parent $_ } | Where-Object { Test-Path (Join-Path $_ 'settings.gradle.kts') }
+    $RepoDirs = @('TrekUI') | ForEach-Object { Join-Path $parent $_ } | Where-Object { Test-Path (Join-Path $_ 'settings.gradle.kts') }
 }
 
 # ---- newest stable releases ----------------------------------------------------------------------

@@ -56,3 +56,5 @@ _Nothing recorded yet._
 | TUK-T33 | 2026-11-19 | fix | closed | Messages: tapping or long-pressing a conversation row does nothing, so threads can't be opened from the list (found while capturing Play screenshots on Android 16) | Android 16 emulator: tap opens ThreadActivity, long-press shows BLOCK/DELETE/MARK READ |
 | TUK-T34 | 2026-11-19 | chore | closed | Release 46: 12-hour trial in every build, Messages conversation rows open again, Play screenshots for all four apps; GitHub release, dist/46 | v46 published (15 assets), dist/46 committed |
 | TUK-T35 | 2026-11-19 | chore | closed | Rename TrekUI.Kotlin to TrekUI everywhere: GitHub repo, local folder, docs, Pages (with redirects), scripts, tickets and tooling | gh repo rename; gungreeneyes.github.io redirects |
+| TUK-T36 | 2026-11-19 | chore | open | Rename the archived TrekUI.Java repo to TrekUI.Old (GitHub, local folder, tickets, references) | — |
+| TUK-T37 | 2026-11-19 | chore | closed | Retire TrekUI.Java on GitHub: rename to TrekUI.Java.Archive, drop the wip topic, make it private, re-archive | gh: TrekUI.Java.Archive private+archived; wip on all other repos |
