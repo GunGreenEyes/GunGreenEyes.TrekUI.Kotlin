@@ -2,6 +2,40 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
+## 45 (versionCode 45, 2026-11-19)
+
+- Close the 2016-floor tickets: both editions pass all 31 scenarios on all 27 local devices (Android 6.0 to 17) and all 11 CI devices (TUK-T19)
+- Play screenshots for the launcher listing: 8 phone (Pixel 7), 8 foldable (Pixel Fold) and 8 ten-inch (Pixel Tablet) from the Android 17 device run; the picker now leads with each interface's home screen, then the drawer and settings, prefers the 10-inch tablet, and skips system dialogs (TUK-T22)
+- Local emulator matrix forces the real GPU (-gpu host): 'auto' fell back to software SwiftShader on this machine (under Remote Desktop) and every API 33-35 tall phone's emulator froze on the COLLECTIVE screens, with old and new builds alike; with host rendering the same tests pass (TUK-T19)
+- Close TUK-T23 (TUK-T23)
+- The franchise name and the console trademark word appear nowhere in the source: drop the three alternate sound sources whose addresses carry them (49 alternates, every sound keeps its main source), exclude them in the sound tools by site key, and remove them from the docs (TUK-T23)
+- Close TUK-T21: the sound update channel is live on mindattic.com and tested (TUK-T21)
+- publish-sfx.py: uploads only allowlisted owned audio (synth set, tools/sounds/owned) over FTPS and verifies it over HTTPS, so third-party show recordings can never reach the server (TUK-T21)
+- Sound update channel: the launcher checks mindattic.com for the project's own sounds (at most daily and when settings open, HTTPS, size caps, sha256-verified, silent fallback), so an owned sound can be fixed or added without an app update; redirects are followed only to https on mindattic.com (TUK-T21)
+- Owner's store art (tools/art/store/icon.png, featured.png) is every listing's Play icon and feature graphic, fitted to 512x512 and 1024x500; make-store-art.py prefers it over the generated placeholders (TUK-T22)
+- Play art for all four listings: make-store-art.py draws each app's 512 px icon and 1024x500 feature graphic from its own adaptive-icon foreground (Messages, Keyboard and Lock Screen had none), and finds Antonio in :core where the fonts moved (TUK-T22)
+- Close TUK-T20: product text says Federation, Empire and Collective (TUK-T20)
+- Sound library says Federation, Empire and Collective: the owner's naming rule now covers the downloadable sound ids, titles, docs and sound tools, and existing downloads and sound picks carry over (TUK-T20)
+- Keep APKs and AABs under dist/ in the repo (the *.apk/*.aab ignore rules now except dist/), adding the 44 builds (TUK-T19)
+- dist/ is committed with one folder per version (./gradlew dist writes dist/<version>/), so every released APK stays downloadable from the repo; adds the 44 build (TUK-T19)
+- Bring the docs up to date for release 45: this edition is now the maintained one (Java's final release is 45), the Android 6.0-7.1 feature limits, committed per-version dist/ folders, the quarterly upgrade task hosted here, the old-device test harness and CI matrix, and the port status (TUK-T19)
+- Drawer app shortcuts move into an API-25 object: Kotlin compiled the shortcut lambda into a DrawerView method taking ShortcutInfo, which Android 6.0-7.0 lack, so any reflection over DrawerView (the device-test hooks) threw NoClassDefFoundError and 9 drawer scenarios failed on CI's API 23 (TUK-T14)
+- Device tests on Android 6.0-7.1: press TrekUI's radio in Settings > Home (the title block swallows the tap) and skip screenrecord before 8.0, where a command that cannot start kills the instrumentation; HomeScenarios passes on the local API 23 emulator (TUK-T14)
+- Quarterly upgrade job skips editions archived on GitHub, so TrekUI.Java gets no upgrade tickets once retired even while its folder stays on disk; the scheduled tasks now run from this repo (TUK-T17)
+- HomeScenarios: no shell home-app fallback before Android 7.0 - API 23 has no `cmd` binary and UiAutomation running a missing binary kills the whole instrumentation (TUK-T14)
+- Fix the launcher's native crash on Android 6.0: ART on API 23 segfaults in compiled code that reads ApplicationInfo.category (an API 26 field) even behind an SDK_INT check, so the read moves into a nested API-26 object that only loads on 8.0+ (TUK-T16)
+- Close TUK-T15: the quarterly upgrade task is in this repo and documented (TUK-T15)
+- Document the quarterly upgrade task in this repo too: when it runs, what it checks, where its tickets, state and log go, and how to register, dry-run or start it (TUK-T15)
+- Test and document the 2016 floor: Android 6.0/7.0/7.1 phones in the AVD matrix and CI, and every doc, site chip and workflow says Android 6.0+ (TUK-T14)
+- Messages, Keyboard, Lock Screen: pre-channel notifications, an app-own block list and a bouncer-backed unlock so the companions work on Android 6.0-7.1 without weakening the device PIN (TUK-T14)
+- Launcher: guard every API newer than 23 so Android 6.0-7.1 phones get a working fallback instead of a crash - QS tiles and app shortcuts only where the platform has them, one shared wallpaper, settings and badge fallbacks, plain map code instead of Java 8 default methods (TUK-T14)
+- Lower minSdk to 23 so TrekUI installs on every phone from 2016 on: PNG launcher icons for Android 6.0-7.1, which cannot show adaptive icons, and a shared Compat with API 23-25 fallbacks for variable fonts, the animator scale, the boot count, PCM encoding and Content-Length (TUK-T14)
+- Quarterly platform job, same as TrekUI.Java's: on the 1st of Jan/Apr/Jul/Oct at 03:00 it checks both editions against the newest stable Android API, Kotlin, AGP and Gradle, files upgrade tickets and starts a CLI to implement them, so either repo's copy can register it (TUK-T15)
+- Close TUK-T3: the build foundation is in, with identical outputs (TUK-T3)
+- Document the build-logic layout and the ktlint/detekt checks and baselines, so contributors change shared build settings in one place and know how style findings are judged (TUK-T3)
+- Move the shared module setup into build-logic convention plugins and check style with ktlint and detekt, so the four apps cannot drift apart and new code is held to one style (TUK-T3)
+- Update the Kotlin port status: version 44 parity build verified by unit tests and CI, test pre-release published (TUK-T11)
+
 ## Unreleased (Kotlin edition)
 
 - The whole suite is now Kotlin: `:core` (TUK-T4), Messages (TUK-T5), Keyboard (TUK-T6), Lock Screen (TUK-T7) and the launcher (TUK-T8) were converted from TrekUI.Java with no behaviour change, and every unit test and instrumented scenario was converted with them. No Java sources remain. The application IDs, signing, `trekui_unlock` product, stored settings and version numbering are the same, so the Kotlin edition will install over the Java edition as a normal update.
