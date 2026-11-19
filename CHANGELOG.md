@@ -2,6 +2,18 @@
 
 This file records the notable changes to TrekUI Launcher. From 6 on, versions are whole numbers (6, 7, 8, ...); `versionCode` is a separate integer that rises every release. Both live in `version.properties`. Versions before 6.2 were earlier private builds; their entries below are summaries.
 
+## 46 (versionCode 46, 2026-11-19)
+
+- File the release 46 ticket (TUK-T34)
+- Close TUK-T33 (TUK-T33)
+- Messages: conversation rows open again - a focusable row swallowed the touch, so the list's tap (open thread) and long-press (block/delete/mark read) never fired; verified on an Android 16 emulator (TUK-T33)
+- Play phone screenshots for Messages, Keyboard and Lock Screen: real console UI captures replace the wrong ones, padded to 1:1.95 for Play (TUK-T22)
+- Take over TrekUI.Java's open backlog as TUK-T25..TUK-T32 now that the Java edition is archived (TUK-T17)
+- dist/45: the signed release 45 APKs and AABs (upload key 3B:02:BB...), built from the v45 tag's code (TUK-T19)
+- Close TUK-T24 (TUK-T24)
+- Free trial lasts 12 hours (720 minutes) in every build - was 24 hours in production and 5 minutes in the develop test builds - with the docs, store descriptions and trial-testing steps (debug hooks instead of waiting) updated to match (TUK-T24)
+- Pages show the device screenshots hosted on mindattic.com: build.mjs reads the hosted gfx index.json and links its 27-device gallery, store feature graphic and icon when no local capture media is present, release site-media.zip becomes opt-in, and the README gets a screenshot grid (TUK-T19)
+
 ## 45 (versionCode 45, 2026-11-19)
 
 - Close the 2016-floor tickets: both editions pass all 31 scenarios on all 27 local devices (Android 6.0 to 17) and all 11 CI devices (TUK-T19)
