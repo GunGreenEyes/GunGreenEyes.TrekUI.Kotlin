@@ -9,6 +9,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -21,7 +22,7 @@ import java.util.concurrent.Executors
  * The preferences are copied on the calling thread (they are in memory) so the snapshot is exactly
  * the state before the change that follows; the file write runs on one background thread, in order.
  * A snapshot identical to the newest one is not written again, so switching back and forth doesn't
- * push older layouts out. File names carry the time and reason (`20261117-153012-345_import.json`),
+ * push older layouts out. File names carry the UTC time and reason (`20261117-153012-345Z_import.json`),
  * so the list is built without opening the files; rotation and name parsing are pure and unit-tested.
  */
 internal object LayoutSnapshots {
@@ -53,6 +54,7 @@ internal object LayoutSnapshots {
 
     private const val STAMP = "yyyyMMdd-HHmmss-SSS"
     private const val EXT = ".json"
+    private const val UTC_MARK = 'Z'
     private val IO: ExecutorService = Executors.newSingleThreadExecutor { r ->
         Thread(r, "layout-snapshots").apply { isDaemon = true }
     }
@@ -77,34 +79,48 @@ internal object LayoutSnapshots {
 
     // ---- pure helpers (unit-tested) -----------------------------------------------------------------
 
-    /** File name for a snapshot taken at `time` for `reason`. Sorts chronologically. */
+    /**
+     * File name for a snapshot taken at `time` for `reason`: the UTC stamp plus `Z`
+     * (`20261117-153012-345Z_import.json`), so names never go backwards on a DST or time-zone change.
+     * Older builds wrote local-time stamps without the `Z`; [parse] still reads those.
+     */
     @JvmStatic
     fun fileName(time: Long, reason: String): String =
-        SimpleDateFormat(STAMP, Locale.US).format(Date(time)) + "_" + reason + EXT
+        stampFormat(utc = true).format(Date(time)) + UTC_MARK + "_" + reason + EXT
 
-    /** Parses a snapshot file name; null when it isn't one. */
+    /** Parses a snapshot file name (UTC `…Z_` or legacy local-time `…_`); null when it isn't one. */
     @JvmStatic
     fun parse(file: File): Entry? {
         val name = file.name
         if (!name.endsWith(EXT)) return null
         val sep = name.indexOf('_')
-        if (sep != STAMP.length) return null
+        val utc = sep == STAMP.length + 1 && name[STAMP.length] == UTC_MARK
+        if (sep != STAMP.length && !utc) return null
         val reason = name.substring(sep + 1, name.length - EXT.length)
         if (reason.isEmpty()) return null
         return try {
-            val f = SimpleDateFormat(STAMP, Locale.US)
-            f.isLenient = false
-            val d: Date? = f.parse(name.substring(0, sep))
+            val d: Date? = stampFormat(utc).parse(name.substring(0, STAMP.length))
             if (d == null) null else Entry(file, d.time, reason)
         } catch (e: ParseException) {
             null
         }
     }
 
-    /** The snapshot names to delete so only the newest `keep` remain (names sort chronologically). */
+    private fun stampFormat(utc: Boolean): SimpleDateFormat {
+        val f = SimpleDateFormat(STAMP, Locale.US)
+        f.isLenient = false
+        if (utc) f.timeZone = TimeZone.getTimeZone("UTC")
+        return f
+    }
+
+    /** Oldest first by creation time (names that aren't snapshots first), then by name. */
+    private val OLDEST_FIRST: Comparator<String> =
+        compareBy<String> { parse(File(it))?.time ?: Long.MIN_VALUE }.thenBy { it }
+
+    /** The snapshot names to delete so only the newest `keep` remain (ordered by creation time). */
     @JvmStatic
     fun rotation(names: List<String>, keep: Int): MutableList<String> {
-        val sorted = names.sorted()
+        val sorted = names.sortedWith(OLDEST_FIRST)
         val excess = sorted.size - maxOf(0, keep)
         return if (excess <= 0) ArrayList() else ArrayList(sorted.subList(0, excess))
     }
@@ -164,8 +180,17 @@ internal object LayoutSnapshots {
     fun list(c: Context): MutableList<Entry> {
         val files = dir(c).listFiles() ?: return ArrayList()
         val out = files.mapNotNullTo(ArrayList()) { parse(it) }
-        out.sortWith { a, b -> b.file.name.compareTo(a.file.name) }
+        out.sortWith(compareByDescending<Entry> { it.time }.thenByDescending { it.file.name })
         return out
+    }
+
+    /**
+     * Runs `r` on the snapshot thread after every snapshot queued so far has been written, so a
+     * listing made there sees them (UNDO right after APPLY).
+     */
+    @JvmStatic
+    fun afterPendingWrites(r: Runnable) {
+        IO.execute(r)
     }
 
     /** Reads a snapshot document, or null when unreadable. Worker thread. */

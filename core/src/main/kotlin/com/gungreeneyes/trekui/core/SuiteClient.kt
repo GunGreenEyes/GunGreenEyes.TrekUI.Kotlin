@@ -28,25 +28,30 @@ object SuiteClient {
     private val MAIN = Handler(Looper.getMainLooper())
 
     /**
-     * Asks every installed sibling (in the background) whether it is unlocked; the first that is gets
-     * cached through [Licensing.grantFromSibling]. `callback` may be null.
+     * Asks every installed sibling (in the background) whether it owns its own purchase; the first that
+     * does gets cached through [Licensing.grantFromSibling]. A cached grant whose sibling now answers that
+     * it owns no purchase (refunded) is revoked first. `callback` may be null.
      */
     @JvmStatic
     fun checkSiblingsAsync(context: Context, callback: Callback?) {
         val app = context.applicationContext
         IO.execute {
+            val grantor = Licensing.suiteGrantSource(app)
+            if (grantor != null && ownsPurchase(app, grantor) == false) Licensing.revokeSiblingGrant(app, grantor)
             val from = firstUnlockedSibling(app)
             val granted = from != null && Licensing.grantFromSibling(app, from)
             if (callback != null) MAIN.post { callback.onDone(granted) }
         }
     }
 
-    /** The package of the first trusted sibling reporting itself unlocked, or null. Blocking. */
+    /** The package of the first trusted sibling reporting its own purchase, or null. Blocking. */
     @JvmStatic
     fun firstUnlockedSibling(context: Context): String? =
-        SuiteContract.siblingPackages(context.packageName).firstOrNull { pkg ->
-            SuiteContract.parseUnlock(query(context, pkg, SuiteContract.PATH_UNLOCK)) == true
-        }
+        SuiteContract.siblingPackages(context.packageName).firstOrNull { pkg -> ownsPurchase(context, pkg) == true }
+
+    /** Does trusted sibling `pkg` report its own purchase? Null when it can't be trusted or read. Blocking. */
+    private fun ownsPurchase(context: Context, pkg: String): Boolean? =
+        SuiteContract.parseOwnPurchase(query(context, pkg, SuiteContract.PATH_UNLOCK))
 
     /** The launcher's published theme choice, or null (not installed, untrusted, or no answer). Blocking. */
     @JvmStatic

@@ -7,4 +7,8 @@
     <exclude domain="file" path="trekui_library/" />
     <!-- Home Assistant address and long-lived access token stay on this device. -->
     <exclude domain="sharedpref" path="trekui_ha.xml" />
+    <!-- Govee key, Nest OAuth secret and tokens stay on this device (Prefs.SECRETS_FILE). -->
+    <exclude domain="sharedpref" path="trekui_secrets.xml" />
+    <!-- Licensing state: a restored unlock would survive a refund. -->
+    <exclude domain="sharedpref" path="trekui_licensing.xml" />
 </full-backup-content>

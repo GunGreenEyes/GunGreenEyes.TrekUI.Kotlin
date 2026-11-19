@@ -303,8 +303,12 @@ class BillingManager internal constructor(
                 p.orderId, p.purchaseTime, p.isAcknowledged, valid,
             )
         }
-        if (entitlement.apply(records, authoritative) == Entitlement.Result.PENDING) {
-            message = "PURCHASE PENDING — IT UNLOCKS AS SOON AS PAYMENT COMPLETES"
+        when (entitlement.apply(records, authoritative)) {
+            Entitlement.Result.PENDING -> message = PENDING_MESSAGE
+            // the pending purchase was cancelled or completed: drop its stale message
+            Entitlement.Result.NOT_OWNED, Entitlement.Result.UNLOCKED ->
+                if (message == PENDING_MESSAGE) message = null
+            Entitlement.Result.UNCHANGED -> Unit
         }
         notifyListeners()
     }
@@ -332,6 +336,7 @@ class BillingManager internal constructor(
 
     private companion object {
         const val TAG = "TrekUiBilling"
+        const val PENDING_MESSAGE = "PURCHASE PENDING — IT UNLOCKS AS SOON AS PAYMENT COMPLETES"
         const val MAX_SETUP_RETRIES = 6
         const val RETRY_BASE_MS = 1_000L
         const val RETRY_MAX_MS = 60_000L

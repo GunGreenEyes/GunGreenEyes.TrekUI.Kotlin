@@ -72,6 +72,15 @@ internal class DialerView(act: MainActivity) : FrameLayout(act) {
     private var tab = TAB_KEYPAD
     private var opened = false
     private val digits = StringBuilder()
+
+    /** The typed number, so the activity can carry it into a rebuilt dialer. */
+    var typed: String
+        get() = digits.toString()
+        set(value) {
+            digits.setLength(0)
+            digits.append(value)
+            updateNumber()
+        }
     private var numberView: TextView? = null
     private var matchView: TextView? = null
     private var suggest: LinearLayout? = null
@@ -405,13 +414,14 @@ internal class DialerView(act: MainActivity) : FrameLayout(act) {
         call.setOnClickListener { v ->
             if (digits.isEmpty()) {
                 // Like most dialers: CALL on an empty pad recalls the last dialled number.
-                val last = lastDialled()
-                if (last != null) {
-                    digits.append(last)
-                    updateNumber()
-                    Ui.tap(v)
-                } else {
-                    Sfx.play(context, Sfx.DENY)
+                lastDialledAsync { last ->
+                    if (last != null && digits.isEmpty()) {
+                        digits.append(last)
+                        updateNumber()
+                        Ui.tap(v)
+                    } else if (last == null) {
+                        Sfx.play(context, Sfx.DENY)
+                    }
                 }
             } else {
                 call(digits.toString())
@@ -795,13 +805,25 @@ internal class DialerView(act: MainActivity) : FrameLayout(act) {
         }
     }
 
-    /** The last outgoing number (for CALL on an empty pad), or null. */
-    private fun lastDialled(): String? {
-        if (!BuildConfig.CALL_LOG_ENABLED || !granted(Manifest.permission.READ_CALL_LOG)) return null
-        return try {
-            CallLog.Calls.getLastOutgoingCall(context)
-        } catch (e: Exception) {
-            null
+    /**
+     * Looks up the last outgoing number (for CALL on an empty pad) on [IO] and hands it, or null,
+     * to [then] on the UI thread if the dialer is still attached.
+     */
+    private fun lastDialledAsync(then: (String?) -> Unit) {
+        if (!BuildConfig.CALL_LOG_ENABLED || !granted(Manifest.permission.READ_CALL_LOG)) {
+            then(null)
+            return
+        }
+        val app = context.applicationContext
+        IO.execute {
+            val last = try {
+                CallLog.Calls.getLastOutgoingCall(app)
+            } catch (e: Exception) {
+                null
+            }
+            post {
+                if (isAttachedToWindow) then(last?.takeIf { it.isNotEmpty() })
+            }
         }
     }
 

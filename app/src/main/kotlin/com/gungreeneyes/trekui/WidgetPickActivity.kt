@@ -147,7 +147,7 @@ class WidgetPickActivity : Activity() {
             return
         }
         val optional = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-            (info.widgetFeatures and FEATURE_CONFIGURATION_OPTIONAL) != 0
+            (Api28.widgetFeatures(info) and FEATURE_CONFIGURATION_OPTIONAL) != 0
         if (info.configure == null || optional) {
             commit()
             return
@@ -159,6 +159,13 @@ class WidgetPickActivity : Activity() {
         } catch (e: SecurityException) {
             configureFailed(e)
         }
+    }
+
+    /** API 28 field reads, kept out of this class so ART on Android 6 never resolves them. */
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.P)
+    private object Api28 {
+        @JvmStatic
+        fun widgetFeatures(info: AppWidgetProviderInfo): Int = info.widgetFeatures
     }
 
     private fun configureFailed(e: RuntimeException) {

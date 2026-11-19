@@ -105,12 +105,30 @@ internal object SoundDownloadUi {
             arrayOf(a.getString(R.string.sound_dl_delete), a.getString(R.string.sound_dl_cancel)),
         ) { which ->
             if (which == 0) {
-                if (SoundDownloader.isRunning()) SoundDownloader.cancel()
-                SoundCache.clear(a)
-                Sfx.reload(a)
-                done?.run()
+                if (!SoundDownloader.isRunning()) {
+                    deleteAll(a, done)
+                    return@message
+                }
+                // the file in flight would land after a clear: stop the run, clear once it has finished
+                SoundDownloader.setListener(object : SoundDownloader.Listener {
+                    override fun progress(done: Int, total: Int, label: String) = Unit
+
+                    override fun finished(result: SoundDownloader.Result) {
+                        SoundDownloader.setListener(null)
+                        deleteAll(a, done)
+                    }
+                })
+                SoundDownloader.cancel()
             }
         }
+    }
+
+    /** Main thread, no download running: deletes every clip, reloads the sounds, then `done`. */
+    private fun deleteAll(a: Activity, done: Runnable?) {
+        val app = a.applicationContext
+        SoundCache.clear(app)
+        Sfx.reload(app)
+        if (!a.isFinishing && !a.isDestroyed) done?.run()
     }
 
     private fun dismiss(d: Dialog) {

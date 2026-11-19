@@ -26,7 +26,16 @@ if ($Account) { $arguments += " -Account $Account" }
 
 # The cmdlets have no "selected months, day N" trigger, so the task is registered from XML.
 $esc = [System.Security.SecurityElement]
-$start = '{0}-01-01T{1}:00' -f ((Get-Date).Year + 1), $At   # any past or future date works; the months decide
+# StartBoundary is the first moment the trigger may fire, so it must not be later than the next
+# quarter-start: use the next upcoming 1 Jan/Apr/Jul/Oct at $At (a later date would skip every run before it).
+$time = [TimeSpan]::Parse($At)
+$now = Get-Date
+$firstRun = $null
+foreach ($month in 1, 4, 7, 10, 13) {
+    $candidate = (Get-Date -Year $now.Year -Month 1 -Day 1).Date.AddMonths($month - 1).Add($time)
+    if ($candidate -gt $now) { $firstRun = $candidate; break }
+}
+$start = $firstRun.ToString('yyyy-MM-ddTHH:mm:ss', [System.Globalization.CultureInfo]::InvariantCulture)
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $xml = @"
 <?xml version="1.0" encoding="UTF-16"?>

@@ -27,6 +27,7 @@ import com.gungreeneyes.trekui.keyboard.logic.Sizing
 import com.gungreeneyes.trekui.keyboard.logic.Suggestions
 import com.gungreeneyes.trekui.keyboard.logic.WordEdit
 import com.gungreeneyes.trekui.licensing.Licensing
+import java.text.BreakIterator
 import java.util.Locale
 
 /**
@@ -281,8 +282,23 @@ class TrekKeyboardService : InputMethodService() {
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                 return
             }
-            if (!ic.getSelectedText(0).isNullOrEmpty()) {
-                ic.commitText("", 1)
+            if (ic.getSelectedText(0).isNullOrEmpty()) deleteLastGrapheme(ic) else ic.commitText("", 1)
+        }
+
+        /**
+         * Deletes the whole last grapheme (a surrogate-pair emoji, or a multi-code-point one like ❤️),
+         * not one UTF-16 unit or one code point.
+         */
+        private fun deleteLastGrapheme(ic: InputConnection) {
+            val before = ic.getTextBeforeCursor(GRAPHEME_LOOKBACK, 0)?.toString().orEmpty()
+            val grapheme = if (before.isEmpty()) 0 else {
+                val chars = BreakIterator.getCharacterInstance()
+                chars.setText(before)
+                val start = chars.preceding(before.length)
+                if (start == BreakIterator.DONE) 0 else before.length - start
+            }
+            if (grapheme > 0) {
+                ic.deleteSurroundingText(grapheme, 0)
             } else if (Build.VERSION.SDK_INT >= 24) {
                 ic.deleteSurroundingTextInCodePoints(1, 0)
             } else {
@@ -470,6 +486,9 @@ class TrekKeyboardService : InputMethodService() {
     private companion object {
         /** Completions shown in the strip. */
         const val SUGGESTIONS = 3
+
+        /** Chars read before the cursor to find the last grapheme (longer than any emoji sequence). */
+        const val GRAPHEME_LOOKBACK = 32
 
         /** A sibling-unlock check from the keyboard runs at most once per process. */
         var siblingsChecked = false

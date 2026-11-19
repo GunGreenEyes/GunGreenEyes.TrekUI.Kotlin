@@ -165,9 +165,16 @@ internal class WidgetPanel(a: MainActivity, accent: Int, private val panelId: St
     private fun reconfigurable(): Boolean {
         if (info == null || info.configure == null) return false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return (info.widgetFeatures and AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE) != 0
+            return (Api28.widgetFeatures(info) and AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE) != 0
         }
         return true
+    }
+
+    /** API 28 field reads, kept out of this class so ART on Android 6 never resolves them. */
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.P)
+    private object Api28 {
+        @JvmStatic
+        fun widgetFeatures(info: AppWidgetProviderInfo): Int = info.widgetFeatures
     }
 
     /** WIDGET SIZE: 1–5 rows; the choice is stored per slot and the home rebuilds. */

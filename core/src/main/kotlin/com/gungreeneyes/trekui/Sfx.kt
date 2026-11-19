@@ -513,6 +513,7 @@ object Sfx {
     }
 
     private fun playLong(context: Context, id: String, vol: Float) {
+        var created: MediaPlayer? = null
         try {
             longPlayer?.let {
                 it.release()
@@ -525,6 +526,7 @@ object Sfx {
             if (f != null) {
                 if (!f.isFile) return
                 mp = MediaPlayer()
+                created = mp
                 mp.setAudioAttributes(attributes())
                 mp.setDataSource(f.absolutePath)
                 mp.prepare()
@@ -532,6 +534,7 @@ object Sfx {
                 val res = SoundCache.rawId(context, id)
                 if (res == 0) return
                 mp = MediaPlayer.create(context.applicationContext, res, attributes(), 0) ?: return
+                created = mp
             }
             mp.setVolume(vol, vol)
             mp.setOnCompletionListener { done ->
@@ -543,8 +546,22 @@ object Sfx {
             longPlayer = mp
             mp.start()
         } catch (ignored: Exception) {
-            // a missing or unreadable clip is silent
+            // a missing or unreadable clip is silent; don't leak the player that failed
+            created?.release()
+            if (created != null && longPlayer === created) longPlayer = null
         }
+    }
+
+    /** Stops and frees the MediaPlayer of a long clip, if one is playing. */
+    private fun releaseLongPlayer() {
+        val mp = longPlayer ?: return
+        longPlayer = null
+        try {
+            mp.stop()
+        } catch (ignored: IllegalStateException) {
+            // already completed and released by its completion listener
+        }
+        mp.release()
     }
 
     /** Loads clips ahead of time so their first play is instant. */
@@ -607,6 +624,7 @@ object Sfx {
     @JvmStatic
     fun release() {
         synchronized(lock) {
+            releaseLongPlayer() // a long clip must not keep playing after sounds go off or the set changes
             clipSamples.clear()
             pool?.let {
                 it.release()

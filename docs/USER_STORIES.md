@@ -58,3 +58,4 @@ _Nothing recorded yet._
 | TUK-T35 | 2026-11-19 | chore | closed | Rename TrekUI.Kotlin to TrekUI everywhere: GitHub repo, local folder, docs, Pages (with redirects), scripts, tickets and tooling | gh repo rename; gungreeneyes.github.io redirects |
 | TUK-T36 | 2026-11-19 | chore | open | Rename the archived TrekUI.Java repo to TrekUI.Old (GitHub, local folder, tickets, references) | — |
 | TUK-T37 | 2026-11-19 | chore | closed | Retire TrekUI.Java on GitHub: rename to TrekUI.Java.Archive, drop the wip topic, make it private, re-archive | gh: TrekUI.Java.Archive private+archived; wip on all other repos |
+| TUK-T38 | 2026-11-19 | fix | closed | Bughunt sweep: fix 56 bugs across launcher, core, messages, keyboard and tooling (rebuild state loss, secrets out of backups, suite unlock sharing, MMS/SMS parsing and delivery status, sound download failures, workflow and script defects) | testDevelopDebugUnitTest 673 passed; lint/ktlint/detekt clean |

@@ -75,6 +75,8 @@ class PurchaseActivity : Activity(), BillingManager.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Restored first after process death: create Licensing's billing/clock/entitlement before use.
+        Licensing.ensure(this)
         expired = intent.getBooleanExtra(EXTRA_EXPIRED, false)
         config = CoreConfig.get(this)
         metrics = ScreenMetrics.of(this)

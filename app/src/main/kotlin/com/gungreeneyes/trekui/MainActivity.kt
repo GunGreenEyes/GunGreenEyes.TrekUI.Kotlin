@@ -134,6 +134,9 @@ internal class MainActivity : Activity(), AppRepo.Listener {
     var dockIcons: LinearLayout? = null
     var tiles: MutableList<Tile>? = null
     var dock: MutableList<Tile>? = null
+
+    /** The pick passed to the last [openDrawer], so [buildUi] reopens a picker as a picker. */
+    private var drawerPick: DrawerView.Pick? = null
     lateinit var pal: Palette
     lateinit var prefs: Prefs
 
@@ -304,14 +307,18 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         }
         Onboarding.maybeStart(this) // LCA-T16: first-run tour (after the default-home welcome) or a replay
         if (!prefs.b(KEY_WELCOMED, false)) {
-            prefs.put(KEY_WELCOMED, true)
             mainHandler.postDelayed({
-                if (resumed && !isDefaultHome(this)) welcome()
+                // set only once the welcome actually shows (or is moot because TrekUI is already home)
+                if (resumed && !prefs.b(KEY_WELCOMED, false)) {
+                    if (!isDefaultHome(this)) welcome()
+                    prefs.put(KEY_WELCOMED, true)
+                }
             }, WELCOME_DELAY_MS)
         }
     }
 
     override fun onPause() {
+        closeHubPanel() // a hub panel or station card would otherwise linger over the tiles page
         if (hubPage != HomeLogic.HUB_PAGE_TILES) {
             hubPage = HomeLogic.HUB_PAGE_TILES
             refreshTiles()
@@ -546,6 +553,9 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         pal = prefs.palette()
         metrics = ScreenMetrics.of(this)
         val drawerWasOpen = drawer?.isOpen() == true
+        val shadeWasOpen = shade?.isOpen() == true
+        val dialerWasOpen = dialer?.isOpen() == true
+        val dialerTyped = if (dialerWasOpen) dialer?.typed.orEmpty() else ""
 
         val newRoot = GestureRoot(this)
         root = newRoot
@@ -591,7 +601,13 @@ internal class MainActivity : Activity(), AppRepo.Listener {
             for (panel in panels) panel.resume()
         }
         if (drawerWasOpen) {
-            newDrawer.open(null, false, false)
+            newDrawer.open(drawerPick, false, false) // keep picker mode (ASSIGN APP) across rebuilds
+        } else if (dialerWasOpen) {
+            newDialer.open(false)
+            if (dialerTyped.isNotEmpty()) newDialer.typed = dialerTyped
+        } else if (shadeWasOpen) {
+            newShade.open(false)
+            if (!resumed) newShade.stopUpdates()
         }
         headerFrame?.reveal()
         mainFrame?.reveal()
@@ -1867,21 +1883,32 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         val tile = list[position]
         val name = (if (isTile) "TILE " else "DOCK ") + HomeLogic.tileNumber(position)
         val menu = Menu()
+
+        // buildUi can reload tiles/dock while a dialog is open; edit the list that is current now.
+        fun currentList(): MutableList<Tile>? = (if (isTile) tiles else dock)?.takeIf { position < it.size }
+
+        fun edit(change: (Tile) -> Unit) {
+            val current = currentList() ?: return
+            change(current[position])
+            saveTiles(current, key)
+        }
         menu.add("ASSIGN APP") {
             openDrawer(appPick("ASSIGN $name") { app ->
-                assignApp(tile, app)
-                if (isTile) tile.label = HomeLogic.shortLabel(app.label)
-                saveTiles(list, key)
+                edit { t ->
+                    assignApp(t, app)
+                    if (isTile) t.label = HomeLogic.shortLabel(app.label)
+                }
                 Sfx.play(this, Sfx.CONFIRM)
             }, false)
         }
         menu.add("ASSIGN TREKUI FUNCTION") {
             pickFunction(name) { action, arg, label ->
-                tile.comp = null
-                tile.action = action
-                tile.arg = arg
-                tile.label = label
-                saveTiles(list, key)
+                edit { t ->
+                    t.comp = null
+                    t.action = action
+                    t.arg = arg
+                    t.label = label
+                }
                 Sfx.play(this, Sfx.CONFIRM)
             }
         }
@@ -1889,27 +1916,26 @@ internal class MainActivity : Activity(), AppRepo.Listener {
             if (isTile) {
                 menu.add("RENAME") {
                     showing(ConsoleDialog.prompt(this, "RENAME $name", tile.label, "LABEL") { text ->
-                        tile.label = text
-                        saveTiles(list, key)
+                        edit { t -> t.label = text }
                     })
                 }
                 menu.add("CHANGE COLOR") {
                     showing(ConsoleDialog.options(this, "COLOR $name", accentChoices("AUTOMATIC")) { choice ->
-                        tile.color = if (choice == 0) -1 else choice - 1
-                        saveTiles(list, key)
+                        edit { t -> t.color = if (choice == 0) -1 else choice - 1 }
                         Sfx.play(this, Sfx.CONFIRM)
                     })
                 }
             }
             menu.add("ASSIGN SOUND") {
                 pickSound(name, tile.sound) { clip ->
-                    tile.sound = clip
-                    saveTiles(list, key)
+                    edit { t -> t.sound = clip }
                 }
             }
             menu.add("CLEAR") {
-                list[position] = Tile()
-                saveTiles(list, key)
+                currentList()?.let { current ->
+                    current[position] = Tile()
+                    saveTiles(current, key)
+                }
                 Sfx.play(this, Sfx.CLOSE)
             }
         }
@@ -2126,6 +2152,7 @@ internal class MainActivity : Activity(), AppRepo.Listener {
         openDialog?.let { if (it.isShowing) it.dismiss() }
         shade?.let { if (it.isOpen()) it.close(false) }
         dialer?.let { if (it.isOpen()) it.close(false) }
+        drawerPick = pick
         drawer?.open(pick, search, Ui.animate(this))
     }
 

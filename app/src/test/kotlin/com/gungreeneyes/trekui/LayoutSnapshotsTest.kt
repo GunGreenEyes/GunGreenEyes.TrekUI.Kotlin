@@ -55,6 +55,27 @@ class LayoutSnapshotsTest {
     }
 
     @Test
+    fun namesAreUtcAndLegacyLocalNamesStillParse() {
+        val t = 1_763_400_000_123L
+        assertThat(LayoutSnapshots.fileName(t, "manual")).isEqualTo("20251117-172000-123Z_manual.json")
+        val legacy = legacyName(t, "manual")
+        assertThat(LayoutSnapshots.parse(File(legacy))!!.time).isEqualTo(t)
+    }
+
+    @Test
+    fun rotationOrdersByCreationTimeAcrossFormats() {
+        val base = 1_700_000_000_000L
+        val legacy = legacyName(base, "reset")
+        val newer = LayoutSnapshots.fileName(base + 60_000L, "reset")
+        assertThat(LayoutSnapshots.rotation(listOf(newer, legacy), 1)).containsExactly(legacy)
+    }
+
+    /** A pre-UTC snapshot name: local-time stamp, no `Z`. */
+    private fun legacyName(time: Long, reason: String): String =
+        java.text.SimpleDateFormat("yyyyMMdd-HHmmss-SSS", java.util.Locale.US).format(java.util.Date(time)) +
+            "_" + reason + ".json"
+
+    @Test
     fun upgradeSnapshotOnlyWhenTheVersionChanged() {
         assertThat(LayoutSnapshots.needsUpgradeSnapshot(60, 61, true)).isTrue()
         assertThat(LayoutSnapshots.needsUpgradeSnapshot(61, 61, true)).isFalse()

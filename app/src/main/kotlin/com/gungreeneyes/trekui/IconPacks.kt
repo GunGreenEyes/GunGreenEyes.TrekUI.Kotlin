@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.content.res.XmlResourceParser
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
@@ -279,6 +281,7 @@ internal object IconPacks {
         } catch (ignored: Exception) {
             // a malformed file: keep whatever parsed before the error
         } finally {
+            (xp as? XmlResourceParser)?.close()
             if (input != null) {
                 try {
                     input.close()
@@ -299,10 +302,38 @@ internal object IconPacks {
         return try {
             var id = res.getIdentifier(name, "drawable", packPkg)
             if (id == 0) id = res.getIdentifier(name, "mipmap", packPkg)
-            if (id == 0) null else res.getDrawable(id, null)
+            if (id == 0) null else decodeCapped(c, res, id) ?: res.getDrawable(id, null)
         } catch (e: RuntimeException) {
             null
         }
+    }
+
+    /**
+     * A bitmap pack drawable decoded at no more than [COMPOSED_PX] a side (packs ship icons of any
+     * size, and full-size decodes of a whole pack exhaust the heap); null when the resource isn't a
+     * bitmap (vector, XML), which [drawable] then loads as is.
+     */
+    @Suppress("ReturnCount")
+    private fun decodeCapped(c: Context, res: Resources, id: Int): Drawable? {
+        val o = BitmapFactory.Options()
+        o.inJustDecodeBounds = true
+        o.inScaled = false
+        BitmapFactory.decodeResource(res, id, o)
+        if (o.outWidth <= 0 || o.outHeight <= 0) return null
+        var sample = 1
+        while (o.outWidth / (sample * 2) >= COMPOSED_PX && o.outHeight / (sample * 2) >= COMPOSED_PX) sample *= 2
+        o.inJustDecodeBounds = false
+        o.inSampleSize = sample
+        var bmp = BitmapFactory.decodeResource(res, id, o) ?: return null
+        val side = Math.max(bmp.width, bmp.height)
+        if (side > COMPOSED_PX) {
+            val w = Math.max(1, bmp.width * COMPOSED_PX / side)
+            val h = Math.max(1, bmp.height * COMPOSED_PX / side)
+            val scaled = Bitmap.createScaledBitmap(bmp, w, h, true)
+            if (scaled !== bmp) bmp.recycle()
+            bmp = scaled
+        }
+        return BitmapDrawable(c.resources, bmp)
     }
 
     /**
@@ -367,21 +398,27 @@ internal object IconPacks {
      * or with the per-app pack drawable the user picked; `app` choices keep the system icon.
      */
     @JvmStatic
+    @Suppress("SwallowedException") // an OOM falls back to the apps' own icons
     fun apply(c: Context, apps: List<AppInfo>) {
         val prefs = Prefs.get(c)
         val pack = prefs.s(PREF_PACK, "") ?: ""
-        val r = if (pack.isEmpty()) null else load(c, pack)
-        for (a in apps) {
-            a.sysIcon = a.rawIcon
-            val choice = prefs.s(prefKey(a.key), null)
-            val pick = choicePack(choice)
-            var d: Drawable? = null
-            if (pick != null) {
-                d = drawable(c, pick[0], pick[1])
-            } else if (r != null && CHOICE_APP != choice && a.mainProfile) {
-                d = iconFor(c, pack, r, a, a.rawIcon)
+        for (a in apps) a.sysIcon = a.rawIcon
+        try {
+            val r = if (pack.isEmpty()) null else load(c, pack)
+            for (a in apps) {
+                val choice = prefs.s(prefKey(a.key), null)
+                val pick = choicePack(choice)
+                var d: Drawable? = null
+                if (pick != null) {
+                    d = drawable(c, pick[0], pick[1])
+                } else if (r != null && CHOICE_APP != choice && a.mainProfile) {
+                    d = iconFor(c, pack, r, a, a.rawIcon)
+                }
+                if (d != null) a.rawIcon = d
             }
-            if (d != null) a.rawIcon = d
+        } catch (oom: OutOfMemoryError) {
+            // a pack too heavy for this heap: drop its icons and keep every app's own
+            for (a in apps) a.rawIcon = a.sysIcon
         }
     }
 }

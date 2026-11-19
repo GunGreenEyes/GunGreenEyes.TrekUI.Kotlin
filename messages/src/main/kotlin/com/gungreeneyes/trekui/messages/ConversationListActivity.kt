@@ -296,10 +296,17 @@ class ConversationListActivity : BaseScreen() {
         val hits = MessageStore.search(this, q)
         val imageMarker = getString(R.string.image_marker)
         for (s in ThreadGrouper.group(hits)) {
+            // the hits name only who wrote the matched messages; an existing thread opens with all its members
+            val members = when {
+                s.threadId <= 0 -> null
+                else -> conversations.firstOrNull { it.threadId == s.threadId }?.addresses
+                    ?: MessageStore.recipients(this, s.threadId)
+            }
+            val who = if (members.isNullOrEmpty()) s.addresses else members
             val r = ConversationRowView.Row(
                 threadId = s.threadId,
-                addresses = s.addresses,
-                title = Contacts.names(this, s.addresses),
+                addresses = who,
+                title = Contacts.names(this, who),
                 snippet = s.latest.preview(imageMarker),
                 dateMillis = s.latest.dateMillis,
                 badge = resources.getQuantityString(R.plurals.matches, s.count, s.count),

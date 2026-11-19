@@ -13,6 +13,7 @@ import java.util.TreeSet
  * addresses (some carriers deliver e-mail as SMS) and alphanumeric sender ids ("BANK", "AMAZON").
  * Only phone numbers are reduced to digits; the others keep their text, case-folded.
  */
+@Suppress("TooManyFunctions") // one cohesive set of address helpers
 internal object PhoneNumbers {
     /** Trailing digits compared by [key]: national numbers match regardless of country code. */
     const val KEY_DIGITS = 10
@@ -106,6 +107,52 @@ internal object PhoneNumbers {
         if (s.startsWith("//")) s = s.substring(2)
         return splitRecipients(s)
     }
+
+    /**
+     * The still-percent-encoded value of query parameter [name] (case-insensitive) in an `sms:` / `smsto:`
+     * URI's encoded scheme-specific part, or null. Works for opaque URIs (`sms:555?body=hi`), where
+     * `Uri.getQueryParameter` throws.
+     */
+    fun schemeQueryValue(encodedSchemePart: String?, name: String): String? =
+        encodedSchemePart
+            ?.substringAfter('?', "")
+            ?.split('&')
+            ?.firstOrNull { it.isNotEmpty() && it.substringBefore('=').equals(name, ignoreCase = true) }
+            ?.substringAfter('=', "")
+
+    /**
+     * A block-rule prefix in the same canonical form as [normalize] gives numbers: also turns a short
+     * international `00` prefix ("0044") into `+` ("+44"), which [normalize] leaves alone below 5 digits.
+     */
+    fun normalizePrefix(raw: String?): String {
+        val n = normalize(raw)
+        return if (n.startsWith("00") && n.length > 2 && isPhoneLike(n)) "+" + n.substring(2) else n
+    }
+
+    /**
+     * The participants of an incoming MMS: the sender, then every To / Cc recipient except this device
+     * ([own] numbers) and duplicates. When the device's number is unknown and only one other recipient is
+     * listed, that recipient is taken to be this device, so a one-to-one MMS stays one-to-one.
+     * Empty when there is no sender.
+     */
+    fun mmsParticipants(
+        from: String?,
+        to: Collection<String?>,
+        cc: Collection<String?>,
+        own: Collection<String?>,
+    ): List<String> {
+        val sender = normalize(from)
+        if (sender.isEmpty()) return emptyList()
+        val ownKeys = own.map(::key).filter { it.isNotEmpty() }.toSet()
+        val seen = hashSetOf(key(sender))
+        val others = (to + cc).map(::normalize)
+            .filter { key(it).let { k -> k.isNotEmpty() && k != INSERT_ADDRESS_TOKEN && k !in ownKeys } }
+            .filter { seen.add(key(it)) }
+        return if (ownKeys.isEmpty() && others.size == 1) listOf(sender) else listOf(sender) + others
+    }
+
+    /** MMS placeholder for this device's own address, as [normalize] gives it. */
+    private const val INSERT_ADDRESS_TOKEN = "INSERT-ADDRESS-TOKEN"
 
     /**
      * A stable key for a set of recipients, independent of order and formatting: the sorted

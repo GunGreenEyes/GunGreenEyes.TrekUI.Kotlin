@@ -450,9 +450,19 @@ internal class KeyboardView(context: Context, private val listener: Listener) : 
                 if (idx >= 0) move(e.getX(idx), e.getY(idx))
             }
             MotionEvent.ACTION_POINTER_UP -> if (e.getPointerId(e.actionIndex) == activePointer) release(true)
-            MotionEvent.ACTION_UP -> when {
-                stripTarget != TARGET_NONE -> stripUp(e.x, e.y)
-                e.getPointerId(e.actionIndex) == activePointer -> release(true)
+            MotionEvent.ACTION_UP -> {
+                // The last finger lifted: finish a pending strip touch AND release the active key, or a held
+                // DELETE would keep repeating.
+                val keyFinger = e.getPointerId(e.actionIndex) == activePointer
+                if (stripTarget != TARGET_NONE) {
+                    if (keyFinger) {
+                        stripTarget = TARGET_NONE // the strip finger already lifted; this is the key's finger
+                        invalidate()
+                    } else {
+                        stripUp(e.x, e.y)
+                    }
+                }
+                if (active != null) release(keyFinger)
             }
             MotionEvent.ACTION_CANCEL -> cancelTouch()
         }

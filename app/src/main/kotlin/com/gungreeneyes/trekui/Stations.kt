@@ -405,7 +405,7 @@ internal object Stations {
                 sys[2] = "DEFLECTORS"
             }
             setOnTouchListener { _, e ->
-                if (e.action == MotionEvent.ACTION_UP) {
+                if (e.action == MotionEvent.ACTION_UP && e.y >= dp(30f)) {
                     val i = ((e.y - dp(30f)) / rowH()).toInt()
                     if (i >= 0 && i < sys.size) boost(i)
                 }

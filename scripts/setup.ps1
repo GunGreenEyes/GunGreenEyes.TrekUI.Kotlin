@@ -192,8 +192,8 @@ foreach ($t in $tools) {
 
 Write-Section 'Art tools (pictogram renderer)'
 # tools/art/render.js needs @resvg/resvg-js; npm installs it into tools/art/node_modules (gitignored).
-$artDir = Join-Path $RepoRoot 'toolsrt'
-if (Test-Path (Join-Path $artDir 'node_modules\@resvgesvg-js')) { Write-Ok '@resvg/resvg-js present' }
+$artDir = Join-Path $RepoRoot 'tools\art'
+if (Test-Path (Join-Path $artDir 'node_modules\@resvg\resvg-js')) { Write-Ok '@resvg/resvg-js present' }
 elseif (Test-Command 'npm') {
     Invoke-Step 'npm install --prefix tools/art' {
         & npm install --prefix $artDir --no-audit --no-fund

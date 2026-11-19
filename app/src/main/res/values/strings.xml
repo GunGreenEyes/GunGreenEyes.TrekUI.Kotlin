@@ -106,7 +106,7 @@
     <string name="tour_skip">SKIP TOUR</string>
     <string name="tour_done">DONE</string>
     <string name="tour_welcome_heading">WELCOME</string>
-    <string name="tour_welcome_body">You are on %3$s, one of nine interfaces. Seven short stops show you how to make it yours.\n\nSkip whenever you like. The tour is in %2$s › DEFAULT HOME › REPLAY TOUR.</string>
+    <string name="tour_welcome_body">You are on %3$s, one of five interfaces. Seven short stops show you how to make it yours.\n\nSkip whenever you like. The tour is in %2$s › DEFAULT HOME › REPLAY TOUR.</string>
     <string name="tour_assign_heading">LONG-PRESS TO ASSIGN</string>
     <string name="tour_assign_body">Long-press any tile, dock slot, block, elbow or title to ASSIGN an app or a launcher function to it, rename it, recolor it or give it its own sound.</string>
     <string name="tour_drawer_heading">THE APP DRAWER</string>

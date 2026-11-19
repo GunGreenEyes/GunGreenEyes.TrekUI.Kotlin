@@ -187,6 +187,20 @@ object SuiteContract {
         if (row == null || !versionOk(row)) null else parseFlag(row[COL_UNLOCKED])
 
     /**
+     * Reads an `unlock` row as "this sibling owns its own purchase": TRUE / FALSE, or null when there is
+     * no valid answer. An unlock that only comes from a suite grant (source [SOURCE_SUITE], published by
+     * older versions) counts as FALSE, so grants never vouch for each other.
+     */
+    @JvmStatic
+    fun parseOwnPurchase(row: Map<String, String?>?): Boolean? {
+        val unlocked = parseUnlock(row) ?: return null
+        return unlocked && row?.get(COL_SOURCE) != SOURCE_SUITE
+    }
+
+    /** The `source` value of an unlock that only comes from a sibling's grant (Entitlement.Source.SUITE). */
+    const val SOURCE_SUITE = "SUITE"
+
+    /**
      * Reads a `theme` row into a [SuiteTheme], or null when the row is missing, of an
      * unsupported version, or out of range. A retired interface (ids 3-8) reads as Command at sub-theme
      * 0. Sub-themes are clamped into the faction's theme list; an

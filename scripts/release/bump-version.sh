@@ -81,7 +81,14 @@ elif [ -z "$NOTES" ]; then
     | grep -viE '^(ci|deps|chore|docs|test)[:(]|^Release [0-9]' | awk '!seen[$0]++' | head -n 12 | sed 's/^/• /')"
   [ -n "$NOTES" ] || NOTES="• Fixes and improvements"
 fi
-NOTES="$(printf '%s' "$NOTES" | head -c 500)"
+# At most 500 bytes, never cut inside a UTF-8 character: keep whole lines while they fit; a single
+# over-long first line is cut at 500 bytes and any partial trailing character dropped.
+if [ "$(printf '%s' "$NOTES" | LC_ALL=C wc -c)" -gt 500 ]; then
+  TRIMMED="$(printf '%s\n' "$NOTES" | LC_ALL=C awk '{ n = total + length($0) + (NR > 1); if (n > 500) exit; total = n; print }' || true)"
+  # iconv -c drops the partial character but still exits 1 for it, so the status is ignored (set -e).
+  [ -n "$TRIMMED" ] || TRIMMED="$(printf '%s' "$NOTES" | head -c 500 | iconv -f UTF-8 -t UTF-8 -c 2>/dev/null || true)"
+  NOTES="$TRIMMED"
+fi
 
 # 1. version.properties (keeps any other lines)
 sed -i.bak -E "s/^versionCode=.*/versionCode=$NEW_CODE/; s/^versionName=.*/versionName=$NEW_NAME/" version.properties

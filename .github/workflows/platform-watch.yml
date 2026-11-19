@@ -36,11 +36,20 @@ jobs:
 
       - name: Newest stable Android API level
         run: |
-          current=$(grep -rhoE 'compileSdk *= *[0-9]+' --include=build.gradle.kts . | grep -oE '[0-9]+' | sort -n | tail -1)
+          # compileSdk lives in the build-logic convention plugin (TrekUiSdk.COMPILE = N); fall back to the
+          # old per-module `compileSdk = N` in build.gradle.kts.
+          current=$(grep -hoE 'const val COMPILE *= *[0-9]+' build-logic/convention/src/main/kotlin/TrekUiAndroid.kt 2>/dev/null \
+                    | grep -oE '[0-9]+$' | sort -n | tail -1 || true)
+          if [ -z "$current" ]; then
+            current=$(grep -rhoE 'compileSdk *= *[0-9]+' --include=build.gradle.kts . | grep -oE '[0-9]+' | sort -n | tail -1 || true)
+          fi
+          if [ -z "$current" ]; then
+            echo "::error::Could not find the repo's compileSdk (TrekUiSdk.COMPILE in build-logic/convention/src/main/kotlin/TrekUiAndroid.kt, or compileSdk = N in build.gradle.kts)."; exit 1
+          fi
           latest=$(sdkmanager --list 2>/dev/null | grep -oE 'platforms;android-[0-9]+(\.[0-9]+)?' \
                    | grep -oE '[0-9]+' | head -n 1000 | sort -n | tail -1)
           echo "compileSdk in repo: $current, newest stable platform: $latest"
-          if [ -z "$latest" ] || [ -z "$current" ] || [ "$latest" -le "$current" ]; then exit 0; fi
+          if [ -z "$latest" ] || [ "$latest" -le "$current" ]; then exit 0; fi
           title="Upgrade to Android API $latest (compileSdk/targetSdk)"
           if gh issue list --state all --label platform-upgrade --search "\"$title\" in:title" --json title -q '.[].title' | grep -qxF "$title"; then
             echo "Issue already exists: $title"; exit 0

@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Telephony
 import android.telephony.SmsMessage
+import androidx.core.content.edit
+import com.gungreeneyes.trekui.messages.data.DeliveryStatus
 
 /**
  * Sent and delivery results of outgoing SMS parts ([SmsSender]'s PendingIntents): the row becomes
@@ -34,23 +36,28 @@ class SmsStatusReceiver : BroadcastReceiver() {
                 }
             } else if (action == SmsSender.ACTION_DELIVERED && pdu != null) {
                 val report = SmsMessage.createFromPdu(pdu, format) ?: return@run
-                val tp = report.status
-                val status = when {
-                    tp >= TP_STATUS_FAILED_MIN -> Telephony.Sms.STATUS_FAILED
-                    tp >= TP_STATUS_PENDING_MIN -> Telephony.Sms.STATUS_PENDING
-                    else -> Telephony.Sms.STATUS_COMPLETE
-                }
-                // a multipart message counts as delivered when its last part is
-                if (status != Telephony.Sms.STATUS_COMPLETE || part == parts - 1) {
+                val status = DeliveryStatus.fromTp(report.status)
+                if (row == null || parts <= 1) {
                     MessageStore.setSmsStatus(app, row, status)
+                    return@run
                 }
+                // multipart: the worst part wins (failed > pending > complete), so remember each part's status
+                val prefs = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                val key = row.toString()
+                val byPart = DeliveryStatus.decode(prefs.getString(key, null))
+                if (byPart[part] != DeliveryStatus.FAILED) byPart[part] = status
+                if (DeliveryStatus.settled(byPart, parts)) {
+                    prefs.edit { remove(key) }
+                } else {
+                    prefs.edit { putString(key, DeliveryStatus.encode(byPart)) }
+                }
+                MessageStore.setSmsStatus(app, row, DeliveryStatus.merge(byPart, parts))
             }
         }
     }
 
     internal companion object {
-        /** TP-Status ranges (3GPP TS 23.040): 0x00-0x1F done, 0x20-0x3F still trying, 0x40+ failed. */
-        const val TP_STATUS_PENDING_MIN = 0x20
-        const val TP_STATUS_FAILED_MIN = 0x40
+        /** Per-part delivery statuses of multipart messages still awaiting reports, keyed by row URI. */
+        private const val PREFS = "messages_delivery_parts"
     }
 }

@@ -83,9 +83,12 @@ object Licensing {
         if (a != null && !a.isFinishing) checkSession(a)
     }
 
-    /** Creates the singletons on first use (application context only, no Activity leaks). */
+    /**
+     * Creates the singletons on first use (application context only, no Activity leaks). Also called by
+     * [PurchaseActivity], which Android may restore first after process death.
+     */
     @Synchronized
-    private fun ensure(context: Context) {
+    internal fun ensure(context: Context) {
         if (::appContext.isInitialized) return
         val app = context.applicationContext
         config = CoreConfig.get(app)
@@ -148,8 +151,8 @@ object Licensing {
     }
 
     /**
-     * True if this copy may tell sibling apps it is unlocked (a real or suite unlock, or a simulated one
-     * in the develop flavor; never a debug override). What the suite provider publishes.
+     * True if this copy may tell sibling apps it is unlocked (its own verified purchase, or a simulated one
+     * in the develop flavor; never a suite grant or a debug override). What the suite provider publishes.
      */
     @JvmStatic
     fun isShareableUnlock(context: Context): Boolean {
@@ -176,6 +179,25 @@ object Licensing {
         val granted = entitlement.grantSuite(fromPackage, System.currentTimeMillis())
         if (granted) main.post { billing.notifyListeners() }
         return granted && !wasUnlocked
+    }
+
+    /** Package of the sibling whose suite grant is cached, or null. Called by [SuiteClient]. */
+    @JvmStatic
+    fun suiteGrantSource(context: Context): String? {
+        ensure(context)
+        return entitlement.suiteGrantSource()
+    }
+
+    /**
+     * Records that [fromPackage], whose grant is cached, answered that it no longer owns a purchase
+     * (e.g. refunded): drops the grant and tells open purchase screens. Called by [SuiteClient].
+     */
+    @JvmStatic
+    fun revokeSiblingGrant(context: Context, fromPackage: String?): Boolean {
+        ensure(context)
+        val revoked = entitlement.revokeSuite(fromPackage)
+        if (revoked) main.post { billing.notifyListeners() }
+        return revoked
     }
 
     /** Opens the purchase screen on request (e.g. an "UNLOCK" entry in Settings). */
@@ -213,9 +235,12 @@ object Licensing {
 
     internal fun isDevelopFlavor(): Boolean = ::config.isInitialized && config.developFlavor
 
-    /** Asks installed sibling apps (in the background) whether one of them is unlocked. */
+    /**
+     * Asks installed sibling apps (in the background) whether one of them owns a purchase; also runs while
+     * only a suite grant unlocks this copy, so the grant is revoked once its sibling is refunded.
+     */
     private fun checkSiblings() {
-        if (!entitlement.isUnlocked()) SuiteClient.checkSiblingsAsync(appContext, null)
+        if (!entitlement.isUnlocked() || entitlement.hasSuiteGrant()) SuiteClient.checkSiblingsAsync(appContext, null)
     }
 
     /** Explicit relaunch from the expiry screen: a fresh session begins now. */

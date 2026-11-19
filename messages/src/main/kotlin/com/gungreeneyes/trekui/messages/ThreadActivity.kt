@@ -50,6 +50,9 @@ class ThreadActivity : BaseScreen() {
     private var draftLoaded = false
     private var loadToken = 0
 
+    /** True between onResume and onPause: only then is this thread "showing" (its notifications muted). */
+    private var resumed = false
+
     private var input: EditText? = null
     private var toField: EditText? = null
     private var adapter: BubbleAdapter? = null
@@ -95,8 +98,10 @@ class ThreadActivity : BaseScreen() {
         val data = i.data
         val action = i.action
         if (data != null && (action == Intent.ACTION_SENDTO || action == Intent.ACTION_VIEW)) {
-            recipients = PhoneNumbers.fromSchemePart(data.schemeSpecificPart)
-            pendingText = data.getQueryParameter("body")
+            // sms:/smsto: URIs are usually opaque (sms:555?body=hi), where getQueryParameter throws
+            val part = data.encodedSchemeSpecificPart
+            recipients = PhoneNumbers.fromSchemePart(part?.substringBefore('?')?.let(Uri::decode))
+            pendingText = PhoneNumbers.schemeQueryValue(part, "body")?.let(Uri::decode)?.takeIf { it.isNotEmpty() }
                 ?: i.getStringExtra("sms_body")
                 ?: i.getStringExtra(Intent.EXTRA_TEXT)
         } else if (action == Intent.ACTION_SEND) {
@@ -107,6 +112,7 @@ class ThreadActivity : BaseScreen() {
 
     override fun onResume() {
         super.onResume()
+        resumed = true
         showing = threadId
         try {
             contentResolver.registerContentObserver(MessageStore.CHANGES, true, observer)
@@ -118,6 +124,7 @@ class ThreadActivity : BaseScreen() {
 
     override fun onPause() {
         super.onPause()
+        resumed = false
         showing = -1
         contentResolver.unregisterContentObserver(observer)
         main.removeCallbacks(reloadTask)
@@ -337,7 +344,7 @@ class ThreadActivity : BaseScreen() {
             threadId = l.threadId
             recipients = l.recipients
             title = l.title
-            showing = threadId
+            if (resumed) showing = threadId
             if (subId < 0) subId = MessagesSettings.subFor(this, convKey())
             messages.clear()
             messages.addAll(l.messages)

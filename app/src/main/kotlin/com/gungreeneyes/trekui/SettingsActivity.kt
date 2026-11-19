@@ -985,7 +985,7 @@ class SettingsActivity : Activity() {
         val key = Govee.key(prefs)
         action(if (key.isEmpty()) "API KEY (CLOUD)" else "API KEY • " + SettingsLogic.maskSecret(key), pal.c(1)) {
             ConsoleDialog.prompt(this, "GOVEE API KEY", key, "PASTE THE KEY FROM GOVEE'S EMAIL") { text ->
-                prefs.put("goveeKey", text.trim())
+                prefs.putSecret("goveeKey", text.trim())
                 Sfx.play(this, Sfx.CONFIRM)
                 rebuild()
             }
@@ -1240,15 +1240,17 @@ class SettingsActivity : Activity() {
 
     /** One Nest credential field (secrets are masked, long ids abbreviated). */
     private fun nestField(title: String, key: String, secret: Boolean, color: Int) {
-        val value = prefs.s(key, "").orEmpty()
+        // Secrets live in the non-backed-up trekui_secrets file (Prefs.SECRET_KEYS); other ids in trekui.
+        val stored = key in Prefs.SECRET_KEYS
+        val value = (if (stored) prefs.secret(key) else prefs.s(key, "")).orEmpty()
         val shown = when {
             value.isEmpty() -> "NOT SET"
             secret -> SettingsLogic.maskSecret(value)
             else -> SettingsLogic.abbreviate(value)
         }
         action("$title • $shown", color) {
-            ConsoleDialog.prompt(this, title, prefs.s(key, ""), "PASTE IT HERE") { text ->
-                prefs.put(key, text.trim())
+            ConsoleDialog.prompt(this, title, value, "PASTE IT HERE") { text ->
+                if (stored) prefs.putSecret(key, text.trim()) else prefs.put(key, text.trim())
                 Sfx.play(this, Sfx.CONFIRM)
                 rebuild()
             }
@@ -1747,7 +1749,8 @@ class SettingsActivity : Activity() {
         }
         action("EDIT HEADER TEXT: " + prefs.headerText()!!.uppercase(Locale.getDefault()), pal.c(2)) {
             ConsoleDialog.prompt(this, "HEADER TEXT", prefs.headerText(), prefs.headerDefault()) { text ->
-                prefs.put(prefs.headerKey(), text)
+                // blank text resets to the default rather than blanking the header
+                if (text.isBlank()) prefs.remove(prefs.headerKey()) else prefs.put(prefs.headerKey(), text)
                 changed()
             }
         }
@@ -2206,7 +2209,7 @@ class SettingsActivity : Activity() {
         val levels = Array(Cloak.LEVELS.size) { Cloak.LEVELS[it].toString() + "%" }
         choice("CLOAKED SCREEN BRIGHTNESS", levels, maxOf(0, Cloak.LEVELS.binarySearch(Cloak.level(prefs)))) { which ->
             prefs.put("cloakLevel", Cloak.LEVELS[which])
-            rebuild()
+            changed()
         }
         cloakSoundRow("ENGAGE SOUND", "cloakSoundOn", Cloak.engageSound(prefs))
         cloakSoundRow("DISENGAGE SOUND", "cloakSoundOff", Cloak.disengageSound(prefs))

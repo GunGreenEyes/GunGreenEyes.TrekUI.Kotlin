@@ -22,7 +22,8 @@ import java.util.UUID
  * reports (through its signature-protected suite provider, see `com.gungreeneyes.trekui.core.SuiteClient`)
  * that it is unlocked, [grantSuite] caches that here, bound to this install by the same kind of digest,
  * so uninstalling the app that was bought does not relock the others. A suite grant is never revoked by
- * Play answers about this app's own purchase.
+ * Play answers about this app's own purchase; it is revoked ([revokeSuite]) when the granting sibling
+ * answers that it no longer owns a purchase. Only an own purchase is ever shared ([shareableUnlock]).
  *
  * Two test hooks exist and are ignored in store builds:
  * - a debug override (forced unlocked / locked), honoured only when constructed with
@@ -120,14 +121,26 @@ class Entitlement(
     }
 
     /**
-     * True if this copy may tell sibling apps it is unlocked: a real purchase or a cached suite grant,
-     * or (develop flavor only) a simulated purchase. Debug overrides are never shared.
+     * Clears the cached suite grant if it came from [fromPackage] (that sibling no longer reports an own
+     * purchase, e.g. after a refund). Returns true if a grant was removed.
      */
     @Synchronized
-    fun shareableUnlock(): Boolean = when (sourceIgnoringOverride()) {
-        Source.PURCHASE, Source.SUITE, Source.SIMULATED -> true
-        Source.NONE, Source.DEBUG_OVERRIDE -> false
+    fun revokeSuite(fromPackage: String?): Boolean {
+        if (fromPackage.isNullOrEmpty() || suiteGrantSource() != fromPackage) return false
+        store.remove(KEY_SUITE_FROM)
+        store.remove(KEY_SUITE_TIME)
+        store.remove(KEY_SUITE_DIGEST)
+        return true
     }
+
+    /**
+     * True if this copy may tell sibling apps it is unlocked: only its own verified purchase, or (develop
+     * flavor only) a simulated purchase. A suite grant is never re-shared, so grants cannot keep each
+     * other alive after the real purchase is refunded. Debug overrides are never shared.
+     */
+    @Synchronized
+    fun shareableUnlock(): Boolean =
+        hasVerifiedPurchase() || (simulationAllowed && store.getBoolean(KEY_SIMULATED, false))
 
     private fun sourceIgnoringOverride(): Source = when {
         hasVerifiedPurchase() -> Source.PURCHASE

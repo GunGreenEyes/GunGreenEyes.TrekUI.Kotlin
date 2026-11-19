@@ -21,6 +21,32 @@ class BlockListTest {
     }
 
     @Test
+    fun prefixRulesWithoutPlusMatchNumbersWithPlus() {
+        val b = BlockList(listOf("1900*"))
+        assertThat(b.matches("+19005551234")).isTrue()
+        assertThat(b.matches("19005551234")).isTrue()
+        assertThat(b.matches("+18005551234")).isFalse()
+    }
+
+    @Test
+    fun internationalZeroZeroPrefixRulesMatchLikeNumbers() {
+        val b = BlockList(listOf("0044*"))
+        assertThat(b.prefixRules()).containsExactly("+44")
+        assertThat(b.matches("+447700900123")).isTrue()
+        assertThat(b.matches("00447700900123")).isTrue()
+        assertThat(b.matches("+15550102345")).isFalse()
+        assertThat(BlockList(listOf("+44*")).matches("00447700900123")).isTrue()
+    }
+
+    @Test
+    fun plusAloneIsNotARule() {
+        assertThat(BlockList.isPrefixRule("+*")).isFalse()
+        val b = BlockList(listOf("+*"))
+        assertThat(b.size()).isEqualTo(0)
+        assertThat(b.matches("+15550102345")).isFalse()
+    }
+
+    @Test
     fun alphanumericSenders() {
         val b = BlockList(listOf("PROMO*", "spam@example.com"))
         assertThat(b.matches("PromoDeals")).isTrue()

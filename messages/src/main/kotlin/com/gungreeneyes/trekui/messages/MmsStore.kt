@@ -159,12 +159,13 @@ internal object MmsStore {
     // ---- writing --------------------------------------------------------------------------------
 
     /**
-     * Stores a downloaded m-retrieve-conf in the inbox (thread of its sender); returns the row URI or null.
+     * Stores a downloaded m-retrieve-conf in the inbox (thread of all its participants: the sender plus the
+     * To / Cc recipients other than this device); returns the row URI or null.
      */
     fun insertIncoming(c: Context, pdu: MmsPdu, subId: Int): Uri? {
-        val from = PhoneNumbers.normalize(pdu.from)
-        if (from.isEmpty()) return null
-        val thread = MessageStore.threadFor(c, listOf(from))
+        val participants = PhoneNumbers.mmsParticipants(pdu.from, pdu.to, pdu.cc, Sims.ownNumbers(c))
+        if (participants.isEmpty()) return null
+        val thread = MessageStore.threadFor(c, participants)
         val date = if (pdu.dateSeconds > 0) pdu.dateSeconds else System.currentTimeMillis() / 1000L
         val v = ContentValues().apply {
             put(Telephony.Mms.THREAD_ID, thread)

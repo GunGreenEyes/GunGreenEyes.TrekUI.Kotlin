@@ -2,8 +2,10 @@ package com.gungreeneyes.trekui.messages
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.provider.BlockedNumberContract
+import androidx.annotation.RequiresApi
 import androidx.core.content.edit
 import com.gungreeneyes.trekui.messages.data.BlockList
 import com.gungreeneyes.trekui.messages.data.PhoneNumbers
@@ -25,8 +27,7 @@ internal object Blocking {
 
     /** True if the system block list can be used by this app right now. */
     fun systemAvailable(c: Context): Boolean = try {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-            BlockedNumberContract.canCurrentUserBlockNumbers(c) && SmsRole.isDefault(c)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && SystemList.canBlock(c) && SmsRole.isDefault(c)
     } catch (e: RuntimeException) {
         false
     }
@@ -37,7 +38,7 @@ internal object Blocking {
         if (systemAvailable(c) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 c.contentResolver.query(
-                    BlockedNumberContract.BlockedNumbers.CONTENT_URI,
+                    SystemList.uri(),
                     arrayOf(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER), null, null, null,
                 )?.use { cur -> while (cur.moveToNext()) out.add(cur.getString(0)) }
             } catch (ignored: RuntimeException) {
@@ -53,7 +54,7 @@ internal object Blocking {
         if (address.isNullOrEmpty()) return false
         if (systemAvailable(c) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                if (BlockedNumberContract.isBlocked(c, address)) return true
+                if (SystemList.isBlocked(c, address)) return true
             } catch (ignored: RuntimeException) {
                 // fall through to our own rules
             }
@@ -80,7 +81,7 @@ internal object Blocking {
             put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, PhoneNumbers.normalize(entry))
         }
         return try {
-            c.contentResolver.insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, v) != null
+            c.contentResolver.insert(SystemList.uri(), v) != null
         } catch (e: RuntimeException) {
             false
         }
@@ -95,7 +96,7 @@ internal object Blocking {
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !systemAvailable(c)) return
         try {
-            BlockedNumberContract.unblock(c, entry)
+            SystemList.unblock(c, entry)
         } catch (ignored: RuntimeException) {
             // already gone
         }
@@ -107,4 +108,21 @@ internal object Blocking {
 
     private fun prefixRules(c: Context): List<String> =
         MessagesSettings.prefs(c).getStringSet(MessagesSettings.KEY_BLOCK_RULES, null).orEmpty().sorted()
+
+    /**
+     * Every access to the API 24 [BlockedNumberContract] (its non-constant `CONTENT_URI` field included):
+     * a direct read, even behind an SDK_INT check, crashed ART on Android 6.0, so it lives in this holder.
+     */
+    @RequiresApi(Build.VERSION_CODES.N)
+    private object SystemList {
+        fun uri(): Uri = BlockedNumberContract.BlockedNumbers.CONTENT_URI
+
+        fun canBlock(c: Context): Boolean = BlockedNumberContract.canCurrentUserBlockNumbers(c)
+
+        fun isBlocked(c: Context, address: String): Boolean = BlockedNumberContract.isBlocked(c, address)
+
+        fun unblock(c: Context, entry: String) {
+            BlockedNumberContract.unblock(c, entry)
+        }
+    }
 }

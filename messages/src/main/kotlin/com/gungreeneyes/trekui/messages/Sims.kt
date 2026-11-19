@@ -37,6 +37,20 @@ internal object Sims {
         return out
     }
 
+    /** This device's own numbers from its active SIMs (empty when unknown or unreadable). */
+    @Suppress("DEPRECATION") // SubscriptionInfo.getNumber: its API 33 replacement is unavailable on minSdk 23
+    fun ownNumbers(c: Context): List<String> {
+        if (c.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return emptyList()
+        }
+        return try {
+            val sm = c.getSystemService(SubscriptionManager::class.java)
+            sm?.activeSubscriptionInfoList?.mapNotNull { i -> i.number?.takeIf { it.isNotEmpty() } }.orEmpty()
+        } catch (e: RuntimeException) {
+            emptyList()
+        }
+    }
+
     /** The system's default SMS subscription, or -1 (INVALID_SUBSCRIPTION_ID) when none is set. */
     fun defaultSubId(): Int = SmsManager.getDefaultSmsSubscriptionId()
 

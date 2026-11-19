@@ -39,7 +39,10 @@ internal object GroupEditor {
 
     // ---- create --------------------------------------------------------------------------------
 
-    /** Asks for a name, creates the group, then opens the app picker for it. */
+    /**
+     * Asks for a name, creates the group, then opens the app picker for it. While the app list is
+     * still loading it only says so (nothing is created), and NEW GROUP can be tapped again.
+     */
     @JvmStatic
     fun create(c: Context, onChanged: Runnable?, onCreated: Created?) {
         val prefs = Prefs.get(c)
@@ -48,9 +51,20 @@ internal object GroupEditor {
             toast(c, c.getString(R.string.toast_groups_full, AppGroups.MAX_GROUPS))
             return
         }
+        // the picker needs the app list: create nothing until it can open (else an empty group is left behind)
+        val repo = AppRepo.get(c)
+        if (!repo.isLoaded) {
+            repo.load()
+            toast(c, c.getString(R.string.toast_apps_loading))
+            return
+        }
         register(
             c,
             ConsoleDialog.prompt(c, c.getString(R.string.group_new_title), "", c.getString(R.string.group_name_hint)) { text ->
+                if (!repo.isLoaded) {
+                    toast(c, c.getString(R.string.toast_apps_loading))
+                    return@prompt
+                }
                 val groups = AppGroups.load(prefs)
                 val g = AppGroups.create(groups, text) ?: return@prompt
                 AppGroups.save(prefs, groups)

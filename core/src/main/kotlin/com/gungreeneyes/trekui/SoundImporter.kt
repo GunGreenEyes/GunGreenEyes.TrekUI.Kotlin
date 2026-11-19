@@ -113,12 +113,14 @@ object SoundImporter {
     /** Extracts audio entries from a ZIP into a temporary folder (base names only, so no path traversal). */
     @JvmStatic
     @Throws(IOException::class)
+    @Suppress("ThrowsCount", "CyclomaticComplexMethod", "NestedBlockDepth")
     fun unzip(c: Context, zip: Uri): List<Item> {
         val tmp = File(c.cacheDir, "trekui_import")
         deleteTree(tmp)
         if (!tmp.mkdirs() && !tmp.isDirectory) throw IOException("cannot create temp folder")
         val out = ArrayList<Item>()
-        c.contentResolver.openInputStream(zip).use { raw ->
+        val stream = c.contentResolver.openInputStream(zip) ?: throw IOException("cannot open $zip")
+        stream.use { raw ->
             ZipInputStream(raw).use { zin ->
                 val buf = ByteArray(16384)
                 while (true) {

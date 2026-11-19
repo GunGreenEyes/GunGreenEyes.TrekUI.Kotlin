@@ -66,8 +66,11 @@ if (-not $NoCommit) {
 if ($NotesFile) {
   $Notes = [System.IO.File]::ReadAllText((Resolve-Path $NotesFile))
 } elseif (-not $Notes) {
-  $lastTag = git describe --tags --abbrev=0 --match 'v*' 2> $null
-  $range = if ($LASTEXITCODE -eq 0 -and $lastTag) { "$lastTag..HEAD" } else { "HEAD" }
+  # No v* tag yet: git writes to stderr, which 'Stop' makes terminating under Windows PowerShell 5.1.
+  $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+  try { $lastTag = git describe --tags --abbrev=0 --match 'v*' 2> $null; $describeOk = ($LASTEXITCODE -eq 0) }
+  finally { $ErrorActionPreference = $eap }
+  $range = if ($describeOk -and $lastTag) { "$lastTag..HEAD" } else { "HEAD" }
   $subjects = git log --no-merges --pretty=format:%s $range |
     ForEach-Object { $_ -replace '^[A-Z]+(\.[A-Z]+)?-T\d+:\s*', '' } |
     Where-Object { $_ -notmatch '^(ci|deps|chore|docs|test)[:(]' -and $_ -notmatch '^Release \d' } |

@@ -14,8 +14,8 @@ internal class BlockList(entries: Collection<String?>?) {
         entries?.filterNotNull()?.forEach { e ->
             val t = e.javaTrim()
             if (t.endsWith("*")) {
-                val p = PhoneNumbers.normalize(t.dropLast(1))
-                if (p.isNotEmpty()) prefixes.add(p)
+                val p = PhoneNumbers.normalizePrefix(t.dropLast(1))
+                if (bare(p).isNotEmpty()) prefixes.add(p)
             } else {
                 val k = PhoneNumbers.key(t)
                 if (k.isNotEmpty()) exact.add(k)
@@ -28,11 +28,9 @@ internal class BlockList(entries: Collection<String?>?) {
         val key = PhoneNumbers.key(address)
         if (key.isEmpty()) return false
         if (key in exact) return true
-        val n = PhoneNumbers.normalize(address)
-        return prefixes.any { p ->
-            // "+1900*" also catches the same number delivered without the country prefix's plus
-            n.startsWith(p) || (p.startsWith("+") && n.startsWith(p.substring(1)))
-        }
+        // compared without a leading plus on either side: "+1900*" and "1900*" both catch +1900... and 1900...
+        val n = bare(PhoneNumbers.normalize(address))
+        return prefixes.any { p -> n.startsWith(bare(p)) }
     }
 
     /** Number of rules (exact + prefix). */
@@ -45,8 +43,11 @@ internal class BlockList(entries: Collection<String?>?) {
         /** True if [rule] is a valid prefix rule (non-empty text before a trailing `*`). */
         fun isPrefixRule(rule: String?): Boolean {
             val t = rule?.javaTrim() ?: return false
-            return t.endsWith("*") && PhoneNumbers.normalize(t.dropLast(1)).isNotEmpty()
+            return t.endsWith("*") && bare(PhoneNumbers.normalizePrefix(t.dropLast(1))).isNotEmpty()
         }
+
+        /** [s] without a leading `+`. */
+        private fun bare(s: String): String = s.removePrefix("+")
 
         /**
          * True when [entry] is kept in this app's own rules rather than the system block list: prefix rules

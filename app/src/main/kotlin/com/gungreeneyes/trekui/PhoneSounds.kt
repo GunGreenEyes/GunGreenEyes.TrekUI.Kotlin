@@ -181,16 +181,20 @@ internal object PhoneSounds {
         cv.clear()
         cv.put(MediaStore.MediaColumns.IS_PENDING, 0)
         cr.update(u, cv, null, null)
-        removeOldCopies(c, t, u, "$title.wav")
 
         val p = Prefs.get(c)
-        if (!setDefault || !canSetDefault(c)) return false
+        if (!setDefault || !canSetDefault(c)) {
+            // only saved: the copy a default still points at stays (see removeOldCopies)
+            removeOldCopies(c, t, u, title)
+            return false
+        }
         if (!isOurs(c, t) && p.s("phonePrev$t", null) == null) {
             val prev = RingtoneManager.getActualDefaultRingtoneUri(c, TYPES[t])
             p.put("phonePrev$t", prev?.toString() ?: "")
         }
         RingtoneManager.setActualDefaultRingtoneUri(c, TYPES[t], u)
         p.put("phoneUri$t", u.toString())
+        removeOldCopies(c, t, u, title)
         return true
     }
 
@@ -207,21 +211,34 @@ internal object PhoneSounds {
     }
 
     /**
-     * Deletes the earlier copy of this same sound in the folder (only files this app created can be
-     * deleted). Other console sounds stay, so several can be picked per app.
+     * Deletes the earlier copies of this same sound in the folder, including the "Title (N).wav" names
+     * MediaStore gives clashing files (only files this app created can be deleted). A copy that is
+     * currently a system default ringtone, notification or alarm sound is never deleted. Other console
+     * sounds stay, so several can be picked per app.
      */
-    private fun removeOldCopies(c: Context, t: Int, keep: Uri, name: String) {
+    @Suppress("NestedBlockDepth")
+    private fun removeOldCopies(c: Context, t: Int, keep: Uri, title: String) {
         val cr = c.contentResolver
         val coll = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val inUse = HashSet<Long>()
+        for (type in TYPES) {
+            try {
+                val d = RingtoneManager.getActualDefaultRingtoneUri(c, type) ?: continue
+                d.lastPathSegment?.toLongOrNull()?.let { inUse.add(it) }
+            } catch (ignored: Exception) {
+            }
+        }
         try {
             cr.query(
-                coll, arrayOf(MediaStore.MediaColumns._ID),
-                MediaStore.MediaColumns.RELATIVE_PATH + "=? AND " + MediaStore.MediaColumns.DISPLAY_NAME + " LIKE ?",
-                arrayOf(FOLDERS[t], name), null,
+                coll, arrayOf(MediaStore.MediaColumns._ID, MediaStore.MediaColumns.DISPLAY_NAME),
+                MediaStore.MediaColumns.RELATIVE_PATH + "=? AND " + MediaStore.MediaColumns.DISPLAY_NAME +
+                    " LIKE ? ESCAPE '\\' AND " + MediaStore.MediaColumns.OWNER_PACKAGE_NAME + "=?",
+                arrayOf(FOLDERS[t], likePrefix(title), c.packageName), null,
             )?.use { cur ->
                 while (cur.moveToNext()) {
-                    val u = ContentUris.withAppendedId(coll, cur.getLong(0))
-                    if (u == keep) continue
+                    val id = cur.getLong(0)
+                    val u = ContentUris.withAppendedId(coll, id)
+                    if (u == keep || id in inUse || !isCopyName(title, cur.getString(1))) continue
                     try {
                         cr.delete(u, null, null)
                     } catch (ignored: Exception) {
@@ -232,6 +249,21 @@ internal object PhoneSounds {
         } catch (ignored: Exception) {
         }
     }
+
+    /** A LIKE pattern for names starting with `title` (`\`, `%` and `_` escaped with `\`). */
+    @JvmStatic
+    fun likePrefix(title: String): String =
+        title.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+
+    /** True for "title.wav" or a MediaStore clash rename "title (N).wav". Pure, unit-tested. */
+    @JvmStatic
+    fun isCopyName(title: String, name: String?): Boolean {
+        if (name == null || !name.startsWith(title) || !name.endsWith(".wav")) return false
+        val mid = name.removePrefix(title).removeSuffix(".wav")
+        return mid.isEmpty() || COPY_SUFFIX.matches(mid)
+    }
+
+    private val COPY_SUFFIX = Regex(" \\(\\d+\\)")
 
     @Throws(IOException::class)
     private fun copy(input: InputStream, os: OutputStream) {

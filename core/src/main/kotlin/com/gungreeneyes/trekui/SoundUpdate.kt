@@ -219,6 +219,7 @@ object SoundUpdate {
      *
      * @return null when installed, else why not
      */
+    @Suppress("TooGenericExceptionCaught") // a decoder failure fails this sound only
     private fun fetchOne(
         c: Context,
         s: SoundCatalog.Sound,
@@ -237,6 +238,9 @@ object SoundUpdate {
             renderer.render(tmp, s, SoundCache.file(c, s.id))
             null
         } catch (e: IOException) {
+            e.message ?: e.toString()
+        } catch (e: RuntimeException) {
+            // a decoder failure (CodecException, a missing format key) fails this sound only
             e.message ?: e.toString()
         } finally {
             tmp.delete()

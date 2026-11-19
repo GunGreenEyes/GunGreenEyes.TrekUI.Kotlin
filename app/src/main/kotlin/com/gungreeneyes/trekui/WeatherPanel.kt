@@ -132,7 +132,7 @@ internal class WeatherPanel(a: MainActivity, accent: Int) : Panel(a, accent) {
      * a current fix when it is older than [FRESH_FIX_MS].
      */
     @SuppressLint("MissingPermission") // permission checked
-    @Suppress("DEPRECATION") // requestSingleUpdate only below API 30
+    @Suppress("DEPRECATION", "ReturnCount", "CyclomaticComplexMethod") // requestSingleUpdate only below API 30
     private fun locate() {
         val lm = a.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
         if (lm == null || !hasLocationPerm()) return
@@ -164,6 +164,11 @@ internal class WeatherPanel(a: MainActivity, accent: Int) : Panel(a, accent) {
             } else {
                 LocationManager.GPS_PROVIDER
             }
+        if (Build.VERSION.SDK_INT < 30 && !lm.isProviderEnabled(provider)) {
+            // requestSingleUpdate on a disabled provider never calls back: fail like getCurrentLocation's null
+            if (p.s("wxLat", null) == null) locationFailed()
+            return
+        }
         try {
             if (Build.VERSION.SDK_INT >= 30) {
                 lm.getCurrentLocation(provider, null, a.mainExecutor) { l: Location? ->

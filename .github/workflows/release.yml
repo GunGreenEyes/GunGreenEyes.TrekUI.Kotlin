@@ -287,7 +287,7 @@ jobs:
             echo "Screenshots, videos and test results: https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}/"
           } > release-notes.md
 
-      - uses: softprops/action-gh-release@v3
+      - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
         with:
           tag_name: ${{ needs.build.outputs.tag }}
           name: TrekUI ${{ needs.build.outputs.version-name }}
@@ -351,7 +351,7 @@ jobs:
           echo "fraction=$fraction" >> "$GITHUB_OUTPUT"
           echo "Track $TRACK, status $status${fraction:+, rollout $fraction}"
 
-      - uses: r0adkll/upload-google-play@v1
+      - uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ matrix.package }}
@@ -366,7 +366,8 @@ jobs:
   listing:
     name: Play store listing (${{ matrix.app }})
     needs: [build, emulator, play]
-    if: ${{ inputs.update-listing }}
+    # play is skipped when upload-to-play is false; without a status function a skipped need skips this job too.
+    if: ${{ !cancelled() && inputs.update-listing && needs.build.result == 'success' && needs.emulator.result == 'success' && (needs.play.result == 'success' || needs.play.result == 'skipped') }}
     runs-on: ubuntu-latest
     environment: google-play
     strategy:

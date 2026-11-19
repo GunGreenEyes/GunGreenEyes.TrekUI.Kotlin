@@ -66,8 +66,11 @@ $body | gh api -X PUT "repos/$Repo/environments/google-play" --input - | Out-Nul
 Done "production uploads now wait for $login to approve"
 
 Step 'GitHub Pages (built by Actions)'
-gh api "repos/$Repo/pages" 2>$null | Out-Null
-if ($LASTEXITCODE -eq 0) { gh api -X PUT "repos/$Repo/pages" -f build_type=workflow | Out-Null }
+# A 404 (Pages not enabled yet) writes to stderr; under 'Stop', Windows PowerShell 5.1 would make that terminating.
+$eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+try { gh api "repos/$Repo/pages" 2>$null | Out-Null; $pagesExists = ($LASTEXITCODE -eq 0) }
+finally { $ErrorActionPreference = $eap }
+if ($pagesExists) { gh api -X PUT "repos/$Repo/pages" -f build_type=workflow | Out-Null }
 else { gh api -X POST "repos/$Repo/pages" -f build_type=workflow | Out-Null }
 Done "https://gungreeneyes.github.io/TrekUI/ (published by the Pages workflow on the next release)"
 

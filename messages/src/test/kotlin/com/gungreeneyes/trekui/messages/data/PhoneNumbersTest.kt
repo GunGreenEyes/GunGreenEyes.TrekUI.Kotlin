@@ -48,6 +48,47 @@ class PhoneNumbersTest {
     }
 
     @Test
+    fun schemeQueryValueReadsOpaqueUris() {
+        assertThat(PhoneNumbers.schemeQueryValue("5550102345?body=hi%20there", "body")).isEqualTo("hi%20there")
+        assertThat(PhoneNumbers.schemeQueryValue("//5550102345?x=1&BODY=yo", "body")).isEqualTo("yo")
+        assertThat(PhoneNumbers.schemeQueryValue("5550102345?body=", "body")).isEmpty()
+        assertThat(PhoneNumbers.schemeQueryValue("5550102345", "body")).isNull()
+        assertThat(PhoneNumbers.schemeQueryValue(null, "body")).isNull()
+    }
+
+    @Test
+    fun normalizePrefixTurnsShortZeroZeroIntoPlus() {
+        assertThat(PhoneNumbers.normalizePrefix("0044")).isEqualTo("+44")
+        assertThat(PhoneNumbers.normalizePrefix("00 1")).isEqualTo("+1")
+        assertThat(PhoneNumbers.normalizePrefix("+1900")).isEqualTo("+1900")
+        assertThat(PhoneNumbers.normalizePrefix("00")).isEqualTo("00")
+        assertThat(PhoneNumbers.normalizePrefix("promo")).isEqualTo("PROMO")
+    }
+
+    @Test
+    fun mmsParticipantsIncludeToAndCcButNotThisDevice() {
+        val own = listOf("+1 555 000 1111")
+        val to = listOf("5550001111", "555-999-0000")
+        val cc = listOf("5558887777")
+        assertThat(PhoneNumbers.mmsParticipants("+15550102345", to, cc, own))
+            .containsExactly("+15550102345", "5559990000", "5558887777").inOrder()
+    }
+
+    @Test
+    fun mmsParticipantsKeepOneToOneMessagesOneToOne() {
+        val me = listOf("5550001111")
+        val none = emptyList<String>()
+        // own number known
+        assertThat(PhoneNumbers.mmsParticipants("5550102345", me, none, me)).containsExactly("5550102345")
+        // own number unknown: the lone other recipient is this device
+        assertThat(PhoneNumbers.mmsParticipants("5550102345", me, none, none)).containsExactly("5550102345")
+        // the placeholder and the sender repeated are ignored
+        val placeholder = listOf("insert-address-token", "15550102345")
+        assertThat(PhoneNumbers.mmsParticipants("5550102345", placeholder, none, none)).containsExactly("5550102345")
+        assertThat(PhoneNumbers.mmsParticipants(null, me, none, none)).isEmpty()
+    }
+
+    @Test
     fun setKeyIgnoresOrderAndFormatting() {
         assertThat(PhoneNumbers.setKey(listOf("+1 555 010 2345", "5559990000")))
             .isEqualTo(PhoneNumbers.setKey(listOf("555-999-0000", "5550102345")))

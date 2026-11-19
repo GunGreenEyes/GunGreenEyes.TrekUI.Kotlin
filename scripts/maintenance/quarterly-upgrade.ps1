@@ -188,7 +188,11 @@ foreach ($dir in $RepoDirs) {
     # A retired edition (archived on GitHub, e.g. TrekUI.Java once TrekUI replaced it) gets no
     # upgrade tickets, even while its folder stays on disk for reference.
     if (Get-Command gh -ErrorAction SilentlyContinue) {
-        $archived = gh repo view "GunGreenEyes/$name" --json isArchived --jq .isArchived 2>$null
+        # Windows PowerShell 5.1 + 'Stop' turns a native command's redirected stderr into a terminating error.
+        $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+        try { $archived = gh repo view "GunGreenEyes/$name" --json isArchived --jq .isArchived 2>$null }
+        finally { $ErrorActionPreference = $eap }
+        if ($LASTEXITCODE -ne 0) { $archived = $null }
         if ($archived -eq 'true') { Write-Host "${name}: archived on GitHub, skipped"; continue }
     }
     if (-not $state.ContainsKey($name)) { $state[$name] = @{ kotlin = $null; tickets = @{} } }
@@ -217,12 +221,13 @@ foreach ($dir in $RepoDirs) {
         $plan = Get-Plan $f.kind $f.have $f.want $have.usesKotlin
         if ($DryRun) { Write-Host "  would file: $($plan.summary)"; continue }
         Push-Location $dir
+        $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'   # 2>&1 on a native command (see above)
         try {
             $out = tickets ticket new --type chore --summary $plan.summary --ref "quarterly-upgrade $key" --root $TicketsRoot 2>&1
             if ($LASTEXITCODE -ne 0) { Write-Warning "could not file $key for ${name}: $out"; continue }
             $id = ($out | Select-Object -Last 1).ToString().Trim()
             tickets ticket note $id $plan.note --root $TicketsRoot 2>&1 | Out-Null
-        } finally { Pop-Location }
+        } finally { $ErrorActionPreference = $eap; Pop-Location }
         $st.tickets[$key] = $id
         if ($f.kind -eq 'kotlin') { $st.kotlin = $f.want }
         $newIds += $id

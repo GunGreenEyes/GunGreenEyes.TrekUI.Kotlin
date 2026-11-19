@@ -42,6 +42,46 @@ internal class Prefs private constructor(c: Context) : TrekPrefs(c) {
 
     fun bgMode(): Int = i("bg", BG_BLACK)
 
+    // ---- smart-home secrets ------------------------------------------------------------------
+
+    /** Private file holding the Govee and Nest credentials ([SECRET_KEYS]); excluded from backup. */
+    private val secrets: SharedPreferences =
+        c.applicationContext.getSharedPreferences(SECRETS_FILE, Context.MODE_PRIVATE)
+
+    /** A Govee/Nest credential from [SECRETS_FILE] ("" when unset). */
+    fun secret(k: String): String {
+        migrateSecrets()
+        return secrets.getString(k, "").orEmpty()
+    }
+
+    fun putSecret(k: String, v: String?) {
+        migrateSecrets()
+        secrets.edit().putString(k, v ?: "").apply()
+    }
+
+    /**
+     * Moves any [SECRET_KEYS] still in the backed-up `"trekui"` file into [SECRETS_FILE] and deletes
+     * them there. Runs once for upgrades, and again whenever an older code path wrote one to `"trekui"`
+     * (the newer value wins). The copy is committed before the originals are removed.
+     */
+    fun migrateSecrets() {
+        if (SECRET_KEYS.none { sp.contains(it) }) return
+        val all = sp.all
+        val se = secrets.edit()
+        val e = sp.edit()
+        for (k in SECRET_KEYS) {
+            if (!all.containsKey(k)) continue
+            se.putString(k, all[k] as? String ?: "")
+            e.remove(k)
+        }
+        se.commit()
+        e.apply()
+    }
+
+    init {
+        migrateSecrets()
+    }
+
     /**
      * Once per process: deletes what the retired interfaces stored (their records file and their pref
      * keys). A saved choice of one of them is switched to Command by [TrekPrefs.faction].
@@ -144,6 +184,13 @@ internal class Prefs private constructor(c: Context) : TrekPrefs(c) {
 
         /** Default drawer column count on a phone. */
         const val DEFAULT_DRAWER_COLS = 4
+
+        /** SharedPreferences file of the Govee and Nest credentials (excluded from backup and transfer). */
+        const val SECRETS_FILE = "trekui_secrets"
+
+        /** Credential keys kept in [SECRETS_FILE] instead of the backed-up `"trekui"` file. */
+        @JvmField
+        val SECRET_KEYS: Set<String> = hashSetOf("goveeKey", "nestSecret", "nestRefresh", "nestAccess")
 
         // ---- retired interfaces (ids 3-8, removed in 44) --------------------------------------
 

@@ -184,12 +184,15 @@ internal object IconFactory {
      * @param tone  one of [Prefs.TONE_CLASSIC], [Prefs.TONE_VIVID], [Prefs.TONE_SOLID]
      */
     @JvmStatic
+    @Suppress("CyclomaticComplexMethod", "ReturnCount")
     fun style(c: Context, a: AppInfo, p: Palette, style: Int, tone: Int): Drawable? {
-        val raw = a.rawIcon ?: return null
+        val raw = a.rawIcon
         var st = style
         // a pictogram the user picked for this app (CHANGE ICON) shows in every style but faction art
         if (a.glyphPinned && st != Prefs.ICON_FACTION) st = Prefs.ICON_CONSOLE
-        if (st == Prefs.ICON_NATIVE) return copy(raw)
+        // the app's icon failed to load (AppRepo): draw its pictogram in a console frame instead
+        if (raw == null && st == Prefs.ICON_NATIVE) st = Prefs.ICON_CONSOLE
+        if (st == Prefs.ICON_NATIVE && raw != null) return copy(raw)
         var color = accentFor(a, p)
         if (tone != Prefs.TONE_CLASSIC) color = Ui.vivid(color)
         color = Skin.glow(color)
@@ -208,7 +211,8 @@ internal object IconFactory {
             val g = glyph(c, glyphName)
             if (g != null) return Framed(null, g, color, p.panel, solid)
         }
-        return Framed(copy(raw), null, color, p.panel, solid)
+        // no pictogram and no app icon: the empty frame, never a blank cell
+        return Framed(raw?.let { copy(it) }, null, color, p.panel, solid)
     }
 
     /** Each view needs its own Drawable instance (bounds are per-instance). */

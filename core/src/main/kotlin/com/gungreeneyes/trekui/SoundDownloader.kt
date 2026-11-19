@@ -21,6 +21,7 @@ import java.util.Locale
  * the main thread. HTTPS only, with connect/read timeouts and a size cap. Nothing is uploaded and
  * no personal data is sent: a plain GET with a generic User-Agent.
  */
+@Suppress("TooManyFunctions")
 object SoundDownloader {
     /** Progress / completion callbacks, always on the main thread. */
     interface Listener {
@@ -115,6 +116,8 @@ object SoundDownloader {
     }
 
     @Throws(IOException::class)
+    // TooGenericExceptionCaught: a decoder or OOM failure fails one clip or original, not the run.
+    @Suppress("TooGenericExceptionCaught", "LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth", "ThrowsCount")
     private fun runAll(c: Context, coreOnly: Boolean, r: Result) {
         val cat = SoundCatalog.load(c)
         val want = cat.available(coreOnly)
@@ -164,16 +167,20 @@ object SoundDownloader {
                             SoundProcessor.writeWav(SoundCache.file(c, s.id), clip)
                             r.rendered++
                         } catch (ex: IOException) {
-                            r.failed++
-                            r.errors.add(s.label + ": " + ex.message)
+                            failClip(r, s, ex)
+                        } catch (ex: RuntimeException) {
+                            failClip(r, s, ex)
+                        } catch (ex: OutOfMemoryError) {
+                            failClip(r, s, ex) // the failed allocation is gone; the next clip may fit
                         }
                         post(++done, r.total, s.label)
                     }
                 } catch (ex: IOException) {
-                    r.failed += group.size
-                    done += group.size
-                    r.errors.add(group[0].label + ": " + ex.message)
-                    post(done, r.total, group[0].label)
+                    done = failGroup(r, group, done, ex)
+                } catch (ex: RuntimeException) {
+                    done = failGroup(r, group, done, ex) // decoder failure: this original only
+                } catch (ex: OutOfMemoryError) {
+                    done = failGroup(r, group, done, ex) // the decoded PCM is unreachable once we are here
                 } finally {
                     orig.delete()
                 }
@@ -181,6 +188,20 @@ object SoundDownloader {
         } finally {
             SoundImporter.deleteTree(tmpDir)
         }
+    }
+
+    /** Counts one clip that could not be rendered as failed. */
+    private fun failClip(r: Result, s: SoundCatalog.Sound, ex: Throwable) {
+        r.failed++
+        r.errors.add(s.label + ": " + (ex.message ?: ex.toString()))
+    }
+
+    /** Counts every clip of an original that could not be fetched or decoded as failed; returns the new done count. */
+    private fun failGroup(r: Result, group: List<SoundCatalog.Sound>, done: Int, ex: Throwable): Int {
+        r.failed += group.size
+        r.errors.add(group[0].label + ": " + (ex.message ?: ex.toString()))
+        post(done + group.size, r.total, group[0].label)
+        return done + group.size
     }
 
     /** Tries the preferred source, then each alternate, until one downloads with the right SHA-256. */

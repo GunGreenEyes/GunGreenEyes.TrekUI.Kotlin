@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Telephony
 import android.telephony.SmsManager
+import com.gungreeneyes.trekui.messages.data.PhoneNumbers
 import com.gungreeneyes.trekui.messages.mms.MmsPdu
 import com.gungreeneyes.trekui.messages.mms.PduCodec
 import java.io.File
@@ -66,6 +67,8 @@ class MmsResultReceiver : BroadcastReceiver() {
             return
         }
         if (pdu.from == null) pdu.from = from
+        // the push notice's From may be empty or differ: check the downloaded message's real sender too
+        if (Blocking.isBlocked(app, PhoneNumbers.normalize(pdu.from))) return
         val stored = MmsStore.insertIncoming(app, pdu, subId)
         val thread = MessageStore.threadOf(app, stored, true)
         if (thread > 0 && !ThreadActivity.isShowing(thread)) Notifier.showThread(app, thread)

@@ -45,7 +45,7 @@
         <error line="433" column="121" source="standard:max-line-length" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/TrekKeyboardService.kt">
-        <error line="59" column="5" source="standard:spacing-between-declarations-with-comments" />
+        <error line="60" column="5" source="standard:spacing-between-declarations-with-comments" />
     </file>
     <file name="src/main/kotlin/com/gungreeneyes/trekui/keyboard/logic/Key.kt">
         <error line="33" column="9" source="standard:spacing-between-declarations-with-comments" />

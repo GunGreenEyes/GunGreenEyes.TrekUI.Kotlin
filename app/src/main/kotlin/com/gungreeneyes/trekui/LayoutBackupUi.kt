@@ -128,11 +128,12 @@ internal object LayoutBackupUi {
     @JvmStatic
     fun undo(a: Activity, changed: Runnable) {
         val now = LayoutArchive.capture(a)
-        WORK.execute {
+        // list on the snapshot thread, after any snapshot still being written (APPLY's "before" one)
+        LayoutSnapshots.afterPendingWrites {
             for (e in LayoutSnapshots.list(a)) {
                 if (LayoutSnapshots.sameLayout(now, LayoutSnapshots.readDoc(e.file))) continue
                 loadAndConfirm(a, e, changed)
-                return@execute
+                return@afterPendingWrites
             }
             ui(a) { refuse(a, a.getString(R.string.layout_nothing_to_undo)) }
         }

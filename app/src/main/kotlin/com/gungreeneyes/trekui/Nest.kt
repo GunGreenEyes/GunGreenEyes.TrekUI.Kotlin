@@ -21,7 +21,8 @@ import kotlin.math.max
  * Setup (once): a Device Access project (one-time registration fee to Google), a Google Cloud
  * OAuth "Web application" client with redirect https://www.google.com, then account linking:
  * the browser ends on google.com with ?code=… in the address, which the owner pastes back.
- * The refresh token is stored in the launcher's private preferences; access tokens last an hour.
+ * The client secret and tokens are stored in [Prefs.SECRETS_FILE] (excluded from backup); access
+ * tokens last an hour.
  *
  * Every request blocks and runs through [async] on a background thread with timeouts
  * (see [Http]); only the application context is kept by background work. Parsing
@@ -117,13 +118,13 @@ internal object Nest {
     fun clientId(p: Prefs): String = p.s("nestClientId", "").orEmpty().trim()
 
     @JvmStatic
-    fun secret(p: Prefs): String = p.s("nestSecret", "").orEmpty().trim()
+    fun secret(p: Prefs): String = p.secret("nestSecret").trim()
 
     @JvmStatic
     fun configured(p: Prefs): Boolean = project(p).isNotEmpty() && clientId(p).isNotEmpty() && secret(p).isNotEmpty()
 
     @JvmStatic
-    fun linked(p: Prefs): Boolean = p.s("nestRefresh", "").orEmpty().isNotEmpty()
+    fun linked(p: Prefs): Boolean = p.secret("nestRefresh").isNotEmpty()
 
     /** True for a project id made of safe characters (it is placed in URLs). */
     @JvmStatic
@@ -203,8 +204,8 @@ internal object Nest {
     /** Forgets the link (tokens and devices); the OAuth client settings stay. */
     @JvmStatic
     fun unlink(p: Prefs) {
-        p.put("nestRefresh", "")
-        p.put("nestAccess", "")
+        p.putSecret("nestRefresh", "")
+        p.putSecret("nestAccess", "")
         p.put("nestAccessExp", 0L)
         p.put("nestDevices", "[]")
     }
@@ -254,12 +255,12 @@ internal object Nest {
         )
         val refresh = o.optString("refresh_token")
         if (refresh.isEmpty()) throw IOException("GOOGLE DIDN'T RETURN A REFRESH TOKEN • LINK AGAIN")
-        p.put("nestRefresh", refresh)
+        p.putSecret("nestRefresh", refresh)
         saveAccess(p, o)
     }
 
     private fun saveAccess(p: Prefs, o: JSONObject) {
-        p.put("nestAccess", o.optString("access_token"))
+        p.putSecret("nestAccess", o.optString("access_token"))
         p.put("nestAccessExp", accessExpiry(System.currentTimeMillis(), o.optLong("expires_in", 3599)))
     }
 
@@ -273,14 +274,14 @@ internal object Nest {
     private fun token(c: Context): String {
         val p = Prefs.get(c)
         if (!linked(p)) throw IOException("NEST NOT LINKED • CONFIG › DEVICES")
-        val access = p.s("nestAccess", "").orEmpty()
+        val access = p.secret("nestAccess")
         if (access.isNotEmpty() && System.currentTimeMillis() < p.l("nestAccessExp", 0L)) return access
         val o: JSONObject =
             try {
                 post(
                     TOKEN,
                     "client_id=" + enc(clientId(p)) + "&client_secret=" + enc(secret(p)) +
-                        "&refresh_token=" + enc(p.s("nestRefresh", "")) + "&grant_type=refresh_token",
+                        "&refresh_token=" + enc(p.secret("nestRefresh")) + "&grant_type=refresh_token",
                 )
             } catch (e: IOException) {
                 if (e.message.toString().contains("invalid_grant")) {
@@ -289,7 +290,7 @@ internal object Nest {
                 throw e
             }
         saveAccess(p, o)
-        return p.s("nestAccess", "").orEmpty()
+        return p.secret("nestAccess")
     }
 
     // ---- SDM ------------------------------------------------------------------------------------------

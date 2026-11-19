@@ -18,6 +18,8 @@ import java.net.NetworkInterface
 import java.net.SocketTimeoutException
 import java.util.Locale
 import java.util.UUID
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import kotlin.math.max
 
@@ -66,7 +68,8 @@ internal object Govee {
     private val IPV4 = Regex("\\d{1,3}(\\.\\d{1,3}){3}")
 
     /** Background thread for every Govee operation (LAN and cloud). */
-    private val IO: ExecutorService = Http.newExecutor("trekui-govee")
+    private const val IO_NAME = "trekui-govee"
+    private val IO: ExecutorService = Http.newExecutor(IO_NAME)
     private val MAIN = Handler(Looper.getMainLooper())
 
     /** A configured light: identity, the name shown, and how it can be reached. */
@@ -168,7 +171,7 @@ internal object Govee {
 
     /** The Govee developer API key, or "" when none is set. */
     @JvmStatic
-    fun key(p: Prefs): String = p.s("goveeKey", "").orEmpty()
+    fun key(p: Prefs): String = p.secret("goveeKey")
 
     /** Adds or updates devices by ID, keeping names the person set and routes already known. */
     @JvmStatic
@@ -568,8 +571,30 @@ internal object Govee {
      */
     @JvmStatic
     @Throws(IOException::class)
+    @Suppress("ThrowsCount", "SwallowedException") // rethrows the IO task's own cause
     fun probe(c: Context, ip: String?): Device? {
         if (ip == null || !isValidIpv4(ip)) throw IOException("ENTER AN ADDRESS LIKE 192.168.1.42")
+        // the socket work runs on IO like every other LAN operation, so only one socket binds 4002
+        if (Thread.currentThread().name.startsWith(IO_NAME + "-")) return probeNow(c, ip)
+        val f = IO.submit(Callable { probeNow(c, ip) })
+        try {
+            return f.get()
+        } catch (e: ExecutionException) {
+            when (val cause = e.cause) {
+                is IOException -> throw cause
+                is RuntimeException -> throw cause
+                else -> throw IOException(cause?.message ?: "PROBE FAILED", cause)
+            }
+        } catch (e: InterruptedException) {
+            f.cancel(true)
+            Thread.currentThread().interrupt()
+            throw IOException("PROBE INTERRUPTED", e)
+        }
+    }
+
+    /** [probe]'s socket work; runs on [IO] only. */
+    @Throws(IOException::class)
+    private fun probeNow(c: Context, ip: String): Device? {
         val lock = multicastLock(c)
         try {
             listen(700).use { s ->

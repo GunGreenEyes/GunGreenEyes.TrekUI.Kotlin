@@ -1,5 +1,6 @@
 package com.gungreeneyes.trekui.licensing
 
+import com.gungreeneyes.trekui.core.SuiteContract
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -169,7 +170,38 @@ class EntitlementTest {
         assertFalse(develop.isUnlocked())
     }
 
+    @Test
+    fun suiteGrantUnlocksButIsNeverShared() {
+        val e = release()
+        assertTrue(e.grantSuite(SIBLING, 1_000L))
+        assertEquals(Entitlement.Source.SUITE, e.source())
+        assertFalse(e.shareableUnlock())
+        e.apply(list(purchase(PRODUCT, PurchaseRecord.STATE_PURCHASED, true)), false)
+        assertTrue(e.shareableUnlock())
+    }
+
+    @Test
+    fun suiteGrantRevokedOnlyForItsGrantor() {
+        val e = release()
+        e.grantSuite(SIBLING, 1_000L)
+        assertFalse(e.revokeSuite("com.gungreeneyes.trekui.keyboard"))
+        assertTrue(e.isUnlocked())
+        assertTrue(e.revokeSuite(SIBLING))
+        assertFalse(e.isUnlocked())
+        assertFalse(e.revokeSuite(SIBLING))
+    }
+
+    @Test
+    fun ownPurchaseRowParsing() {
+        fun row(unlocked: Boolean, source: String) = SuiteContract.unlockRow(SIBLING, unlocked, source)
+        assertEquals(true, SuiteContract.parseOwnPurchase(row(true, "PURCHASE")))
+        assertEquals(false, SuiteContract.parseOwnPurchase(row(true, "SUITE"))) // an older sibling's grant
+        assertEquals(false, SuiteContract.parseOwnPurchase(row(false, "SUITE")))
+        assertEquals(null, SuiteContract.parseOwnPurchase(null))
+    }
+
     private companion object {
+        const val SIBLING = "com.gungreeneyes.trekui.messages"
         const val PKG = "com.gungreeneyes.trekui"
         const val PRODUCT = "trekui_unlock"
 
