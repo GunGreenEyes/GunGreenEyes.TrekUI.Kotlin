@@ -16,6 +16,6 @@ PRIVATE BY DESIGN
 The keyboard has no internet permission: nothing you type ever leaves your phone. It never learns words in password or incognito fields, and the words it learns stay on the device. No accounts, no ads, no analytics.
 
 FREE TO TRY, $0.99 TO KEEP
-Every feature works for free in 24-hour sessions. Typing never stops when a session ends; a small UNLOCK key appears instead. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
+Every feature works for free in 12-hour sessions. Typing never stops when a session ends; a small UNLOCK key appears instead. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
 
 TrekUI Keyboard is an independent, original design. It ships no third-party recordings or artwork.

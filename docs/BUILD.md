@@ -27,7 +27,7 @@ What the five modules share lives once, in the included build `build-logic/` (`s
 | File in `build-logic/convention/src/main/kotlin/` | Plugin id | What it sets |
 |---|---|---|
 | `TrekUiAndroid.kt` | (shared code) | compileSdk/minSdk/targetSdk 37/23/37, Java/Kotlin target 17, the instrumentation runner, `unitTests.isReturnDefaultValues`, lint (`abortOnError = false`, `checkReleaseBuilds`, XML + HTML reports) |
-| `AndroidApplicationConventionPlugin.kt` | `trekui.android.application` | the above plus the version from `version.properties`, the `TRIAL_SESSION_MINUTES` and `UNLOCK_PRODUCT_ID` fields, the `develop`/`production` flavors (`.dev` id suffix, `-dev` name suffix, 5-minute trial, the per-flavor `trekuiSuitePermission` placeholder), release signing (below), R8 + resource shrinking with `proguard-rules.pro`, `buildConfig`/`resValues`, the META-INF packaging exclude |
+| `AndroidApplicationConventionPlugin.kt` | `trekui.android.application` | the above plus the version from `version.properties`, the `TRIAL_SESSION_MINUTES` and `UNLOCK_PRODUCT_ID` fields, the `develop`/`production` flavors (`.dev` id suffix, `-dev` name suffix, 12-hour trial, the per-flavor `trekuiSuitePermission` placeholder), release signing (below), R8 + resource shrinking with `proguard-rules.pro`, `buildConfig`/`resValues`, the META-INF packaging exclude |
 | `AndroidLibraryConventionPlugin.kt` | `trekui.android.library` | the shared part, for `:core` |
 | `QualityConventionPlugin.kt` | `trekui.quality` | ktlint and detekt (below); applied by both Android plugins |
 
@@ -70,8 +70,8 @@ One dimension, `channel`:
 
 | Flavor | applicationId | App name | Version suffix | Trial session | Purpose |
 |---|---|---|---|---|---|
-| `develop` | `com.gungreeneyes.trekui.dev` | TrekUI Dev | `-dev` | 5 minutes | everyday development, CI, emulator tests. It installs next to the store build. |
-| `production` | `com.gungreeneyes.trekui` | TrekUI | – | 24 hours (1440 min) | Google Play and GitHub Releases |
+| `develop` | `com.gungreeneyes.trekui.dev` | TrekUI Dev | `-dev` | 12 hours (720 min) | everyday development, CI, emulator tests. It installs next to the store build. |
+| `production` | `com.gungreeneyes.trekui` | TrekUI | – | 12 hours (720 min) | Google Play and GitHub Releases |
 
 Flavor-specific values are `BuildConfig` fields (`TRIAL_SESSION_MINUTES`, `UNLOCK_PRODUCT_ID`) and `resValue` strings. Flavor-specific sources and resources go under `app/src/develop/` or `app/src/production/`.
 

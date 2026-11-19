@@ -27,6 +27,6 @@ PRIVATE BY DESIGN
 No accounts, no ads, no analytics, no tracking. Nothing is sent to the developer. The app only goes online for features you turn on: weather, optional smart-home lights and thermostats on your own network or account, and the optional sound library, which you download from public sound sites yourself. Every permission is optional and asked for only when you use the feature that needs it.
 
 FREE TO TRY, $0.99 TO KEEP
-Every feature works for free in 24-hour sessions. When a session ends, the launcher shows an unlock screen; you can start a new session, buy, or switch back to another home app at any time. A one-time $0.99 in-app purchase removes the limit for good. No ads, no subscription.
+Every feature works for free in 12-hour sessions. When a session ends, the launcher shows an unlock screen; you can start a new session, buy, or switch back to another home app at any time. A one-time $0.99 in-app purchase removes the limit for good. No ads, no subscription.
 
 TrekUI Launcher is an independent, original design. It ships no third-party recordings or artwork.

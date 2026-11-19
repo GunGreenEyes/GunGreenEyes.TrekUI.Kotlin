@@ -122,8 +122,8 @@ Without a checkout, download the APKs from [GitHub Releases](https://github.com/
 
 ### 2. Pick the right APK
 
-- **`production-release`** is what testers should install. It is the store build: normal package names, 24-hour trial sessions, no test hooks.
-- **`develop-debug`** installs **next to** it as a separate app ("TrekUI Dev", "TrekUI Messages Dev", and so on; package suffix `.dev`). It has 5-minute trial sessions and test hooks (in the launcher's purchase screen, long-press the header to simulate the purchase; debug intent extras are listed in [docs/MONETIZATION.md](docs/MONETIZATION.md#test-hooks)). The develop apps share the unlock with each other, not with the production apps.
+- **`production-release`** is what testers should install. It is the store build: normal package names, 12-hour trial sessions, no test hooks.
+- **`develop-debug`** installs **next to** it as a separate app ("TrekUI Dev", "TrekUI Messages Dev", and so on; package suffix `.dev`). It has 12-hour trial sessions and test hooks (in the launcher's purchase screen, long-press the header to simulate the purchase; debug intent extras are listed in [docs/MONETIZATION.md](docs/MONETIZATION.md#test-hooks)). The develop apps share the unlock with each other, not with the production apps.
 
 ### 3. Signing: what installs over what
 
@@ -245,7 +245,7 @@ The launcher's own sounds can be fixed or added without an app update: it checks
 ## Free to try, $0.99 to keep
 
 - Every app is free, has **no ads and no subscriptions**, and every feature works from the first launch.
-- Without a licence, each **trial session lasts 24 hours** (5 minutes in the develop flavor). When it ends, a purchase screen offers the one-time **$0.99 unlock** (`trekui_unlock`, Google Play in-app purchase), another session, or another home app. The launcher shows it only on its own home screen, never over another app; the keyboard and lock screen never block typing or unlocking.
+- Without a licence, each **trial session lasts 12 hours**. When it ends, a purchase screen offers the one-time **$0.99 unlock** (`trekui_unlock`, Google Play in-app purchase), another session, or another home app. The launcher shows it only on its own home screen, never over another app; the keyboard and lock screen never block typing or unlocking.
 - **One purchase in any of the four apps unlocks all of them.** It is permanent, restores on your other devices signed in to the same Google account, and works offline once granted.
 
 Design and Play policy notes: [docs/MONETIZATION.md](docs/MONETIZATION.md).
@@ -288,8 +288,8 @@ Prefix a task with a module to build one app, e.g. `./gradlew :messages:assemble
 
 | Flavor | Package | App name | Trial session |
 |---|---|---|---|
-| `develop` | `…` + `.dev` | "… Dev" | 5 minutes |
-| `production` | `com.gungreeneyes.trekui[.messages/.keyboard/.lockscreen]` | TrekUI, TrekUI Messages, … | 24 hours |
+| `develop` | `…` + `.dev` | "… Dev" | 12 hours (720 min) |
+| `production` | `com.gungreeneyes.trekui[.messages/.keyboard/.lockscreen]` | TrekUI, TrekUI Messages, … | 12 hours |
 
 Build types are `debug` (no shrinking) and `release` (R8, signed with the upload key from `signing/release.properties` or `TREKUI_*` variables, else the debug key). The version lives only in `version.properties`: one whole number for `versionName` and `versionCode` alike (this release **45**, the next **46**).
 

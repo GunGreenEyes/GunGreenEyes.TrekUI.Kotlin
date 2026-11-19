@@ -2,7 +2,7 @@
 // The same flavors, signing and suite-permission placeholder as every app (the trekui.android.application
 // convention in build-logic/), so a develop build installs beside the Play build and only talks to develop
 // siblings:
-//   develop    - com.gungreeneyes.trekui.keyboard.dev, 5-minute trial sessions for testing
+//   develop    - com.gungreeneyes.trekui.keyboard.dev, 12-hour trial sessions, like the store build
 //   production - com.gungreeneyes.trekui.keyboard, the Google Play build
 // The keyboard has no INTERNET permission: nothing typed ever leaves the device (docs/KEYBOARD.md).
 plugins {

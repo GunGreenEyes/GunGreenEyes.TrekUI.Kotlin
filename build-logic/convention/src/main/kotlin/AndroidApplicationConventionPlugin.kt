@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
  * `trekui.android.application`: one of the four TrekUI apps (launcher, Messages, Keyboard, Lock Screen).
  *
  * Every app shares the version (version.properties, versionName == versionCode), the trial and unlock
- * BuildConfig fields, two product flavors (develop: `.dev` id, `-dev` name, 5-minute trial sessions, the
+ * BuildConfig fields, two product flavors (develop: `.dev` id, `-dev` name, 12-hour trial sessions, the
  * develop suite permission; production: the Google Play build), release signing with the Play upload key
  * (signing/release.properties locally, TREKUI_* environment variables in CI, the debug key when neither is
  * there), R8 with resource shrinking, and the suite permission placeholder `trekuiSuitePermission`. The app's
@@ -33,7 +33,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     versionName = version.getProperty("versionName")
                     // Trial: how long an unlicensed copy runs per session before showing the purchase screen.
                     // One trekui_unlock purchase unlocks every app.
-                    buildConfigField("long", "TRIAL_SESSION_MINUTES", "1440")
+                    buildConfigField("long", "TRIAL_SESSION_MINUTES", "720")
                     buildConfigField("String", "UNLOCK_PRODUCT_ID", "\"trekui_unlock\"")
                     manifestPlaceholders["trekuiSuitePermission"] = "com.gungreeneyes.trekui.permission.SUITE"
                 }
@@ -43,7 +43,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     dimension = "channel"
                     applicationIdSuffix = ".dev"
                     versionNameSuffix = "-dev"
-                    buildConfigField("long", "TRIAL_SESSION_MINUTES", "5")
+                    buildConfigField("long", "TRIAL_SESSION_MINUTES", "720")
                     manifestPlaceholders["trekuiSuitePermission"] = "com.gungreeneyes.trekui.dev.permission.SUITE"
                 }
                 productFlavors.create("production").apply {

@@ -1,6 +1,6 @@
 // App module, the TrekUI launcher. The shared app setup (SDK levels, version, develop/production flavors,
 // release signing, R8, lint, ktlint/detekt) is the trekui.android.application convention in build-logic/:
-//   develop    - com.gungreeneyes.trekui.dev: installs beside the store build, 5-minute trial for testing
+//   develop    - com.gungreeneyes.trekui.dev: installs beside the store build, same 12-hour trial
 //   production - com.gungreeneyes.trekui: the Google Play build, "TrekUI Launcher"
 plugins {
     alias(libs.plugins.trekui.android.application)

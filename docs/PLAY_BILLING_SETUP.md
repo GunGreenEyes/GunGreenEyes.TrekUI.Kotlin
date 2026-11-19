@@ -69,7 +69,7 @@ Play Console labels move around now and then. The steps below use the 2026 names
 
 | Case | How | Expected |
 |---|---|---|
-| Trial expiry | Install a debug build of the **production** flavor (the develop flavor's 5-minute limit also works for UI-only checks). Optionally speed it up with `--ei trekui.debug.trial_seconds 30`. Press Home after the time is up. | The SESSION COMPLETE screen appears. Other apps are never interrupted. |
+| Trial expiry | Install a debug build of the **production** flavor (the develop flavor works too for UI-only checks). Both last 12 hours, so speed it up with `--ei trekui.debug.trial_seconds 30`. Press Home after the time is up. | The SESSION COMPLETE screen appears. Other apps are never interrupted. |
 | Price | Open the screen. | The button reads `BUY $0.99`, or the local price. If you see `UNLOCK NOT AVAILABLE FROM GOOGLE PLAY YET`, the product is not active, or the build was not installed from Play by a tester. |
 | Purchase | Tap BUY and pick "Test card, always approves". | The screen shows UNLOCKED and closes. The trial no longer appears. Play Console, **Order management**, lists the test order as acknowledged. |
 | Pending | Pick "Slow test card, approves after a few minutes". | The screen shows PURCHASE PENDING and the trial continues. After approval it unlocks on the next home resume (purchases are re-checked at most every 5 minutes) or immediately via RESTORE PURCHASE. |
@@ -84,7 +84,7 @@ Play Console labels move around now and then. The steps below use the 2026 names
 
 - Add the trial disclosure to the store listing, as required by the Play Deceptive Behavior
   policy. Example wording:
-  "Free to try: every feature works in 24-hour sessions. A one-time $0.99 in-app purchase removes
+  "Free to try: every feature works in 12-hour sessions. A one-time $0.99 in-app purchase removes
   the limit. No ads, no subscription."
 - Make sure the release is built with **Play Billing Library 8 or later**. This project uses
   9.1.0, which is accepted until Aug 31, 2028.

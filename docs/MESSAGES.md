@@ -40,7 +40,7 @@ the launcher installed.
   → `TrekPrefs.setThemeOverride`, refreshed on every screen resume and cached for cold starts); without it,
   CONFIG › INTERFACE offers the app's own interface and sub-theme picker. Portrait and landscape, phone to
   tablet (`ScreenMetrics`), edge-to-edge with keyboard insets.
-- **Licensing:** the same 24-hour session trial and the same `trekui_unlock` product as every TrekUI app.
+- **Licensing:** the same 12-hour session trial and the same `trekui_unlock` product as every TrekUI app.
   One purchase unlocks every TrekUI app; an unlocked sibling unlocks Messages through the suite provider.
 
 ## Default SMS components

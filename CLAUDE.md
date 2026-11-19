@@ -10,7 +10,7 @@ The project guide for agents is [AGENTS.md](AGENTS.md), imported here so Claude 
 - **Build.**
   - `./gradlew assembleDevelopDebug` builds the apps, `testDevelopDebugUnitTest` runs the tests, and `dist` copies every APK and AAB to `dist/<version>/` (committed).
   - It needs JDK 21 and SDK 37. Set them up with `scripts/setup.ps1` or `scripts/setup.sh`.
-- **Flavors.** `develop` (`.dev`, 5-minute trial) for all dev work; `production` for Play.
+- **Flavors.** `develop` (`.dev`, 12-hour trial) for all dev work; `production` for Play.
 - **Sizing.** Size everything with `ScreenMetrics`. Every screen must work in portrait and landscape, from phones to tablets and foldables.
 - **Never commit:** copyrighted audio (`*.mp3`, `*.ogg`, `*.wav`), keystores, secrets or `_sources/`.
 - **Tickets.** Use the `TUK-T<n>` prefix (log in `docs/USER_STORIES.md`); commit messages end with the ticket ID.

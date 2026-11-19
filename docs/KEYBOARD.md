@@ -44,7 +44,7 @@ without the launcher installed.
 
 ## Licensing
 
-Same model as every TrekUI app: free download, 24-hour trial sessions (5 minutes in the develop flavor), one
+Same model as every TrekUI app: free download, 12-hour trial sessions, one
 `trekui_unlock` purchase, and **one purchase unlocks every TrekUI app** (sibling unlocks are read from the
 signature-protected `SuiteProvider` and cached). The settings activity runs `Licensing.init` /
 `onAppResumed`. The keyboard itself **never blocks typing**: when a session is over, a slim UNLOCK chip appears

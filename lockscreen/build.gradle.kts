@@ -2,7 +2,7 @@
 // unlocking always goes through the system keyguard (PIN / pattern / biometric). The same flavors, signing
 // and suite-permission placeholder as every app (the trekui.android.application convention in
 // build-logic/), so a develop build installs beside the Play build and only talks to develop siblings:
-//   develop    - com.gungreeneyes.trekui.lockscreen.dev, 5-minute trial sessions for testing
+//   develop    - com.gungreeneyes.trekui.lockscreen.dev, 12-hour trial sessions, like the store build
 //   production - com.gungreeneyes.trekui.lockscreen, the Google Play build
 plugins {
     alias(libs.plugins.trekui.android.application)

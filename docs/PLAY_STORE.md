@@ -73,7 +73,7 @@ Also:
 
 ### App access
 
-- [ ] **All functionality is available without special access.** There is no login. The trial runs for 24 hours per session, which is enough for review. Optionally add this note:
+- [ ] **All functionality is available without special access.** There is no login. The trial runs for 12 hours per session, which is enough for review. Optionally add this note:
 
   > "Nest thermostat and Govee light controls need the user's own devices/accounts and are optional; everything else works offline without an account."
 

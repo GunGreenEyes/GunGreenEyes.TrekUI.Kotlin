@@ -17,6 +17,6 @@ PRIVATE BY DESIGN
 No accounts, no ads, no analytics, no tracking. Notifications are read only to draw them on the wake screen and are kept in memory only. Nothing is sent to the developer.
 
 FREE TO TRY, $0.99 TO KEEP
-Every feature works for free in 24-hour sessions. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
+Every feature works for free in 12-hour sessions. A one-time $0.99 in-app purchase removes the limit for good, and one purchase unlocks every TrekUI app. No ads, no subscription.
 
 TrekUI Lock Screen is an independent, original design. It ships no third-party recordings or artwork.

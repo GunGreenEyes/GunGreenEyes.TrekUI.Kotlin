@@ -30,8 +30,8 @@ On Windows, use `gradlew.bat` and set `JAVA_HOME` to the JDK 21. If Gradle waits
 
 | Flavor | Application ID | Name | Trial | Notes |
 |---|---|---|---|---|
-| `develop` | `com.gungreeneyes.trekui.dev` | TrekUI Dev | 5 minutes | Use this for everything you build and test |
-| `production` | `com.gungreeneyes.trekui` | TrekUI | 24 hours | Google Play |
+| `develop` | `com.gungreeneyes.trekui.dev` | TrekUI Dev | 12 hours (720 min) | Use this for everything you build and test |
+| `production` | `com.gungreeneyes.trekui` | TrekUI | 12 hours | Google Play |
 
 Build types are `debug` and `release` (R8, upload-key signing). The version lives in `version.properties`.
 

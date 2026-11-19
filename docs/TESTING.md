@@ -141,7 +141,7 @@ The root `assets/` folder is gitignored, apart from its index file. CI uploads t
 - Switch through all five interfaces in portrait and landscape.
 - Check a foldable or tablet in multi-window: resize the window and confirm nothing is clipped.
 - Trial flow on a develop build:
-  - wait 5 minutes and confirm the purchase screen appears on Home only;
+  - shorten the 12-hour session with the debug hook (`adb shell am start -n com.gungreeneyes.trekui.dev/com.gungreeneyes.trekui.MainActivity --ei trekui.debug.trial_seconds 30`, or `--ez trekui.debug.expire_now true`), then confirm the purchase screen appears on Home only;
   - check that NEW SESSION works;
   - check a real test purchase on the production build from the internal track with a licence-tester account. The develop app ID cannot buy the product, so use its simulated purchase instead; see [PLAY_BILLING_SETUP.md](PLAY_BILLING_SETUP.md).
 - Sound download from CONFIG › AUDIO SYSTEMS, then play a few events.
