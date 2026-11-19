@@ -33,6 +33,22 @@ TARGETS = {
 MAX_SIDE = 3840
 MAX_RATIO = 1.95
 PER_TYPE = 8
+# Listing order: each interface's home screen first, then the drawer, settings and a rotation shot.
+# System dialogs (the default-home role request) and the trial-expiry screen are never listing material.
+PREFER = ["interfaceRenders-COMMAND-", "interfaceRenders-IMPERIAL-", "interfaceRenders-COLLECTIVE-",
+          "interfaceRenders-CLASSIC_CONSOLE", "interfaceRenders-NEXT_CONSOLE", "drawerOpensAndListsApps-COMMAND-",
+          "settingsOpens", "interfaceRenders-COLLECTIVE_HUB", "drawerOpensAndListsApps-IMPERIAL-", "landscapeHomeFits"]
+SKIP = ["role-", "trial", "Trial", "default-home", "home-button"]
+# The 10-inch slot wants a 10-inch tablet when one was captured (the 7-inch tablet is the fallback).
+PREFERRED_DEVICE = {"tablet": "pixel_tablet", "foldable": "pixel_fold", "phone": "pixel_7"}
+
+
+def rank(path):
+    name = os.path.basename(path)
+    for i, key in enumerate(PREFER):
+        if key in name:
+            return i
+    return len(PREFER)
 
 
 def family(device):
@@ -56,8 +72,10 @@ def runs(captures):
         m = re.match(r"^(?:capture-)?(.+)-api(\d+(?:\.\d+)?)(?:-(?:portrait|landscape))?$", os.path.basename(d))
         if m:
             out.setdefault(family(m.group(1)), []).append((float(m.group(2)), d))
-    for v in out.values():
-        v.sort(reverse=True)
+    for fam, v in out.items():
+        pref = PREFERRED_DEVICE.get(fam)
+        # newest API first; among equal APIs (and overall) the preferred device model wins
+        v.sort(key=lambda t: (pref is not None and os.path.basename(t[1]).startswith(pref + "-"), t[0]), reverse=True)
     return out
 
 
@@ -93,7 +111,8 @@ def main():
         picked = []
         for _api, d in found.get(device, []):
             files = glob.glob(os.path.join(d, "**", "*.png"), recursive=True) + glob.glob(os.path.join(d, "**", "*.jpg"), recursive=True)
-            for f in sorted(f for f in files if os.sep + "thumbs" + os.sep not in f):
+            files = [f for f in files if os.sep + "thumbs" + os.sep not in f and not any(k in os.path.basename(f) for k in SKIP)]
+            for f in sorted(files, key=lambda f: (rank(f), f)):
                 with Image.open(f) as im:
                     if want and orientation(im) != want:
                         continue
